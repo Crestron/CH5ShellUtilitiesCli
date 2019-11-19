@@ -1,0 +1,15 @@
+.idea
+.DS_Store
+node_modules
+npm-debug.log
+yarn-error.log
+.env
+dist
+build_bundles
+compiled_bundles
+docs
+build
+coverage
+test-report.xml
+output-test
+backup

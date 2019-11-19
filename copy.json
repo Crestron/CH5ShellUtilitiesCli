@@ -1,0 +1,15 @@
+{
+  "copyFiles": [
+      {
+          "from": "package.json",
+          "to": "build/package.json"
+      },
+      {
+        "from": "LICENSE.txt",
+        "to": "build/LICENSE.txt"
+    }
+  ],
+  "settings": {
+    "whenFileExists": "overwrite"
+  }
+}
