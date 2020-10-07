@@ -8,5 +8,6 @@
 export enum DeviceTypeEnum {
   TouchScreen = "touchscreen",
   ControlSystem = "controlsystem",
-  WebServer = "web"
+  Web = "web",
+  Mobile = "mobile"
 }

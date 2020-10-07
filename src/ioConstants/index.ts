@@ -13,7 +13,7 @@ export default class IoConstants {
   public static touchScreenReloadCommand: string = 'projectload';
   public static readonly touchScreenSftpDirectory: string = 'display';
   public static controlSystemReloadCommand: string = 'CSProjectLoad';
-  public static readonly controlSystemSftpDirectory: string = 'HTML';
+  public static readonly controlSystemSftpDirectory: string = 'html';
   public static tempExtension: string = 'ch5';
   public static defaultExtension: string = 'ch5z';
   public static temporaryArchiveDir: string = 'temp';

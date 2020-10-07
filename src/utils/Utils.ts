@@ -7,7 +7,7 @@
 
 import fs from 'fs';
 import rimraf from 'rimraf';
-import { OutputLevelEnum, ConfigExtensions} from '../enums';
+import { OutputLevelEnum, ConfigExtensions } from '../enums';
 import { Client, ClientChannel } from 'ssh2';
 import { IConfigOptions, ILogger } from '../interfaces';
 import IoConstants from '../ioConstants';
@@ -66,7 +66,7 @@ export class Utils implements IUtils {
     const fileContent: string = fs.readFileSync(filePath, encodingFormat);
     return fileContent;
   }
-  
+
   /**
    * Method for checking contract editor config file extension.
    *

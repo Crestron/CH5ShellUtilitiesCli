@@ -44,13 +44,19 @@ export class Ch5Distributor {
   }
 
   private async reloadDevice(distributorOptions: IConfigOptions, filename: string): Promise<void> {
-    let command:string = '';
+    let command: string = '';
     switch (distributorOptions.deviceType) {
       case DeviceTypeEnum.TouchScreen:
         command = IoConstants.touchScreenReloadCommand;
         break;
       case DeviceTypeEnum.ControlSystem:
+        command = IoConstants.controlSystemReloadCommand + ' -U:CH5 -P:' + `${path.basename(filename)}`;
+        break;
+      case DeviceTypeEnum.Mobile:
         command = IoConstants.controlSystemReloadCommand + ' -T:MobileApp -U:CH5 -P:' + `${path.basename(filename)}`;
+        break;
+      case DeviceTypeEnum.Web:
+        command = IoConstants.controlSystemReloadCommand + ' -T:WebXPanel -U:CH5 -P:' + `${path.basename(filename)}`;
         break;
       default:
         throw new Error('Unknown device type');
@@ -75,7 +81,16 @@ export class Ch5Distributor {
       const targetPath = `${distributorOptions.sftpDirectory}/${path.basename(filename)}`;
       this._logger.debug(targetPath);
 
+      const pathExists = await sftp.exists(distributorOptions.sftpDirectory);
+      // checking if path is a directory. Creating it otherwise
+      if (pathExists !== 'd') {
+        this._logger.debug(`Creating directory ${distributorOptions.sftpDirectory}.`);
+        await sftp.mkdir(`${distributorOptions.sftpDirectory}`, true);
+        this._logger.debug(`Created directory ${distributorOptions.sftpDirectory}. Now uploading`);
+      }
+      this._logger.debug(`Trying to upload file to ${targetPath}.`);
       await sftp.fastPut(filename, targetPath);
+      this._logger.debug(`Uploaded file.`);
 
     } catch (err) {
       throw new Error(IoConstants.errorOnConnectingToHostWithError(distributorOptions.controlSystemHost, err.message));
@@ -91,7 +106,10 @@ export class Ch5Distributor {
       case DeviceTypeEnum.TouchScreen:
         return IoConstants.touchScreenSftpDirectory;
       case DeviceTypeEnum.ControlSystem:
+      case DeviceTypeEnum.Mobile:
         return IoConstants.controlSystemSftpDirectory;
+      case DeviceTypeEnum.Web:
+        return `/${IoConstants.controlSystemSftpDirectory}/${distributorOptions.projectName}`;
       default:
         throw new Error('SFTP directory is not set.');
     }
