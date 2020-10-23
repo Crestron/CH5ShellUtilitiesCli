@@ -73,7 +73,7 @@ export class Ch5Archiver implements ICh5Archiver {
   private addContractFileToConfig(options: IConfigOptions): void {
     const contractFile = "" + options.contractFile;
     const dirName: string = `config`;
-    const contractFileName: string = `${options.projectName}-contract-editor-config.cse2j`;
+    const contractFileName: string = "contract.cse2j";
     const configDir: string = `${options.directoryName}/${dirName}`;
     const targetFilePath: string = `${options.directoryName}/${dirName}/${contractFileName}`;
     this._utils.validateFileExists(contractFile);
