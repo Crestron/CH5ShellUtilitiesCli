@@ -17,7 +17,7 @@ export default class IoConstants {
   public static tempExtension: string = 'ch5';
   public static defaultExtension: string = 'ch5z';
   public static temporaryArchiveDir: string = 'temp';
-  public static defaultUser: string = 'Crestron';
+  public static defaultUser: string = 'crestron';
   public static defaultPassword: string = '';
   public static readonly AppUiManifestContent: string = 'apptype:ch5';
 

@@ -31,7 +31,9 @@ const config: IConfigOptions = {
   "promptForCredential": false,
   "sftpDirectory": "display",
   "deviceType": DeviceTypeEnum.TouchScreen,
-  "contractFile": undefined
+  "contractFile": undefined,
+  "privateKey": undefined,
+  "passphrase": undefined
 };
 
 let commands = process.argv;

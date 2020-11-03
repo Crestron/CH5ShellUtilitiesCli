@@ -107,11 +107,31 @@ export class Utils implements IUtils {
       }).on('end', () => {
         this._logger.info(IoConstants.connectionEnded);
         resolve('done');
-      }).connect({
-        host: distributorOptions.controlSystemHost,
-        username: distributorOptions.sftpUser,
-        password: distributorOptions.sftpPassword
-      });
+      }).connect(this.getConnectOptions(distributorOptions));
     });
+  }
+
+  public getConnectOptions(distributorOptions: IConfigOptions) {
+    let options: {
+      host: string,
+      username: string,
+      password?: string,
+      passphrase?: string,
+      privateKey?: Buffer
+    } = {
+      host: distributorOptions.controlSystemHost,
+      username: distributorOptions.sftpUser,
+    };
+
+    if (distributorOptions.privateKey) {
+      options.privateKey = fs.readFileSync(distributorOptions.privateKey);
+      if (distributorOptions.passphrase) {
+        options.passphrase = distributorOptions.passphrase;
+      }
+    } else {
+      options.password = distributorOptions.sftpPassword;
+    }
+
+    return options;
   }
 }

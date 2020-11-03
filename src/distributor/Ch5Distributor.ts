@@ -38,6 +38,8 @@ export class Ch5Distributor {
     distributorOptions.sftpDirectory = Ch5Distributor.getSftpDirectory(distributorOptions);
     distributorOptions.sftpUser = Ch5Distributor.getSftpUser(distributorOptions);
     distributorOptions.sftpPassword = Ch5Distributor.getSftpPassword(distributorOptions);
+    distributorOptions.privateKey = Ch5Distributor.getPrivateKey(distributorOptions);
+    distributorOptions.passphrase = Ch5Distributor.getPassphrase(distributorOptions);
 
     await this.transferFiles(distributorOptions, filename);
     await this.reloadDevice(distributorOptions, filename);
@@ -66,15 +68,10 @@ export class Ch5Distributor {
   }
 
   private async transferFiles(distributorOptions: IConfigOptions, filename: string): Promise<void> {
-    const sftpOption = {
-      host: distributorOptions.controlSystemHost,
-      username: distributorOptions.sftpUser,
-      password: distributorOptions.sftpPassword,
-    };
-
     const sftp = new Client();
+
     try {
-      await sftp.connect(sftpOption);
+      await sftp.connect(this._utils.getConnectOptions(distributorOptions));
 
       this._logger.info(IoConstants.connectedToDeviceAndUploading);
 
@@ -121,5 +118,13 @@ export class Ch5Distributor {
 
   private static getSftpPassword(distributorOptions: IConfigOptions) {
     return distributorOptions.sftpPassword || IoConstants.defaultPassword;
+  }
+
+  private static getPrivateKey(distributorOptions: IConfigOptions) {
+    return distributorOptions.privateKey || undefined;
+  }
+
+  private static getPassphrase(distributorOptions: IConfigOptions) {
+    return distributorOptions.passphrase || undefined;
   }
 }
