@@ -5,8 +5,8 @@
 // Use of this source code is subject to the terms of the Crestron Software License Agreement
 // under which you licensed this source code.
 
-import {OutputLevelEnum} from "../enums";
-import {IConfigOptions} from "./IConfigOptions";
+import { OutputLevelEnum } from "../enums";
+import { IConfigOptions } from "./IConfigOptions";
 
 export interface IUtils {
   checkExistingDirectory(directoryName: string, loggingLevel: OutputLevelEnum): boolean;
@@ -43,4 +43,17 @@ export interface IUtils {
    * @param command
    */
   runRestartSshCommand(distributorOptions: IConfigOptions, command: string): void;
+
+  /**
+   * Method for assembling the options object for connect
+   * 
+   * @param distributorOptions 
+   */
+  getConnectOptions(distributorOptions: IConfigOptions): {
+    host: string,
+    username: string,
+    password?: string,
+    passphrase?: string,
+    privateKey?: Buffer
+  };
 }

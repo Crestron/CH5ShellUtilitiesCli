@@ -21,6 +21,8 @@ export interface IConfigOptions {
   sftpDirectory: string; // folder on controlSystemHost where the archive will be copied
   deviceType: DeviceTypeEnum; // device type - value in [touchscreen, controlsystem, web]
   contractFile: string | undefined; // Relative or absolute file path for contract editor config.
+  privateKey: string | undefined; // Relative or absolute file path for private key.
+  passphrase: string | undefined; // Passphrase for the private key 
 }
 
 export interface IAdditionalParameters {
