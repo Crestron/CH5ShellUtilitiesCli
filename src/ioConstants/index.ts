@@ -11,9 +11,10 @@ export default class IoConstants {
 
   // default values used in the functionality. do not change these without carefull testing.
   public static touchScreenReloadCommand: string = 'projectload';
-  public static readonly touchScreenSftpDirectory: string = 'display';
+  public static touchScreenUpdateCommand: string = 'begindisplay';
+  public static readonly touchScreenSftpDirectory: string = '/display';
   public static controlSystemReloadCommand: string = 'CSProjectLoad';
-  public static readonly controlSystemSftpDirectory: string = 'html';
+  public static readonly controlSystemSftpDirectory: string = '/html';
   public static tempExtension: string = 'ch5';
   public static defaultExtension: string = 'ch5z';
   public static temporaryArchiveDir: string = 'temp';
@@ -24,7 +25,7 @@ export default class IoConstants {
   public static addingExtraParamsToManifest: string = 'Appending extra parameter from config to manifest file.';
   public static connectedToDeviceAndUploading: string = 'Connected to device. Uploading archive file.';
   public static connectViaSsh: string = 'Connected via ssh to device';
-  public static deviceRestarted: string = 'Project has been loaded';
+  public static connectionClosed: string = 'Connection closed.';
   public static connectionEnded: string = 'Connection has ended. Success executing command.';
   public static sftUserConsoleLabel: string = 'SFTP username: ';
   public static sftPasswordConsoleLabel: string = 'SFTP password: ';

@@ -33,7 +33,8 @@ const config: IConfigOptions = {
   "deviceType": DeviceTypeEnum.TouchScreen,
   "contractFile": undefined,
   "privateKey": undefined,
-  "passphrase": undefined
+  "passphrase": undefined,
+  "slowMode": false
 };
 
 let commands = process.argv;

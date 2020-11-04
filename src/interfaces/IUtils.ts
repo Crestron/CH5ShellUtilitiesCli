@@ -37,12 +37,12 @@ export interface IUtils {
   readFromFile(filePath: string, encodingFormat?: string): string;
 
   /**
-   * Method for running restart/reload command on device
+   * Method for running a command on device
    *
    * @param distributorOptions
    * @param command
    */
-  runRestartSshCommand(distributorOptions: IConfigOptions, command: string): void;
+  runSshCommand(distributorOptions: IConfigOptions, command: string): void;
 
   /**
    * Method for assembling the options object for connect

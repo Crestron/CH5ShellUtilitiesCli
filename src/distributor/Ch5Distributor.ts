@@ -41,6 +41,10 @@ export class Ch5Distributor {
     distributorOptions.privateKey = Ch5Distributor.getPrivateKey(distributorOptions);
     distributorOptions.passphrase = Ch5Distributor.getPassphrase(distributorOptions);
 
+    if (distributorOptions.deviceType === DeviceTypeEnum.TouchScreen && distributorOptions.slowMode) {
+      this._logger.info(`Sending ${IoConstants.touchScreenUpdateCommand} command to device...`);
+      await this._utils.runSshCommand(distributorOptions, IoConstants.touchScreenUpdateCommand);
+    }
     await this.transferFiles(distributorOptions, filename);
     await this.reloadDevice(distributorOptions, filename);
   }
@@ -63,8 +67,9 @@ export class Ch5Distributor {
       default:
         throw new Error('Unknown device type');
     }
+
     this._logger.info(IoConstants.sendReloadCommandToDevice(distributorOptions.deviceType) + ':' + command);
-    await this._utils.runRestartSshCommand(distributorOptions, command);
+    await this._utils.runSshCommand(distributorOptions, command);
   }
 
   private async transferFiles(distributorOptions: IConfigOptions, filename: string): Promise<void> {
@@ -73,10 +78,8 @@ export class Ch5Distributor {
     try {
       await sftp.connect(this._utils.getConnectOptions(distributorOptions));
 
-      this._logger.info(IoConstants.connectedToDeviceAndUploading);
-
       const targetPath = `${distributorOptions.sftpDirectory}/${path.basename(filename)}`;
-      this._logger.debug(targetPath);
+      this._logger.info(IoConstants.connectedToDeviceAndUploading);
 
       const pathExists = await sftp.exists(distributorOptions.sftpDirectory);
       // checking if path is a directory. Creating it otherwise
@@ -106,7 +109,7 @@ export class Ch5Distributor {
       case DeviceTypeEnum.Mobile:
         return IoConstants.controlSystemSftpDirectory;
       case DeviceTypeEnum.Web:
-        return `/${IoConstants.controlSystemSftpDirectory}/${distributorOptions.projectName}`;
+        return `${IoConstants.controlSystemSftpDirectory}/${distributorOptions.projectName}`;
       default:
         throw new Error('SFTP directory is not set.');
     }
