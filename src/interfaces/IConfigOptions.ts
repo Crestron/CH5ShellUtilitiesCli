@@ -23,6 +23,7 @@ export interface IConfigOptions {
   contractFile: string | undefined; // Relative or absolute file path for contract editor config.
   privateKey: string | undefined; // Relative or absolute file path for private key.
   passphrase: string | undefined; // Passphrase for the private key 
+  slowMode: boolean; // flag to be used when deploying to touchscreen devices
 }
 
 export interface IAdditionalParameters {

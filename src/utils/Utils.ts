@@ -86,7 +86,7 @@ export class Utils implements IUtils {
    * @param distributorOptions
    * @param command
    */
-  public runRestartSshCommand(distributorOptions: IConfigOptions, command: string): Promise<string> {
+  public runSshCommand(distributorOptions: IConfigOptions, command: string): Promise<string> {
     return new Promise<string>((resolve, reject) => {
       const ssh2 = new Client();
       ssh2.on('ready', () => {
@@ -95,7 +95,7 @@ export class Utils implements IUtils {
         ssh2.exec(command, (err: Error, stream: ClientChannel) => {
           if (err) throw err;
           stream.on('close', () => {
-            this._logger.debug(IoConstants.deviceRestarted);
+            this._logger.debug(IoConstants.connectionClosed);
             ssh2.end();
           }).on('data', (data: string) => {
             this._logger.debug(IoConstants.deviceOutput(data));
