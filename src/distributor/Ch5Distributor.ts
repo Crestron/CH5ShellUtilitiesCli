@@ -77,23 +77,34 @@ export class Ch5Distributor {
 
     try {
       await sftp.connect(this._utils.getConnectOptions(distributorOptions));
-
-      const targetPath = `${distributorOptions.sftpDirectory}/${path.basename(filename)}`;
+      let { sftpDirectory } = distributorOptions;
       this._logger.info(IoConstants.connectedToDeviceAndUploading);
 
-      const pathExists = await sftp.exists(distributorOptions.sftpDirectory);
+
+      if (distributorOptions.deviceType === DeviceTypeEnum.Web) {
+        // find if output directory is HTML or html
+        const matchingDirs = await sftp.list('/', `${sftpDirectory.toUpperCase()}|${sftpDirectory.toLowerCase()}`);
+        sftpDirectory = `/${matchingDirs[0].name}/${distributorOptions.projectName}`;
+      }
+
+      const targetPath = `${sftpDirectory}/${path.basename(filename)}`;
+      const pathExists = await sftp.exists(sftpDirectory);
+
       // checking if path is a directory. Creating it otherwise
       if (pathExists !== 'd') {
-        this._logger.debug(`Creating directory ${distributorOptions.sftpDirectory}.`);
-        await sftp.mkdir(`${distributorOptions.sftpDirectory}`, true);
-        this._logger.debug(`Created directory ${distributorOptions.sftpDirectory}. Now uploading`);
+        this._logger.debug(`Creating directory ${sftpDirectory}.`);
+        await sftp.mkdir(`${sftpDirectory}`, true);
+        this._logger.debug(`Created directory ${sftpDirectory}. Now uploading`);
       }
-      this._logger.debug(`Trying to upload file to ${targetPath}.`);
-      await sftp.fastPut(filename, targetPath);
-      this._logger.debug(`Uploaded file.`);
 
+      this._logger.debug(`Trying to upload file to ${targetPath}.`);
+      await sftp.put(filename, targetPath, { autoClose: false });
+      this._logger.debug(`Uploaded file.`);
     } catch (err) {
       throw new Error(IoConstants.errorOnConnectingToHostWithError(distributorOptions.controlSystemHost, err.message));
+    } finally {
+      await sftp.end();
+      this._logger.debug('Closing sftp connection.');
     }
   }
 
@@ -107,9 +118,8 @@ export class Ch5Distributor {
         return IoConstants.touchScreenSftpDirectory;
       case DeviceTypeEnum.ControlSystem:
       case DeviceTypeEnum.Mobile:
-        return IoConstants.controlSystemSftpDirectory;
       case DeviceTypeEnum.Web:
-        return `${IoConstants.controlSystemSftpDirectory}/${distributorOptions.projectName}`;
+        return IoConstants.controlSystemSftpDirectory;
       default:
         throw new Error('SFTP directory is not set.');
     }
