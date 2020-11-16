@@ -12,9 +12,9 @@ export default class IoConstants {
   // default values used in the functionality. do not change these without carefull testing.
   public static touchScreenReloadCommand: string = 'projectload';
   public static touchScreenUpdateCommand: string = 'begindisplay';
-  public static readonly touchScreenSftpDirectory: string = '/display';
+  public static readonly touchScreenSftpDirectory: string = 'display';
   public static controlSystemReloadCommand: string = 'CSProjectLoad';
-  public static readonly controlSystemSftpDirectory: string = '/html';
+  public static readonly controlSystemSftpDirectory: string = 'html';
   public static tempExtension: string = 'ch5';
   public static defaultExtension: string = 'ch5z';
   public static temporaryArchiveDir: string = 'temp';
