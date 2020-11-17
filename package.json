@@ -21,7 +21,6 @@
     "start:js": "yarn build && node build/start.js archive && node build/start.js distribute",
     "start:archive:js": "yarn build && node build/start.js archive",
     "start:distribute:js": "yarn build && node build/start.js distribute",
-    "copy": "copy-files-from-to --config copy.json",
     "build": "npm run clean && npm run tsc",
     "help": "ts-node src/index.ts",
     "publish:local": "yarn build && yarn unlink && yarn link",
@@ -35,11 +34,8 @@
   "license": "SEE LICENSE IN LICENSE.txt",
   "dependencies": {
     "archiver": "3.0.0",
-    "async": "^2.6.2",
-    "copy-files-from-to": "1.1.0",
     "fs": "0.0.1-security",
-    "lodash": "4.17.11",
-    "readline-sync": "1.4.9",
+    "lodash": "^4.17.20",
     "rimraf": "2.6.3",
     "sha256-file": "^1.0.0",
     "ssh2": "0.8.2",
@@ -47,15 +43,12 @@
   },
   "devDependencies": {
     "@types/archiver": "2.1.2",
-    "@types/async": "^2.4.1",
     "@types/lodash": "4.14.123",
     "@types/node": "^11.11.5",
-    "@types/readline-sync": "1.4.3",
     "@types/rimraf": "2.0.2",
     "@types/ssh2": "0.5.38",
     "@types/ssh2-sftp-client": "5.3.0",
     "ts-node": "8.0.3",
-    "tsc": "1.20150623.0",
     "typescript": "3.3.3333"
   },
   "files": [
