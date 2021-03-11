@@ -1,0 +1,30 @@
+Usage: 
+    yarn import:all [options]
+    npm run import:all [options]
+
+Options:
+    -h, --help,         Help for Importing assets, libraries, components from the './app/project/' folder
+    -z, --zipFile,      Prefix for full location path of the zip file to be imported
+    -l, --list,         Prefix for list of file names
+    -f, --force         Force the program to overwrite the target files with the source files and avoid any confirmation
+    --all,              Select this option to import all the files
+
+Yarn or NPM can be used to import the project assets, libraries, components. There are two options available:
+
+1. Import the complete contents of the zip file to './app/project/' folder. To achieve this, use the following commands:
+ 
+    yarn import:all -z {path} --all 
+   
+    npm run import:all -- -z {path} --all 
+
+2. Import selected assets, libraries, components from './app/project/' folder. In this case, the filenames are mandatory in the command prompt. The filename must follow the complete path starting from './app/project/....'. Only filenames can be provided here (no folder paths). Multiple filenames can be provided in the command prompt. To achieve this, use the following commands:
+
+    yarn import:all -z ./dist/exported-all.zip -l ./app/project/components/pages/page1/page1.html ./app/project/assets/scss/_variables.scss
+   
+    npm run import:all -- -z ./dist/exported-all.zip -l ./app/project/components/pages/page1/page1.html ./app/project/assets/scss/_variables.scss
+   
+    yarn import:all -z ./dist/exported-all.zip --list ./app/project/components/pages/page1/page1.html ./app/project/assets/scss/_variables.scss
+   
+    npm run import:all -- -z ./dist/exported-all.zip --list ./app/project/components/pages/page1/page1.html ./app/project/assets/scss/_variables.scss
+
+You can use the tab completion for file names.

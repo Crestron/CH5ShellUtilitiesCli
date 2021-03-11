@@ -1,0 +1,43 @@
+
+Usage: 
+    yarn import:assets [options]
+    npm run import:assets [options]
+
+You could use shortcuts as the following:
+    yarn imp:a
+    npm run imp:a
+
+Options:
+    -h, --help,         Help for Importing assets from the './app/project/assets/' folder
+    -z, --zipFile,      Prefix for full location path of the zip file to be imported
+    -l, --list,         Prefix for list of file names
+    -f, --force         Force the program to overwrite the target files with the source files and avoid any confirmation
+    --all,              Select this option to import all the files
+
+Yarn or NPM can be used to import the project assets. There are two options available to import assets:
+
+1. Import the complete contents of the zip file to './app/project/assets/' folder. To achieve this, use the following commands:
+
+    yarn import:assets -z {path} --all 
+
+    npm run import:assets -- -z {path} --all 
+
+    yarn imp:a -z {path} --all 
+
+    npm run imp:a -- -z {path} --all 
+
+2. Import selected assets from './app/project/assets/' folder. In this case, the filenames are mandatory in the command-prompt. The filename must follow the complete path starting from './app/project/assets/....'. Only file names can be provided here (no folder paths). Multiple file names can be provided in the command prompt. To achieve this, use the following commands:
+
+    yarn import:assets -z ./dist/exported-assets.zip -l ./app/project/assets/data/translation/en.json ./app/project/assets/scss/_variables.scss
+
+    npm run import:assets -- -z ./dist/exported-assets.zip -l ./app/project/assets/data/translation/en.json ./app/project/assets/scss/_variables.scss
+
+    yarn import:assets -z ./dist/exported-assets.zip --list ./app/project/assets/data/translation/en.json ./app/project/assets/scss/_variables.scss
+
+    npm run import:assets -- -z ./dist/exported-assets.zip --list ./app/project/assets/data/translation/en.json ./app/project/assets/scss/_variables.scss
+
+    yarn imp:a -z ./dist/exported-assets.zip -l ./app/project/assets/data/translation/en.json ./app/project/assets/scss/_variables.scss
+
+    npm run imp:a -- -z ./dist/exported-assets.zip -l ./app/project/assets/data/translation/en.json ./app/project/assets/scss/_variables.scss
+
+You can use the tab completion for file names.

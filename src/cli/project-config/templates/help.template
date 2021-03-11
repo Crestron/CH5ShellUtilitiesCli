@@ -1,0 +1,33 @@
+
+Usage: yarn validate:projectconfig [options]
+
+Options:
+    -h, --help,         Help for Validating project-config.json file
+
+You could use Yarn / npm to validate the project-config.json. The below are the commands:
+    yarn validate:projectconfig
+    npm run validate:projectconfig
+
+You could use shortcuts as the following:
+    yarn val:pc
+    npm run val:pc
+
+Based on the responses, the output is classified into errors and warnings. The project-config.json is validated for the following cases:
+
+    1. Validate project-config.json based on project-config-schema.json
+    2. Verify if the pages defined in project-config.json exists in the physical folders.
+    3. Verify if the widgets defined in project-config.json exists in the physical folders.
+    4. Verify if the pages names are repeated in project-config.json
+    5. Check if the widget names are repeated in project-config.json
+    6. Check if the page sequences are repeated.
+    7. Check if the theme name is not available in the list of mentioned themes.
+    8. Check if the theme name is repeated in the themes array.
+    9. If menuOrientation is either 'vertical' or 'horizontal', then check if atleast one navigation item exists in the pages list.
+    10. Check if the menuOrientation is 'vertical', and if there is an 'IconPosition' defined for navigation.
+    11. Check if the menuOrientation is 'vertical', and if the menu is displayed.
+    12. Check if the Pages array is empty.
+    13. Check if page names are reused in widgets and vice-versa.
+
+This validation will review the settings in project configuration file and inform the developer of any invalid configuration before running the browser or running on the touch screen. 
+During the 'start' / 'build' process, this script will be executed and if there are errors (not warning), the script will not continue to the next step.
+

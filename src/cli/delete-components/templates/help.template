@@ -1,0 +1,26 @@
+
+Usage: yarn delete:components [options]
+
+Options:
+    -h, --help          Help for Generate Documentation
+    -l, --list,         Prefix for list of component names to be deleted
+    -f, --force         Forces the script to delete the component without asking for a confirmation
+
+You could use Yarn / NPM to delete components. The following are the commands:
+    yarn delete:components
+    npm run delete:components
+
+You could use shortcuts as the following:
+    yarn del:c
+    npm run del:c
+
+You could use Yarn / NPM to generate pages with additional options. The following are some examples:
+    yarn del:c --list page6 page5
+    yarn del:c -l page6
+    yarn del:c --list page6 --force
+    yarn del:c -l page6 -f
+    npm run del:c -- --list page6 page5
+    npm run del:c -- -l page6
+    npm run del:c -- --list page6 --force
+    npm run del:c -- -l page6 -f
+  

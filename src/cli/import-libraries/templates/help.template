@@ -1,0 +1,42 @@
+
+Usage: 
+    yarn import:library [options]
+    npm run import:library [options]
+
+You could use shortcuts as the following:
+    yarn imp:l
+    npm run imp:l
+
+Options:
+    -h, --help,         Help for Importing libraries from the './app/project/libraries/' folder
+    -z, --zipFile,      Prefix for full location path of the zip file to be imported
+    -l, --list,         Prefix for list of file names
+    -f, --force         Force the program to overwrite the target files with the source files and avoid any confirmation
+    --all,              Select this option to import all the files
+
+
+Yarn or NPM can be used to import the project libraries. There are two options available to import libraries:
+
+1. Import the complete contents of the zip file to './app/project/libraries/' folder. To achieve this, use the following commands (replace {path} with the location of the exported zip file):
+
+    yarn import:library -z {path} --all 
+
+    npm run import:library -- -z {path} --all 
+
+    yarn imp:l -z {path} --all 
+
+    npm run imp:l -- -z {path} --all 
+
+2. Import selected libraries from './app/project/libraries/' folder. In this case, the filenames are mandatory in the command prompt. The filename must follow the complete path starting from './app/project/libraries/....'. Only filenames can be provided here (no folder paths). Multiple file names can be provided in the command prompt. To achieve this, use the following commands:
+
+    yarn import:library -z ./dist/exported-library.zip -l ./app/project/libraries/a.js ./app/project/libraries/b.js
+
+    npm run import:library -- -z ./dist/exported-library.zip -l ./app/project/libraries/a.js ./app/project/libraries/b.js
+
+    yarn import:library -z ./dist/exported-library.zip --list ./app/project/libraries/a.js ./app/project/libraries/b.js
+
+    npm run import:library -- -z ./dist/exported-library.zip --list ./app/project/libraries/a.js ./app/project/libraries/b.js
+
+    yarn imp:l -z ./dist/exported-library.zip -l ./app/project/libraries/a.js ./app/project/libraries/b.js
+
+    npm run imp:l -- -z ./dist/exported-library.zip -l ./app/project/libraries/a.js ./app/project/libraries/b.js

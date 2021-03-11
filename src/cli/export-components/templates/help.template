@@ -1,0 +1,29 @@
+
+Usage:
+    yarn export:components [options]
+    npm run export:components [options]
+
+You could use shortcuts as the following:
+    yarn exp:c
+    npm run exp:c
+
+Options:
+    -h, --help,         Help for Exporting components from the './app/project/components/' folder
+    -l, --list,         Prefix for list of file names
+    --all               Select this option to export all the files
+
+You could use Yarn / NPM to export the project code. There are two options available to export components:
+
+1. Export the complete components directory from './app/project/components/' folder. To achieve this, use the below commands:
+
+    yarn export:components --all 
+    npm run export:components -- --all 
+    yarn exp:c --all 
+    npm run exp:c -- --all 
+
+2. Export selected components from './app/project/components/' folder. In this case, the file names are mandatory in the command-prompt. The filename must follow the complete path starting from './app/project/components/....'. Only file names can be provided here (no folder paths). Multiple file names can be provided in the command-prompt. All the file names must be .html files only. To achieve this, use the below commands:
+
+    yarn export:components -l ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
+    npm run export:components -- -l ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
+
+You can use the tab completion for file names.

@@ -1,0 +1,41 @@
+You could use Yarn / NPM to generate pages. The following are the commands:
+    yarn generate:page
+    npm run generate:page
+
+You could use shortcuts as the following:
+    yarn gen:p
+    npm run gen:p
+
+You could use Yarn / NPM to generate pages with additional options. The following are some examples:
+    yarn gen:p --name LEDLights
+    yarn gen:p -n LEDLights
+    yarn gen:p --name LEDLights --menu Y
+    yarn gen:p -n LEDLights -m Y
+    npm run gen:p --  --name LEDLights
+    npm run gen:p --  -n LEDLights
+    npm run gen:p --  --name LEDLights --menu N
+    npm run gen:p --  -n LEDLights -m N
+
+The Page Name is mandatory to create a page. It must start with a letter and can contain letters, hyphens, spaces, underscores and numbers. 
+
+If page name is not provided in the 'generate:page' command, or if the page name is incorrect, the developer will be prompted to enter a page name, and a default value for the page name will be displayed. This page name will be defaulted with the below business rules:
+    • Set the name of page as 'PageX', where 'X' is an incremental number.
+    • If 'PageX' already exists, then X is incremented by 1.
+
+Example:
+	• List of existing pages: Page1, Page2, Page04, Page3. New prompted page name is Page4
+	• List of existing pages: Page1, Page2, Page6, Page7. New prompted page name is Page3
+
+Based on the input for page name, the below will be the generated pages and file/folder names:
+
+| No | Input Page Name      | Generated Page Name       | Generated File and Folder Names |
+| -- | -------------------- | ------------------------- | ------------------------------- |
+| 01 | LEDLights            | ledlights                 | ledlights                       |
+| 02 | ledlights            | ledlights                 | ledlights                       |
+| 03 | LEDLIGHTS            | ledlights                 | ledlights                       |
+| 04 | LED-Lights           | ledLights                 | led-lights                      |
+| 05 | LED_Lights           | ledLights                 | led-lights                      |
+| 06 | led-lights           | ledLights                 | led-lights                      |
+| 07 | led_lights           | ledLights                 | led-lights                      |
+| 08 | led lights           | ledLights                 | led-lights                      |
+

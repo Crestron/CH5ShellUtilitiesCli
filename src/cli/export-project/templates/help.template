@@ -1,0 +1,9 @@
+
+Usage: yarn export:project [options]
+
+Options:
+    -h, --help,         Help for Exporting project code
+
+You could use Yarn / NPM to export the project code. The below are the commands:
+    yarn export:project
+    npm run export:project

@@ -1,0 +1,43 @@
+
+Usage: 
+    yarn import:components [options]
+    npm run import:components [options]
+
+You could use shortcuts as the following:
+    yarn imp:c
+    npm run imp:c
+
+Options:
+    -h, --help,         Help for Importing components from the './app/project/components/' folder
+    -z, --zipFile,      Prefix for full location path of the zip file to be imported
+    -l, --list,         Prefix for list of file names
+    -f, --force         Force the program to overwrite the target files with the source files and avoid any confirmation
+    --all,              Select this option to import all the files
+
+Yarn or NPM can be used to import the project components. There are two options available to import components:
+
+1. Import the complete contents of the zip file to './app/project/components/' folder. To achieve this, use the following commands:
+
+    yarn import:components -z {path} --all 
+
+    npm run import:components -- -z {path} --all 
+
+    yarn imp:c -z {path} --all 
+
+    npm run imp:c -- -z {path} --all 
+
+2. Import selected components from './app/project/components/' folder. In this case, the filenames are mandatory in the command prompt. The filename must follow the complete path starting from './app/project/components/....'. Only file names can be provided here (no folder paths). Multiple file names can be provided in the command prompt. To achieve this, use the following commands:
+
+    yarn import:components -z ./dist/exported-components.zip -l ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
+
+    npm run import:components -- -z ./dist/exported-components.zip -l ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
+
+    yarn import:components -z ./dist/exported-components.zip --list ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
+
+    npm run import:components -- -z ./dist/exported-components.zip --list ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
+
+    yarn imp:c -z ./dist/exported-components.zip -l ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
+
+    npm run imp:c -- -z ./dist/exported-components.zip -l ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
+
+You can use the tab completion for file names.

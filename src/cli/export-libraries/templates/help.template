@@ -1,0 +1,29 @@
+
+Usage:
+    yarn export:library [options]
+    npm run export:library [options]
+
+You could use shortcuts as the following:
+    yarn exp:l
+    npm run exp:l
+
+Options:
+    -h, --help,         Help for Exporting libraries from the './app/project/libraries/' folder
+    -l, --list,         Prefix for list of file names
+    --all               Select this option to export all the files
+
+You could use Yarn / NPM to export the project libraries. There are two options available to export libraries:
+
+1. Export the complete libraries directory from './app/project/libraries/' folder. To achieve this, use the below commands:
+   
+    yarn export:library --all 
+    npm run export:library -- --all 
+    yarn exp:l --all 
+    npm run exp:l -- --all 
+
+2. Export selected libraries from './app/project/libraries/' folder. In this case, the file names are mandatory in the command-prompt. The filename must follow the complete path starting from './app/project/libraries/....'. Only file names can be provided here (no folder paths). Multiple file names can be provided in the command-prompt. To achieve this, use the below commands:
+   
+    yarn export:library -l ./app/project/libraries/a.js ./app/project/libraries/b.js
+    npm run export:library -- -l ./app/project/libraries/a.js ./app/project/libraries/b.js
+
+You can use the tab completion for file names.

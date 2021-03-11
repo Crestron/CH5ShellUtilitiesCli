@@ -1,0 +1,44 @@
+
+Usage: yarn generate:widget [options]
+
+Options:
+    -h, --help          Help for Generate Documentation
+    -n, --name          Set the Name of the widget to be created
+
+You could use Yarn / npm to generate widgets. The following are the commands:
+    yarn generate:widget
+    npm run generate:widget
+
+You could use shortcuts as the following:
+    yarn gen:w
+    npm run gen:w
+
+You could use Yarn / npm to generate widgets with additional options. The following are some examples:
+    yarn gen:w --name LEDLights
+    yarn gen:w -n LEDLights
+    npm run gen:w --  --name LEDLights
+    npm run gen:w --  -n LEDLights
+
+The widget name is mandatory to create a widget. It must start with a letter and can contain letters, hyphens, spaces, underscores, and numbers. 
+
+If the widget name is not provided in the 'generate:widget' command, or if the widget name is incorrect, the developer will be prompted to enter a widget name, and a default value for the widget name will be displayed. This widget name will be set with the following rules:
+    • Sets the name of widget as 'WidgetX', where 'X' is an incremental number.
+    • If 'WidgetX' already exists, then X is incremented by 1.
+
+Examples:
+    • For a list of existing widgets (Widget1, Widget2, Widget04, Widget3), the new prompted widget name would be Widget4. 
+    • For a list of existing widgets (Widget1, Widget2, Widget6, Widget7), the new prompted widget name would be Widget3.
+
+Based on the input for widget name, the following will be the generated widgets and file or folder names:
+
+| No | Input Widget Name    | Generated Widget Name     | Generated File and Folder Names |
+| -- | -------------------- | ------------------------- | ------------------------------- |
+| 01 | LEDLights            | ledlights                 | ledlights                       |
+| 02 | ledlights            | ledlights                 | ledlights                       |
+| 03 | LEDLIGHTS            | ledlights                 | ledlights                       |
+| 04 | LED-Lights           | ledLights                 | led-lights                      |
+| 05 | LED_Lights           | ledLights                 | led-lights                      |
+| 06 | led-lights           | ledLights                 | led-lights                      |
+| 07 | led_lights           | ledLights                 | led-lights                      |
+| 08 | led lights           | ledLights                 | led-lights                      |
+

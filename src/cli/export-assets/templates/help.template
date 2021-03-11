@@ -1,0 +1,29 @@
+
+Usage:
+    yarn export:assets [options]
+    npm run export:assets [options]
+
+You could use shortcuts as the following:
+    yarn exp:a
+    npm run exp:a
+
+Options:
+    -h, --help,         Help for Exporting assets from the './app/project/assets/' folder
+    -l, --list,         Prefix for list of file names
+    --all               Select this option to export all the files
+
+You could use Yarn / NPM to export the project code. There are two options available to export components:
+
+1. Export the complete assets directory from './app/project/assets/' folder. To achieve this, use the below commands:
+   
+    yarn export:assets --all 
+    npm run export:assets -- --all 
+    yarn exp:a --all 
+    npm run exp:a -- --all 
+
+2. Export selected assets from './app/project/assets/' folder. In this case, the file names are mandatory in the command-prompt. The filename must follow the complete path starting from './app/project/assets/....'. Only file names can be provided here (no folder paths). Multiple file names can be provided in the command-prompt. To achieve this, use the below commands:
+   
+    yarn export:assets -l ./app/project/assets/data/translation/en.json ./app/project/assets/scss/_variables.scss
+    npm run export:assets -- -l ./app/project/assets/data/translation/en.json ./app/project/assets/scss/_variables.scss
+
+You can use the tab completion for file names.

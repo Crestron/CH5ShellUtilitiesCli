@@ -1,0 +1,69 @@
+{
+  "name": "@crestron/ch5-shell-utilities-cli",
+  "version": "0.0.6",
+  "description": "CH5 Utilities CLI for archiving and distribution",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Crestron/CH5Utilities.git"
+  },
+  "main": "./build/index.js",
+  "bin": {
+    "ch5-shell-cli": "./build/index.js"
+  },
+  "types": "build/@types/index.d.ts",
+  "scripts": {
+    "start": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts",
+    "copyfiles:json": "copyfiles -u 1 src/**/*.json build/",
+    "copyfiles:template": "copyfiles -u 1 src/**/*.template build/",
+    "build": "tsc -p . && yarn copyfiles:json && yarn copyfiles:template",
+    "test": "sudo npm i -g && pizza",
+    "build:rags": "yarn clean && yarn tsc",
+    "ch5-utils": "./build/index.js",
+    "clean": "rimraf build",
+    "create": "yarn build && yarn test",
+    "publish:local": "yarn build && yarn unlink && yarn link",
+    "publish:local:watch": "nodemon --watch 'src/**/*.ts' --exec 'yarn publish:local'",
+    "setup:local": "yarn install && yarn link @crestron/ch5-utilities && yarn build && yarn link",
+    "start:rags": "ts-node src/index.ts",
+    "start:js": "node build/index.js",
+    "start:watch": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts",
+    "refresh": "rm -rf ./node_modules ./package-lock.json && npm install",
+    "tsc": "tsc --declaration --declarationDir build/@types"
+  },
+  "keywords": [
+    "ch5",
+    "ch5z",
+    "cli"
+  ],
+  "author": "Crestron",
+  "license": "SEE LICENSE IN LICENSE.txt",
+  "dependencies": {
+    "@crestron/ch5-utilities": "^0.1.21",
+    "chalk": "^4.1.0",
+    "clear": "^0.1.0",
+    "commander": "^7.1.0",
+    "config": "^3.3.1",
+    "copyfiles": "^2.4.1",
+    "edit-json-file": "^1.4.0",
+    "enquirer": "^2.3.6",
+    "figlet": "^1.4.0",
+    "fs-extra": "^9.1.0",
+    "inquirer": "^8.0.0",
+    "path": "^0.12.7",
+    "rimraf": "^3.0.2",
+    "xhr2": "^0.2.0",
+    "zip-lib": "^0.7.2"
+  },
+  "devDependencies": {
+    "@types/node": "^14.14.33",
+    "figlet-cli": "^0.1.0",
+    "nodemon": "^2.0.7",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.2.3"
+  },
+  "files": [
+    "build/**/*",
+    "LICENSE.txt",
+    "readme.md"
+  ]
+}
