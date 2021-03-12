@@ -10,6 +10,7 @@ import chalk from 'chalk';
 
 import { Ch5GeneratePageCli } from "./generate-page/Ch5GeneratePageCli";
 import { Ch5GenerateWidgetCli } from "./generate-widget/Ch5GenerateWidgetCli";
+import { Ch5ExportProjectCli } from "./export-project/Ch5ExportProjectCli";
 
 const clear = require('clear');
 const figlet = require('figlet');
@@ -19,10 +20,12 @@ const buildVersion = packageJson.version || 'VERSION_NOT_READ';
 export class Ch5ShellCli {
   private readonly generatePage: Ch5GeneratePageCli;
   private readonly generateWidget: Ch5GenerateWidgetCli;
+  private readonly exportProject: Ch5ExportProjectCli;
 
   public constructor() {
     this.generatePage = new Ch5GeneratePageCli();
     this.generateWidget = new Ch5GenerateWidgetCli();
+    this.exportProject = new Ch5ExportProjectCli();
   }
 
   public async run(): Promise<void> {
@@ -37,9 +40,10 @@ export class Ch5ShellCli {
         figlet.textSync('crestron-shell-cli', { horizontalLayout: 'full' })
       )
     );
-    
-  await  this.generatePage.setupCommand(program);
-    this.generateWidget.setupCommand(program);
+
+    await this.generatePage.setupCommand(program);
+    // await this.exportProject.setupCommand(program);
+    await this.generateWidget.setupCommand(program);
 
     // error on unknown commands
     program.on('command:*', function () {

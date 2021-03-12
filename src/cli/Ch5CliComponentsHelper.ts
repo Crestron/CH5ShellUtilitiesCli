@@ -71,7 +71,7 @@ export class Ch5CliComponentsHelper {
     this._cliLogger = new Ch5CliLogger();
   }
 
-  public async  getHelpContent(path: string) {
+  public async  getAdditionalHelpContent(path: string) {
     //   console.log("path", path);
     // const output=   fs.readFile(path, { encoding: "utf-8" }, (err:any, data:any) => {
     //     if (!err) {

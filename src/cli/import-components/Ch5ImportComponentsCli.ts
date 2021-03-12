@@ -6,46 +6,26 @@
 // under which you licensed this source code.
 
 import * as commander from "commander";
+import { Ch5BaseClassForCli } from "../Ch5BaseClassForCli";
 
-import { Ch5CliUtil } from "../Ch5CliUtil";
-import { Ch5CliLogger } from "../Ch5CliLogger";
-import { Ch5CliNamingHelper } from "../Ch5CliNamingHelper";
-import { Ch5CliComponentsHelper } from "../Ch5CliComponentsHelper";
-import { Ch5CliProjectConfig } from "../Ch5CliProjectConfig";
-
-const inquirer = require('inquirer');
-const path = require('path');
 const fs = require("fs"); // global object - always available
-const process = require("process"); // global object - always available
 const fsExtra = require("fs-extra");
-
+const path = require('path');
+const zl = require("zip-lib");
+const rimraf = require("rimraf");
 const Enquirer = require('enquirer');
 const enquirer = new Enquirer();
 
-// process.env["NODE_CONFIG_DIR"] = "./"; //"./../config/";
-const config = require("config");
+export class Ch5ExportAssetsCli extends Ch5BaseClassForCli {
 
-export class Ch5GeneratePageCli {
-  private readonly _cliUtil: Ch5CliUtil;
-  private readonly _cliLogger: Ch5CliLogger;
-  private readonly _cliComponentHelper: Ch5CliComponentsHelper;
-  private readonly _cliNamingHelper: Ch5CliNamingHelper;
-  private readonly _cliCh5CliProjectConfig: Ch5CliProjectConfig;
-
-  private readonly CONFIG_FILE: any = config.generatePage;
   private outputResponse: any = {};
   private processArgs: any = [];
-  private templateFolderPath: string = "";
+  private folderPaths: any = {};
 
   public constructor() {
-    this._cliUtil = new Ch5CliUtil();
-    this._cliLogger = new Ch5CliLogger();
-    this._cliComponentHelper = new Ch5CliComponentsHelper();
-    this._cliNamingHelper = new Ch5CliNamingHelper();
-    this._cliCh5CliProjectConfig = new Ch5CliProjectConfig();
-    this.templateFolderPath = path.join(__dirname, '..', this.CONFIG_FILE.templatesPath);
+    super("importComponents");
   }
-
+  
   public async setupCommand(program: commander.Command) {
     let programObject = program
       .command('generate:page')
@@ -55,53 +35,27 @@ export class Ch5GeneratePageCli {
     programObject = programObject.option("-n, --name", 'Set the Name of the page to be created');
     programObject = programObject.option("-m, --menu", "Allow the page navigation to be added to Menu (valid input values are 'Y', 'y', 'N', 'n'");
 
-    const contentForHelp: string = await this._cliComponentHelper.getHelpContent(path.join(this.templateFolderPath, "help.template"));
+    const contentForHelp: string = await this.componentHelper.getAdditionalHelpContent(path.join(this.templateFolderPath, "help.template"));
     programObject = programObject.addHelpText('after', contentForHelp);
     programObject.action(async (options) => {
       try {
-        //  await console.log("Options", options);
-        //   await console.log("archive", archive);
         await this.run(options);
-        // await this.deploy(archive, options);
       } catch (e) {
-        this._cliUtil.writeError(e);
+        this.logger.error(e);
       }
     });
-    // program
-    //   .command('generate:page')
-    //   .option("-H, --deviceHost <deviceHost>", "Device host or IP. Required.")
-    //   .option("-t, --deviceType <deviceType>", "Device type, value in [touchscreen, controlsystem, web]. Required.", /^(touchscreen|controlsystem|web)$/i)
-    //   .option("-d, --deviceDirectory <deviceDirectory>",
-    //     "Device target deploy directory. Defaults to 'display' when deviceType is touchscreen, to 'HTML' when deviceType is controlsystem. Optional.")
-    //   .option("-p, --prompt-for-credentials", "Prompt for credentials. Optional.")
-    //   .option("-q, --quiet [quiet]", "Don\'t display messages. Optional.")
-    //   .option("-vvv, --verbose [verbose]", "Verbose output. Optional.")
-    //   .action(async (options) => {
-    //     try {
-    //     //  await console.log("Options", options);
-    //     //   await console.log("archive", archive);
-    //       await this.run(options);
-    //       // await this.deploy(archive, options);
-    //     } catch (e) {
-    //       this._cliUtil.writeError(e);
-    //     }
-    //   });
   }
 
   /**
    * Public Method 
    */
   async run(options: any) {
-    this.processArgs = this._cliComponentHelper.processArgs();
-    // if (this.processArgs["help"] === true) {
-    //   this._cliComponentHelper.displayHelp(this.CONFIG_FILE.templatesPath + "help.template");
-    // } else {
-    await this.generatePage();
-    // }
+    const processArgs = this.componentHelper.processArgs();
+    this.importComponents();
   }
 
   /**
-   * Initialize
+   * Initialize all variables and set module level constants
    */
   initialize() {
     this.outputResponse = {
@@ -109,31 +63,40 @@ export class Ch5GeneratePageCli {
       errorMessage: "",
       warningMessage: "",
       data: {
-        pageName: "",
-        menuOption: "",
-        fileName: "",
-        folderPath: ""
+        overwriteFiles: false,
+        invalidInputFiles: [],
+        inputFileExistsInSourceFolder: [],
+        sourceFilesInTargetFolder: [],
+        newSourceFiles: [],
+        listOfFilesWithOverrideFalse: [],
+        filesToBeAvoidedFromCopying: ['./app/project-config.json']
       }
     };
-    if (this.processArgs.length === 0) {
-      this.processArgs = this._cliComponentHelper.processArgs();
-    }
+
+    this.processArgs = this.componentHelper.processArgs();
+
+    this.folderPaths = {
+      inputZipFileToImport: this.processArgs["zipFile"],
+      temporaryLocationForCopiedZipFile: path.join(this.getConfigNode("zipFileDestinationPath"), this.getConfigNode("outputFileName")),
+      temporaryLocationForExtractedFilesFolder: path.join(this.getConfigNode("zipFileDestinationPath"), this.getConfigNode("outputTempFolderName")),
+      temporaryLocationForAllFilesCopyFrom: path.join(this.getConfigNode("zipFileDestinationPath"), this.getConfigNode("outputTempFolderName"), this.getConfigNode("exportedFolderName")),
+      temporaryLocationForProjectConfig: path.join(this.getConfigNode("zipFileDestinationPath"), this.getConfigNode("outputTempFolderName"), this.getConfigNode("exportedFolderName"), path.normalize("app/project-config.json"))
+    };
   }
 
   /**
-   * Method for generating page
-   * @param {*} processArgs 
+   * Method for importing components
    */
-  async generatePage() {
+  async importComponents() {
     try {
       // Initialize
       this.initialize();
 
-      // Pre-requisite validations
+      // Pre-requisite validations like Check if there are pages to be deleted
       this.checkPrerequisiteValidations();
 
       // Verify input params
-      this.verifyInputParams();
+      await this.verifyInputParams();
 
       // Ask details to developer based on input parameter validation
       await this.checkPromptQuestions();
@@ -145,15 +108,11 @@ export class Ch5GeneratePageCli {
       this.cleanUp();
 
     } catch (e) {
-      if (e && this._cliUtil.isValidInput(e.message)) {
-        if (e.message.trim().toLowerCase() === 'error') {
-          this.outputResponse.errorMessage = this.getText("ERRORS.SOMETHING_WENT_WRONG");
-        } else {
-          this.outputResponse.errorMessage = e.message;
-        }
+      if (e && this.utils.isValidInput(e.message)) {
+        this.outputResponse.errorMessage = e.message;
       } else {
         this.outputResponse.errorMessage = this.getText("ERRORS.SOMETHING_WENT_WRONG");
-        this._cliLogger.log(e);
+        this.logger.log(e);
       }
     }
 
@@ -164,481 +123,479 @@ export class Ch5GeneratePageCli {
   }
 
   /**
-   * Check any validations that need to be done before verifying input parameters
-   */
+  * Check any validations that need to be done before verifying input parameters
+  */
   checkPrerequisiteValidations() {
-    // Nothing for this process
+    // Nothing for this component
+    // TODO - check if project config exist
   }
 
   /**
    * Verify input parameters
    */
-  verifyInputParams() {
-    const tabDisplayText = this.getText("ERRORS.TAB_DELIMITER");
-    if (this._cliUtil.isValidInput(this.processArgs["name"])) {
-      const validationResponse = this.validatePageName(this.processArgs["name"]);
-      if (validationResponse === "") {
-        this.outputResponse.data.pageName = this.processArgs["name"];
-      } else {
-        this.outputResponse.warningMessage += tabDisplayText + this.getText("ERRORS.PAGE_NAME_INVALID_ENTRY", validationResponse);
+  async verifyInputParams() {
+    if (this.utils.isValidInput(this.processArgs["zipFile"]) && this.isZipFileValid(this.processArgs["zipFile"])) {
+      if (this.processArgs["all"] === false) {
+        if (this.processArgs["list"].length === 0) {
+          throw new Error(this.getText("FAILURE_MESSAGE_INPUT_PARAMS_EMPTY_IN_REQUEST"));
+        }
       }
+    } else {
+      throw new Error(this.getText("FAILURE_MESSAGE_INPUT_PARAM_ZIP_FILE_MISSING"));
     }
 
-    if (this._cliUtil.isValidInput(this.processArgs["menu"])) {
-      const validationResponse = this.validateMenuOption(this.processArgs["menu"]);
-      if (validationResponse === "") {
-        this.outputResponse.data.menuOption = this.processArgs["menu"];
-      } else {
-        this.outputResponse.warningMessage += tabDisplayText + validationResponse + "\n";
+    // Copy zip file from developer input to a temporary location in dist folder.
+    fsExtra.copySync(this.folderPaths.inputZipFileToImport, this.folderPaths.temporaryLocationForCopiedZipFile);
+
+    // Unzip the exported zip file.
+    const unzip = new zl.Unzip({
+      // Called before an item is extracted.
+      onEntry: function (event: { entryName: string; preventDefault: () => void; }) {
+        if (/^__MACOSX\//.test(event.entryName)) {
+          // entry name starts with __MACOSX/
+          event.preventDefault();
+        }
       }
+    });
+
+    await rimraf.sync(this.folderPaths.temporaryLocationForExtractedFilesFolder);
+
+    // Extract the developer input zip file into a temporary location in dist folder.
+    await unzip.extract(this.folderPaths.temporaryLocationForCopiedZipFile, this.folderPaths.temporaryLocationForExtractedFilesFolder).then(async () => {
+      this.logger.log("Folder unzipped");
+    } ,(err: any) => {
+      throw new Error(err);
+    });
+
+    /*
+    If processArgs("all") is false
+      Run through all the input files, and check if they exist in the zipped folder to identify Valid, Invalid files
+      If overwrite = true or ForceFlag
+        overwrite: true will ensure that files already existing are  overwritten
+        If invalid files is zero
+          Message listing valid files
+        Else
+          Message showing valid and invalid files
+      Else
+        overwrite: false will ensure that files already existing are not overwritten
+        If invalid files is zero
+          Message listing valid files
+        Else
+          Message showing valid and invalid files
+    Else
+      In this case, I am not worried if files are valid or not in the zip file.
+      The zip file is extracted as an output of export, and so the expectation is that the files are valid.
+      If overwrite = true or ForceFlag
+        Generic Message
+      Else
+        Identify the copied files 
+    */
+
+    // Check if proper folder exists after unzip.
+    // This can happen if user is trying to import assets using exported-components.zip file
+    if (!fs.existsSync(path.normalize(this.folderPaths.temporaryLocationForAllFilesCopyFrom))) {
+      throw new Error(this.getText("FAILURE_MESSAGE_INVALID_ZIP_FILE_EXTRACT"));
     }
 
-    if (this._cliUtil.isValidInput(this.outputResponse.warningMessage)) {
-      this._cliLogger.printWarning(this.getText("ERRORS.MESSAGE_TITLE", this.outputResponse.warningMessage));
+    let inputListOfFiles = [];
+    if (this.processArgs["all"] === false) {
+      inputListOfFiles = this.processArgs['list'];
+    } else {
+      inputListOfFiles = this.replaceDistFolderPathNameInInput(this.getAllFiles(path.normalize(this.folderPaths.temporaryLocationForAllFilesCopyFrom)));
     }
-  }
+    this.logger.log("inputListOfFiles", inputListOfFiles);
 
-  /**
-   * Check if there are questions to be prompted to the developer
-   */
-  async checkPromptQuestions() {
-    if (!this._cliUtil.isValidInput(this.outputResponse.data.pageName)) {
-      let pages = this._cliCh5CliProjectConfig.getAllPages();
-      pages = pages.sort(this._cliUtil.dynamicsort("asc", "pageName"));
-      this._cliLogger.log("pages", pages);
-      const newPageNameToSet = this.loopAndCheckPage(pages);
-
-      const questionsArray = [
-        {
-          type: "text",
-          name: "pageName",
-          initial: newPageNameToSet,
-          hint: "",
-          message: this.getText("VALIDATIONS.GET_PAGE_NAME"),
-          validate: (compName: string) => {
-            let output = this.validatePageName(compName);
-            return output === "" ? true : output;
+    const checkedFilesForLoop = [];
+    for (let i = 0; i < inputListOfFiles.length; i++) {
+      if (this.checkIfNewFileInput(checkedFilesForLoop, inputListOfFiles[i])) {
+        const fileNewPath = path.join(path.normalize(this.folderPaths.temporaryLocationForAllFilesCopyFrom), path.normalize(inputListOfFiles[i]));
+        if (fs.existsSync(fileNewPath)) {
+          const checkFileOrFolder = fs.statSync(fileNewPath);
+          if (checkFileOrFolder && checkFileOrFolder.isFile()) {
+            if (!this.isFileToBeAvoided(inputListOfFiles[i])) {
+              this.outputResponse.data.inputFileExistsInSourceFolder.push(inputListOfFiles[i]);
+            }
+          } else {
+            this.outputResponse.data.invalidInputFiles.push(inputListOfFiles[i]);
           }
-        }];
-      const response = await enquirer.prompt(questionsArray);
-      if (!this._cliUtil.isValidInput(response.pageName)) {
-        throw new Error(this.getText("ERRORS.PAGE_NAME_EMPTY_IN_REQUEST"));
-      }
-      this._cliLogger.log("  response.pageName: ", response.pageName);
-      this.outputResponse.data.pageName = response.pageName;
-    }
-
-    if (!this._cliUtil.isValidInput(this.outputResponse.data.menuOption)) {
-      const questionsArray = [
-        {
-          type: 'select',
-          name: 'menuOption',
-          message: this.getText("VALIDATIONS.GET_ADD_TO_MENU_MESSAGE"),
-          choices: [
-            { message: this.getText("VALIDATIONS.GET_ADD_TO_MENU_YES"), hint: this.getText("VALIDATIONS.GET_ADD_TO_MENU_HINT_YES"), value: 'Y' },
-            { message: this.getText("VALIDATIONS.GET_ADD_TO_MENU_NO"), hint: this.getText("VALIDATIONS.GET_ADD_TO_MENU_HINT_NO"), value: 'N' }
-          ],
-          initial: 0
-        }
-      ];
-      const response = await enquirer.prompt(questionsArray);
-      if (!this._cliUtil.isValidInput(response.menuOption)) {
-        throw new Error(this.getText("ERRORS.ADD_TO_MENU_EMPTY_IN_REQUEST"));
-      }
-      this._cliLogger.log("  response.menuOption: ", response.menuOption);
-      this.outputResponse.data.menuOption = response.menuOption;
-    }
-
-    let originalInputName = this._cliNamingHelper.convertMultipleSpacesToSingleSpace(this.outputResponse.data.pageName.trim().toLowerCase());
-    this.outputResponse.data.pageName = this._cliNamingHelper.camelize(originalInputName);
-    this._cliLogger.log("  this.outputResponse.data.pageName: ", this.outputResponse.data.pageName);
-    this._cliLogger.log("  this.outputResponse.data.menuOption: ", this.outputResponse.data.menuOption);
-    this.outputResponse.data.fileName = this._cliNamingHelper.dasherize(originalInputName);
-    this._cliLogger.log("  this.outputResponse.data.fileName: ", this.outputResponse.data.fileName);
-
-    if (!this._cliUtil.isValidInput(this.outputResponse.data.pageName) && !this._cliUtil.isValidInput(this.outputResponse.data.menuOption)) {
-      throw new Error(this.getText("ERRORS.PROGRAM_STOPPED_OR_UNKNOWN_ERROR"));
-    } else if (!this._cliUtil.isValidInput(this.outputResponse.data.pageName)) {
-      throw new Error(this.getText("ERRORS.PAGE_NAME_EMPTY_IN_REQUEST"));
-    } else if (!this._cliUtil.isValidInput(this.outputResponse.data.menuOption)) {
-      throw new Error(this.getText("ERRORS.ADD_TO_MENU_EMPTY_IN_REQUEST"));
-    } else if (!this._cliUtil.isValidInput(this.outputResponse.data.fileName)) {
-      throw new Error(this.getText("ERRORS.SOMETHING_WENT_WRONG"));
-    }
-  }
-
-  /**
-   * Implement this component's main purpose
-   */
-  async processRequest() {
-    if (this._cliCh5CliProjectConfig.isPageExistInJSON(this.outputResponse.data.pageName)) {
-      throw new Error(this.getText("ERRORS.PAGE_EXISTS_IN_PROJECT_CONFIG_JSON"));
-    } else {
-      await this.createFolder().then(async (folderPathResponseGenerated) => {
-        this._cliLogger.log("  Folder Path (generated): " + folderPathResponseGenerated);
-        this.outputResponse.data.folderPath = folderPathResponseGenerated;
-
-        if (this._cliUtil.isValidInput(this.outputResponse.data.folderPath)) {
-          await this.createNewFile("html", "html.template", "");
-          await this.createNewFile("js", "js.template", "");
-          await this.createNewFile("scss", "scss.template", "");
-          await this.createNewFile("json", "emulator.template", "-emulator");
-
-          this._cliCh5CliProjectConfig.savePageToJSON(this.createPageObject());
-          this.outputResponse.result = true;
         } else {
-          throw new Error(this.getText("ERRORS.ERROR_IN_FOLDER_PATH"));
-        }
-      }).catch((err) => {
-        throw new Error(err);
-      });
-    }
-  }
-
-  /**
-   * Clean up
-   */
-  cleanUp() {
-    // Nothing to cleanup for this process
-  }
-
-  /**
-   * Log Final Response Message
-   */
-  logOutput() {
-    if (this.outputResponse.result === false) {
-      this._cliLogger.printError(this.outputResponse.errorMessage);
-    } else {
-      this._cliLogger.printSuccess(this.getText("SUCCESS_MESSAGE", this.outputResponse.data.pageName, this.outputResponse.data.folderPath));
-      if (this.outputResponse.data.menuOption === "Y") {
-        this._cliLogger.printSuccess(this.getText("SUCCESS_MESSAGE_NAVIGATION_ADDED"));
-      }
-      this._cliLogger.printSuccess(this.getText("SUCCESS_MESSAGE_CONCLUSION"));
-    }
-  }
-
-  /**
-   * Create Folder for the Pages to be created
-   */
-  async createFolder() {
-    let isFolderCreated = false;
-    let fullPath = "";
-
-    let folderPath = this.CONFIG_FILE.basePathForPages + this.outputResponse.data.fileName + "/";
-    let folderPathSplit = folderPath.toString().split("/");
-    for (let i = 0; i < folderPathSplit.length; i++) {
-      this._cliLogger.log(folderPathSplit[i]);
-      if (folderPathSplit[i] && folderPathSplit[i].trim() !== "") {
-        let previousPath = fullPath;
-        fullPath += folderPathSplit[i] + "/";
-        if (!fs.existsSync(fullPath)) {
-          this._cliLogger.log("Creating new folder " + folderPathSplit[i] + " inside the folder " + previousPath);
-          fs.mkdirSync(fullPath, {
-            recursive: true,
-          });
-          isFolderCreated = true;
-        } else {
-          this._cliLogger.log(fullPath + " exists !!!");
+          this.outputResponse.data.invalidInputFiles.push(inputListOfFiles[i]);
         }
       }
+      checkedFilesForLoop.push(inputListOfFiles[i]);
     }
 
-    // Check if Folder exists
-    if (isFolderCreated === false) {
-      // No folder is created. This implies that the page folder already exists.
-
-      let files = fs.readdirSync(fullPath);
-
-      if (files.length === 0) {
-        // Check if folder is empty.
-        return fullPath;
-      } else {
-        // listing all files using forEach
-        for (let j = 0; j < files.length; j++) {
-          let file = files[j];
-          // If a single file exists, do not continue the process of generating page
-          // If not, ensure to send message that folder is not empty but still created new files
-          this._cliLogger.log(file);
-          let fileName = this.outputResponse.data.fileName;
-          this._cliLogger.log(fileName.toLowerCase() + ".html");
-          if (file.toLowerCase() === fileName.toLowerCase() + ".html" || file.toLowerCase() === fileName.toLowerCase() + ".scss" || file.toLowerCase() === fileName.toLowerCase() + ".js") {
-            throw new Error(this.getText("ERRORS.HTML_FILE_EXISTS", fileName.toLowerCase() + ".html", fullPath));
+    // Identify source files in target folder 
+    // if (this.processArgs["force"] === false) {
+    for (let i = 0; i < this.outputResponse.data.inputFileExistsInSourceFolder.length; i++) {
+      const fileNewPath = path.normalize(this.outputResponse.data.inputFileExistsInSourceFolder[i]);
+      if (fs.existsSync(fileNewPath)) {
+        const checkFileOrFolder = fs.statSync(fileNewPath);
+        if (checkFileOrFolder && checkFileOrFolder.isFile()) {
+          if (!this.isFileToBeAvoided(this.outputResponse.data.inputFileExistsInSourceFolder[i])) {
+            this.outputResponse.data.sourceFilesInTargetFolder.push(this.outputResponse.data.inputFileExistsInSourceFolder[i]);
           }
+        } else {
+          // Not a file, and so we cannot identify this as a valid source file
         }
-        return fullPath;
-      }
-    } else {
-      return fullPath;
-    }
-  }
-
-  /**
-   * Create New File based on templates
-   * @param {string} fileExtension - File extension - applicable values are .html, .js, .scss
-   * @param {string} templateFile - Template file name
-   */
-  async createNewFile(fileExtension: string, templateFile: string, fileNameSuffix: string) {
-    if (templateFile !== "") {
-      let actualContent = fsExtra.readFileSync(path.join(this.templateFolderPath, templateFile));
-      actualContent = this._cliUtil.replaceAll(actualContent, "<%pageName%>", this.outputResponse.data.pageName);
-      actualContent = this._cliUtil.replaceAll(actualContent, "<%titlePageName%>", this._cliNamingHelper.capitalizeEachWordWithSpaces(this.outputResponse.data.pageName));
-      actualContent = this._cliUtil.replaceAll(actualContent, "<%stylePageName%>", this._cliNamingHelper.dasherize(this.outputResponse.data.pageName));
-      actualContent = this._cliUtil.replaceAll(actualContent, "<%copyrightYear%>", String(new Date().getFullYear()));
-      actualContent = this._cliUtil.replaceAll(actualContent, "<%fileName%>", this.outputResponse.data.fileName);
-
-      let commonContentInGeneratedFiles = this.CONFIG_FILE.commonContentInGeneratedFiles;
-      for (let i = 0; i < commonContentInGeneratedFiles.length; i++) {
-        actualContent = this._cliUtil.replaceAll(actualContent, "<%" + commonContentInGeneratedFiles[i].key + "%>", commonContentInGeneratedFiles[i].value);
-      }
-
-      const completeFilePath = this.outputResponse.data.folderPath + this.outputResponse.data.fileName + fileNameSuffix + "." + fileExtension;
-      fsExtra.writeFileSync(completeFilePath, actualContent);
-      // Success case, the file was saved
-      this._cliLogger.log("File contents saved!");
-    }
-  }
-
-  /**
-   * Creates the page object in project-config.json.
-   * If the menuOrientation is horizontal, then iconPosition is set to bottom by default.
-   * If the menuOrientation is vertical, then iconPosition is set to empty by default.
-   * If the menuOrientation is none, then iconPosition and iconUrl are set to empty.
-   */
-  createPageObject() {
-    const allowNavigation = this._cliUtil.convertStringToBoolean(this.outputResponse.data.menuOption);
-    let pageObject: any = {
-      "pageName": this.outputResponse.data.pageName,
-      "fullPath": this.outputResponse.data.folderPath,
-      "fileName": this.outputResponse.data.fileName + '.html',
-      "standAloneView": !allowNavigation,
-      "pageProperties": {
-        "class": ""
-      }
-    };
-    if (allowNavigation === true) {
-      const projectConfigJSON = this._cliCh5CliProjectConfig.getJson();
-      if (projectConfigJSON.menuOrientation === 'horizontal') {
-        pageObject.navigation = {
-          "sequence": this._cliCh5CliProjectConfig.getHighestNavigationSequence() + 1,
-          "label": this.outputResponse.data.pageName.toLowerCase(),
-          "isI18nLabel": false,
-          "iconClass": "",
-          "iconUrl": "./app/project/assets/img/navigation/page.svg",
-          "iconPosition": "bottom"
-        };
-      } else if (projectConfigJSON.menuOrientation === 'vertical') {
-        pageObject.navigation = {
-          "sequence": this._cliCh5CliProjectConfig.getHighestNavigationSequence() + 1,
-          "label": this.outputResponse.data.pageName.toLowerCase(),
-          "isI18nLabel": false,
-          "iconClass": "",
-          "iconUrl": "./app/project/assets/img/navigation/page.svg",
-          "iconPosition": ""
-        };
       } else {
-        pageObject.navigation = {
-          "sequence": this._cliCh5CliProjectConfig.getHighestNavigationSequence() + 1,
-          "label": this.outputResponse.data.pageName.toLowerCase(),
-          "isI18nLabel": false,
-          "iconClass": "",
-          "iconUrl": "",
-          "iconPosition": ""
-        };
+        if (!this.isFileToBeAvoided(this.outputResponse.data.inputFileExistsInSourceFolder[i])) {
+          this.outputResponse.data.newSourceFiles.push(this.outputResponse.data.inputFileExistsInSourceFolder[i]);
+        }
       }
     }
-    return pageObject;
-  }
+    // }
 
-  /**
-   * Loop and check the next valid page to set
-   * @param {*} pages 
-   */
-  loopAndCheckPage(pages: any) {
-    let pageFound = false;
-    let newPageNameToSet = "";
-    let i = 1;
-    do {
-      newPageNameToSet = "Page" + i;
-      pageFound = false;
-      for (let j = 0; j < pages.length; j++) {
-        if (pages[j].pageName.trim().toLowerCase() === newPageNameToSet.toString().toLowerCase()) {
-          pageFound = true;
+    /*
+      this.outputResponse.data.sourceFilesInTargetFolder [
+        './app/project/components/pages/page1/page1.html',
+        './app/project/components/pages/page2/page2.html'
+      ] 
+      this.outputResponse.data.newSourceFiles [
+        './app/project/components/widgets/pagedisplay/pagedisplay.htm',
+        './app/project/components/pages/page7/page7.html',
+        './app/project/components/widgets/widget1/widget1.html'
+      ] 
+      this.outputResponse.data.invalidInputFiles [
+        './app/project/components/widgets/pagedisplay/pagedisplay.htm',
+        './app/project/components/pages/page2/'
+      ] 
+      this.outputResponse.data.inputFileExistsInSourceFolder [
+        './app/project/components/pages/page1/page1.html',
+        './app/project/components/pages/page2/page2.html',
+        './app/project/components/pages/page7/page7.html',
+        './app/project/components/widgets/widget1/widget1.html'
+      ] 
+    */
+
+    for (let i = 0; i < this.outputResponse.data.inputFileExistsInSourceFolder.length; i++) {
+      let isExists = false;
+      for (let j = 0; j < this.outputResponse.data.sourceFilesInTargetFolder.length; j++) {
+        if (this.outputResponse.data.inputFileExistsInSourceFolder[i] === this.outputResponse.data.sourceFilesInTargetFolder[j]) {
+          isExists = true;
           break;
         }
       }
-      i++;
-    }
-    while (pageFound === true);
-    return newPageNameToSet;
-  }
-
-  /**
-   * Method to validate Page Name
-   * @param {string} pageName
-   */
-  validatePageName(pageName: string) {
-    this._cliLogger.log("pageName to Validate", pageName);
-    if (this._cliUtil.isValidInput(pageName)) {
-      pageName = String(pageName).trim();
-      if (pageName.length < this.CONFIG_FILE.minLengthOfPageName || pageName.length > this.CONFIG_FILE.maxLengthOfPageName) {
-        return this.getText("ERRORS.PAGE_NAME_LENGTH", this.CONFIG_FILE.minLengthOfPageName, this.CONFIG_FILE.maxLengthOfPageName);
-      } else {
-        let pageValidity = new RegExp(/^[a-zA-Z][a-zA-Z0-9-_ $]*$/).test(pageName);
-        if (pageValidity === false) {
-          return this.getText("ERRORS.PAGE_NAME_MANDATORY");
-        } else {
-          let originalInputName = this._cliNamingHelper.convertMultipleSpacesToSingleSpace(pageName.trim().toLowerCase());
-          originalInputName = this._cliNamingHelper.camelize(originalInputName);
-
-          this._cliLogger.log("  originalInputName: " + originalInputName);
-          if (this._cliCh5CliProjectConfig.isPageExistInJSON(originalInputName)) {
-            return this.getText("ERRORS.PAGE_EXISTS_IN_PROJECT_CONFIG_JSON");
-          } else if (this._cliCh5CliProjectConfig.isWidgetExistInJSON(originalInputName)) {
-            return this.getText("ERRORS.WIDGET_EXISTS_IN_PROJECT_CONFIG_JSON");
-          } else if (this.checkPageNameForDisallowedKeywords(originalInputName, "startsWith") === true) {
-            return this.getText("ERRORS.PAGE_CANNOT_START_WITH", this.getInvalidPageStartWithValues());
-          } else if (this.checkPageNameForDisallowedKeywords(originalInputName, "equals") === true) {
-            return this.getText("ERRORS.PAGE_DISALLOWED_KEYWORDS");
-          } else {
-            return "";
-          }
-        }
+      if (isExists === false) {
+        this.outputResponse.data.listOfFilesWithOverrideFalse.push(this.outputResponse.data.inputFileExistsInSourceFolder[i]);
       }
-    } else {
-      return this.getText("ERRORS.PAGE_NAME_MANDATORY");
+    }
+
+    this.logger.log("this.outputResponse.data.sourceFilesInTargetFolder", this.outputResponse.data.sourceFilesInTargetFolder);
+    this.logger.log("this.outputResponse.data.newSourceFiles", this.outputResponse.data.newSourceFiles);
+    this.logger.log("this.outputResponse.data.invalidInputFiles", this.outputResponse.data.invalidInputFiles);
+    this.logger.log("this.outputResponse.data.inputFileExistsInSourceFolder", this.outputResponse.data.inputFileExistsInSourceFolder);
+    this.logger.log("this.outputResponse.data.listOfFilesWithOverrideFalse", this.outputResponse.data.listOfFilesWithOverrideFalse);
+
+    if (this.outputResponse.data.inputFileExistsInSourceFolder.length === 0) {
+      throw new Error(this.getText("FAILURE_MESSAGE_INPUT_PARAMS_INVALID_IN_REQUEST", this.folderPaths.inputZipFileToImport, this.utils.convertArrayToString(this.processArgs["list"], "\n")));
     }
   }
 
   /**
-   * Gets the keywords that are not allowed for pages to start
+   * 
+   * @param {*} fileName 
    */
-  getInvalidPageStartWithValues() {
-    let output = "";
-    for (let i = 0; i < config.templateNames.disallowed["startsWith"].length; i++) {
-      output += "'" + config.templateNames.disallowed["startsWith"][i] + "', ";
-    }
-    output = output.trim();
-    return output.substr(0, output.length - 1);
-  }
-
-  /**
-   * Checks if the pagename has disallowed keywords
-   * @param {*} pageName 
-   * @param {*} type 
-   */
-  checkPageNameForDisallowedKeywords(pageName: string, type: string) {
-    if (type === "startsWith") {
-      for (let i = 0; i < config.templateNames.disallowed[type].length; i++) {
-        if (pageName.trim().toLowerCase().startsWith(config.templateNames.disallowed[type][i].trim().toLowerCase())) {
-          return true;
-        }
-      }
-    } else if (type === "equals") {
-      for (let i = 0; i < config.templateNames.disallowed[type].length; i++) {
-        if (pageName.trim().toLowerCase() === config.templateNames.disallowed[type][i].trim().toLowerCase()) {
-          return true;
-        }
+  isFileToBeAvoided(fileName: string) {
+    for (let i = 0; i < this.outputResponse.data.filesToBeAvoidedFromCopying.length; i++) {
+      if (path.normalize(this.outputResponse.data.filesToBeAvoidedFromCopying[i]).trim().toLowerCase() === path.normalize(fileName).trim().toLowerCase()) {
+        return true;
       }
     }
     return false;
   }
 
   /**
-   * Validate Menu Option
-   * @param {*} menuOption 
+   * 
+   * @param {*} input 
    */
-  validateMenuOption(menuOption: string) {
-    this._cliLogger.log("menuOption to Validate", menuOption);
-    if (this._cliUtil.isValidInput(menuOption)) {
-      menuOption = String(menuOption).trim().toLowerCase();
-      if (menuOption === "y" || menuOption === "n") {
-        return "";
-      } else {
-        return this.getText("ERRORS.ADD_TO_MENU_INVALID_ENTRY");
+  replaceDistFolderPathNameInInput(input:string[]) {
+    if (input && input.length > 0) {
+      const output = [];
+      for (let i = 0; i < input.length; i++) {
+        output.push(input[i].replace(this.folderPaths.temporaryLocationForAllFilesCopyFrom, "."));
       }
+      return output;
     } else {
-      return this.getText("ERRORS.ADD_TO_MENU_INVALID_ENTRY");
+      return [];
     }
   }
 
   /**
-   * Get the String output from default.json file in config
-   * @param {*} key 
-   * @param  {...any} values 
+   * 
+   * @param {*} sourcePath 
    */
-  getText(key: string, ...values: string[]) {
-    const DYNAMIC_TEXT_MESSAGES = this.CONFIG_FILE.textMessages;
-    return this._cliUtil.getText(DYNAMIC_TEXT_MESSAGES, key, ...values);
+  getAllFiles(sourcePath: string) {
+    return fs.readdirSync(sourcePath).reduce((files: any, file: any) => {
+      const name = path.join(sourcePath, file);
+      const isDirectory = fs.statSync(name).isDirectory();
+      return isDirectory ? [...files, ...this.getAllFiles(name)] : [...files, name];
+    }, []);
   }
 
-  private async deploy(archive: string, options: any): Promise<void> {
-    this.validateDeployOptions(archive, options);
+  /**
+   * Check if there are questions to be prompted to the developer
+   */
+  async checkPromptQuestions() {
+    if (this.processArgs["force"] === true) {
+      this.outputResponse.data.overwriteFiles = true;
+    } else {
+      // Lists of the questions that the developer will be asked
+      let messageText = "";
+      let newSourceText = "";
+      let existingFilesText = "";
+      let invalidFilesText = "";
 
+      if (this.outputResponse.data.newSourceFiles && this.outputResponse.data.newSourceFiles.length > 0) {
+        for (let i = 0; i < this.outputResponse.data.newSourceFiles.length; i++) {
+          newSourceText += this.outputResponse.data.newSourceFiles[i] + "\n";
+        }
+        newSourceText = this.getText("VALIDATIONS.NEW_FILES_TO_BE_IMPORTED") + "\n" + newSourceText + "\n";
+      } else {
+        newSourceText = this.getText("VALIDATIONS.NO_NEW_FILES_AVAILABLE_TO_BE_IMPORTED") + "\n\n";
+      }
 
-    // let deviceType = this._cliUtil.getDeviceType(options.deviceType);
+      if (this.outputResponse.data.invalidInputFiles && this.outputResponse.data.invalidInputFiles.length > 0) {
+        for (let i = 0; i < this.outputResponse.data.invalidInputFiles.length; i++) {
+          invalidFilesText += this.outputResponse.data.invalidInputFiles[i] + "\n";
+        }
+        invalidFilesText = this.getText("VALIDATIONS.INVALID_FILES_IN_IMPORT_LIST") + "\n" + invalidFilesText + "\n";
+      }
 
-    // const userAndPassword = await this.getUserAndPassword(options.promptForCredentials);
+      if (this.outputResponse.data.sourceFilesInTargetFolder && this.outputResponse.data.sourceFilesInTargetFolder.length > 0) {
+        for (let i = 0; i < this.outputResponse.data.sourceFilesInTargetFolder.length; i++) {
+          existingFilesText += this.outputResponse.data.sourceFilesInTargetFolder[i] + "\n";
+        }
+        existingFilesText = this.getText("VALIDATIONS.EXISTING_FILES_IN_IMPORT_FOLDER") + "\n" + existingFilesText + "\n";
+      }
+      existingFilesText += this.getText("VALIDATIONS.OVERWRITE_FILES");
 
-    // let configOptions = {
-    //   controlSystemHost: options.deviceHost,
-    //   deviceType: deviceType,
-    //   sftpDirectory: options.deviceDirectory,
-    //   sftpUser: userAndPassword.user,
-    //   sftpPassword: userAndPassword.password,
-    //   outputLevel: this._cliUtil.getOutputLevel(options)
-    // } as IConfigOptions;
-    // await distributor(archive, configOptions);
-    // process.exit(0); // required, takes too long to exit :|
+      messageText = newSourceText + invalidFilesText + existingFilesText;
+
+      const questionsArray = [
+        {
+          type: 'select',
+          name: 'overwriteFile',
+          message: messageText,
+          choices: [
+            { message: this.getText("VALIDATIONS.OVERWRITE_FILES_YES"), hint: this.getText("VALIDATIONS.OVERWRITE_FILES_HINT_YES"), value: 'Y' },
+            { message: this.getText("VALIDATIONS.OVERWRITE_FILES_NO"), hint: this.getText("VALIDATIONS.OVERWRITE_FILES_HINT_NO"), value: 'N' }
+          ],
+          initial: 0
+        }
+      ];
+
+      let response = await enquirer.prompt(questionsArray).then((response: { overwriteFile: any; }) => {
+        this.logger.log(response);
+        return response.overwriteFile;
+      }).catch((err: any) => {
+        throw new Error(this.getText("ERRORS.PROGRAM_STOPPED_OR_UNKNOWN_ERROR"));
+      });
+      this.outputResponse.data.overwriteFiles = this.utils.convertStringToBoolean(response);
+
+      // if (this.outputResponse.data.overwriteFiles === false && this.outputResponse.data.sourceFilesInTargetFolder.length === 0) {
+      //   this.logger.printError(this.getText("FAILURE_MESSAGE_NO_VALID_OVERWRITE_FILES"));
+      // }
+    }
   }
 
-  private validateDeployOptions(archive: string, options: any): void {
-    let missingArguments = [];
-    let missingOptions = [];
-
-    if (!archive) {
-      missingArguments.push('archive');
-    }
-
-    if (!options.deviceHost) {
-      missingOptions.push('deviceHost');
-    }
-
-    if (!options.deviceType) {
-      missingOptions.push('deviceType');
-    }
-
-    if (missingArguments.length == 0 && missingOptions.length == 0) {
-      return;
-    }
-
-    const argumentsMessage = missingArguments.length > 0 ? `Missing arguments: ${missingArguments.join(', ')}.` : '';
-    const optionsMessage = missingOptions.length > 0 ? `Missing options: ${missingOptions.join('. ')}.` : '';
-    throw new Error(`${argumentsMessage} ${optionsMessage} Type 'ch5-cli deploy --help' for usage information.`)
-  }
-
-  private async getUserAndPassword(promptForCredentials: boolean): Promise<any> {
-    if (!promptForCredentials) {
-      return {
-        user: 'crestron',
-        password: ''
+  /**
+   * Implement this component's main purpose
+   * Unzip the export-components.zip file, copy files as per user input in command-terminal from source (extracted export-components.zip file) to destination (./ project folder).
+   */
+  async processRequest() {
+    this.logger.log("this.outputResponse.data.overwriteFiles", this.outputResponse.data.overwriteFiles);
+    const pagesSelected = [];
+    const widgetsSelected = [];
+    if (this.processArgs["all"] === true) {
+      fsExtra.copySync(this.folderPaths.temporaryLocationForAllFilesCopyFrom, "./", { overwrite: this.outputResponse.data.overwriteFiles, filter: (file: any) => { if (path.basename(file).toLowerCase() === "project-config.json") { return false; } else { return true; } } });
+    } else {
+      for (let i = 0; i < this.outputResponse.data.inputFileExistsInSourceFolder.length; i++) {
+        this.logger.log("this.folderPaths.temporaryLocationForAllFilesCopyFrom", this.folderPaths.temporaryLocationForAllFilesCopyFrom);
+        this.logger.log("this.outputResponse.data.inputFileExistsInSourceFolder[i]", this.outputResponse.data.inputFileExistsInSourceFolder[i]);
+        const fromPath = path.normalize(path.dirname(path.join(this.folderPaths.temporaryLocationForAllFilesCopyFrom, path.normalize(this.outputResponse.data.inputFileExistsInSourceFolder[i]))));
+        const toPath = path.normalize(path.dirname(path.normalize(this.outputResponse.data.inputFileExistsInSourceFolder[i])));
+        fsExtra.copySync(fromPath, toPath, { recursive: true, overwrite: this.outputResponse.data.overwriteFiles, filter: (file: any) => { if (path.basename(file).toLowerCase() === "project-config.json") { return false; } else { return true; } } });
+        if (fromPath.indexOf(path.normalize("components/pages")) >= 0) {
+          pagesSelected.push(path.basename(path.normalize(this.outputResponse.data.inputFileExistsInSourceFolder[i])));
+        } else {
+          widgetsSelected.push(path.basename(path.normalize(this.outputResponse.data.inputFileExistsInSourceFolder[i])));
+        }
       }
     }
-    return await inquirer.prompt(
-      [
-        {
-          type: 'string',
-          message: 'Enter SFTP user',
-          name: 'user',
-          default: 'crestron',
-        },
-        {
-          type: 'password',
-          message: 'Enter SFTP password',
-          name: 'password',
-          mask: '*',
-          default: ''
+    await this.processExportedProjectConfigJSON(pagesSelected, widgetsSelected);
+  }
+
+  /**
+  * Log Final Response Message
+  */
+  logOutput() {
+    this.logger.log("this.outputResponse", JSON.stringify(this.outputResponse));
+    if (this.utils.isValidInput(this.outputResponse.errorMessage)) {
+      this.logger.printError(this.outputResponse.errorMessage);
+    } else {
+      if (this.outputResponse.result === true) {
+        /*
+        If processArgs("all") is false
+          If overwrite = true
+            If invalid files is zero
+              Message listing valid files
+            Else
+              Message showing valid and invalid files
+          Else
+            If invalid files is zero
+              Message listing valid files
+            Else
+              Message showing valid and invalid files
+        Else
+          If overwrite = true
+            Generic Message
+          Else
+            Identify the copied files 
+        */
+        if (this.processArgs["all"] === true) {
+          if (this.outputResponse.data.overwriteFiles === true) {
+            this.logger.printSuccess(this.getText("SUCCESS_MESSAGE_ALL"));
+          } else {
+            if (this.outputResponse.data.listOfFilesWithOverrideFalse.length === 0) {
+              this.logger.printError(this.getText("FAILURE_MESSAGE_NO_VALID_OVERWRITE_FILES"));
+            } else {
+              this.logger.printSuccess(this.getText("SUCCESS_MESSAGE_SPECIFIC", this.utils.convertArrayToString(this.outputResponse.data.listOfFilesWithOverrideFalse, "\n")));
+            }
+          }
+        } else {
+          if (this.outputResponse.data.overwriteFiles === true) {
+            this.logger.printSuccess(this.getText("SUCCESS_MESSAGE_SPECIFIC", this.utils.convertArrayToString(this.outputResponse.data.inputFileExistsInSourceFolder, "\n")));
+          } else {
+            if (this.outputResponse.data.listOfFilesWithOverrideFalse.length === 0) {
+              this.logger.printError(this.getText("FAILURE_MESSAGE_NO_VALID_OVERWRITE_FILES"));
+            } else {
+              if (this.outputResponse.data.invalidInputFiles.length > 0) {
+                this.logger.printSuccess(this.getText("SUCCESS_MESSAGE_SPECIFIC_WITH_ERROR", this.utils.convertArrayToString(this.outputResponse.data.listOfFilesWithOverrideFalse, "\n"), this.utils.convertArrayToString(this.outputResponse.data.sourceFilesInTargetFolder, "\n"), this.utils.convertArrayToString(this.outputResponse.data.invalidInputFiles, "\n")));
+              } else {
+                this.logger.printSuccess(this.getText("SUCCESS_MESSAGE_SPECIFIC", this.utils.convertArrayToString(this.outputResponse.data.listOfFilesWithOverrideFalse, "\n")));
+              }
+            }
+          }
         }
-      ]
-    );
+      } else {
+        this.logger.printError(this.outputResponse.errorMessage);
+      }
+    }
+  }
+
+  /**
+   * Clean up method
+   */
+  async cleanUp() {
+    // Delete the copied zip file from temp folder
+    this.deleteFile(this.folderPaths.temporaryLocationForCopiedZipFile);
+    this.deleteFolder(this.folderPaths.temporaryLocationForExtractedFilesFolder);
+  }
+
+  /**
+   * Delete directory by path
+   * @param {string} directoryName
+   */
+  deleteFolder(directoryName: string) {
+    try {
+      return rimraf.sync(directoryName);
+    } catch (e) {
+      return false;
+    }
+  }
+
+  /**
+   * Delete File
+   * @param {string} completeFilePath
+   */
+  async deleteFile(completeFilePath: string) {
+    try {
+      return await rimraf.sync(completeFilePath);
+    } catch (e) {
+      return false;
+    }
+  }
+
+  /**
+   * 
+   * @param {*} arrayOfFiles 
+   * @param {*} newFile 
+   */
+  checkIfNewFileInput(arrayOfFiles: any[], newFile: any) {
+    const outputObj = arrayOfFiles.find((tempObj: any) => path.normalize(tempObj).trim().toLowerCase() === path.normalize(newFile).trim().toLowerCase());
+
+    if (outputObj) {
+      return false;
+    }
+    return true;
+  }
+
+  /**
+   * Check if the file is a zip file and exists, and follows proper folder structure
+   * Suggestion - Export and import should have version number
+   * Note that we are not checking for export-components.zip file as filename because the 
+   * user can rename his file if required.
+   * @param {*} fileName 
+   */
+  isZipFileValid(fileName: string) {
+    if (fs.existsSync(fileName)) {
+      const checkFileOrFolder = fs.statSync(fileName);
+      if (checkFileOrFolder && checkFileOrFolder.isFile()) {
+        if (path.extname(fileName).trim().toLowerCase() === ".zip") {
+          return true;
+        } else {
+          return false;
+        }
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
+
+  /**
+   * For 'page' type components without conflicting name 
+   * -   The target project content view should be appended with the imported pages in the same order they were in the source project.
+   * -   If the navigation buttons were defined in source project, the target project navigation buttons should be appended with buttons for imported page in same order they were in the source project. 
+   * For 'page' type components with conflicting name
+   * -   the location in the content view of the imported page should remain the same as before the import
+   * -   if navigation buttons were defined in both the source and target project, the order should remain the same
+   * -   if navigation button was defined in source project, but not the target project, an imported navigation button should be appended to end of navigation buttons
+   * -   if navigation button was not defined in source project, but was defined in target project, the target project button should be removed.
+   */
+  async processExportedProjectConfigJSON(selectedPages: string | any[], selectedWidgets: string | any[]) {
+    if (this.processArgs["all"] === true) {
+      const jsonToBeImported = fsExtra.readJSONSync(path.resolve(this.folderPaths.temporaryLocationForProjectConfig));
+      this.logger.log("jsonToBeImported", jsonToBeImported);
+      this.projectConfig.addPagesToJSON(jsonToBeImported.pages);
+      this.projectConfig.addWidgetsToJSON(jsonToBeImported.widgets);
+    } else {
+      const jsonToBeImported = fsExtra.readJSONSync(path.resolve(this.folderPaths.temporaryLocationForProjectConfig));
+      this.logger.log("jsonToBeImported", jsonToBeImported);
+      if (selectedPages.length > 0) {
+        const pageArray = [];
+        for (let i = 0; i < selectedPages.length; i++) {
+          pageArray.push(jsonToBeImported.pages.find((tempObj: { fileName: string; }) => tempObj.fileName.trim().toLowerCase() === selectedPages[i].trim().toLowerCase()));
+        }
+        if (pageArray.length > 0) {
+          this.projectConfig.addPagesToJSON(pageArray);
+        }
+      }
+
+      if (selectedWidgets.length > 0) {
+        const pageArray = [];
+        for (let i = 0; i < selectedWidgets.length; i++) {
+          pageArray.push(jsonToBeImported.widgets.find((tempObj: { fileName: string; }) => tempObj.fileName.trim().toLowerCase() === selectedWidgets[i].trim().toLowerCase()));
+        }
+        if (pageArray.length > 0) {
+          this.projectConfig.addWidgetsToJSON(pageArray);
+        }
+      }
+    }
+    this.logger.log("project-config read done");
+
+    this.outputResponse.result = true;
   }
 }

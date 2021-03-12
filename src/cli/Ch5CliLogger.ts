@@ -5,10 +5,9 @@
 // Use of this source code is subject to the terms of the Crestron Software License Agreement
 // under which you licensed this source code.
 
-import chalk from "chalk";
-import { DeviceType, OutputLevel } from "@crestron/ch5-utilities";
+const path = require('path');
 
-process.env["NODE_CONFIG_DIR"] =  __dirname; //"/config"; //"./shell-utilities/config/";
+process.env["NODE_CONFIG_DIR"] = path.join(__dirname, "..",  "config");
 const config = require("config");
 
 export class Ch5CliLogger {
