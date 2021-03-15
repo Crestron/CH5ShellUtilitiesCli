@@ -30,7 +30,7 @@ You could use shortcuts as the following:
 Options:
     -h, --help,         Help for Exporting libraries from the './app/project/libraries/' folder
     -l, --list,         Prefix for list of file names
-    --all               Select this option to export all the files
+    --all               Select this option to export all the library files
 
 ```
 

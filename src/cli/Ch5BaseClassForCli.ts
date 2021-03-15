@@ -15,8 +15,8 @@ import { Ch5CliProjectConfig } from "./Ch5CliProjectConfig";
 
 const inquirer = require('inquirer');
 const path = require('path');
-const fs = require("fs"); // global object - always available
-const process = require("process"); // global object - always available
+const fs = require("fs");
+const process = require("process");
 const fsExtra = require("fs-extra");
 
 const Enquirer = require('enquirer');
@@ -36,6 +36,11 @@ export class Ch5BaseClassForCli {
   private _templateFolderPath: string = "";
   private _basePathForPages: string = "";
   private _commonContentInGeneratedFiles: string = "";
+  private _inputArguments: any = {};
+
+  protected get inputArguments(): any {
+    return this._inputArguments;
+  }
 
   protected get templateFolderPath() {
     return this._templateFolderPath;
@@ -76,6 +81,7 @@ export class Ch5BaseClassForCli {
     this._cliNamingHelper = new Ch5CliNamingHelper();
     this._cliProjectConfig = new Ch5CliProjectConfig();
     this.CONFIG_FILE = config[templatesPath];
+    this._inputArguments = this.componentHelper.processArgs();
     this._templateFolderPath = path.join(__dirname, this.CONFIG_FILE.templatesPath);
     this._basePathForPages = this.CONFIG_FILE.basePathForPages;
     this._commonContentInGeneratedFiles = this.CONFIG_FILE.commonContentInGeneratedFiles;
@@ -122,7 +128,7 @@ export class Ch5BaseClassForCli {
   }
 
   getConfigNode(nodeName: string) {
-    return config[nodeName];
+    return this.CONFIG_FILE[nodeName];
   }
 
   /**

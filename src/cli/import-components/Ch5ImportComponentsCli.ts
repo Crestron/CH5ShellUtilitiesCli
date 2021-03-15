@@ -8,7 +8,7 @@
 import * as commander from "commander";
 import { Ch5BaseClassForCli } from "../Ch5BaseClassForCli";
 
-const fs = require("fs"); // global object - always available
+const fs = require("fs"); 
 const fsExtra = require("fs-extra");
 const path = require('path');
 const zl = require("zip-lib");
@@ -16,10 +16,9 @@ const rimraf = require("rimraf");
 const Enquirer = require('enquirer');
 const enquirer = new Enquirer();
 
-export class Ch5ExportAssetsCli extends Ch5BaseClassForCli {
+export class Ch5ImportAssetsCli extends Ch5BaseClassForCli {
 
   private outputResponse: any = {};
-  private processArgs: any = [];
   private folderPaths: any = {};
 
   public constructor() {
@@ -50,7 +49,6 @@ export class Ch5ExportAssetsCli extends Ch5BaseClassForCli {
    * Public Method 
    */
   async run(options: any) {
-    const processArgs = this.componentHelper.processArgs();
     this.importComponents();
   }
 
@@ -73,10 +71,8 @@ export class Ch5ExportAssetsCli extends Ch5BaseClassForCli {
       }
     };
 
-    this.processArgs = this.componentHelper.processArgs();
-
     this.folderPaths = {
-      inputZipFileToImport: this.processArgs["zipFile"],
+      inputZipFileToImport: this.inputArguments["zipFile"],
       temporaryLocationForCopiedZipFile: path.join(this.getConfigNode("zipFileDestinationPath"), this.getConfigNode("outputFileName")),
       temporaryLocationForExtractedFilesFolder: path.join(this.getConfigNode("zipFileDestinationPath"), this.getConfigNode("outputTempFolderName")),
       temporaryLocationForAllFilesCopyFrom: path.join(this.getConfigNode("zipFileDestinationPath"), this.getConfigNode("outputTempFolderName"), this.getConfigNode("exportedFolderName")),
@@ -134,9 +130,9 @@ export class Ch5ExportAssetsCli extends Ch5BaseClassForCli {
    * Verify input parameters
    */
   async verifyInputParams() {
-    if (this.utils.isValidInput(this.processArgs["zipFile"]) && this.isZipFileValid(this.processArgs["zipFile"])) {
-      if (this.processArgs["all"] === false) {
-        if (this.processArgs["list"].length === 0) {
+    if (this.utils.isValidInput(this.inputArguments["zipFile"]) && this.isZipFileValid(this.inputArguments["zipFile"])) {
+      if (this.inputArguments["all"] === false) {
+        if (this.inputArguments["list"].length === 0) {
           throw new Error(this.getText("FAILURE_MESSAGE_INPUT_PARAMS_EMPTY_IN_REQUEST"));
         }
       }
@@ -168,7 +164,7 @@ export class Ch5ExportAssetsCli extends Ch5BaseClassForCli {
     });
 
     /*
-    If processArgs("all") is false
+    If inputArguments("all") is false
       Run through all the input files, and check if they exist in the zipped folder to identify Valid, Invalid files
       If overwrite = true or ForceFlag
         overwrite: true will ensure that files already existing are  overwritten
@@ -198,15 +194,15 @@ export class Ch5ExportAssetsCli extends Ch5BaseClassForCli {
     }
 
     let inputListOfFiles = [];
-    if (this.processArgs["all"] === false) {
-      inputListOfFiles = this.processArgs['list'];
+    if (this.inputArguments["all"] === false) {
+      inputListOfFiles = this.inputArguments['list'];
     } else {
       inputListOfFiles = this.replaceDistFolderPathNameInInput(this.getAllFiles(path.normalize(this.folderPaths.temporaryLocationForAllFilesCopyFrom)));
     }
     this.logger.log("inputListOfFiles", inputListOfFiles);
 
     const checkedFilesForLoop = [];
-    for (let i = 0; i < inputListOfFiles.length; i++) {
+    for (let i:number = 0; i < inputListOfFiles.length; i++) {
       if (this.checkIfNewFileInput(checkedFilesForLoop, inputListOfFiles[i])) {
         const fileNewPath = path.join(path.normalize(this.folderPaths.temporaryLocationForAllFilesCopyFrom), path.normalize(inputListOfFiles[i]));
         if (fs.existsSync(fileNewPath)) {
@@ -226,8 +222,8 @@ export class Ch5ExportAssetsCli extends Ch5BaseClassForCli {
     }
 
     // Identify source files in target folder 
-    // if (this.processArgs["force"] === false) {
-    for (let i = 0; i < this.outputResponse.data.inputFileExistsInSourceFolder.length; i++) {
+    // if (this.inputArguments["force"] === false) {
+    for (let i:number = 0; i < this.outputResponse.data.inputFileExistsInSourceFolder.length; i++) {
       const fileNewPath = path.normalize(this.outputResponse.data.inputFileExistsInSourceFolder[i]);
       if (fs.existsSync(fileNewPath)) {
         const checkFileOrFolder = fs.statSync(fileNewPath);
@@ -268,7 +264,7 @@ export class Ch5ExportAssetsCli extends Ch5BaseClassForCli {
       ] 
     */
 
-    for (let i = 0; i < this.outputResponse.data.inputFileExistsInSourceFolder.length; i++) {
+    for (let i:number = 0; i < this.outputResponse.data.inputFileExistsInSourceFolder.length; i++) {
       let isExists = false;
       for (let j = 0; j < this.outputResponse.data.sourceFilesInTargetFolder.length; j++) {
         if (this.outputResponse.data.inputFileExistsInSourceFolder[i] === this.outputResponse.data.sourceFilesInTargetFolder[j]) {
@@ -288,7 +284,7 @@ export class Ch5ExportAssetsCli extends Ch5BaseClassForCli {
     this.logger.log("this.outputResponse.data.listOfFilesWithOverrideFalse", this.outputResponse.data.listOfFilesWithOverrideFalse);
 
     if (this.outputResponse.data.inputFileExistsInSourceFolder.length === 0) {
-      throw new Error(this.getText("FAILURE_MESSAGE_INPUT_PARAMS_INVALID_IN_REQUEST", this.folderPaths.inputZipFileToImport, this.utils.convertArrayToString(this.processArgs["list"], "\n")));
+      throw new Error(this.getText("FAILURE_MESSAGE_INPUT_PARAMS_INVALID_IN_REQUEST", this.folderPaths.inputZipFileToImport, this.utils.convertArrayToString(this.inputArguments["list"], "\n")));
     }
   }
 
@@ -297,7 +293,7 @@ export class Ch5ExportAssetsCli extends Ch5BaseClassForCli {
    * @param {*} fileName 
    */
   isFileToBeAvoided(fileName: string) {
-    for (let i = 0; i < this.outputResponse.data.filesToBeAvoidedFromCopying.length; i++) {
+    for (let i:number = 0; i < this.outputResponse.data.filesToBeAvoidedFromCopying.length; i++) {
       if (path.normalize(this.outputResponse.data.filesToBeAvoidedFromCopying[i]).trim().toLowerCase() === path.normalize(fileName).trim().toLowerCase()) {
         return true;
       }
@@ -312,7 +308,7 @@ export class Ch5ExportAssetsCli extends Ch5BaseClassForCli {
   replaceDistFolderPathNameInInput(input:string[]) {
     if (input && input.length > 0) {
       const output = [];
-      for (let i = 0; i < input.length; i++) {
+      for (let i:number = 0; i < input.length; i++) {
         output.push(input[i].replace(this.folderPaths.temporaryLocationForAllFilesCopyFrom, "."));
       }
       return output;
@@ -337,7 +333,7 @@ export class Ch5ExportAssetsCli extends Ch5BaseClassForCli {
    * Check if there are questions to be prompted to the developer
    */
   async checkPromptQuestions() {
-    if (this.processArgs["force"] === true) {
+    if (this.inputArguments["force"] === true) {
       this.outputResponse.data.overwriteFiles = true;
     } else {
       // Lists of the questions that the developer will be asked
@@ -347,7 +343,7 @@ export class Ch5ExportAssetsCli extends Ch5BaseClassForCli {
       let invalidFilesText = "";
 
       if (this.outputResponse.data.newSourceFiles && this.outputResponse.data.newSourceFiles.length > 0) {
-        for (let i = 0; i < this.outputResponse.data.newSourceFiles.length; i++) {
+        for (let i:number = 0; i < this.outputResponse.data.newSourceFiles.length; i++) {
           newSourceText += this.outputResponse.data.newSourceFiles[i] + "\n";
         }
         newSourceText = this.getText("VALIDATIONS.NEW_FILES_TO_BE_IMPORTED") + "\n" + newSourceText + "\n";
@@ -356,14 +352,14 @@ export class Ch5ExportAssetsCli extends Ch5BaseClassForCli {
       }
 
       if (this.outputResponse.data.invalidInputFiles && this.outputResponse.data.invalidInputFiles.length > 0) {
-        for (let i = 0; i < this.outputResponse.data.invalidInputFiles.length; i++) {
+        for (let i:number = 0; i < this.outputResponse.data.invalidInputFiles.length; i++) {
           invalidFilesText += this.outputResponse.data.invalidInputFiles[i] + "\n";
         }
         invalidFilesText = this.getText("VALIDATIONS.INVALID_FILES_IN_IMPORT_LIST") + "\n" + invalidFilesText + "\n";
       }
 
       if (this.outputResponse.data.sourceFilesInTargetFolder && this.outputResponse.data.sourceFilesInTargetFolder.length > 0) {
-        for (let i = 0; i < this.outputResponse.data.sourceFilesInTargetFolder.length; i++) {
+        for (let i:number = 0; i < this.outputResponse.data.sourceFilesInTargetFolder.length; i++) {
           existingFilesText += this.outputResponse.data.sourceFilesInTargetFolder[i] + "\n";
         }
         existingFilesText = this.getText("VALIDATIONS.EXISTING_FILES_IN_IMPORT_FOLDER") + "\n" + existingFilesText + "\n";
@@ -407,10 +403,10 @@ export class Ch5ExportAssetsCli extends Ch5BaseClassForCli {
     this.logger.log("this.outputResponse.data.overwriteFiles", this.outputResponse.data.overwriteFiles);
     const pagesSelected = [];
     const widgetsSelected = [];
-    if (this.processArgs["all"] === true) {
+    if (this.inputArguments["all"] === true) {
       fsExtra.copySync(this.folderPaths.temporaryLocationForAllFilesCopyFrom, "./", { overwrite: this.outputResponse.data.overwriteFiles, filter: (file: any) => { if (path.basename(file).toLowerCase() === "project-config.json") { return false; } else { return true; } } });
     } else {
-      for (let i = 0; i < this.outputResponse.data.inputFileExistsInSourceFolder.length; i++) {
+      for (let i:number = 0; i < this.outputResponse.data.inputFileExistsInSourceFolder.length; i++) {
         this.logger.log("this.folderPaths.temporaryLocationForAllFilesCopyFrom", this.folderPaths.temporaryLocationForAllFilesCopyFrom);
         this.logger.log("this.outputResponse.data.inputFileExistsInSourceFolder[i]", this.outputResponse.data.inputFileExistsInSourceFolder[i]);
         const fromPath = path.normalize(path.dirname(path.join(this.folderPaths.temporaryLocationForAllFilesCopyFrom, path.normalize(this.outputResponse.data.inputFileExistsInSourceFolder[i]))));
@@ -436,7 +432,7 @@ export class Ch5ExportAssetsCli extends Ch5BaseClassForCli {
     } else {
       if (this.outputResponse.result === true) {
         /*
-        If processArgs("all") is false
+        If inputArguments("all") is false
           If overwrite = true
             If invalid files is zero
               Message listing valid files
@@ -453,7 +449,7 @@ export class Ch5ExportAssetsCli extends Ch5BaseClassForCli {
           Else
             Identify the copied files 
         */
-        if (this.processArgs["all"] === true) {
+        if (this.inputArguments["all"] === true) {
           if (this.outputResponse.data.overwriteFiles === true) {
             this.logger.printSuccess(this.getText("SUCCESS_MESSAGE_ALL"));
           } else {
@@ -489,32 +485,8 @@ export class Ch5ExportAssetsCli extends Ch5BaseClassForCli {
    */
   async cleanUp() {
     // Delete the copied zip file from temp folder
-    this.deleteFile(this.folderPaths.temporaryLocationForCopiedZipFile);
-    this.deleteFolder(this.folderPaths.temporaryLocationForExtractedFilesFolder);
-  }
-
-  /**
-   * Delete directory by path
-   * @param {string} directoryName
-   */
-  deleteFolder(directoryName: string) {
-    try {
-      return rimraf.sync(directoryName);
-    } catch (e) {
-      return false;
-    }
-  }
-
-  /**
-   * Delete File
-   * @param {string} completeFilePath
-   */
-  async deleteFile(completeFilePath: string) {
-    try {
-      return await rimraf.sync(completeFilePath);
-    } catch (e) {
-      return false;
-    }
+    await  this.utils.deleteFile(this.folderPaths.temporaryLocationForCopiedZipFile);
+    await  this.utils.deleteFolder(this.folderPaths.temporaryLocationForExtractedFilesFolder);
   }
 
   /**
@@ -566,7 +538,7 @@ export class Ch5ExportAssetsCli extends Ch5BaseClassForCli {
    * -   if navigation button was not defined in source project, but was defined in target project, the target project button should be removed.
    */
   async processExportedProjectConfigJSON(selectedPages: string | any[], selectedWidgets: string | any[]) {
-    if (this.processArgs["all"] === true) {
+    if (this.inputArguments["all"] === true) {
       const jsonToBeImported = fsExtra.readJSONSync(path.resolve(this.folderPaths.temporaryLocationForProjectConfig));
       this.logger.log("jsonToBeImported", jsonToBeImported);
       this.projectConfig.addPagesToJSON(jsonToBeImported.pages);
@@ -576,7 +548,7 @@ export class Ch5ExportAssetsCli extends Ch5BaseClassForCli {
       this.logger.log("jsonToBeImported", jsonToBeImported);
       if (selectedPages.length > 0) {
         const pageArray = [];
-        for (let i = 0; i < selectedPages.length; i++) {
+        for (let i:number = 0; i < selectedPages.length; i++) {
           pageArray.push(jsonToBeImported.pages.find((tempObj: { fileName: string; }) => tempObj.fileName.trim().toLowerCase() === selectedPages[i].trim().toLowerCase()));
         }
         if (pageArray.length > 0) {
@@ -586,7 +558,7 @@ export class Ch5ExportAssetsCli extends Ch5BaseClassForCli {
 
       if (selectedWidgets.length > 0) {
         const pageArray = [];
-        for (let i = 0; i < selectedWidgets.length; i++) {
+        for (let i:number = 0; i < selectedWidgets.length; i++) {
           pageArray.push(jsonToBeImported.widgets.find((tempObj: { fileName: string; }) => tempObj.fileName.trim().toLowerCase() === selectedWidgets[i].trim().toLowerCase()));
         }
         if (pageArray.length > 0) {

@@ -1,11 +1,4 @@
 
-Usage: yarn delete:components [options]
-
-Options:
-    -h, --help          Help for Generate Documentation
-    -l, --list,         Prefix for list of component names to be deleted
-    -f, --force         Forces the script to delete the component without asking for a confirmation
-
 You could use Yarn / NPM to delete components. The following are the commands:
     yarn delete:components
     npm run delete:components

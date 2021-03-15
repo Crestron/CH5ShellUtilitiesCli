@@ -571,10 +571,23 @@ fill-range@^7.0.1:
   dependencies:
     to-regex-range "^5.0.1"
 
+find-remove@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/find-remove/-/find-remove-2.0.3.tgz#46e1cb12ca247963bc594c3af4c4878ba2244a79"
+  integrity sha512-T7v/mSYhz2mv3ZM37BJH6Ny9tudA1qjJtH9N8MAZQKskJ546ciyMjPxsT7N/9OcbpN9+vfxMNHefzLbXOdMrhQ==
+  dependencies:
+    fmerge "1.2.0"
+    rimraf "3.0.2"
+
 find-value@^1.0.3:
   version "1.0.12"
   resolved "https://registry.yarnpkg.com/find-value/-/find-value-1.0.12.tgz#68b6cec84e5b2d51272965e0bf09b26c9159c26e"
   integrity sha512-OCpo8LTk8eZ2sdDCwbU2Lc3ivYsdM6yod6jP2jHcNEFcjPhkgH0+POzTIol7xx1LZgtbI5rkO5jqxsG5MWtPjQ==
+
+fmerge@1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/fmerge/-/fmerge-1.2.0.tgz#36e99d2ae255e3ee1af666b4df780553671cf692"
+  integrity sha1-NumdKuJV4+4a9ma033gFU2cc9pI=
 
 fs-constants@^1.0.0:
   version "1.0.0"
@@ -1250,7 +1263,7 @@ rimraf@2.6.3:
   dependencies:
     glob "^7.1.3"
 
-rimraf@^3.0.2:
+rimraf@3.0.2, rimraf@^3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-3.0.2.tgz#f1a5402ba6220ad52cc1282bac1ae3aa49fd061a"
   integrity sha512-JZkJMZkAGFFPP2YqXZXPbMlMBgsxzE8ILs4lMIX/2o0L9UBw9O/Y3o6wFw/i9YLapcUJWwqbi3kdxIPdC62TIA==

@@ -9,8 +9,8 @@ import * as commander from "commander";
 import { Ch5BaseClassForCli } from "../Ch5BaseClassForCli";
 
 const path = require('path');
-const fs = require("fs"); // global object - always available
-const process = require("process"); // global object - always available
+const fs = require("fs"); 
+const process = require("process"); 
 const jsonSchema = require('jsonschema');
 const Enquirer = require('enquirer');
 const enquirer = new Enquirer();
@@ -21,7 +21,6 @@ const projectConfigJsonSchema = require("../../.vscode/project-config-schema.jso
 export class Ch5ExportAssetsCli extends Ch5BaseClassForCli {
 
   private outputResponse: any = {};
-  private processArgs: any = [];
   private errorsFound: any = [];
   private warningsFound: any = [];
 
@@ -55,14 +54,13 @@ export class Ch5ExportAssetsCli extends Ch5BaseClassForCli {
    * Public Method 
    */
   async run(options: any) {
-    const processArgs = this.componentHelper.processArgs();
-    this.validateJSON(processArgs);
+    this.validateJSON();
   }
 
   /**
    * Method for validating projectconfig.json file
    */
-  validateJSON(processArgs: any) {
+  validateJSON() {
     this.logger.printLog(this.getText("PROCESSING_MESSAGE"));
 
     this.clearErrors();
@@ -147,7 +145,7 @@ export class Ch5ExportAssetsCli extends Ch5BaseClassForCli {
     let v = new Validator();
     const errors = v.validate(projectConfigJson, projectConfigJsonSchema).errors;
     const errorOrWarningType = this.getText("VALIDATIONS.SCHEMA.HEADER");
-    for (let i = 0; i < errors.length; i++) {
+    for (let i:number = 0; i < errors.length; i++) {
       this.logger.log("errors[i]", errors[i]);
       this.addError(errorOrWarningType, errors[i].stack.toString().replace("instance.", ""), errors[i].schema.description);
     }
@@ -157,7 +155,7 @@ export class Ch5ExportAssetsCli extends Ch5BaseClassForCli {
    * Check if the pages defined in project-config.json exists in project
    */
   verifyPagesExist(pagesArray: any[]) {
-    for (let i = 0; i < pagesArray.length; i++) {
+    for (let i:number = 0; i < pagesArray.length; i++) {
       if (!fs.existsSync(pagesArray[i].fullPath)) {
         this.addError(this.getText("VALIDATIONS.PAGE_MISSING_FILE_FOLDER.HEADER", pagesArray[i].pageName), this.getText("VALIDATIONS.PAGE_MISSING_FILE_FOLDER.FOLDER_PATH_MISSING", pagesArray[i].fullPath, pagesArray[i].fileName), "");
       } else {
@@ -172,7 +170,7 @@ export class Ch5ExportAssetsCli extends Ch5BaseClassForCli {
    * Check if the widgets defined in project-config.json exists in project
    */
   verifyWidgetsExist(widgetsArray: string | any[]) {
-    for (let i = 0; i < widgetsArray.length; i++) {
+    for (let i:number = 0; i < widgetsArray.length; i++) {
       if (!fs.existsSync(widgetsArray[i].fullPath)) {
         this.addError(this.getText("VALIDATIONS.WIDGET_MISSING_FILE_FOLDER.HEADER", widgetsArray[i].widgetName), this.getText("VALIDATIONS.WIDGET_MISSING_FILE_FOLDER.FOLDER_PATH_MISSING", widgetsArray[i].fullPath, widgetsArray[i].fileName), "");
       } else {
@@ -191,7 +189,7 @@ export class Ch5ExportAssetsCli extends Ch5BaseClassForCli {
     const errorOrWarningType = this.getText("VALIDATIONS.SELECTED_THEME_INCORRECT.HEADER");
 
     if (this.utils.isValidInput(projectConfigObject.selectedTheme)) {
-      for (let i = 0; i < projectConfigObject.themes.length; i++) {
+      for (let i:number = 0; i < projectConfigObject.themes.length; i++) {
         if (projectConfigObject.selectedTheme.trim().toLowerCase() === projectConfigObject.themes[i].name.trim().toLowerCase()) {
           if (projectConfigObject.selectedTheme !== projectConfigObject.themes[i].name) {
             this.addWarning(errorOrWarningType, this.getText("VALIDATIONS.SELECTED_THEME_INCORRECT.THEME_NAMING_STYLE", projectConfigObject.selectedTheme, projectConfigObject.themes[i].name), "");
@@ -214,7 +212,7 @@ export class Ch5ExportAssetsCli extends Ch5BaseClassForCli {
   checkIfPagesAreRepeated(pagesArray: string | any[]) {
     const errorOrWarningType = this.getText("VALIDATIONS.PAGE_NAMES_REPEATED.HEADER");
     const newPageArray: any[] = [];
-    for (let i = 0; i < pagesArray.length; i++) {
+    for (let i:number = 0; i < pagesArray.length; i++) {
       if (newPageArray.includes(pagesArray[i].pageName.trim().toLowerCase())) {
         this.addError(errorOrWarningType, this.getText("VALIDATIONS.PAGE_NAMES_REPEATED.MESSAGE", pagesArray[i].pageName), "");
       } else {
@@ -229,7 +227,7 @@ export class Ch5ExportAssetsCli extends Ch5BaseClassForCli {
   checkIfWidgetsAreRepeated(widgetsArray: string | any[]) {
     const errorOrWarningType = this.getText("VALIDATIONS.WIDGET_NAMES_REPEATED.HEADER");
     const newWidgetArray: any[] = [];
-    for (let i = 0; i < widgetsArray.length; i++) {
+    for (let i:number = 0; i < widgetsArray.length; i++) {
       if (newWidgetArray.includes(widgetsArray[i].widgetName.trim().toLowerCase())) {
         this.addError(errorOrWarningType, this.getText("VALIDATIONS.PAGE_NAMES_REPEATED.MESSAGE", widgetsArray[i].widgetName), "");
       } else {
@@ -244,7 +242,7 @@ export class Ch5ExportAssetsCli extends Ch5BaseClassForCli {
   checkPageSequence(pagesArray: string | any[]) {
     const errorOrWarningType = this.getText("VALIDATIONS.NAVIGATION_PAGE_SEQUENCE.HEADER");
     const newPageArraySequence: any[] = [];
-    for (let i = 0; i < pagesArray.length; i++) {
+    for (let i:number = 0; i < pagesArray.length; i++) {
       if (pagesArray[i].navigation) {
         if (newPageArraySequence.includes(pagesArray[i].navigation.sequence)) {
           this.addWarning(errorOrWarningType, this.getText("VALIDATIONS.NAVIGATION_PAGE_SEQUENCE.MESSAGE", pagesArray[i].pageName), "");
@@ -262,7 +260,7 @@ export class Ch5ExportAssetsCli extends Ch5BaseClassForCli {
   checkIfThemeNamesAreRepeated(themes: string | any[]) {
     const errorOrWarningType = this.getText("VALIDATIONS.REPEATED_THEME_NAME_IN_ARRAY.HEADER");
     const newPageArraySequence: any[] = [];
-    for (let i = 0; i < themes.length; i++) {
+    for (let i:number = 0; i < themes.length; i++) {
       if (newPageArraySequence.includes(themes[i].name)) {
         this.addError(errorOrWarningType, this.getText("VALIDATIONS.REPEATED_THEME_NAME_IN_ARRAY.MESSAGE", themes[i].name), "");
       } else {
@@ -278,7 +276,7 @@ export class Ch5ExportAssetsCli extends Ch5BaseClassForCli {
     if (menuOrientation === "horizontal" || menuOrientation === "vertical") {
       const errorOrWarningType = this.getText("VALIDATIONS.ATLEAST_ONE_MENU.HEADER");
       let menuCount = 0;
-      for (let i = 0; i < pagesArray.length; i++) {
+      for (let i:number = 0; i < pagesArray.length; i++) {
         if (pagesArray[i].navigation) {
           menuCount++;
         }
@@ -297,7 +295,7 @@ export class Ch5ExportAssetsCli extends Ch5BaseClassForCli {
   checkIconPositionForVerticalMenu(pagesArray: any[], menuOrientation: string) {
     if (menuOrientation === "vertical") {
       const errorOrWarningType = this.getText("VALIDATIONS.ICON_POSITION_VERTICAL.HEADER");
-      for (let i = 0; i < pagesArray.length; i++) {
+      for (let i:number = 0; i < pagesArray.length; i++) {
         if (pagesArray[i].navigation && pagesArray[i].navigation.iconPosition !== "") {
           this.addWarning(errorOrWarningType, this.getText("VALIDATIONS.ICON_POSITION_VERTICAL.MESSAGE"), "");
           break;
@@ -394,7 +392,7 @@ export class Ch5ExportAssetsCli extends Ch5BaseClassForCli {
    */
   checkIfPagesAndWidgetNamesDuplicate(pagesArray: any[], widgetsArray: any[]) {
     const errorOrWarningType = this.getText("VALIDATIONS.PAGE_AND_WIDGET_DUPLICATES.HEADER");
-    for (let i = 0; i < pagesArray.length; i++) {
+    for (let i:number = 0; i < pagesArray.length; i++) {
       for (let j = 0; j < widgetsArray.length; j++) {
         if (widgetsArray[j].widgetName.trim().toLowerCase() === pagesArray[i].pageName.trim().toLowerCase()) {
           this.addError(errorOrWarningType, this.getText("VALIDATIONS.PAGE_AND_WIDGET_DUPLICATES.MESSAGE", pagesArray[i].pageName, widgetsArray[j].widgetName), "");
@@ -412,7 +410,7 @@ export class Ch5ExportAssetsCli extends Ch5BaseClassForCli {
     const errorOrWarningType = this.getText("VALIDATIONS.DEFAULT_VIEW_INVALID.HEADER");
     if (defaultView && this.utils.isValidInput(defaultView)) {
       let lblnDefaultViewExists = false;
-      for (let i = 0; i < pagesArray.length; i++) {
+      for (let i:number = 0; i < pagesArray.length; i++) {
         if (pagesArray[i].pageName.trim().toLowerCase() === defaultView.trim().toLowerCase()) {
           if (pagesArray[i].navigation) {
             lblnDefaultViewExists = true;
@@ -477,7 +475,7 @@ export class Ch5ExportAssetsCli extends Ch5BaseClassForCli {
     const newFilePath: string = "./" + filePath.trim().toLowerCase();
     const errorOrWarningType = this.getText("VALIDATIONS.PAGE_AND_WIDGET_DUPLICATES.MESSAGE");
     let lbnPathExists = false;
-    for (let i = 0; i < objectArray.length; i++) {
+    for (let i:number = 0; i < objectArray.length; i++) {
       if (newFilePath === objectArray[i]["fullPath"].trim().toLowerCase() && objectArray[i]["fileName"].trim().toLowerCase()) {
         lbnPathExists = true;
         break;
@@ -497,7 +495,7 @@ export class Ch5ExportAssetsCli extends Ch5BaseClassForCli {
     const newFilePath = "./" + folderPath.trim().toLowerCase() + "/";
     const errorOrWarningType = this.getText("VALIDATIONS.PAGE_AND_WIDGET_DUPLICATES.MESSAGE");
     let lbnPathExists = false;
-    for (let i = 0; i < objectArray.length; i++) {
+    for (let i:number = 0; i < objectArray.length; i++) {
       if (newFilePath === objectArray[i]["fullPath"].trim().toLowerCase()) {
         lbnPathExists = true;
         break;
@@ -574,7 +572,7 @@ export class Ch5ExportAssetsCli extends Ch5BaseClassForCli {
     let tab = "    ";
     let numbering = 1;
     let previousOutputHeading = "";
-    for (let i = 0; i < dataArray.length; i++) {
+    for (let i:number = 0; i < dataArray.length; i++) {
       if (previousOutputHeading !== dataArray[i].heading) {
         outputMessage += tab + String(numbering) + ". " + dataArray[i].heading + ": " + dataArray[i].message + "\n";
         numbering += 1;

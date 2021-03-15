@@ -46,7 +46,7 @@
   },
   "generateWidget": {
     "basePathForWidgets": "./app/project/components/widgets/",
-    "templatesPath": "./shell-utilities/generate-widget/templates/",
+    "templatesPath": "./generate-widget/templates/",
     "minLengthOfWidgetName": 2,
     "maxLengthOfWidgetName": 31,
     "commonContentInGeneratedFiles": [
@@ -80,7 +80,7 @@
     }
   },
   "deleteComponents": {
-    "templatesPath": "./shell-utilities/delete-components/templates/",
+    "templatesPath": "./delete-components/templates/",
     "textMessages": {
       "SUCCESS_MESSAGE": "Congratulations! The component(s) '{0}' have been deleted from the project. The necessary change has been made to the project-config.json file.",
       "SUCCESS_MESSAGE_WITH_EXCEPTION": "The component(s) '{0}' are not valid components in the project.",
@@ -106,7 +106,8 @@
     }
   },
   "exportProject": {
-    "templatesPath": "./shell-utilities/export-project/templates/",
+    "templatesPath": "./export-project/templates/",
+    "temporaryFilePath": "./../dist/",
     "zipFileDestinationPath": "./dist/",
     "ignoreFilesFolders": [
       "node_modules",
@@ -132,7 +133,7 @@
   },
   "exportAssets": {
     "requiredFolderPath": "./app/project/assets/",
-    "templatesPath": "./shell-utilities/export-assets/templates/",
+    "templatesPath": "./export-assets/templates/",
     "zipFolderName": "exported-assets",
     "outputFileName": "exported-assets.zip",
     "outputTempFolderName": "Exported-Assets-Code-Folder-Temp",
@@ -155,7 +156,7 @@
   },
   "exportAll": {
     "requiredFolderPath": "./app/project/",
-    "templatesPath": "./shell-utilities/export-all/templates/",
+    "templatesPath": "./export-all/templates/",
     "zipFolderName": "exported-all",
     "outputFileName": "exported-all.zip",
     "outputTempFolderName": "Exported-All-Code-Folder-Temp",
@@ -178,7 +179,7 @@
   },
   "exportLibraries": {
     "requiredFolderPath": "./app/project/libraries/",
-    "templatesPath": "./shell-utilities/export-libraries/templates/",
+    "templatesPath": "./export-libraries/templates/",
     "zipFolderName": "exported-library",
     "outputFileName": "exported-library.zip",
     "outputTempFolderName": "Exported-Library-Code-Folder-Temp",
@@ -201,7 +202,7 @@
   },
   "exportComponents": {
     "requiredFolderPath": "./app/project/components/",
-    "templatesPath": "./shell-utilities/export-components/templates/",
+    "templatesPath": "./export-components/templates/",
     "zipFolderName": "exported-components",
     "outputFileName": "exported-components.zip",
     "outputTempFolderName": "Exported-Components-Code-Folder-Temp",
@@ -224,7 +225,7 @@
   },
   "importAssets": {
     "requiredFolderPath": "./app/project/assets/",
-    "templatesPath": "./shell-utilities/import-assets/templates/",
+    "templatesPath": "./import-assets/templates/",
     "zipFolderName": "imported-assets",
     "exportedFolderName": "exported-assets",
     "outputFileName": "imported-assets.zip",
@@ -265,7 +266,7 @@
   },
   "importLibraries": {
     "requiredFolderPath": "./app/project/libraries/",
-    "templatesPath": "./shell-utilities/import-libraries/templates/",
+    "templatesPath": "./import-libraries/templates/",
     "zipFolderName": "imported-libraries",
     "exportedFolderName": "exported-library",
     "outputFileName": "imported-libraries.zip",
@@ -306,7 +307,7 @@
   },
   "importComponents": {
     "requiredFolderPath": "./app/project/components/",
-    "templatesPath": "./shell-utilities/import-components/templates/",
+    "templatesPath": "./import-components/templates/",
     "zipFolderName": "imported-components",
     "exportedFolderName": "exported-components",
     "outputFileName": "imported-components.zip",
@@ -347,7 +348,7 @@
   },
   "importAll": {
     "requiredFolderPath": "./app/project/",
-    "templatesPath": "./shell-utilities/import-all/templates/",
+    "templatesPath": "./import-all/templates/",
     "zipFolderName": "imported-all",
     "exportedFolderName": "exported-all",
     "outputFileName": "imported-all.zip",
@@ -387,7 +388,7 @@
     }
   },
   "validateProjectConfig": {
-    "templatesPath": "./shell-utilities/project-config/templates/",
+    "templatesPath": "./project-config/templates/",
     "textMessages": {
       "VALIDATIONS": {
         "SCHEMA": {
@@ -484,7 +485,7 @@
     }
   },
   "logger": {
-    "allowLogging": false,
+    "allowLogging": true,
     "logLevel": 1
   }
 }

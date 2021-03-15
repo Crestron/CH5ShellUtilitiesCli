@@ -12,6 +12,42 @@ const rimraf = require("rimraf");
 
 export class Ch5CliUtil {
 
+  /**
+ * Delete directory by path
+ * @param {string} directoryName
+ */
+  public deleteFolderSync(directoryName: string) {
+    try {
+      return rimraf.sync(directoryName);
+    } catch (e) {
+      return false;
+    }
+  }
+
+  /**
+* Delete directory by path
+* @param {string} directoryName
+*/
+  public async deleteFolder(directoryName: string) {
+    try {
+      return await rimraf(directoryName);
+    } catch (e) {
+      return false;
+    }
+  }
+
+  /**
+   * Delete File
+   * @param {string} completeFilePath
+   */
+  public async deleteFile(completeFilePath: string) {
+    try {
+      return await rimraf.sync(completeFilePath);
+    } catch (e) {
+      return false;
+    }
+  }
+
   public writeError(error: Error): void {
     console.log(chalk.red(`${error.name}: ${error.message}`));
   }
@@ -89,7 +125,7 @@ export class Ch5CliUtil {
       return inputArray; // since its of string type, return as is
     } else if (this.isValidInput(inputArray) && inputArray.length > 0) {
       let output = "";
-      for (let i = 0; i < inputArray.length; i++) {
+      for (let i:number = 0; i < inputArray.length; i++) {
         output += inputArray[i] + delimiter;
       }
       if (delimiter.trim() === "") {
@@ -121,18 +157,6 @@ export class Ch5CliUtil {
   }
 
   /**
- * Delete directory by path
- * @param {string} directoryName
- */
-  public async deleteFolder(directoryName: string) {
-    try {
-      return await rimraf(directoryName);
-    } catch (e) {
-      return false;
-    }
-  }
-
-  /**
  * Gets the text from the config default.json file.
  * @param {*} key 
  * @param  {...any} values 
@@ -150,7 +174,7 @@ export class Ch5CliUtil {
         output = DYNAMIC_TEXT_MESSAGES[key];
       }
       if (values && values.length > 0) {
-        for (let i = 0; i < values.length; i++) {
+        for (let i:number = 0; i < values.length; i++) {
           output = this.replaceAll(output, "{" + i + "}", values[i]);
         }
       }
@@ -174,7 +198,7 @@ export class Ch5CliUtil {
       if (property.length > 1) {
         let propA = a[property[0]];
         let propB = b[property[0]];
-        for (let i = 1; i < property.length; i++) {
+        for (let i:number = 1; i < property.length; i++) {
           propA = propA[property[i]];
           propB = propB[property[i]];
         }

@@ -47,6 +47,7 @@
     "edit-json-file": "^1.4.0",
     "enquirer": "^2.3.6",
     "figlet": "^1.4.0",
+    "find-remove": "^2.0.3",
     "fs-extra": "^9.1.0",
     "inquirer": "^8.0.0",
     "path": "^0.12.7",

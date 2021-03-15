@@ -30,7 +30,7 @@ You could use shortcuts as the following:
 Options:
     -h, --help,         Help for Exporting components from the './app/project/components/' folder
     -l, --list,         Prefix for list of file names
-    --all               Select this option to export all the files
+    --all               Select this option to export all the component files
 
 ```
 

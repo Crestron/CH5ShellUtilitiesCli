@@ -9,8 +9,8 @@ import chalk from "chalk";
 import { DeviceType, OutputLevel } from "@crestron/ch5-utilities";
 import { Ch5CliLogger } from "./Ch5CliLogger";
 
-const fs = require("fs"); // global object - always available
-const process = require("process"); // global object - always available
+const fs = require("fs"); 
+const process = require("process"); 
 
 export class Ch5CliComponentsHelper {
   private readonly _cliLogger: Ch5CliLogger;
@@ -117,7 +117,7 @@ export class Ch5CliComponentsHelper {
     return this.processArgsAnalyze(args);
   }
 
-  processArgsAnalyze(args: any) {
+  processArgsAnalyze(args: any): any {
     const output: any = {};
     let arrayKey: any = null;
     let arrayParam: any = null;
@@ -158,7 +158,7 @@ export class Ch5CliComponentsHelper {
       }
     });
     this._cliLogger.log("processArgs Before", output);
-    for (let i = 0; i < this.COMPLETE_PARAMETERS.length; i++) {
+    for (let i:number = 0; i < this.COMPLETE_PARAMETERS.length; i++) {
       if (!output[this.COMPLETE_PARAMETERS[i]["key"]]) {
         output[this.COMPLETE_PARAMETERS[i]["key"]] = this.COMPLETE_PARAMETERS[i]["valueIfNotFound"];
       }

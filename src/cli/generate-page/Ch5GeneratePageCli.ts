@@ -9,7 +9,7 @@ import * as commander from "commander";
 import { Ch5BaseClassForCli } from "../Ch5BaseClassForCli";
 
 const path = require('path');
-const fs = require("fs"); // global object - always available
+const fs = require("fs"); 
 const fsExtra = require("fs-extra");
 const Enquirer = require('enquirer');
 const enquirer = new Enquirer();
@@ -20,7 +20,6 @@ export class Ch5GeneratePageCli extends Ch5BaseClassForCli {
   private readonly MAX_LENGTH_OF_PAGE_NAME: number = 31;
 
   private outputResponse: any = {};
-  private readableInputs: any = [];
 
   public constructor() {
     super("generatePage");
@@ -39,31 +38,11 @@ export class Ch5GeneratePageCli extends Ch5BaseClassForCli {
     programObject = programObject.addHelpText('after', contentForHelp);
     programObject.action(async (options) => {
       try {
-        this.readableInputs = this.componentHelper.processArgs();
         await this.generatePage();
       } catch (e) {
         this.utils.writeError(e);
       }
     });
-    // program
-    //   .command('generate:page')
-    //   .option("-H, --deviceHost <deviceHost>", "Device host or IP. Required.")
-    //   .option("-t, --deviceType <deviceType>", "Device type, value in [touchscreen, controlsystem, web]. Required.", /^(touchscreen|controlsystem|web)$/i)
-    //   .option("-d, --deviceDirectory <deviceDirectory>",
-    //     "Device target deploy directory. Defaults to 'display' when deviceType is touchscreen, to 'HTML' when deviceType is controlsystem. Optional.")
-    //   .option("-p, --prompt-for-credentials", "Prompt for credentials. Optional.")
-    //   .option("-q, --quiet [quiet]", "Don\'t display messages. Optional.")
-    //   .option("-vvv, --verbose [verbose]", "Verbose output. Optional.")
-    //   .action(async (options) => {
-    //     try {
-    //     //  await console.log("Options", options);
-    //     //   await console.log("archive", archive);
-    //       await this.run(options);
-    //       // await this.deploy(archive, options);
-    //     } catch (e) {
-    //       this.utils.writeError(e);
-    //     }
-    //   });
   }
 
   /**
@@ -81,14 +60,10 @@ export class Ch5GeneratePageCli extends Ch5BaseClassForCli {
         folderPath: ""
       }
     };
-    if (this.readableInputs.length === 0) {
-      this.readableInputs = this.componentHelper.processArgs();
-    }
   }
 
   /**
    * Method for generating page
-   * @param {*} processArgs 
    */
   private async generatePage() {
     try {
@@ -141,19 +116,19 @@ export class Ch5GeneratePageCli extends Ch5BaseClassForCli {
    */
   private verifyInputParams() {
     const tabDisplayText = this.getText("ERRORS.TAB_DELIMITER");
-    if (this.utils.isValidInput(this.readableInputs["name"])) {
-      const validationResponse = this.validatePageName(this.readableInputs["name"]);
+    if (this.utils.isValidInput(this.inputArguments["name"])) {
+      const validationResponse = this.validatePageName(this.inputArguments["name"]);
       if (validationResponse === "") {
-        this.outputResponse.data.pageName = this.readableInputs["name"];
+        this.outputResponse.data.pageName = this.inputArguments["name"];
       } else {
         this.outputResponse.warningMessage += tabDisplayText + this.getText("ERRORS.PAGE_NAME_INVALID_ENTRY", validationResponse);
       }
     }
 
-    if (this.utils.isValidInput(this.readableInputs["menu"])) {
-      const validationResponse = this.validateMenuOption(this.readableInputs["menu"]);
+    if (this.utils.isValidInput(this.inputArguments["menu"])) {
+      const validationResponse = this.validateMenuOption(this.inputArguments["menu"]);
       if (validationResponse === "") {
-        this.outputResponse.data.menuOption = this.readableInputs["menu"];
+        this.outputResponse.data.menuOption = this.inputArguments["menu"];
       } else {
         this.outputResponse.warningMessage += tabDisplayText + validationResponse + "\n";
       }
@@ -292,7 +267,7 @@ export class Ch5GeneratePageCli extends Ch5BaseClassForCli {
 
     let folderPath = this.basePathForPages + this.outputResponse.data.fileName + "/";
     let folderPathSplit = folderPath.toString().split("/");
-    for (let i = 0; i < folderPathSplit.length; i++) {
+    for (let i:number = 0; i < folderPathSplit.length; i++) {
       this.logger.log(folderPathSplit[i]);
       if (folderPathSplit[i] && folderPathSplit[i].trim() !== "") {
         let previousPath = fullPath;
@@ -353,7 +328,7 @@ export class Ch5GeneratePageCli extends Ch5BaseClassForCli {
       actualContent = this.utils.replaceAll(actualContent, "<%fileName%>", this.outputResponse.data.fileName);
 
       let commonContentInGeneratedFiles: any = this.commonContentInGeneratedFiles;
-      for (let i = 0; i < commonContentInGeneratedFiles.length; i++) {
+      for (let i:number = 0; i < commonContentInGeneratedFiles.length; i++) {
         actualContent = this.utils.replaceAll(actualContent, "<%" + commonContentInGeneratedFiles[i].key + "%>", commonContentInGeneratedFiles[i].value);
       }
 
@@ -481,7 +456,7 @@ export class Ch5GeneratePageCli extends Ch5BaseClassForCli {
   private getInvalidPageStartWithValues() {
     let output = "";
     const templateNames: any = this.getConfigNode("templateNames");
-    for (let i = 0; i < templateNames.disallowed["startsWith"].length; i++) {
+    for (let i:number = 0; i < templateNames.disallowed["startsWith"].length; i++) {
       output += "'" + templateNames.disallowed["startsWith"][i] + "', ";
     }
     output = output.trim();
@@ -496,13 +471,13 @@ export class Ch5GeneratePageCli extends Ch5BaseClassForCli {
   private checkPageNameForDisallowedKeywords(pageName: string, type: string) {
     const templateNames: any = this.getConfigNode("templateNames");
     if (type === "startsWith") {
-      for (let i = 0; i < templateNames.disallowed[type].length; i++) {
+      for (let i:number = 0; i < templateNames.disallowed[type].length; i++) {
         if (pageName.trim().toLowerCase().startsWith(templateNames.disallowed[type][i].trim().toLowerCase())) {
           return true;
         }
       }
     } else if (type === "equals") {
-      for (let i = 0; i < templateNames.disallowed[type].length; i++) {
+      for (let i:number = 0; i < templateNames.disallowed[type].length; i++) {
         if (pageName.trim().toLowerCase() === templateNames.disallowed[type][i].trim().toLowerCase()) {
           return true;
         }

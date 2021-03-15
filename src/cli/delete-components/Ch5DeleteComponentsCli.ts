@@ -8,11 +8,8 @@
 import * as commander from "commander";
 import { Ch5BaseClassForCli } from "../Ch5BaseClassForCli";
 
-const process = require("process"); // global object - always available
 const rimraf = require("rimraf");
 const path = require('path');
-const fs = require("fs"); // global object - always available
-const fsExtra = require("fs-extra");
 
 const { MultiSelect } = require('enquirer');
 const Enquirer = require('enquirer');
@@ -21,56 +18,41 @@ const enquirer = new Enquirer();
 export class Ch5DeleteComponentsCli extends Ch5BaseClassForCli {
 
   private outputResponse: any = {};
-  private readableInputs: any = [];
   private pagesAndWidgets: any = [];
 
+  /**
+   * 
+   */
   public constructor() {
     super("deleteComponents");
   }
 
+  /**
+   * 
+   * @param program 
+   */
   public async setupCommand(program: commander.Command) {
     let programObject = program
-      .command('generate:page')
-      .name('generate:page')
+      .command('delete:components')
+      .name('delete:components')
       .usage('[options]');
 
-    programObject = programObject.option("-n, --name", 'Set the Name of the page to be created');
-    programObject = programObject.option("-m, --menu", "Allow the page navigation to be added to Menu (valid input values are 'Y', 'y', 'N', 'n'");
+    programObject = programObject.option("-l, --list", 'Prefix for list of component names to be deleted');
+    programObject = programObject.option("-f, --force", "Forces the script to delete the component without asking for a confirmation");
 
     const contentForHelp: string = await this.componentHelper.getAdditionalHelpContent(path.join(this.templateFolderPath, "help.template"));
     programObject = programObject.addHelpText('after', contentForHelp);
     programObject.action(async (options) => {
       try {
-        this.readableInputs = this.componentHelper.processArgs();
         await this.deleteComponents();
       } catch (e) {
         this.utils.writeError(e);
       }
     });
-    // program
-    //   .command('generate:page')
-    //   .option("-H, --deviceHost <deviceHost>", "Device host or IP. Required.")
-    //   .option("-t, --deviceType <deviceType>", "Device type, value in [touchscreen, controlsystem, web]. Required.", /^(touchscreen|controlsystem|web)$/i)
-    //   .option("-d, --deviceDirectory <deviceDirectory>",
-    //     "Device target deploy directory. Defaults to 'display' when deviceType is touchscreen, to 'HTML' when deviceType is controlsystem. Optional.")
-    //   .option("-p, --prompt-for-credentials", "Prompt for credentials. Optional.")
-    //   .option("-q, --quiet [quiet]", "Don\'t display messages. Optional.")
-    //   .option("-vvv, --verbose [verbose]", "Verbose output. Optional.")
-    //   .action(async (options) => {
-    //     try {
-    //     //  await console.log("Options", options);
-    //     //   await console.log("archive", archive);
-    //       await this.run(options);
-    //       // await this.deploy(archive, options);
-    //     } catch (e) {
-    //       this.utils.writeError(e);
-    //     }
-    //   });
   }
 
   /**
    * 
-   * @param {*} readableInputs 
    */
   initialize() {
     this.outputResponse = {
@@ -84,9 +66,6 @@ export class Ch5DeleteComponentsCli extends Ch5BaseClassForCli {
       validInputsForComponentNames: [],
       invalidInputsForComponentNames: []
     };
-    if (this.readableInputs.length === 0) {
-      this.readableInputs = this.componentHelper.processArgs();
-    }
     this.pagesAndWidgets = this.projectConfig.getAllPagesAndWidgets();
   }
 
@@ -143,9 +122,9 @@ export class Ch5DeleteComponentsCli extends Ch5BaseClassForCli {
    * @param {*} readableInputs 
    */
   verifyInputParams() {
-    const listOfInputComponents = this.readableInputs["list"];
+    const listOfInputComponents = this.inputArguments["list"];
     if (listOfInputComponents && listOfInputComponents.length > 0) {
-      for (let i = 0; i < listOfInputComponents.length; i++) {
+      for (let i: number = 0; i < listOfInputComponents.length; i++) {
         const componentObject = this.pagesAndWidgets.find((tempObj: { name: string; }) => tempObj.name.trim().toLowerCase() === listOfInputComponents[i].trim().toLowerCase());
         if (componentObject) {
           this.outputResponse.validInputsForComponentNames.push(listOfInputComponents[i]);
@@ -162,7 +141,7 @@ export class Ch5DeleteComponentsCli extends Ch5BaseClassForCli {
       } else {
         this.outputResponse.data.components = this.outputResponse.validInputsForComponentNames;
         if (this.outputResponse.invalidInputsForComponentNames.length > 0) {
-          for (let i = 0; i < this.outputResponse.invalidInputsForComponentNames.length; i++) {
+          for (let i: number = 0; i < this.outputResponse.invalidInputsForComponentNames.length; i++) {
             this.outputResponse.warningMessage += this.outputResponse.invalidInputsForComponentNames[i] + "\n";
           }
         }
@@ -180,7 +159,7 @@ export class Ch5DeleteComponentsCli extends Ch5BaseClassForCli {
   async checkPromptQuestions() {
     if (this.outputResponse.data.components.length === 0) {
       const choicesList = [];
-      for (let i = 0; i < this.pagesAndWidgets.length; i++) {
+      for (let i: number = 0; i < this.pagesAndWidgets.length; i++) {
         const componentType = (this.pagesAndWidgets[i].type === "page") ? "Page" : "Widget";
         //TODO
         choicesList.push({ value: i, hint: this.getText("HINT_COMPONENT_DETAILS", componentType, this.pagesAndWidgets[i].component.fullPath + this.pagesAndWidgets[i].component.fileName), name: this.pagesAndWidgets[i].name, component: this.pagesAndWidgets[i].component, type: this.pagesAndWidgets[i].type });
@@ -201,7 +180,7 @@ export class Ch5DeleteComponentsCli extends Ch5BaseClassForCli {
 
     if (this.outputResponse.data.components.length > 0) {
       this.outputResponse.validInputsForComponentNames = this.outputResponse.data.components;
-      if (this.readableInputs["force"] === true) {
+      if (this.inputArguments["force"] === true) {
         this.outputResponse.data.deleteConfirmation = "Y";
       } else {
         // Lists of the questions that will be asked to the developer for creating a page
@@ -236,7 +215,7 @@ export class Ch5DeleteComponentsCli extends Ch5BaseClassForCli {
    */
   async processRequest() {
     if (this.outputResponse.data.deleteConfirmation === "Y") {
-      for (let i = 0; i < this.outputResponse.data.components.length; i++) {
+      for (let i: number = 0; i < this.outputResponse.data.components.length; i++) {
         const componentObject = this.pagesAndWidgets.find((tempObj: { name: string; }) => tempObj.name.trim().toLowerCase() === this.outputResponse.data.components[i].trim().toLowerCase());
         if (componentObject) {
           rimraf.sync(componentObject.component.fullPath);

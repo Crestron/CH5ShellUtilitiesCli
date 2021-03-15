@@ -7,13 +7,10 @@
 
 import * as commander from "commander";
 import { Ch5BaseClassForCli } from "../Ch5BaseClassForCli";
+import path from 'path';
+import fs from "fs";
 
-const path = require('path');
-const fs = require("fs"); // global object - always available
 const fsExtra = require("fs-extra");
-const Enquirer = require('enquirer');
-const enquirer = new Enquirer();
-const process = require("process"); // global object - always available
 const zl = require("zip-lib");
 const rimraf = require("rimraf");
 const findRemoveSync = require('find-remove');
@@ -21,69 +18,46 @@ const findRemoveSync = require('find-remove');
 export class Ch5ExportAllCli extends Ch5BaseClassForCli {
 
   private outputResponse: any = {};
-  private readableInputs: any = [];
-  private FINAL_OUTPUT_ZIP_FILE: string = "";
+  private finalOutputZipFile: string = "";
 
+  /**
+   * 
+   */
   public constructor() {
     super("exportAll");
+    this.finalOutputZipFile = path.join(this.getConfigNode("zipFileDestinationPath"), this.getConfigNode("outputFileName"));
   }
 
+  /**
+   * 
+   * @param program 
+   */
   public async setupCommand(program: commander.Command) {
     let programObject = program
-      .command('generate:page')
-      .name('generate:page')
+      .command('export:all')
+      .name('export:all')
       .usage('[options]');
 
-    programObject = programObject.option("-n, --name", 'Set the Name of the page to be created');
-    programObject = programObject.option("-m, --menu", "Allow the page navigation to be added to Menu (valid input values are 'Y', 'y', 'N', 'n'");
+    programObject = programObject.option("-l, --list", 'Prefix for list of file names');
+    programObject = programObject.option("--all", 'Select this option to export all the files');
 
     const contentForHelp: string = await this.componentHelper.getAdditionalHelpContent(path.join(this.templateFolderPath, "help.template"));
     programObject = programObject.addHelpText('after', contentForHelp);
     programObject.action(async (options) => {
       try {
-        this.readableInputs = this.componentHelper.processArgs();
-        await this.exportAll(this.readableInputs);
+        await this.exportAll();
       } catch (e) {
         this.utils.writeError(e);
       }
     });
-    // program
-    //   .command('generate:page')
-    //   .option("-H, --deviceHost <deviceHost>", "Device host or IP. Required.")
-    //   .option("-t, --deviceType <deviceType>", "Device type, value in [touchscreen, controlsystem, web]. Required.", /^(touchscreen|controlsystem|web)$/i)
-    //   .option("-d, --deviceDirectory <deviceDirectory>",
-    //     "Device target deploy directory. Defaults to 'display' when deviceType is touchscreen, to 'HTML' when deviceType is controlsystem. Optional.")
-    //   .option("-p, --prompt-for-credentials", "Prompt for credentials. Optional.")
-    //   .option("-q, --quiet [quiet]", "Don\'t display messages. Optional.")
-    //   .option("-vvv, --verbose [verbose]", "Verbose output. Optional.")
-    //   .action(async (options) => {
-    //     try {
-    //     //  await console.log("Options", options);
-    //     //   await console.log("archive", archive);
-    //       await this.run(options);
-    //       // await this.deploy(archive, options);
-    //     } catch (e) {
-    //       this.this.utils.writeError(e);
-    //     }
-    //   });
-  }
-
-  /**
-   * Public Method called to exporting all
-   */
-  run() {
-    const processArgs = this.componentHelper.processArgs();
-    this.exportAll(processArgs);
   }
 
   /**
    * Method for exporting all
    */
-  async exportAll(processArgs: any) {
+  async exportAll() {
     this.outputResponse = {};
-    this.FINAL_OUTPUT_ZIP_FILE = path.join(this.getConfigNode("zipFileDestinationPath"), this.getConfigNode("outputFileName"));
-
-    if (processArgs["all"] === true) {
+    if (this.inputArguments["all"] === true) {
       if (fs.existsSync(this.getConfigNode("requiredFolderPath"))) {
         if (fs.readdirSync(this.getConfigNode("requiredFolderPath")).length > 0) {
           await this.copyAndZipFiles([], true);
@@ -98,7 +72,7 @@ export class Ch5ExportAllCli extends Ch5BaseClassForCli {
         this.logFinalResponses();
       }
     } else {
-      let inputNames = processArgs["list"];
+      let inputNames = this.inputArguments["list"];
       this.logger.log("inputNames", inputNames);
       if (inputNames && inputNames.length > 0) {
         await this.copyAndZipFiles(inputNames, false);
@@ -121,12 +95,12 @@ export class Ch5ExportAllCli extends Ch5BaseClassForCli {
     } else {
       if (this.outputResponse['result'] === true) {
         if (this.outputResponse['copyAll'] === true) {
-          this.logger.printSuccess(this.getText("SUCCESS_MESSAGE_ALL", this.FINAL_OUTPUT_ZIP_FILE));
+          this.logger.printSuccess(this.getText("SUCCESS_MESSAGE_ALL", this.finalOutputZipFile));
         } else {
           if (this.outputResponse['invalidInputs'].length > 0) {
-            this.logger.printSuccess(this.getText("SUCCESS_MESSAGE_SPECIFIC_WITH_ERROR", this.FINAL_OUTPUT_ZIP_FILE, this.utils.convertArrayToString(this.outputResponse['validInputs'], ", "), this.utils.convertArrayToString(this.outputResponse['invalidInputs'], ", ")));
+            this.logger.printSuccess(this.getText("SUCCESS_MESSAGE_SPECIFIC_WITH_ERROR", this.finalOutputZipFile, this.utils.convertArrayToString(this.outputResponse['validInputs'], ", "), this.utils.convertArrayToString(this.outputResponse['invalidInputs'], ", ")));
           } else {
-            this.logger.printSuccess(this.getText("SUCCESS_MESSAGE_SPECIFIC", this.FINAL_OUTPUT_ZIP_FILE, this.utils.convertArrayToString(this.outputResponse['validInputs'], ", ")));
+            this.logger.printSuccess(this.getText("SUCCESS_MESSAGE_SPECIFIC", this.finalOutputZipFile, this.utils.convertArrayToString(this.outputResponse['validInputs'], ", ")));
           }
         }
       } else {
@@ -139,17 +113,17 @@ export class Ch5ExportAllCli extends Ch5BaseClassForCli {
    * Identify the exported components and create a sample project-config.json file internally to this export.
    * @param {*} copyAll 
    */
-  processProjectConfigJSONFile(copyAll:boolean, validInputs:string[]) {
+  processProjectConfigJSONFile(copyAll: boolean, validInputs: string[]) {
     const allPages = this.projectConfig.getAllPages();
     const allWidgets = this.projectConfig.getAllWidgets();
-    let outputJSON:any = {};
+    let outputJSON: any = {};
     if (copyAll === true) {
       outputJSON.pages = allPages;
       outputJSON.widgets = allWidgets;
     } else {
       const allPagesNew = [];
       const allWidgetsNew = [];
-      for (let i = 0; i < validInputs.length; i++) {
+      for (let i: number = 0; i < validInputs.length; i++) {
         const pageObject = allPages.find((tempObj: { fullPath: any; fileName: any; }) => path.resolve(path.join(tempObj.fullPath, tempObj.fileName)).trim().toLowerCase() === path.resolve(validInputs[i]).trim().toLowerCase());
         if (pageObject) {
           allPagesNew.push(pageObject);
@@ -173,7 +147,7 @@ export class Ch5ExportAllCli extends Ch5BaseClassForCli {
    * Get folderPath from project-config.json file.
    * @param {*} htmlFileName 
    */
-  getFolderPathFromProjectConfigJSON(htmlFileName:string) {
+  getFolderPathFromProjectConfigJSON(htmlFileName: string) {
     const allPages = this.projectConfig.getAllPages();
     const allWidgets = this.projectConfig.getAllWidgets();
     const pageObject = allPages.find((tempObj: { fullPath: any; fileName: any; }) => path.join(path.normalize(tempObj.fullPath), path.normalize(tempObj.fileName)).trim().toLowerCase() === path.normalize(htmlFileName).trim().toLowerCase());
@@ -194,14 +168,13 @@ export class Ch5ExportAllCli extends Ch5BaseClassForCli {
    * @param {*} inputNames 
    * @param {*} copyAll 
    */
-  async copyAndZipFiles(inputNames:string[], copyAll: boolean) {
+  async copyAndZipFiles(inputNames: string[], copyAll: boolean) {
     const invalidInputs = [];
     const validInputs = [];
     this.outputResponse['copyAll'] = copyAll;
 
-    let zipFileName = path.join(this.getConfigNode("zipFileDestinationPath"), this.getConfigNode("outputFileName"));
-    this.logger.log("  Complete File Name: " + zipFileName);
-    this.deleteFile(zipFileName);
+    this.logger.log("  Complete File Name: " + this.finalOutputZipFile);
+    await this.utils.deleteFile(this.finalOutputZipFile);
 
     const temporaryFolderPath = path.join(this.getConfigNode("zipFileDestinationPath"), this.getConfigNode("outputTempFolderName"));
     try {
@@ -215,7 +188,7 @@ export class Ch5ExportAllCli extends Ch5BaseClassForCli {
       if (copyAll === true) {
         fsExtra.copySync(this.getConfigNode("requiredFolderPath"), path.join(temporaryFolderPath, this.getConfigNode("zipFolderName"), path.normalize(this.getConfigNode("requiredFolderPath"))), { recursive: true });
       } else {
-        for (let i = 0; i < inputNames.length; i++) {
+        for (let i: number = 0; i < inputNames.length; i++) {
           if (path.normalize(inputNames[i]).indexOf(path.normalize(this.getConfigNode("requiredFolderPath"))) >= 0) {
             if (fs.existsSync(inputNames[i])) {
               const checkFileOrFolder = fs.statSync(inputNames[i]);
@@ -261,7 +234,7 @@ export class Ch5ExportAllCli extends Ch5BaseClassForCli {
         }
         this.logger.info("  project-config.json file created.");
 
-        const outputArchive = await zl.archiveFolder(temporaryFolderPath, zipFileName).then(async () => {
+        await zl.archiveFolder(temporaryFolderPath, this.finalOutputZipFile).then(async () => {
           this.logger.info("Zip Done.");
           try {
             await rimraf.sync(temporaryFolderPath);
@@ -292,30 +265,6 @@ export class Ch5ExportAllCli extends Ch5BaseClassForCli {
       this.outputResponse['result'] = false;
       this.outputResponse['errorMessage'] = e;
       this.logFinalResponses();
-    }
-  }
-
-  /**
-   * Delete directory by path
-   * @param {string} directoryName
-   */
-  deleteFolder(directoryName:string) {
-    try {
-      return rimraf.sync(directoryName);
-    } catch (e) {
-      return false;
-    }
-  }
-
-  /**
-   * Delete File
-   * @param {string} completeFilePath
-   */
-  async deleteFile(completeFilePath: string) {
-    try {
-      return await rimraf.sync(completeFilePath);
-    } catch (e) {
-      return false;
     }
   }
 

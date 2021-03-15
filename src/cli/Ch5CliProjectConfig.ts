@@ -8,8 +8,8 @@
 import { Ch5CliUtil } from "./Ch5CliUtil";
 import { Ch5CliLogger } from "./Ch5CliLogger";
 
-const fs = require("fs"); // global object - always available
-const process = require("process"); // global object - always available
+const fs = require("fs"); 
+const process = require("process"); 
 const path = require("path");
 const editJsonFile = require("edit-json-file");
 const fsExtra = require("fs-extra");
@@ -46,10 +46,10 @@ export class Ch5CliProjectConfig {
   getAllPagesAndWidgets() {
     const projectConfigObject = this.getJson(); // JSON.parse(JSON.stringify(projectConfigJson));
     const output = [];
-    for (let i = 0; i < projectConfigObject.content.pages.length; i++) {
+    for (let i:number = 0; i < projectConfigObject.content.pages.length; i++) {
       output.push({ index: i, name: projectConfigObject.content.pages[i].pageName, component: projectConfigObject.content.pages[i], type: "page" });
     }
-    for (let i = 0; i < projectConfigObject.content.widgets.length; i++) {
+    for (let i:number = 0; i < projectConfigObject.content.widgets.length; i++) {
       output.push({ index: i + projectConfigObject.content.pages.length, name: projectConfigObject.content.widgets[i].widgetName, component: projectConfigObject.content.widgets[i], type: "widget" });
     }
     return output;
@@ -77,7 +77,7 @@ export class Ch5CliProjectConfig {
     try {
       let pageList = this.getAllPages();
       let pageListNew = [];
-      for (let i = 0; i < pageList.length; i++) {
+      for (let i:number = 0; i < pageList.length; i++) {
         if (pageList[i].widgetName.toLowerCase() !== pageName.toLowerCase()) {
           pageListNew.push(pageList[i]);
         }
@@ -95,7 +95,7 @@ export class Ch5CliProjectConfig {
     try {
       let widgetList = this.getAllWidgets();
       let widgetListNew = [];
-      for (let i = 0; i < widgetList.length; i++) {
+      for (let i:number = 0; i < widgetList.length; i++) {
         if (widgetList[i].widgetName.toLowerCase() !== widgetName.toLowerCase()) {
           widgetListNew.push(widgetList[i]);
         }
@@ -128,7 +128,7 @@ export class Ch5CliProjectConfig {
         let newStartingNavigationSequence = this.getHighestNavigationSequence();
         let pagesList = JSON.parse(JSON.stringify(this.getAllPages()));
         let newPageList = this.getAllPages();
-        for (let i = 0; i < pageArrayInput.length; i++) {
+        for (let i:number = 0; i < pageArrayInput.length; i++) {
           let isFileExisting = false;
           let pageListIndex = -1;
           for (let j = 0; j < pagesList.length; j++) {
@@ -175,7 +175,7 @@ export class Ch5CliProjectConfig {
       if (widgetArrayInput && widgetArrayInput.length > 0) {
         let widgetsList = JSON.parse(JSON.stringify(this.getAllWidgets()));
         let newWidgetsList = this.getAllWidgets();
-        for (let i = 0; i < widgetArrayInput.length; i++) {
+        for (let i:number = 0; i < widgetArrayInput.length; i++) {
           let isFileExisting = false;
           for (let j = 0; j < widgetsList.length; j++) {
             if (widgetsList[j].widgetName.trim().toLowerCase() === widgetArrayInput[i].widgetName.trim().toLowerCase()) {
@@ -218,7 +218,7 @@ export class Ch5CliProjectConfig {
       if (listOfInputPages && listOfInputPages.length > 0) {
         let pagesList = this.getAllPages();
         const newList = [];
-        for (let i = 0; i < pagesList.length; i++) {
+        for (let i:number = 0; i < pagesList.length; i++) {
           let isFileExisting = false;
           for (let j = 0; j < listOfInputPages.length; j++) {
             if (pagesList[i].pageName.trim().toLowerCase() === listOfInputPages[j].trim().toLowerCase()) {
@@ -247,7 +247,7 @@ export class Ch5CliProjectConfig {
       if (listOfInputWidgets && listOfInputWidgets.length > 0) {
         let widgetList = this.getAllWidgets();
         const newList = [];
-        for (let i = 0; i < widgetList.length; i++) {
+        for (let i:number = 0; i < widgetList.length; i++) {
           let isFileExisting = false;
           for (let j = 0; j < listOfInputWidgets.length; j++) {
             if (widgetList[i].widgetName.trim().toLowerCase() === listOfInputWidgets[j].trim().toLowerCase()) {
@@ -274,7 +274,7 @@ export class Ch5CliProjectConfig {
   isPageExistInJSON(pageName: string) {
     const pagesArray = this.getAllPages();
     let pageExists = false;
-    for (let i = 0; i < pagesArray.length; i++) {
+    for (let i:number = 0; i < pagesArray.length; i++) {
       if (pagesArray[i].pageName.trim().toLowerCase() === pageName.trim().toLowerCase()) {
         this._cliLogger.log("Page EXISTS: " + pageName);
         pageExists = true;
@@ -287,7 +287,7 @@ export class Ch5CliProjectConfig {
   isWidgetExistInJSON(widgetName: string) {
     const widgetsArray = this.getAllWidgets();
     let widgetExists = false;
-    for (let i = 0; i < widgetsArray.length; i++) {
+    for (let i:number = 0; i < widgetsArray.length; i++) {
       if (widgetsArray[i].widgetName.trim().toLowerCase() === widgetName.trim().toLowerCase()) {
         this._cliLogger.log("Widget EXISTS: " + widgetName);
         widgetExists = true;
@@ -299,7 +299,7 @@ export class Ch5CliProjectConfig {
 
   isPageExistInFolder(pageName: string) {
     const pagesArray = this.getAllPages();
-    for (let i = 0; i < pagesArray.length; i++) {
+    for (let i:number = 0; i < pagesArray.length; i++) {
       if (fs.existsSync(pagesArray[i].componentPath)) {
         this._cliLogger.log("Component path EXISTS: " + pagesArray[i].componentPath);
       } else {
