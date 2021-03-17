@@ -13,9 +13,10 @@
   "types": "build/@types/index.d.ts",
   "scripts": {
     "start": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts",
-    "copyfiles:json": "copyfiles -u 1 src/**/*.json build/",
+    "copyfiles:json": "copyfiles -u 1 src/**/**/*.json build/",
     "copyfiles:template": "copyfiles -u 1 src/**/*.template build/",
-    "build": "tsc -p . && yarn copyfiles:json && yarn copyfiles:template",
+    "copyfiles:text": "copyfiles -u 1 src/**/*.txt build/",
+    "build": "tsc -p . && yarn copyfiles:json && yarn copyfiles:template && yarn copyfiles:text",
     "test": "sudo npm i -g && pizza",
     "build:rags": "yarn clean && yarn tsc",
     "ch5-utils": "./build/index.js",

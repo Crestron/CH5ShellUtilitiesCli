@@ -5,14 +5,13 @@
 // Use of this source code is subject to the terms of the Crestron Software License Agreement
 // under which you licensed this source code.
 
-import chalk from "chalk";
-import { DeviceType, OutputLevel } from "@crestron/ch5-utilities";
 import { Ch5CliLogger } from "./Ch5CliLogger";
 
-const fs = require("fs"); 
-const process = require("process"); 
+const fs = require("fs");
+const process = require("process");
 
 export class Ch5CliComponentsHelper {
+
   private readonly _cliLogger: Ch5CliLogger;
 
   private readonly COMPLETE_PARAMETERS: any[] = [
@@ -71,37 +70,12 @@ export class Ch5CliComponentsHelper {
     this._cliLogger = new Ch5CliLogger();
   }
 
-  public async  getAdditionalHelpContent(path: string) {
-    //   console.log("path", path);
-    // const output=   fs.readFile(path, { encoding: "utf-8" }, (err:any, data:any) => {
-    //     if (!err) {
-    //       console.log("A");
-    //       return data;
-    //       // this._cliLogger.printLog(data);
-    //     } else {
-    //       console.log("B");
-    //       throw this._cliLogger.onErr(err);
-    //     }
-    //   });
-    //   console.log("Z");
-    //   console.log("output",output);
-    //   return "output";
-
-    const output:string = await this.readFile(path);
-    //  fs.readFile(path, { encoding: "utf-8" }, (err: any, data: any) => {
-    //   if (!err) {
-    //     console.log("A");
-    //     return data;
-    //     // this._cliLogger.printLog(data);
-    //   } else {
-    //     console.log("B");
-    //     throw this._cliLogger.onErr(err);
-    //   }
-    // });
+  public async readFileContent(path: string) {
+    const output: string = await this.readFile(path);
     return output;
   }
 
-  async readFile(path: string):Promise<string> {
+  async readFile(path: string): Promise<string> {
     return new Promise<string>((resolve, reject) => {
       fs.readFile(path, 'utf8', function (err: any, data: any) {
         if (err) {
@@ -158,7 +132,7 @@ export class Ch5CliComponentsHelper {
       }
     });
     this._cliLogger.log("processArgs Before", output);
-    for (let i:number = 0; i < this.COMPLETE_PARAMETERS.length; i++) {
+    for (let i: number = 0; i < this.COMPLETE_PARAMETERS.length; i++) {
       if (!output[this.COMPLETE_PARAMETERS[i]["key"]]) {
         output[this.COMPLETE_PARAMETERS[i]["key"]] = this.COMPLETE_PARAMETERS[i]["valueIfNotFound"];
       }

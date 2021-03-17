@@ -37,8 +37,9 @@ export class Ch5ExportComponentsCli extends Ch5BaseClassForCli {
       programObject = programObject.option("-l, --list", 'Prefix for list of file names');
       programObject = programObject.option("--all", 'Select this option to export all the component files');
      
-    const contentForHelp: string = await this.componentHelper.getAdditionalHelpContent(path.join(this.templateFolderPath, "help.template"));
-    programObject = programObject.addHelpText('after', contentForHelp);
+      const helpContentPath: string = path.join(__dirname, "templates", "help.template");
+      const contentForHelp: string = await this.componentHelper.readFileContent(helpContentPath);
+      programObject = programObject.addHelpText('after', contentForHelp);
     programObject.action(async (options) => {
       try {
         this.exportComponents();

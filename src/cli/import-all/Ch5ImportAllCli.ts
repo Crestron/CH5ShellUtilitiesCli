@@ -33,7 +33,8 @@ export class Ch5ExportAssetsCli extends Ch5BaseClassForCli {
     programObject = programObject.option("-n, --name", 'Set the Name of the page to be created');
     programObject = programObject.option("-m, --menu", "Allow the page navigation to be added to Menu (valid input values are 'Y', 'y', 'N', 'n'");
 
-    const contentForHelp: string = await this.componentHelper.getAdditionalHelpContent(path.join(this.templateFolderPath, "help.template"));
+    const helpContentPath: string = path.join(__dirname, "templates", "help.template");
+    const contentForHelp: string = await this.componentHelper.readFileContent(helpContentPath);
     programObject = programObject.addHelpText('after', contentForHelp);
     programObject.action(async (options) => {
       try {

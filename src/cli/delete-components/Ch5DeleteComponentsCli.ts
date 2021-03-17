@@ -9,7 +9,6 @@ import * as commander from "commander";
 import { Ch5BaseClassForCli } from "../Ch5BaseClassForCli";
 
 const rimraf = require("rimraf");
-const path = require('path');
 
 const { MultiSelect } = require('enquirer');
 const Enquirer = require('enquirer');
@@ -21,10 +20,10 @@ export class Ch5DeleteComponentsCli extends Ch5BaseClassForCli {
   private pagesAndWidgets: any = [];
 
   /**
-   * 
+   * Constructor
    */
   public constructor() {
-    super("deleteComponents");
+    super("delete-components");
   }
 
   /**
@@ -32,17 +31,8 @@ export class Ch5DeleteComponentsCli extends Ch5BaseClassForCli {
    * @param program 
    */
   public async setupCommand(program: commander.Command) {
-    let programObject = program
-      .command('delete:components')
-      .name('delete:components')
-      .usage('[options]');
-
-    programObject = programObject.option("-l, --list", 'Prefix for list of component names to be deleted');
-    programObject = programObject.option("-f, --force", "Forces the script to delete the component without asking for a confirmation");
-
-    const contentForHelp: string = await this.componentHelper.getAdditionalHelpContent(path.join(this.templateFolderPath, "help.template"));
-    programObject = programObject.addHelpText('after', contentForHelp);
-    programObject.action(async (options) => {
+    await this.setupCommandParameters(program);
+    program.action(async (options) => {
       try {
         await this.deleteComponents();
       } catch (e) {

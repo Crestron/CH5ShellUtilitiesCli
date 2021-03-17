@@ -15,12 +15,7 @@ import { Ch5CliProjectConfig } from "./Ch5CliProjectConfig";
 
 const inquirer = require('inquirer');
 const path = require('path');
-const fs = require("fs");
 const process = require("process");
-const fsExtra = require("fs-extra");
-
-const Enquirer = require('enquirer');
-const enquirer = new Enquirer();
 
 process.env["NODE_CONFIG_DIR"] = path.join(__dirname, "..", "config");
 const config = require("config");
@@ -32,18 +27,14 @@ export class Ch5BaseClassForCli {
   private readonly _cliNamingHelper: Ch5CliNamingHelper;
   private readonly _cliProjectConfig: Ch5CliProjectConfig;
 
+  private _folderPath: string = "";
   private CONFIG_FILE: any;
-  private _templateFolderPath: string = "";
-  private _basePathForPages: string = "";
+  private TRANSLATION_FILE: any;
   private _commonContentInGeneratedFiles: string = "";
   private _inputArguments: any = {};
 
   protected get inputArguments(): any {
     return this._inputArguments;
-  }
-
-  protected get templateFolderPath() {
-    return this._templateFolderPath;
   }
 
   protected get utils() {
@@ -67,64 +58,46 @@ export class Ch5BaseClassForCli {
   }
 
   protected get basePathForPages() {
-    return this._basePathForPages;
+    return ""
   }
 
   protected get commonContentInGeneratedFiles() {
     return this._commonContentInGeneratedFiles;
   }
 
-  public constructor(templatesPath: string) {
+  public constructor(folderPath: string) {
+    this._folderPath = folderPath;
     this._cliUtil = new Ch5CliUtil();
     this._cliLogger = new Ch5CliLogger();
     this._cliComponentHelper = new Ch5CliComponentsHelper();
     this._cliNamingHelper = new Ch5CliNamingHelper();
     this._cliProjectConfig = new Ch5CliProjectConfig();
-    this.CONFIG_FILE = config[templatesPath];
     this._inputArguments = this.componentHelper.processArgs();
-    this._templateFolderPath = path.join(__dirname, this.CONFIG_FILE.templatesPath);
-    this._basePathForPages = this.CONFIG_FILE.basePathForPages;
-    this._commonContentInGeneratedFiles = this.CONFIG_FILE.commonContentInGeneratedFiles;
   }
 
-  public async setupCommand(program: commander.Command) {
+  /**
+  * 
+  * @param program 
+  */
+  protected async setupCommandParameters(program: commander.Command) {
+    this.TRANSLATION_FILE = JSON.parse(await this.componentHelper.readFileContent(path.join(__dirname, this._folderPath, "i18n", "en.json")));
+    this.CONFIG_FILE = JSON.parse(await this.componentHelper.readFileContent(path.join(__dirname, this._folderPath, "files", "config.json")));
+    this._commonContentInGeneratedFiles = this.CONFIG_FILE.commonContentInGeneratedFiles;
+
     let programObject = program
-      .command('generate:page')
-      .name('generate:page')
-      .usage('[options]');
+      .command(this.CONFIG_FILE.command)
+      .name(this.CONFIG_FILE.name)
+      .usage(this.CONFIG_FILE.usage);
 
-    programObject = programObject.option("-n, --name", 'Set the Name of the page to be created');
-    programObject = programObject.option("-m, --menu", "Allow the page navigation to be added to Menu (valid input values are 'Y', 'y', 'N', 'n'");
+    for (let i: number = 0; i < this.CONFIG_FILE.options.length; i++) {
+      programObject = programObject.option(this.CONFIG_FILE.options[i].keys, this.CONFIG_FILE.options[i].description);
+    }
 
-    const contentForHelp: string = await this._cliComponentHelper.getAdditionalHelpContent(path.join(this.templateFolderPath, "help.template"));
-    programObject = programObject.addHelpText('after', contentForHelp);
-    programObject.action(async (options) => {
-      try {
-        //await this.run(options);
-        // await this.deploy(archive, options);
-      } catch (e) {
-        this._cliUtil.writeError(e);
-      }
-    });
-    // program
-    //   .command('generate:page')
-    //   .option("-H, --deviceHost <deviceHost>", "Device host or IP. Required.")
-    //   .option("-t, --deviceType <deviceType>", "Device type, value in [touchscreen, controlsystem, web]. Required.", /^(touchscreen|controlsystem|web)$/i)
-    //   .option("-d, --deviceDirectory <deviceDirectory>",
-    //     "Device target deploy directory. Defaults to 'display' when deviceType is touchscreen, to 'HTML' when deviceType is controlsystem. Optional.")
-    //   .option("-p, --prompt-for-credentials", "Prompt for credentials. Optional.")
-    //   .option("-q, --quiet [quiet]", "Don\'t display messages. Optional.")
-    //   .option("-vvv, --verbose [verbose]", "Verbose output. Optional.")
-    //   .action(async (options) => {
-    //     try {
-    //     //  await console.log("Options", options);
-    //     //   await console.log("archive", archive);
-    //       await this.run(options);
-    //       // await this.deploy(archive, options);
-    //     } catch (e) {
-    //       this._cliUtil.writeError(e);
-    //     }
-    //   });
+    if (this.CONFIG_FILE.additionalHelp === true) {
+      const contentForHelp: string = await this.componentHelper.readFileContent(path.join(__dirname, this._folderPath, "files", "help.txt"));
+      programObject = programObject.addHelpText('after', contentForHelp);
+    }
+    return programObject
   }
 
   getConfigNode(nodeName: string) {

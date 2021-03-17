@@ -34,7 +34,8 @@ export class Ch5GeneratePageCli extends Ch5BaseClassForCli {
     programObject = programObject.option("-n, --name", 'Set the Name of the page to be created');
     programObject = programObject.option("-m, --menu", "Allow the page navigation to be added to Menu (valid input values are 'Y', 'y', 'N', 'n'");
 
-    const contentForHelp: string = await this.componentHelper.getAdditionalHelpContent(path.join(this.templateFolderPath, "help.template"));
+    const helpContentPath: string = path.join(__dirname, "templates", "help.template");
+    const contentForHelp: string = await this.componentHelper.readFileContent(helpContentPath);
     programObject = programObject.addHelpText('after', contentForHelp);
     programObject.action(async (options) => {
       try {
@@ -320,7 +321,7 @@ export class Ch5GeneratePageCli extends Ch5BaseClassForCli {
    */
   private async createNewFile(fileExtension: string, templateFile: string, fileNameSuffix: string) {
     if (templateFile !== "") {
-      let actualContent = fsExtra.readFileSync(path.join(this.templateFolderPath, templateFile));
+      let actualContent = fsExtra.readFileSync(path.join(__dirname, "templates", templateFile));
       actualContent = this.utils.replaceAll(actualContent, "<%pageName%>", this.outputResponse.data.pageName);
       actualContent = this.utils.replaceAll(actualContent, "<%titlePageName%>", this.namingHelper.capitalizeEachWordWithSpaces(this.outputResponse.data.pageName));
       actualContent = this.utils.replaceAll(actualContent, "<%stylePageName%>", this.namingHelper.dasherize(this.outputResponse.data.pageName));

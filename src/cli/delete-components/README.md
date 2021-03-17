@@ -1,18 +1,7 @@
 # Shell Template - Delete Components
 
 The 'Delete Components' function is used to remove one or more page or widget-type components. This script will only remove components from the /app/project/components directory.
- 
-## Installation
 
-### Install Dependencies
-
-*npm i enquirer --save-dev*
-
-*npm i rimraf --save-dev*
-
-*npm i config --save-dev*
-
-*npm i edit-json --save-dev*
 
 ## How to Use
 To delete component(s), go to the command-prompt or terminal of the Shell Template project, then execute `yarn delete:components` or `npm run delete:components`

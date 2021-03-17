@@ -28,8 +28,9 @@ export class Ch5ExportProjectCli extends Ch5BaseClassForCli {
       .name('export:project')
       .usage('[options]');
 
-    const contentForHelp: string = await this.componentHelper.getAdditionalHelpContent(path.join(this.templateFolderPath, "help.template"));
-    programObject = programObject.addHelpText('after', contentForHelp);
+      const helpContentPath: string = path.join(__dirname, "templates", "help.template");
+      const contentForHelp: string = await this.componentHelper.readFileContent(helpContentPath);
+      programObject = programObject.addHelpText('after', contentForHelp);
     programObject.action((options) => {
       try {
         this.run();
