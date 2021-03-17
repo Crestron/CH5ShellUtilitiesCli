@@ -5,9 +5,9 @@
     "passes": 22,
     "pending": 0,
     "failures": 0,
-    "start": "2021-03-17T09:26:34.740Z",
-    "end": "2021-03-17T09:26:34.762Z",
-    "duration": 22,
+    "start": "2021-03-17T13:07:17.499Z",
+    "end": "2021-03-17T13:07:17.519Z",
+    "duration": 20,
     "testsRegistered": 22,
     "passPercent": 100,
     "pendingPercent": 0,
@@ -18,7 +18,7 @@
   },
   "results": [
     {
-      "uuid": "d4b5145d-7f0f-4d59-ac0c-d4fe895d7727",
+      "uuid": "61e8e395-8458-43f1-9046-2290519b2fc3",
       "title": "",
       "fullFile": "",
       "file": "",
@@ -27,7 +27,7 @@
       "tests": [],
       "suites": [
         {
-          "uuid": "c3de483f-4590-4d96-88bc-2e678b25ec5f",
+          "uuid": "3ba5f608-ac3e-4fd9-a213-47ce7b09afa1",
           "title": "Ch5CliNamingHelper:decamelize >>>>>>> ",
           "fullFile": "C:\\REPOS\\GH_Code\\CH5Utilities\\ch5-shell-utilities-cli\\test\\index.ts",
           "file": "\\test\\index.ts",
@@ -47,8 +47,8 @@
               "context": null,
               "code": "var param = '';\nvar expectedResult = '';\nvar result = helper.decamelize(param);\nchai_1.expect(result).to.equal(expectedResult);",
               "err": {},
-              "uuid": "dfb5204a-fcfe-4b8b-8cdc-acf073bd2afa",
-              "parentUUID": "c3de483f-4590-4d96-88bc-2e678b25ec5f",
+              "uuid": "d4e4011d-455f-4218-bb1a-1261b9087db6",
+              "parentUUID": "3ba5f608-ac3e-4fd9-a213-47ce7b09afa1",
               "isHook": false,
               "skipped": false
             },
@@ -65,16 +65,16 @@
               "context": null,
               "code": "var param = 'hello world';\nvar expectedResult = 'hello world';\nvar result = helper.decamelize(param);\nchai_1.expect(result).to.equal(expectedResult);",
               "err": {},
-              "uuid": "78d132c0-9b54-4c1c-a590-0ad6add11eaf",
-              "parentUUID": "c3de483f-4590-4d96-88bc-2e678b25ec5f",
+              "uuid": "673a4ad1-b9a2-4877-94df-8d256d384faa",
+              "parentUUID": "3ba5f608-ac3e-4fd9-a213-47ce7b09afa1",
               "isHook": false,
               "skipped": false
             }
           ],
           "suites": [],
           "passes": [
-            "dfb5204a-fcfe-4b8b-8cdc-acf073bd2afa",
-            "78d132c0-9b54-4c1c-a590-0ad6add11eaf"
+            "d4e4011d-455f-4218-bb1a-1261b9087db6",
+            "673a4ad1-b9a2-4877-94df-8d256d384faa"
           ],
           "failures": [],
           "pending": [],
@@ -85,7 +85,7 @@
           "_timeout": 2000
         },
         {
-          "uuid": "493267f7-a275-4b1a-b4f3-3f2a7c98d32c",
+          "uuid": "86f7c280-4081-4a67-8c79-df51ef95aa10",
           "title": "Ch5CliNamingHelper:removeAllSpaces >>>>>>> ",
           "fullFile": "C:\\REPOS\\GH_Code\\CH5Utilities\\ch5-shell-utilities-cli\\test\\index.ts",
           "file": "\\test\\index.ts",
@@ -105,8 +105,8 @@
               "context": null,
               "code": "var param = '';\nvar expectedResult = '';\nvar result = helper.removeAllSpaces(param);\nchai_1.expect(result).to.equal(expectedResult);",
               "err": {},
-              "uuid": "b044f1af-2abd-40fe-a2e1-9b9004479dc8",
-              "parentUUID": "493267f7-a275-4b1a-b4f3-3f2a7c98d32c",
+              "uuid": "1c400441-cbe2-4948-983b-c62fd922613e",
+              "parentUUID": "86f7c280-4081-4a67-8c79-df51ef95aa10",
               "isHook": false,
               "skipped": false
             },
@@ -123,16 +123,16 @@
               "context": null,
               "code": "var param = 'hello world';\nvar expectedResult = 'helloworld';\nvar result = helper.removeAllSpaces(param);\nchai_1.expect(result).to.equal(expectedResult);",
               "err": {},
-              "uuid": "0ebd99f7-1d2d-4706-bbfc-c541ae6b462f",
-              "parentUUID": "493267f7-a275-4b1a-b4f3-3f2a7c98d32c",
+              "uuid": "2a01c965-fff1-4dd0-be86-083b19ddf2a8",
+              "parentUUID": "86f7c280-4081-4a67-8c79-df51ef95aa10",
               "isHook": false,
               "skipped": false
             }
           ],
           "suites": [],
           "passes": [
-            "b044f1af-2abd-40fe-a2e1-9b9004479dc8",
-            "0ebd99f7-1d2d-4706-bbfc-c541ae6b462f"
+            "1c400441-cbe2-4948-983b-c62fd922613e",
+            "2a01c965-fff1-4dd0-be86-083b19ddf2a8"
           ],
           "failures": [],
           "pending": [],
@@ -143,7 +143,7 @@
           "_timeout": 2000
         },
         {
-          "uuid": "1051a6e0-901a-4beb-aa14-4111a8ad7d3d",
+          "uuid": "f680c34b-0ad7-42b0-b586-a7289dea1e70",
           "title": "Ch5CliNamingHelper:dasherize >>>>>>> ",
           "fullFile": "C:\\REPOS\\GH_Code\\CH5Utilities\\ch5-shell-utilities-cli\\test\\index.ts",
           "file": "\\test\\index.ts",
@@ -163,8 +163,8 @@
               "context": null,
               "code": "var param = '';\nvar expectedResult = '';\nvar result = helper.dasherize(param);\nchai_1.expect(result).to.equal(expectedResult);",
               "err": {},
-              "uuid": "5bc16a65-6d2c-4e13-ac40-bb7dcc04a18b",
-              "parentUUID": "1051a6e0-901a-4beb-aa14-4111a8ad7d3d",
+              "uuid": "f54d90c2-5085-41e9-b610-5c9b0b8f9814",
+              "parentUUID": "f680c34b-0ad7-42b0-b586-a7289dea1e70",
               "isHook": false,
               "skipped": false
             },
@@ -181,16 +181,16 @@
               "context": null,
               "code": "var param = 'hello world';\nvar expectedResult = 'hello-world';\nvar result = helper.dasherize(param);\nchai_1.expect(result).to.equal(expectedResult);",
               "err": {},
-              "uuid": "8311a181-d627-4004-bb34-4517ec6fec09",
-              "parentUUID": "1051a6e0-901a-4beb-aa14-4111a8ad7d3d",
+              "uuid": "5f327a10-7c68-4636-a2b1-b6f85e5ce85e",
+              "parentUUID": "f680c34b-0ad7-42b0-b586-a7289dea1e70",
               "isHook": false,
               "skipped": false
             }
           ],
           "suites": [],
           "passes": [
-            "5bc16a65-6d2c-4e13-ac40-bb7dcc04a18b",
-            "8311a181-d627-4004-bb34-4517ec6fec09"
+            "f54d90c2-5085-41e9-b610-5c9b0b8f9814",
+            "5f327a10-7c68-4636-a2b1-b6f85e5ce85e"
           ],
           "failures": [],
           "pending": [],
@@ -201,7 +201,7 @@
           "_timeout": 2000
         },
         {
-          "uuid": "8b5a8124-d1b2-4e8f-9993-fa7f1b6ab6c9",
+          "uuid": "523be250-e488-4247-9382-565f9a56efca",
           "title": "Ch5CliNamingHelper:dashNunderscorize >>>>>>> ",
           "fullFile": "C:\\REPOS\\GH_Code\\CH5Utilities\\ch5-shell-utilities-cli\\test\\index.ts",
           "file": "\\test\\index.ts",
@@ -221,8 +221,8 @@
               "context": null,
               "code": "var param = '';\nvar expectedResult = '';\nvar result = helper.dashNunderscorize(param);\nchai_1.expect(result).to.equal(expectedResult);",
               "err": {},
-              "uuid": "76d04081-0f37-418c-bff2-651305556f8e",
-              "parentUUID": "8b5a8124-d1b2-4e8f-9993-fa7f1b6ab6c9",
+              "uuid": "12bc7985-4d0c-44f7-b0c9-20a2785ca899",
+              "parentUUID": "523be250-e488-4247-9382-565f9a56efca",
               "isHook": false,
               "skipped": false
             },
@@ -230,7 +230,7 @@
               "title": "should test for `hello world`",
               "fullTitle": "Ch5CliNamingHelper:dashNunderscorize >>>>>>>  should test for `hello world`",
               "timedOut": false,
-              "duration": 1,
+              "duration": 0,
               "state": "passed",
               "speed": "fast",
               "pass": true,
@@ -239,27 +239,27 @@
               "context": null,
               "code": "var param = 'hello world';\nvar expectedResult = 'hello-world';\nvar result = helper.dashNunderscorize(param);\nchai_1.expect(result).to.equal(expectedResult);",
               "err": {},
-              "uuid": "e2397bef-6572-4e93-a0f4-6dd5b7553aaa",
-              "parentUUID": "8b5a8124-d1b2-4e8f-9993-fa7f1b6ab6c9",
+              "uuid": "e134f553-8e88-491a-b067-2070f88ee937",
+              "parentUUID": "523be250-e488-4247-9382-565f9a56efca",
               "isHook": false,
               "skipped": false
             }
           ],
           "suites": [],
           "passes": [
-            "76d04081-0f37-418c-bff2-651305556f8e",
-            "e2397bef-6572-4e93-a0f4-6dd5b7553aaa"
+            "12bc7985-4d0c-44f7-b0c9-20a2785ca899",
+            "e134f553-8e88-491a-b067-2070f88ee937"
           ],
           "failures": [],
           "pending": [],
           "skipped": [],
-          "duration": 1,
+          "duration": 0,
           "root": false,
           "rootEmpty": false,
           "_timeout": 2000
         },
         {
-          "uuid": "dc560ba5-1269-4856-a60d-f304fd941b43",
+          "uuid": "67deb2ca-8aeb-4793-9eeb-3bfc733ac25d",
           "title": "Ch5CliNamingHelper:camelize >>>>>>> ",
           "fullFile": "C:\\REPOS\\GH_Code\\CH5Utilities\\ch5-shell-utilities-cli\\test\\index.ts",
           "file": "\\test\\index.ts",
@@ -279,8 +279,8 @@
               "context": null,
               "code": "var param = '';\nvar expectedResult = '';\nvar result = helper.camelize(param);\nchai_1.expect(result).to.equal(expectedResult);",
               "err": {},
-              "uuid": "e6c15630-d905-4ce0-9f32-66d550c9dd9a",
-              "parentUUID": "dc560ba5-1269-4856-a60d-f304fd941b43",
+              "uuid": "0a35e190-f54a-4b9c-94ac-29638c434ea8",
+              "parentUUID": "67deb2ca-8aeb-4793-9eeb-3bfc733ac25d",
               "isHook": false,
               "skipped": false
             },
@@ -297,16 +297,16 @@
               "context": null,
               "code": "var param = 'hello world';\nvar expectedResult = 'helloWorld';\nvar result = helper.camelize(param);\nchai_1.expect(result).to.equal(expectedResult);",
               "err": {},
-              "uuid": "95d5fe86-6aeb-4d8d-90a2-bb6342cbcc53",
-              "parentUUID": "dc560ba5-1269-4856-a60d-f304fd941b43",
+              "uuid": "fdd6ce0a-2fd7-4875-b232-9011f391d93f",
+              "parentUUID": "67deb2ca-8aeb-4793-9eeb-3bfc733ac25d",
               "isHook": false,
               "skipped": false
             }
           ],
           "suites": [],
           "passes": [
-            "e6c15630-d905-4ce0-9f32-66d550c9dd9a",
-            "95d5fe86-6aeb-4d8d-90a2-bb6342cbcc53"
+            "0a35e190-f54a-4b9c-94ac-29638c434ea8",
+            "fdd6ce0a-2fd7-4875-b232-9011f391d93f"
           ],
           "failures": [],
           "pending": [],
@@ -317,7 +317,7 @@
           "_timeout": 2000
         },
         {
-          "uuid": "717156e9-597c-4c15-8345-ab7e148a5b98",
+          "uuid": "ab828de5-044e-4e22-8700-9a5021a350d0",
           "title": "Ch5CliNamingHelper:classify >>>>>>> ",
           "fullFile": "C:\\REPOS\\GH_Code\\CH5Utilities\\ch5-shell-utilities-cli\\test\\index.ts",
           "file": "\\test\\index.ts",
@@ -337,8 +337,8 @@
               "context": null,
               "code": "var param = '';\nvar expectedResult = '';\nvar result = helper.classify(param);\nchai_1.expect(result).to.equal(expectedResult);",
               "err": {},
-              "uuid": "0178978c-e2da-43a3-a914-62a27dd5623e",
-              "parentUUID": "717156e9-597c-4c15-8345-ab7e148a5b98",
+              "uuid": "a46cda21-d5da-43f0-b6e0-1b902f92619d",
+              "parentUUID": "ab828de5-044e-4e22-8700-9a5021a350d0",
               "isHook": false,
               "skipped": false
             },
@@ -346,7 +346,7 @@
               "title": "should test for `hello world`",
               "fullTitle": "Ch5CliNamingHelper:classify >>>>>>>  should test for `hello world`",
               "timedOut": false,
-              "duration": 1,
+              "duration": 0,
               "state": "passed",
               "speed": "fast",
               "pass": true,
@@ -355,27 +355,27 @@
               "context": null,
               "code": "var param = 'hello world';\nvar expectedResult = 'HelloWorld';\nvar result = helper.classify(param);\nchai_1.expect(result).to.equal(expectedResult);",
               "err": {},
-              "uuid": "2a040368-bc9e-40f2-a75c-b340f7e2db2b",
-              "parentUUID": "717156e9-597c-4c15-8345-ab7e148a5b98",
+              "uuid": "84c0c586-6117-41f7-b0f0-8f5b0faef48e",
+              "parentUUID": "ab828de5-044e-4e22-8700-9a5021a350d0",
               "isHook": false,
               "skipped": false
             }
           ],
           "suites": [],
           "passes": [
-            "0178978c-e2da-43a3-a914-62a27dd5623e",
-            "2a040368-bc9e-40f2-a75c-b340f7e2db2b"
+            "a46cda21-d5da-43f0-b6e0-1b902f92619d",
+            "84c0c586-6117-41f7-b0f0-8f5b0faef48e"
           ],
           "failures": [],
           "pending": [],
           "skipped": [],
-          "duration": 1,
+          "duration": 0,
           "root": false,
           "rootEmpty": false,
           "_timeout": 2000
         },
         {
-          "uuid": "04afe486-49d0-4746-9c31-490185b3bbd9",
+          "uuid": "c2f6f11c-a55c-4954-ac69-e2985b3117f2",
           "title": "Ch5CliNamingHelper:underscore >>>>>>> ",
           "fullFile": "C:\\REPOS\\GH_Code\\CH5Utilities\\ch5-shell-utilities-cli\\test\\index.ts",
           "file": "\\test\\index.ts",
@@ -395,8 +395,8 @@
               "context": null,
               "code": "var param = '';\nvar expectedResult = '';\nvar result = helper.underscore(param);\nchai_1.expect(result).to.equal(expectedResult);",
               "err": {},
-              "uuid": "5374e5b1-612e-46b2-897c-6cf37feb884a",
-              "parentUUID": "04afe486-49d0-4746-9c31-490185b3bbd9",
+              "uuid": "82b4dfb2-d27a-44c3-a384-38d17db2c481",
+              "parentUUID": "c2f6f11c-a55c-4954-ac69-e2985b3117f2",
               "isHook": false,
               "skipped": false
             },
@@ -413,16 +413,16 @@
               "context": null,
               "code": "var param = 'hello world';\nvar expectedResult = 'hello_world';\nvar result = helper.underscore(param);\nchai_1.expect(result).to.equal(expectedResult);",
               "err": {},
-              "uuid": "5b52937d-361f-4543-9f11-281c290c2554",
-              "parentUUID": "04afe486-49d0-4746-9c31-490185b3bbd9",
+              "uuid": "2bdd1995-c2de-4444-89a4-f3d3f29988a8",
+              "parentUUID": "c2f6f11c-a55c-4954-ac69-e2985b3117f2",
               "isHook": false,
               "skipped": false
             }
           ],
           "suites": [],
           "passes": [
-            "5374e5b1-612e-46b2-897c-6cf37feb884a",
-            "5b52937d-361f-4543-9f11-281c290c2554"
+            "82b4dfb2-d27a-44c3-a384-38d17db2c481",
+            "2bdd1995-c2de-4444-89a4-f3d3f29988a8"
           ],
           "failures": [],
           "pending": [],
@@ -433,7 +433,7 @@
           "_timeout": 2000
         },
         {
-          "uuid": "49efc0a6-c652-4875-a206-bb3d38c8bb92",
+          "uuid": "706c02a0-60a8-4780-bd52-83c0d661ee22",
           "title": "Ch5CliNamingHelper:convertMultipleSpacesToSingleSpace >>>>>>> ",
           "fullFile": "C:\\REPOS\\GH_Code\\CH5Utilities\\ch5-shell-utilities-cli\\test\\index.ts",
           "file": "\\test\\index.ts",
@@ -453,8 +453,8 @@
               "context": null,
               "code": "var param = '';\nvar expectedResult = '';\nvar result = helper.convertMultipleSpacesToSingleSpace(param);\nchai_1.expect(result).to.equal(expectedResult);",
               "err": {},
-              "uuid": "e6e5e05b-f2bc-42f8-9221-9a5e7c956bfe",
-              "parentUUID": "49efc0a6-c652-4875-a206-bb3d38c8bb92",
+              "uuid": "3011b1be-8bd7-4020-8008-79cd2324f6d8",
+              "parentUUID": "706c02a0-60a8-4780-bd52-83c0d661ee22",
               "isHook": false,
               "skipped": false
             },
@@ -471,16 +471,16 @@
               "context": null,
               "code": "var param = 'hello world';\nvar expectedResult = 'hello world';\nvar result = helper.convertMultipleSpacesToSingleSpace(param);\nchai_1.expect(result).to.equal(expectedResult);",
               "err": {},
-              "uuid": "c03bbdb7-d798-40ab-93bb-84e03a665d01",
-              "parentUUID": "49efc0a6-c652-4875-a206-bb3d38c8bb92",
+              "uuid": "34d39e63-1feb-4270-a289-dbed99034687",
+              "parentUUID": "706c02a0-60a8-4780-bd52-83c0d661ee22",
               "isHook": false,
               "skipped": false
             }
           ],
           "suites": [],
           "passes": [
-            "e6e5e05b-f2bc-42f8-9221-9a5e7c956bfe",
-            "c03bbdb7-d798-40ab-93bb-84e03a665d01"
+            "3011b1be-8bd7-4020-8008-79cd2324f6d8",
+            "34d39e63-1feb-4270-a289-dbed99034687"
           ],
           "failures": [],
           "pending": [],
@@ -491,7 +491,7 @@
           "_timeout": 2000
         },
         {
-          "uuid": "21f6ecfc-4b0c-4e30-ad75-1cf219de8f35",
+          "uuid": "55478b5c-daae-4026-b3e0-0412f3325e16",
           "title": "Ch5CliNamingHelper:capitalize >>>>>>> ",
           "fullFile": "C:\\REPOS\\GH_Code\\CH5Utilities\\ch5-shell-utilities-cli\\test\\index.ts",
           "file": "\\test\\index.ts",
@@ -511,8 +511,8 @@
               "context": null,
               "code": "var param = '';\nvar expectedResult = '';\nvar result = helper.capitalize(param);\nchai_1.expect(result).to.equal(expectedResult);",
               "err": {},
-              "uuid": "18163d27-7a02-46ba-8afd-3efa3348b5c4",
-              "parentUUID": "21f6ecfc-4b0c-4e30-ad75-1cf219de8f35",
+              "uuid": "4d0b56b7-ef73-4db8-9624-35b38ed44085",
+              "parentUUID": "55478b5c-daae-4026-b3e0-0412f3325e16",
               "isHook": false,
               "skipped": false
             },
@@ -529,16 +529,16 @@
               "context": null,
               "code": "var param = 'hello world';\nvar expectedResult = 'Hello world';\nvar result = helper.capitalize(param);\nchai_1.expect(result).to.equal(expectedResult);",
               "err": {},
-              "uuid": "0b63f5b7-b8a6-4401-9cb8-1dc4142c49df",
-              "parentUUID": "21f6ecfc-4b0c-4e30-ad75-1cf219de8f35",
+              "uuid": "f6f59eeb-90c4-4730-abb2-341326992081",
+              "parentUUID": "55478b5c-daae-4026-b3e0-0412f3325e16",
               "isHook": false,
               "skipped": false
             }
           ],
           "suites": [],
           "passes": [
-            "18163d27-7a02-46ba-8afd-3efa3348b5c4",
-            "0b63f5b7-b8a6-4401-9cb8-1dc4142c49df"
+            "4d0b56b7-ef73-4db8-9624-35b38ed44085",
+            "f6f59eeb-90c4-4730-abb2-341326992081"
           ],
           "failures": [],
           "pending": [],
@@ -549,7 +549,7 @@
           "_timeout": 2000
         },
         {
-          "uuid": "14ccf658-5584-46c6-a969-1f2a97e148e9",
+          "uuid": "171a3237-d25f-489e-8bbf-0f5b4bdd9247",
           "title": "Ch5CliNamingHelper:capitalizeEachWord >>>>>>> ",
           "fullFile": "C:\\REPOS\\GH_Code\\CH5Utilities\\ch5-shell-utilities-cli\\test\\index.ts",
           "file": "\\test\\index.ts",
@@ -569,8 +569,8 @@
               "context": null,
               "code": "var param = '';\nvar expectedResult = '';\nvar result = helper.capitalizeEachWord(param);\nchai_1.expect(result).to.equal(expectedResult);",
               "err": {},
-              "uuid": "a579c860-7cd7-4d4a-95f4-d3fe041c2622",
-              "parentUUID": "14ccf658-5584-46c6-a969-1f2a97e148e9",
+              "uuid": "d5571ba7-4267-4b97-b928-391bdd32831d",
+              "parentUUID": "171a3237-d25f-489e-8bbf-0f5b4bdd9247",
               "isHook": false,
               "skipped": false
             },
@@ -587,16 +587,16 @@
               "context": null,
               "code": "var param = 'hello world';\nvar expectedResult = 'Hello World';\nvar result = helper.capitalizeEachWord(param);\nchai_1.expect(result).to.equal(expectedResult);",
               "err": {},
-              "uuid": "bb64d2cf-2aa4-485b-842e-c700b8bfc3a7",
-              "parentUUID": "14ccf658-5584-46c6-a969-1f2a97e148e9",
+              "uuid": "c698e5b2-10b3-4b1a-b87a-0c072f56b2f1",
+              "parentUUID": "171a3237-d25f-489e-8bbf-0f5b4bdd9247",
               "isHook": false,
               "skipped": false
             }
           ],
           "suites": [],
           "passes": [
-            "a579c860-7cd7-4d4a-95f4-d3fe041c2622",
-            "bb64d2cf-2aa4-485b-842e-c700b8bfc3a7"
+            "d5571ba7-4267-4b97-b928-391bdd32831d",
+            "c698e5b2-10b3-4b1a-b87a-0c072f56b2f1"
           ],
           "failures": [],
           "pending": [],
@@ -607,7 +607,7 @@
           "_timeout": 2000
         },
         {
-          "uuid": "052a26af-1649-438a-9170-45c34fad4851",
+          "uuid": "397526ce-d0d7-451f-a50b-f8fc9cb585c7",
           "title": "Ch5CliNamingHelper:capitalizeEachWordWithSpaces >>>>>>> ",
           "fullFile": "C:\\REPOS\\GH_Code\\CH5Utilities\\ch5-shell-utilities-cli\\test\\index.ts",
           "file": "\\test\\index.ts",
@@ -627,8 +627,8 @@
               "context": null,
               "code": "var param = '';\nvar expectedResult = '';\nvar result = helper.capitalizeEachWordWithSpaces(param);\nchai_1.expect(result).to.equal(expectedResult);",
               "err": {},
-              "uuid": "4c491fa4-0a0b-4c49-bc42-48507d420be1",
-              "parentUUID": "052a26af-1649-438a-9170-45c34fad4851",
+              "uuid": "8a6e2848-9f9a-4188-86cc-a4d5d810c217",
+              "parentUUID": "397526ce-d0d7-451f-a50b-f8fc9cb585c7",
               "isHook": false,
               "skipped": false
             },
@@ -645,16 +645,16 @@
               "context": null,
               "code": "var param = 'hello world';\nvar expectedResult = 'Hello World';\nvar result = helper.capitalizeEachWordWithSpaces(param);\nchai_1.expect(result).to.equal(expectedResult);",
               "err": {},
-              "uuid": "648971bb-67f8-424c-8848-9cb23ef9a36b",
-              "parentUUID": "052a26af-1649-438a-9170-45c34fad4851",
+              "uuid": "819e0db3-d3a4-4a4b-b3b2-dae365452ff6",
+              "parentUUID": "397526ce-d0d7-451f-a50b-f8fc9cb585c7",
               "isHook": false,
               "skipped": false
             }
           ],
           "suites": [],
           "passes": [
-            "4c491fa4-0a0b-4c49-bc42-48507d420be1",
-            "648971bb-67f8-424c-8848-9cb23ef9a36b"
+            "8a6e2848-9f9a-4188-86cc-a4d5d810c217",
+            "819e0db3-d3a4-4a4b-b3b2-dae365452ff6"
           ],
           "failures": [],
           "pending": [],

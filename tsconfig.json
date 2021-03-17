@@ -5,9 +5,9 @@
     "lib": ["es6", "es2015", "dom"],
     "declaration": true,
     "outDir": "build",
-    "rootDir": "src",
+    "rootDirs": ["src","test"],
     "strict": true,
-    "types": ["node", "mocha", "module"],
+    "types": ["node", "mocha"],
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "newLine": "LF"
