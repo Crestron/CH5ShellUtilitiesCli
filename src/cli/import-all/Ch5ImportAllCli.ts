@@ -24,33 +24,27 @@ export class Ch5ExportAssetsCli extends Ch5BaseClassForCli {
   public constructor() {
     super("importAll");
   }
-  public async setupCommand(program: commander.Command) {
-    let programObject = program
-      .command('import:all')
-      .name('import:all')
-      .usage('[options]');
+  
+  // public async setupCommand(program: commander.Command) {
+  //   let programObject = program
+  //     .command('import:all')
+  //     .name('import:all')
+  //     .usage('[options]');
 
-    programObject = programObject.option("-n, --name", 'Set the Name of the page to be created');
-    programObject = programObject.option("-m, --menu", "Allow the page navigation to be added to Menu (valid input values are 'Y', 'y', 'N', 'n'");
+  //   programObject = programObject.option("-n, --name", 'Set the Name of the page to be created');
+  //   programObject = programObject.option("-m, --menu", "Allow the page navigation to be added to Menu (valid input values are 'Y', 'y', 'N', 'n'");
 
-    const helpContentPath: string = path.join(__dirname, "templates", "help.template");
-    const contentForHelp: string = await this.componentHelper.readFileContent(helpContentPath);
-    programObject = programObject.addHelpText('after', contentForHelp);
-    programObject.action(async (options) => {
-      try {
-        await this.importAll();
-      } catch (e) {
-        this.logger.error(e);
-      }
-    });
-  }
-
-  /**
-   * Public Method 
-   */
-  async run(options: any) {
-    this.importAll();
-  }
+  //   const helpContentPath: string = path.join(__dirname, "templates", "help.template");
+  //   const contentForHelp: string = await this.componentHelper.readFileContent(helpContentPath);
+  //   programObject = programObject.addHelpText('after', contentForHelp);
+  //   programObject.action(async (options) => {
+  //     try {
+  //       await this.importAll();
+  //     } catch (e) {
+  //       this.logger.error(e);
+  //     }
+  //   });
+  // }
 
   /**
    * Initialize all variables and set module level constants

@@ -28,30 +28,30 @@ export class Ch5ExportAllCli extends Ch5BaseClassForCli {
     this.finalOutputZipFile = path.join(this.getConfigNode("zipFileDestinationPath"), this.getConfigNode("outputFileName"));
   }
 
-  /**
-   * 
-   * @param program 
-   */
-  public async setupCommand(program: commander.Command) {
-    let programObject = program
-      .command('export:all')
-      .name('export:all')
-      .usage('[options]');
+  // /**
+  //  * 
+  //  * @param program 
+  //  */
+  // public async setupCommand(program: commander.Command) {
+  //   let programObject = program
+  //     .command('export:all')
+  //     .name('export:all')
+  //     .usage('[options]');
 
-    programObject = programObject.option("-l, --list", 'Prefix for list of file names');
-    programObject = programObject.option("--all", 'Select this option to export all the files');
+  //   programObject = programObject.option("-l, --list", 'Prefix for list of file names');
+  //   programObject = programObject.option("--all", 'Select this option to export all the files');
 
-    const helpContentPath: string = path.join(__dirname, "templates", "help.template");
-    const contentForHelp: string = await this.componentHelper.readFileContent(helpContentPath);
-    programObject = programObject.addHelpText('after', contentForHelp);
-    programObject.action(async (options) => {
-      try {
-        await this.exportAll();
-      } catch (e) {
-        this.utils.writeError(e);
-      }
-    });
-  }
+  //   const helpContentPath: string = path.join(__dirname, "templates", "help.template");
+  //   const contentForHelp: string = await this.componentHelper.readFileContent(helpContentPath);
+  //   programObject = programObject.addHelpText('after', contentForHelp);
+  //   programObject.action(async (options) => {
+  //     try {
+  //       await this.exportAll();
+  //     } catch (e) {
+  //       this.utils.writeError(e);
+  //     }
+  //   });
+  // }
 
   /**
    * Method for exporting all

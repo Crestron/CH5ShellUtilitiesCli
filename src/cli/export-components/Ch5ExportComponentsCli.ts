@@ -28,26 +28,26 @@ export class Ch5ExportComponentsCli extends Ch5BaseClassForCli {
     super("exportComponents");
   }
 
-  public async setupCommand(program: commander.Command) {
-    let programObject = program
-      .command('export:components')
-      .name('export:components')
-      .usage('[options]');
+  // public async setupCommand(program: commander.Command) {
+  //   let programObject = program
+  //     .command('export:components')
+  //     .name('export:components')
+  //     .usage('[options]');
 
-      programObject = programObject.option("-l, --list", 'Prefix for list of file names');
-      programObject = programObject.option("--all", 'Select this option to export all the component files');
+  //     programObject = programObject.option("-l, --list", 'Prefix for list of file names');
+  //     programObject = programObject.option("--all", 'Select this option to export all the component files');
      
-      const helpContentPath: string = path.join(__dirname, "templates", "help.template");
-      const contentForHelp: string = await this.componentHelper.readFileContent(helpContentPath);
-      programObject = programObject.addHelpText('after', contentForHelp);
-    programObject.action(async (options) => {
-      try {
-        this.exportComponents();
-      } catch (e) {
-        this.logger.printError(e);
-      }
-    });
-  }
+  //     const helpContentPath: string = path.join(__dirname, "templates", "help.template");
+  //     const contentForHelp: string = await this.componentHelper.readFileContent(helpContentPath);
+  //     programObject = programObject.addHelpText('after', contentForHelp);
+  //   programObject.action(async (options) => {
+  //     try {
+  //       this.exportComponents();
+  //     } catch (e) {
+  //       this.logger.printError(e);
+  //     }
+  //   });
+  // }
 
   /**
    * Method for exporting components

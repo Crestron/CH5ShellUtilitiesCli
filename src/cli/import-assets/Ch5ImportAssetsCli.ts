@@ -25,55 +25,48 @@ export class Ch5ImportAssetsCli extends Ch5BaseClassForCli {
     super("importAssets");
   }
 
-  public async setupCommand(program: commander.Command) {
-    let programObject = program
-      .command('generate:page')
-      .name('generate:page')
-      .usage('[options]');
+  // public async setupCommand(program: commander.Command) {
+  //   let programObject = program
+  //     .command('generate:page')
+  //     .name('generate:page')
+  //     .usage('[options]');
 
-    programObject = programObject.option("-n, --name", 'Set the Name of the page to be created');
-    programObject = programObject.option("-m, --menu", "Allow the page navigation to be added to Menu (valid input values are 'Y', 'y', 'N', 'n'");
+  //   programObject = programObject.option("-n, --name", 'Set the Name of the page to be created');
+  //   programObject = programObject.option("-m, --menu", "Allow the page navigation to be added to Menu (valid input values are 'Y', 'y', 'N', 'n'");
 
-    const helpContentPath: string = path.join(__dirname, "templates", "help.template");
-    const contentForHelp: string = await this.componentHelper.readFileContent(helpContentPath);
-    programObject = programObject.addHelpText('after', contentForHelp);
-    programObject.action(async (options) => {
-      try {
-        //  await console.log("Options", options);
-        //   await console.log("archive", archive);
-        await this.run(options);
-        // await this.deploy(archive, options);
-      } catch (e) {
-        this.logger.error(e);
-      }
-    });
-    // program
-    //   .command('generate:page')
-    //   .option("-H, --deviceHost <deviceHost>", "Device host or IP. Required.")
-    //   .option("-t, --deviceType <deviceType>", "Device type, value in [touchscreen, controlsystem, web]. Required.", /^(touchscreen|controlsystem|web)$/i)
-    //   .option("-d, --deviceDirectory <deviceDirectory>",
-    //     "Device target deploy directory. Defaults to 'display' when deviceType is touchscreen, to 'HTML' when deviceType is controlsystem. Optional.")
-    //   .option("-p, --prompt-for-credentials", "Prompt for credentials. Optional.")
-    //   .option("-q, --quiet [quiet]", "Don\'t display messages. Optional.")
-    //   .option("-vvv, --verbose [verbose]", "Verbose output. Optional.")
-    //   .action(async (options) => {
-    //     try {
-    //     //  await console.log("Options", options);
-    //     //   await console.log("archive", archive);
-    //       await this.run(options);
-    //       // await this.deploy(archive, options);
-    //     } catch (e) {
-    //       this.logger.error(e);
-    //     }
-    //   });
-  }
-
-  /**
-   * Public Method 
-   */
-  async run(options: any) {
-    this.importAssets();
-  }
+  //   const helpContentPath: string = path.join(__dirname, "templates", "help.template");
+  //   const contentForHelp: string = await this.componentHelper.readFileContent(helpContentPath);
+  //   programObject = programObject.addHelpText('after', contentForHelp);
+  //   programObject.action(async (options) => {
+  //     try {
+  //       //  await console.log("Options", options);
+  //       //   await console.log("archive", archive);
+  //       await this.importAssets();
+  //       // await this.deploy(archive, options);
+  //     } catch (e) {
+  //       this.logger.error(e);
+  //     }
+  //   });
+  //   // program
+  //   //   .command('generate:page')
+  //   //   .option("-H, --deviceHost <deviceHost>", "Device host or IP. Required.")
+  //   //   .option("-t, --deviceType <deviceType>", "Device type, value in [touchscreen, controlsystem, web]. Required.", /^(touchscreen|controlsystem|web)$/i)
+  //   //   .option("-d, --deviceDirectory <deviceDirectory>",
+  //   //     "Device target deploy directory. Defaults to 'display' when deviceType is touchscreen, to 'HTML' when deviceType is controlsystem. Optional.")
+  //   //   .option("-p, --prompt-for-credentials", "Prompt for credentials. Optional.")
+  //   //   .option("-q, --quiet [quiet]", "Don\'t display messages. Optional.")
+  //   //   .option("-vvv, --verbose [verbose]", "Verbose output. Optional.")
+  //   //   .action(async (options) => {
+  //   //     try {
+  //   //     //  await console.log("Options", options);
+  //   //     //   await console.log("archive", archive);
+  //   //       await this.run(options);
+  //   //       // await this.deploy(archive, options);
+  //   //     } catch (e) {
+  //   //       this.logger.error(e);
+  //   //     }
+  //   //   });
+  // }
 
   /**
    * Initialize all variables and set module level constants

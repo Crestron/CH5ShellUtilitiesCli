@@ -5,16 +5,14 @@
 // Use of this source code is subject to the terms of the Crestron Software License Agreement
 // under which you licensed this source code.
 
-import * as commander from "commander";
 import { Ch5BaseClassForCli } from "../Ch5BaseClassForCli";
-
-const rimraf = require("rimraf");
+import { ICh5Cli } from "../ICh5Cli";
 
 const { MultiSelect } = require('enquirer');
 const Enquirer = require('enquirer');
 const enquirer = new Enquirer();
 
-export class Ch5DeleteComponentsCli extends Ch5BaseClassForCli {
+export class Ch5DeleteComponentsCli extends Ch5BaseClassForCli implements ICh5Cli {
 
   private outputResponse: any = {};
   private pagesAndWidgets: any = [];
@@ -27,18 +25,41 @@ export class Ch5DeleteComponentsCli extends Ch5BaseClassForCli {
   }
 
   /**
-   * 
-   * @param program 
+   * Method for deleting components
    */
-  public async setupCommand(program: commander.Command) {
-    await this.setupCommandParameters(program);
-    program.action(async (options) => {
-      try {
-        await this.deleteComponents();
-      } catch (e) {
-        this.utils.writeError(e);
+  async run() {
+    try {
+      // Initialize
+      await this.initialize();
+
+      // Pre-requisite validations like Check if there are pages to be deleted
+      await this.checkPrerequisiteValidations();
+
+      // Verify input params
+      await this.verifyInputParams();
+
+      // Ask details to developer based on input parameter validation
+      await this.checkPromptQuestions();
+
+      // Update project-config first (so that if this fails, we don't worry about file deletion). Next Delete Files
+      await this.processRequest();
+
+      // Clean up
+      await this.cleanUp();
+
+    } catch (e) {
+      if (e && this.utils.isValidInput(e.message)) {
+        this.outputResponse.errorMessage = e.message;
+      } else {
+        this.outputResponse.errorMessage = this.getText("ERRORS.SOMETHING_WENT_WRONG");
+        this.logger.log(e);
       }
-    });
+    }
+
+    // Show output response
+    this.logOutput();
+
+    return this.outputResponse.result; // The return is required to validate in automation test case
   }
 
   /**
@@ -60,45 +81,6 @@ export class Ch5DeleteComponentsCli extends Ch5BaseClassForCli {
   }
 
   /**
-   * Method for deleting components
-   * @param {*} readableInputs 
-   */
-  async deleteComponents() {
-    try {
-      // Initialize
-      this.initialize();
-
-      // Pre-requisite validations like Check if there are pages to be deleted
-      this.checkPrerequisiteValidations();
-
-      // Verify input params
-      await this.verifyInputParams();
-
-      // Ask details to developer based on input parameter validation
-      await this.checkPromptQuestions();
-
-      // Update project-config first (so that if this fails, we don't worry about file deletion). Next Delete Files
-      await this.processRequest();
-
-      // Clean up
-      this.cleanUp();
-
-    } catch (e) {
-      if (e && this.utils.isValidInput(e.message)) {
-        this.outputResponse.errorMessage = e.message;
-      } else {
-        this.outputResponse.errorMessage = this.getText("ERRORS.SOMETHING_WENT_WRONG");
-        this.logger.log(e);
-      }
-    }
-
-    // Show output response
-    this.logOutput();
-
-    return this.outputResponse.result; // The return is required to validate in automation test case
-  }
-
-  /**
    * Check any validations that need to be done before verifying input parameters
    */
   checkPrerequisiteValidations() {
@@ -109,7 +91,6 @@ export class Ch5DeleteComponentsCli extends Ch5BaseClassForCli {
 
   /**
    * Verify input parameters
-   * @param {*} readableInputs 
    */
   verifyInputParams() {
     const listOfInputComponents = this.inputArguments["list"];
@@ -151,7 +132,6 @@ export class Ch5DeleteComponentsCli extends Ch5BaseClassForCli {
       const choicesList = [];
       for (let i: number = 0; i < this.pagesAndWidgets.length; i++) {
         const componentType = (this.pagesAndWidgets[i].type === "page") ? "Page" : "Widget";
-        //TODO
         choicesList.push({ value: i, hint: this.getText("HINT_COMPONENT_DETAILS", componentType, this.pagesAndWidgets[i].component.fullPath + this.pagesAndWidgets[i].component.fileName), name: this.pagesAndWidgets[i].name, component: this.pagesAndWidgets[i].component, type: this.pagesAndWidgets[i].type });
       }
       this.logger.log("choicesList", choicesList);
@@ -208,7 +188,7 @@ export class Ch5DeleteComponentsCli extends Ch5BaseClassForCli {
       for (let i: number = 0; i < this.outputResponse.data.components.length; i++) {
         const componentObject = this.pagesAndWidgets.find((tempObj: { name: string; }) => tempObj.name.trim().toLowerCase() === this.outputResponse.data.components[i].trim().toLowerCase());
         if (componentObject) {
-          rimraf.sync(componentObject.component.fullPath);
+          this.utils.deleteFolderSync(componentObject.component.fullPath);
         } else {
           //TODO - ERROR - MIGHT NOT HAPPEN
         }

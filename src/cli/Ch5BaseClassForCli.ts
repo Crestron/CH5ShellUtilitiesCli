@@ -15,10 +15,6 @@ import { Ch5CliProjectConfig } from "./Ch5CliProjectConfig";
 
 const inquirer = require('inquirer');
 const path = require('path');
-const process = require("process");
-
-process.env["NODE_CONFIG_DIR"] = path.join(__dirname, "..", "config");
-const config = require("config");
 
 export class Ch5BaseClassForCli {
   private readonly _cliUtil: Ch5CliUtil;
@@ -30,7 +26,6 @@ export class Ch5BaseClassForCli {
   private _folderPath: string = "";
   private CONFIG_FILE: any;
   private TRANSLATION_FILE: any;
-  private _commonContentInGeneratedFiles: string = "";
   private _inputArguments: any = {};
 
   protected get inputArguments(): any {
@@ -57,12 +52,8 @@ export class Ch5BaseClassForCli {
     return this._cliProjectConfig;
   }
 
-  protected get basePathForPages() {
-    return ""
-  }
-
   protected get commonContentInGeneratedFiles() {
-    return this._commonContentInGeneratedFiles;
+    return this.CONFIG_FILE.commonContentInGeneratedFiles;
   }
 
   public constructor(folderPath: string) {
@@ -79,10 +70,9 @@ export class Ch5BaseClassForCli {
   * 
   * @param program 
   */
-  protected async setupCommandParameters(program: commander.Command) {
+  public async setupCommand(program: commander.Command) {
     this.TRANSLATION_FILE = JSON.parse(await this.componentHelper.readFileContent(path.join(__dirname, this._folderPath, "i18n", "en.json")));
     this.CONFIG_FILE = JSON.parse(await this.componentHelper.readFileContent(path.join(__dirname, this._folderPath, "files", "config.json")));
-    this._commonContentInGeneratedFiles = this.CONFIG_FILE.commonContentInGeneratedFiles;
 
     let programObject = program
       .command(this.CONFIG_FILE.command)
@@ -97,10 +87,24 @@ export class Ch5BaseClassForCli {
       const contentForHelp: string = await this.componentHelper.readFileContent(path.join(__dirname, this._folderPath, "files", "help.txt"));
       programObject = programObject.addHelpText('after', contentForHelp);
     }
-    return programObject
+    programObject.action(async (options) => {
+      try {
+        await this.run();
+      } catch (e) {
+        this.utils.writeError(e);
+      }
+    });
+    return programObject;
   }
 
-  getConfigNode(nodeName: string) {
+  /**
+   * DO NOT DELETE
+   */
+  async run() {
+
+  }
+
+  protected getConfigNode(nodeName: string) {
     return this.CONFIG_FILE[nodeName];
   }
 
@@ -110,8 +114,7 @@ export class Ch5BaseClassForCli {
    * @param  {...any} values 
    */
   getText(key: string, ...values: string[]) {
-    const DYNAMIC_TEXT_MESSAGES = this.CONFIG_FILE.textMessages;
-    return this._cliUtil.getText(DYNAMIC_TEXT_MESSAGES, key, ...values);
+    return this._cliUtil.getText(this.TRANSLATION_FILE, key, ...values);
   }
 
   private async deploy(archive: string, options: any): Promise<void> {

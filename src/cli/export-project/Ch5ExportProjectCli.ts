@@ -1,12 +1,12 @@
-// Copyright (C) 2018 to the present, Crestron Electronics, Inc.
+// Copyright (C) 2021 to the present, Crestron Electronics, Inc.
 // All rights reserved.
 // No part of this software may be reproduced in any form, machine
 // or natural, without the express written consent of Crestron Electronics.
 // Use of this source code is subject to the terms of the Crestron Software License Agreement
 // under which you licensed this source code.
 
-import * as commander from "commander";
 import { Ch5BaseClassForCli } from "../Ch5BaseClassForCli";
+import { ICh5Cli } from "../ICh5Cli";
 
 const path = require('path');
 const fs = require("fs");
@@ -14,7 +14,7 @@ const zl = require("zip-lib");
 const fsExtra = require("fs-extra");
 const rimraf = require("rimraf");
 
-export class Ch5ExportProjectCli extends Ch5BaseClassForCli {
+export class Ch5ExportProjectCli extends Ch5BaseClassForCli implements ICh5Cli {
 
   private outputResponse: any = {};
 
@@ -22,30 +22,24 @@ export class Ch5ExportProjectCli extends Ch5BaseClassForCli {
     super("exportProject");
   }
 
-  public async setupCommand(program: commander.Command) {
-    let programObject = program
-      .command('export:project')
-      .name('export:project')
-      .usage('[options]');
+  // public async setupCommand(program: commander.Command) {
+  //   let programObject = program
+  //     .command('export:project')
+  //     .name('export:project')
+  //     .usage('[options]');
 
-      const helpContentPath: string = path.join(__dirname, "templates", "help.template");
-      const contentForHelp: string = await this.componentHelper.readFileContent(helpContentPath);
-      programObject = programObject.addHelpText('after', contentForHelp);
-    programObject.action((options) => {
-      try {
-        this.run();
-      } catch (e) {
-        this.logger.error(e);
-      }
-    });
-  }
+  //     const helpContentPath: string = path.join(__dirname, "templates", "help.template");
+  //     const contentForHelp: string = await this.componentHelper.readFileContent(helpContentPath);
+  //     programObject = programObject.addHelpText('after', contentForHelp);
+  //   programObject.action((options) => {
+  //     try {
+  //       this.exportProject();
+  //     } catch (e) {
+  //       this.logger.error(e);
+  //     }
+  //   });
+  // }
 
-  /**
-   * Public Method 
-   */
-  run() {
-    this.exportProject();
-  }
 
   /**
    * Method for exporting project

@@ -26,27 +26,27 @@ export class Ch5GenerateWidgetCli extends Ch5BaseClassForCli {
     super("generateWidget");
   }
 
-  public async setupCommand(program: commander.Command) {
-    let programObject = program
-      .command('generate:widget')
-      .name('generate:widget')
-      .usage('[options]');
+  // public async setupCommand(program: commander.Command) {
+  //   let programObject = program
+  //     .command('generate:widget')
+  //     .name('generate:widget')
+  //     .usage('[options]');
 
-    programObject = programObject.option("-n, --name", 'Set the Name of the widget to be created');
-    programObject = programObject.option("-m, --menu", "Allow the page navigation to be added to Menu (valid input values are 'Y', 'y', 'N', 'n'");
+  //   programObject = programObject.option("-n, --name", 'Set the Name of the widget to be created');
+  //   programObject = programObject.option("-m, --menu", "Allow the page navigation to be added to Menu (valid input values are 'Y', 'y', 'N', 'n'");
 
-    const helpContentPath: string = path.join(__dirname, "templates", "help.template");
-    const contentForHelp: string = await this.componentHelper.readFileContent(helpContentPath);
-    programObject = programObject.addHelpText('after', contentForHelp);
-    programObject.action(async (options) => {
-      try {
-        this.readableInputs = this.componentHelper.processArgs();
-        await this.generatePage();
-      } catch (e) {
-        this.utils.writeError(e);
-      }
-    });
-  }
+  //   const helpContentPath: string = path.join(__dirname, "templates", "help.template");
+  //   const contentForHelp: string = await this.componentHelper.readFileContent(helpContentPath);
+  //   programObject = programObject.addHelpText('after', contentForHelp);
+  //   programObject.action(async (options) => {
+  //     try {
+  //       this.readableInputs = this.componentHelper.processArgs();
+  //       await this.generatePage();
+  //     } catch (e) {
+  //       this.utils.writeError(e);
+  //     }
+  //   });
+  // }
 
   /**
    * Initialize
@@ -272,7 +272,7 @@ export class Ch5GenerateWidgetCli extends Ch5BaseClassForCli {
     let isFolderCreated = false;
     let fullPath = "";
 
-    let folderPath = this.basePathForPages + this.outputResponse.data.fileName + "/";
+    let folderPath = this.getConfigNode("basePathForPages") + this.outputResponse.data.fileName + "/";
     let folderPathSplit = folderPath.toString().split("/");
     for (let i:number = 0; i < folderPathSplit.length; i++) {
       this.logger.log(folderPathSplit[i]);

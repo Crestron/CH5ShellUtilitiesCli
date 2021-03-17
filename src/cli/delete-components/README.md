@@ -50,7 +50,7 @@ Parameters for "logger" are as follows:
 
 
 ### Copyright
-Copyright (C) 2020 to the present, Crestron Electronics, Inc.
+Copyright (C) 2021 to the present, Crestron Electronics, Inc.
 
 All rights reserved.
 

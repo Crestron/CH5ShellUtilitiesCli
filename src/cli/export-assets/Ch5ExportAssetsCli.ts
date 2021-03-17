@@ -24,26 +24,26 @@ export class Ch5ExportAssetsCli extends Ch5BaseClassForCli {
     super("exportAssets");
   }
 
-  public async setupCommand(program: commander.Command) {
-    let programObject = program
-      .command('export:assets')
-      .name('export:assets')
-      .usage('[options]');
+  // public async setupCommand(program: commander.Command) {
+  //   let programObject = program
+  //     .command('export:assets')
+  //     .name('export:assets')
+  //     .usage('[options]');
 
-      programObject = programObject.option("-l, --list", 'Prefix for list of file names');
-      programObject = programObject.option("--all", 'Select this option to export all the assets');
+  //     programObject = programObject.option("-l, --list", 'Prefix for list of file names');
+  //     programObject = programObject.option("--all", 'Select this option to export all the assets');
                    
-      const helpContentPath: string = path.join(__dirname, "templates", "help.template");
-      const contentForHelp: string = await this.componentHelper.readFileContent(helpContentPath);
-      programObject = programObject.addHelpText('after', contentForHelp);
-    programObject.action(async (options) => {
-      try {
-        this.exportAssets();
-      } catch (e) {
-        this.utils.writeError(e);
-      }
-    });
-  }
+  //     const helpContentPath: string = path.join(__dirname, "templates", "help.template");
+  //     const contentForHelp: string = await this.componentHelper.readFileContent(helpContentPath);
+  //     programObject = programObject.addHelpText('after', contentForHelp);
+  //   programObject.action(async (options) => {
+  //     try {
+  //       this.exportAssets();
+  //     } catch (e) {
+  //       this.utils.writeError(e);
+  //     }
+  //   });
+  // }
 
   /**
    * Method for exporting assets
