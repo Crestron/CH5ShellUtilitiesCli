@@ -72,7 +72,7 @@ export class Ch5DeleteComponentsCli extends Ch5BaseClassForCli implements ICh5Cl
       warningMessage: "",
       data: {
         components: [],
-        deleteConfirmation: "N"
+        deleteConfirmation: false
       },
       validInputsForComponentNames: [],
       invalidInputsForComponentNames: []
@@ -151,7 +151,7 @@ export class Ch5DeleteComponentsCli extends Ch5BaseClassForCli implements ICh5Cl
     if (this.outputResponse.data.components.length > 0) {
       this.outputResponse.validInputsForComponentNames = this.outputResponse.data.components;
       if (this.inputArguments["force"] === true) {
-        this.outputResponse.data.deleteConfirmation = "Y";
+        this.outputResponse.data.deleteConfirmation = true;
       } else {
         // Lists of the questions that will be asked to the developer for creating a page
         const questionsArray = [
@@ -169,10 +169,10 @@ export class Ch5DeleteComponentsCli extends Ch5BaseClassForCli implements ICh5Cl
         this.outputResponse.data.deleteConfirmation = await enquirer.prompt(questionsArray)
           .then((response: { deleteConfirmation: any; }) => {
             this.logger.log(response);
-            return response.deleteConfirmation;
+            return this.utils.convertStringToBoolean(response.deleteConfirmation);
           })
           .catch((err: any) => {
-            return "N";
+            return false;
           });
       }
     } else {
@@ -184,13 +184,13 @@ export class Ch5DeleteComponentsCli extends Ch5BaseClassForCli implements ICh5Cl
    * Implement this component's main purpose
    */
   async processRequest() {
-    if (this.outputResponse.data.deleteConfirmation === "Y") {
+    if (this.outputResponse.data.deleteConfirmation === true) {
       for (let i: number = 0; i < this.outputResponse.data.components.length; i++) {
         const componentObject = this.pagesAndWidgets.find((tempObj: { name: string; }) => tempObj.name.trim().toLowerCase() === this.outputResponse.data.components[i].trim().toLowerCase());
         if (componentObject) {
           this.utils.deleteFolderSync(componentObject.component.fullPath);
         } else {
-          //TODO - ERROR - MIGHT NOT HAPPEN
+          throw new Error(this.getText("ERRORS.SOMETHING_WENT_WRONG"));
         }
       }
       // Change project config
@@ -198,7 +198,7 @@ export class Ch5DeleteComponentsCli extends Ch5BaseClassForCli implements ICh5Cl
       this.projectConfig.removeWidgetsFromJSON(this.outputResponse.data.components);
 
       this.outputResponse.result = true;
-    } else if (this.outputResponse.data.deleteConfirmation === "N") {
+    } else if (this.outputResponse.data.deleteConfirmation === false) {
       throw new Error(this.getText("ERRORS.DO_NOT_DELETE_COMPONENTS"));
     } else {
       throw new Error(this.getText("ERRORS.PROGRAM_STOPPED_OR_UNKNOWN_ERROR"));
