@@ -29,7 +29,8 @@
     "start:js": "node build/index.js",
     "start:watch": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts",
     "refresh": "rm -rf ./node_modules ./package-lock.json && npm install",
-    "tsc": "tsc --declaration --declarationDir build/@types"
+    "tsc": "tsc --declaration --declarationDir build/@types",
+    "mtest":"mocha -r ts-node/register test/index.ts --reporter mochawesome"
   },
   "keywords": [
     "ch5",
@@ -51,17 +52,23 @@
     "find-remove": "^2.0.3",
     "fs-extra": "^9.1.0",
     "inquirer": "^8.0.0",
+    "mochawesome": "^6.2.2",
     "path": "^0.12.7",
     "rimraf": "^3.0.2",
     "xhr2": "^0.2.0",
     "zip-lib": "^0.7.2"
   },
   "devDependencies": {
+    "@types/chai": "^4.2.15",
+    "@types/mocha": "^8.2.1",
     "@types/node": "^14.14.33",
+    "chai": "^4.3.4",
     "figlet-cli": "^0.1.0",
+    "mocha": "^8.3.2",
     "nodemon": "^2.0.7",
     "ts-node": "^9.1.1",
-    "typescript": "^4.2.3"
+    "typescript": "^4.2.3",
+    "typings": "^2.1.1"
   },
   "files": [
     "build/**/*",

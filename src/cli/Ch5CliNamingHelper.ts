@@ -5,8 +5,8 @@
 // Use of this source code is subject to the terms of the Crestron Software License Agreement
 // under which you licensed this source code.
 
-import chalk from "chalk";
-import { DeviceType, OutputLevel } from "@crestron/ch5-utilities";
+// import chalk from "chalk";
+// import { DeviceType, OutputLevel } from "@crestron/ch5-utilities";
 
 export class Ch5CliNamingHelper {
    /**
@@ -157,7 +157,7 @@ export class Ch5CliNamingHelper {
    * @param {String} str The string to capitalize.
    * @return {String} The capitalized string.
   */
-  capitalizeEachWord(str:string, chrChange:string) {
+  capitalizeEachWord(str:string, chrChange:string = ' ') {
     return str
       .split(chrChange)
       .map((part) => this.capitalize(this.camelize(part)))

@@ -7,7 +7,7 @@
     "outDir": "build",
     "rootDir": "src",
     "strict": true,
-    "types": ["node"],
+    "types": ["node", "mocha", "module"],
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "newLine": "LF"
