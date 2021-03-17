@@ -1,0 +1,41 @@
+{
+  "command": "delete:components",
+  "name": "delete:components",
+  "usage": "[options]",
+  "options": [
+    {
+      "keys": "-l, --list",
+      "description": "Prefix for list of component names to be deleted"
+    },
+    {
+      "keys": "-f, --force",
+      "description": "Forces the component to be deleted without asking for a confirmation"
+    }
+  ],
+  "additionalHelp": true,
+  "logger": {
+    "allowLogging": true,
+    "logLevel": 1
+  },
+  "basePathForPages": "./app/project/components/pages/",
+  "temporaryFilePath": "./../dist/",
+  "zipFileDestinationPath": "./dist/",
+  "ignoreFilesFolders": [
+    "node_modules",
+    "dist",
+    "www",
+    "/out-tsc",
+    ".project",
+    ".classpath",
+    ".settings/",
+    ".sublime-workspace",
+    ".sass-cache",
+    "npm-debug.log",
+    "yarn-error.log",
+    "testem.log",
+    ".DS_Store",
+    ".lock",
+    "package-lock.json",
+    "Thumbs.db"
+  ]
+}

@@ -5,8 +5,8 @@
 // Use of this source code is subject to the terms of the Crestron Software License Agreement
 // under which you licensed this source code.
 
-import * as commander from "commander";
 import { Ch5BaseClassForCli } from "../Ch5BaseClassForCli";
+import { ICh5Cli } from "../ICh5Cli";
 
 const path = require('path');
 const fs = require("fs");
@@ -18,14 +18,14 @@ const enquirer = new Enquirer();
 const projectConfigJson = require("../../app/project-config.json");
 const projectConfigJsonSchema = require("../../.vscode/project-config-schema.json");
 
-export class Ch5ExportAssetsCli extends Ch5BaseClassForCli {
+export class Ch5ExportAssetsCli extends Ch5BaseClassForCli  implements ICh5Cli  {
 
   private outputResponse: any = {};
   private errorsFound: any = [];
   private warningsFound: any = [];
 
   public constructor() {
-    super("exportComponents");
+    super("validate-project-config");
   }
 
   // public async setupCommand(program: commander.Command) {

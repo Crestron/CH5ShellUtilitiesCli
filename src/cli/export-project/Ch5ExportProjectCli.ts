@@ -8,38 +8,15 @@
 import { Ch5BaseClassForCli } from "../Ch5BaseClassForCli";
 import { ICh5Cli } from "../ICh5Cli";
 
-const path = require('path');
 const fs = require("fs");
 const zl = require("zip-lib");
 const fsExtra = require("fs-extra");
-const rimraf = require("rimraf");
 
 export class Ch5ExportProjectCli extends Ch5BaseClassForCli implements ICh5Cli {
 
-  private outputResponse: any = {};
-
   public constructor() {
-    super("exportProject");
+    super("export-project");
   }
-
-  // public async setupCommand(program: commander.Command) {
-  //   let programObject = program
-  //     .command('export:project')
-  //     .name('export:project')
-  //     .usage('[options]');
-
-  //     const helpContentPath: string = path.join(__dirname, "templates", "help.template");
-  //     const contentForHelp: string = await this.componentHelper.readFileContent(helpContentPath);
-  //     programObject = programObject.addHelpText('after', contentForHelp);
-  //   programObject.action((options) => {
-  //     try {
-  //       this.exportProject();
-  //     } catch (e) {
-  //       this.logger.error(e);
-  //     }
-  //   });
-  // }
-
 
   /**
    * Method for exporting project
@@ -77,7 +54,7 @@ export class Ch5ExportProjectCli extends Ch5BaseClassForCli implements ICh5Cli {
         .copy("./", folderPathActual, {
           filter: (path: any) => {
             let isValidOutput = true;
-            for (let i:number = 0; i < excludedFiles.length; i++) {
+            for (let i: number = 0; i < excludedFiles.length; i++) {
               if (path.indexOf(excludedFiles[i]) > -1) {
                 this.logger.log("path ===", path);
                 isValidOutput = false;
@@ -116,7 +93,7 @@ export class Ch5ExportProjectCli extends Ch5BaseClassForCli implements ICh5Cli {
         if (cleanupPath === this.getConfigNode("zipFileDestinationPath")) {
           cleanupPath = folderPathActual;
         }
-        await rimraf.sync(cleanupPath);
+         this.utils.deleteFolderSync(cleanupPath);
         this.logger.info("Clean up Done for the path: " + cleanupPath);
         this.logger.printSuccess(this.getText("SUCCESS_MESSAGE", completeFileName));
         return true;

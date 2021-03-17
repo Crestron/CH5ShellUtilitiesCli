@@ -5,8 +5,8 @@
 // Use of this source code is subject to the terms of the Crestron Software License Agreement
 // under which you licensed this source code.
 
-import * as commander from "commander";
 import { Ch5BaseClassForCli } from "../Ch5BaseClassForCli";
+import { ICh5Cli } from "../ICh5Cli";
 
 const path = require('path');
 const fs = require("fs"); 
@@ -14,7 +14,7 @@ const fsExtra = require("fs-extra");
 const Enquirer = require('enquirer');
 const enquirer = new Enquirer();
 
-export class Ch5GeneratePageCli extends Ch5BaseClassForCli {
+export class Ch5GeneratePageCli extends Ch5BaseClassForCli implements ICh5Cli  {
 
   private readonly MIN_LENGTH_OF_PAGE_NAME: number = 2;
   private readonly MAX_LENGTH_OF_PAGE_NAME: number = 31;
@@ -22,7 +22,7 @@ export class Ch5GeneratePageCli extends Ch5BaseClassForCli {
   private outputResponse: any = {};
 
   public constructor() {
-    super("generatePage");
+    super("generate-page");
   }
 
   // public async setupCommand(program: commander.Command) {
@@ -327,11 +327,6 @@ export class Ch5GeneratePageCli extends Ch5BaseClassForCli {
       actualContent = this.utils.replaceAll(actualContent, "<%stylePageName%>", this.namingHelper.dasherize(this.outputResponse.data.pageName));
       actualContent = this.utils.replaceAll(actualContent, "<%copyrightYear%>", String(new Date().getFullYear()));
       actualContent = this.utils.replaceAll(actualContent, "<%fileName%>", this.outputResponse.data.fileName);
-
-      let commonContentInGeneratedFiles: any = this.commonContentInGeneratedFiles;
-      for (let i:number = 0; i < commonContentInGeneratedFiles.length; i++) {
-        actualContent = this.utils.replaceAll(actualContent, "<%" + commonContentInGeneratedFiles[i].key + "%>", commonContentInGeneratedFiles[i].value);
-      }
 
       const completeFilePath = this.outputResponse.data.folderPath + this.outputResponse.data.fileName + fileNameSuffix + "." + fileExtension;
       fsExtra.writeFileSync(completeFilePath, actualContent);

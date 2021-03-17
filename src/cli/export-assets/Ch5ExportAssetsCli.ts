@@ -5,8 +5,8 @@
 // Use of this source code is subject to the terms of the Crestron Software License Agreement
 // under which you licensed this source code.
 
-import * as commander from "commander";
 import { Ch5BaseClassForCli } from "../Ch5BaseClassForCli";
+import { ICh5Cli } from "../ICh5Cli";
 
 const path = require('path');
 const fs = require("fs");
@@ -15,13 +15,34 @@ const zl = require("zip-lib");
 const rimraf = require("rimraf");
 const findRemoveSync = require('find-remove');
 
-export class Ch5ExportAssetsCli extends Ch5BaseClassForCli {
+export class Ch5ExportAssetsCli extends Ch5BaseClassForCli implements ICh5Cli  {
 
   private outputResponse: any = {};
   private finalOutputZipFile: string = "";
 
   public constructor() {
-    super("exportAssets");
+    super("export-assets");
+  }
+  initialize(): void {
+    throw new Error("Method not implemented.");
+  }
+  checkPrerequisiteValidations(): void {
+    throw new Error("Method not implemented.");
+  }
+  verifyInputParams(): void {
+    throw new Error("Method not implemented.");
+  }
+  checkPromptQuestions(): void {
+    throw new Error("Method not implemented.");
+  }
+  processRequest(): void {
+    throw new Error("Method not implemented.");
+  }
+  cleanUp(): void {
+    throw new Error("Method not implemented.");
+  }
+  logOutput(): void {
+    throw new Error("Method not implemented.");
   }
 
   // public async setupCommand(program: commander.Command) {
@@ -120,7 +141,7 @@ export class Ch5ExportAssetsCli extends Ch5BaseClassForCli {
 
     const temporaryFolderPath = path.join(this.getConfigNode("zipFileDestinationPath"), this.getConfigNode("outputTempFolderName"));
     try {
-      await rimraf.sync(temporaryFolderPath);
+       this.utils.deleteFolderSync(temporaryFolderPath);
       //Create Temporary Folder for copy files before zipping
       fs.mkdirSync(temporaryFolderPath, {
         recursive: true,
@@ -168,7 +189,7 @@ export class Ch5ExportAssetsCli extends Ch5BaseClassForCli {
         const outputArchive = await zl.archiveFolder(temporaryFolderPath, zipFileName).then(async () => {
           this.logger.info("Zip Done.");
           try {
-            await rimraf.sync(temporaryFolderPath);
+             this.utils.deleteFolderSync(temporaryFolderPath);
             this.logger.info("Clean up Done.");
             this.outputResponse['result'] = true;
             this.outputResponse['errorMessage'] = "";

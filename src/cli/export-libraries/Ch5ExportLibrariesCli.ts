@@ -5,45 +5,23 @@
 // Use of this source code is subject to the terms of the Crestron Software License Agreement
 // under which you licensed this source code.
 
-import * as commander from "commander";
 import { Ch5BaseClassForCli } from "../Ch5BaseClassForCli";
+import { ICh5Cli } from "../ICh5Cli";
 
 const path = require('path');
 const fs = require("fs"); 
 const fsExtra = require("fs-extra");
 const zl = require("zip-lib");
-const rimraf = require("rimraf");
 const findRemoveSync = require('find-remove');
 
-export class Ch5ExportLibrariesCli  extends Ch5BaseClassForCli {
+export class Ch5ExportLibrariesCli  extends Ch5BaseClassForCli implements ICh5Cli  {
 
   private outputResponse: any = {};
   private finalOutputZipFile: string = "";
 
   public constructor() {
-    super("exportLibraries");
+    super("export-libraries");
   }
-
-  // public async setupCommand(program: commander.Command) {
-  //   let programObject = program
-  //     .command('export:library')
-  //     .name('export:library')
-  //     .usage('[options]');
-
-  //     programObject = programObject.option("-l, --list", 'Prefix for list of file names');
-  //     programObject = programObject.option("--all", 'Select this option to export all the library files');
-     
-  //     const helpContentPath: string = path.join(__dirname, "templates", "help.template");
-  //     const contentForHelp: string = await this.componentHelper.readFileContent(helpContentPath);
-  //     programObject = programObject.addHelpText('after', contentForHelp);
-  //   programObject.action(async (options) => {
-  //     try {
-  //       await  this.exportLibraries();    
-  //     } catch (e) {
-  //       this.logger.error(e);
-  //     }
-  //   });
-  // }
 
   /**
    * Method for exporting libraries
@@ -120,7 +98,7 @@ export class Ch5ExportLibrariesCli  extends Ch5BaseClassForCli {
 
     const temporaryFolderPath = path.join(this.getConfigNode("zipFileDestinationPath"), this.getConfigNode("outputTempFolderName"));
     try {
-      await rimraf.sync(temporaryFolderPath);
+       this.utils.deleteFolderSync(temporaryFolderPath);
       //Create Temporary Folder for copy files before zipping
       fs.mkdirSync(temporaryFolderPath, {
         recursive: true,
@@ -168,7 +146,7 @@ export class Ch5ExportLibrariesCli  extends Ch5BaseClassForCli {
         const outputArchive = await zl.archiveFolder(temporaryFolderPath, zipFileName).then(async () => {
           this.logger.info("Zip Done.");
           try {
-            await rimraf.sync(temporaryFolderPath);
+             this.utils.deleteFolderSync(temporaryFolderPath);
             this.logger.info("Clean up Done.");
             this.outputResponse['result'] = true;
             this.outputResponse['errorMessage'] = "";

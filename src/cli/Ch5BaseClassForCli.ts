@@ -51,11 +51,7 @@ export class Ch5BaseClassForCli {
   protected get projectConfig() {
     return this._cliProjectConfig;
   }
-
-  protected get commonContentInGeneratedFiles() {
-    return this.CONFIG_FILE.commonContentInGeneratedFiles;
-  }
-
+  
   public constructor(folderPath: string) {
     this._folderPath = folderPath;
     this._cliUtil = new Ch5CliUtil();

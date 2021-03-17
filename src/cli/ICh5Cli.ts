@@ -2,19 +2,7 @@ export interface ICh5Cli {
 
   run(): void;
 
-  initialize(): void;
-
-  checkPrerequisiteValidations(): void;
-
-  verifyInputParams(): void;
-
-  checkPromptQuestions(): void;
-
-  processRequest(): void;
-
-  cleanUp(): void;
-
-  logOutput(): void;
+  
 
   // projectName: string; // used for archive file name and manifest file name
   // directoryName: string; // source folder for archiving - everything that is in this folder will be archived

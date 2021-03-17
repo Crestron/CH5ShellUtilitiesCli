@@ -1,0 +1,30 @@
+{
+  "command": "export:all",
+  "name": "export:all",
+  "usage": "[options]",
+  "options": [
+    {
+      "keys": "-l, --list",
+      "description": "Prefix for list of file names"
+    },
+    {
+      "keys": "--all",
+      "description": "Select this option to export all the files"
+    }
+  ],
+  "additionalHelp": true,
+  "logger": {
+    "allowLogging": true,
+    "logLevel": 1
+  },
+  "requiredFolderPath": "./app/project/",
+  "zipFolderName": "exported-all",
+  "outputFileName": "exported-all.zip",
+  "outputTempFolderName": "Exported-All-Code-Folder-Temp",
+  "zipFileDestinationPath": "./dist/",
+  "ignoreFilesFolders": [
+    ".DS_Store",
+    ".lock",
+    ".db"
+  ]
+}

@@ -5,8 +5,8 @@
 // Use of this source code is subject to the terms of the Crestron Software License Agreement
 // under which you licensed this source code.
 
-import * as commander from "commander";
 import { Ch5BaseClassForCli } from "../Ch5BaseClassForCli";
+import { ICh5Cli } from "../ICh5Cli";
 
 const path = require('path');
 const fs = require("fs");
@@ -16,13 +16,13 @@ const rimraf = require("rimraf");
 const Enquirer = require('enquirer');
 const enquirer = new Enquirer();
 
-export class Ch5ExportAssetsCli extends Ch5BaseClassForCli {
+export class Ch5ExportAssetsCli extends Ch5BaseClassForCli implements ICh5Cli  {
 
   private outputResponse: any = {};
   private folderPaths: any = {};
 
   public constructor() {
-    super("importAll");
+    super("import-all");
   }
   
   // public async setupCommand(program: commander.Command) {
@@ -148,7 +148,7 @@ export class Ch5ExportAssetsCli extends Ch5BaseClassForCli {
       }
     });
 
-    await rimraf.sync(this.folderPaths.temporaryLocationForExtractedFilesFolder);
+     this.utils.deleteFolderSync(this.folderPaths.temporaryLocationForExtractedFilesFolder);
 
     // Extract the developer input zip file into a temporary location in dist folder.
     await unzip.extract(this.folderPaths.temporaryLocationForCopiedZipFile, this.folderPaths.temporaryLocationForExtractedFilesFolder).then(async () => {
