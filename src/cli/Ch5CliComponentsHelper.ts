@@ -75,6 +75,10 @@ export class Ch5CliComponentsHelper {
     return output;
   }
 
+  public readFileContentSync(path: string) {
+    return fs.readFileSync(path, 'utf8');
+  }
+
   async readFile(path: string): Promise<string> {
     return new Promise<string>((resolve, reject) => {
       fs.readFile(path, 'utf8', function (err: any, data: any) {

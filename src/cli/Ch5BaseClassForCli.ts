@@ -60,6 +60,8 @@ export class Ch5BaseClassForCli {
     this._cliNamingHelper = new Ch5CliNamingHelper();
     this._cliProjectConfig = new Ch5CliProjectConfig();
     this._inputArguments = this.componentHelper.processArgs();
+    this.TRANSLATION_FILE = JSON.parse( this.componentHelper.readFileContentSync(path.join(__dirname, this._folderPath, "i18n", "en.json")));
+    this.CONFIG_FILE = JSON.parse( this.componentHelper.readFileContentSync(path.join(__dirname, this._folderPath, "files", "config.json")));
   }
 
   /**
@@ -67,9 +69,6 @@ export class Ch5BaseClassForCli {
   * @param program 
   */
   public async setupCommand(program: commander.Command) {
-    this.TRANSLATION_FILE = JSON.parse(await this.componentHelper.readFileContent(path.join(__dirname, this._folderPath, "i18n", "en.json")));
-    this.CONFIG_FILE = JSON.parse(await this.componentHelper.readFileContent(path.join(__dirname, this._folderPath, "files", "config.json")));
-
     let programObject = program
       .command(this.CONFIG_FILE.command)
       .name(this.CONFIG_FILE.name)
@@ -83,13 +82,13 @@ export class Ch5BaseClassForCli {
       const contentForHelp: string = await this.componentHelper.readFileContent(path.join(__dirname, this._folderPath, "files", "help.txt"));
       programObject = programObject.addHelpText('after', contentForHelp);
     }
-    // programObject.action(async (options) => {
-    //   try {
-    //     await this.run();
-    //   } catch (e) {
-    //     this.utils.writeError(e);
-    //   }
-    // });
+    programObject.action(async (options) => {
+      try {
+        await this.run();
+      } catch (e) {
+        this.utils.writeError(e);
+      }
+    });
     return programObject;
   }
 

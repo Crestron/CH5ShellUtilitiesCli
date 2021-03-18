@@ -23,24 +23,24 @@ const packageJson = require('../../package.json');
 const buildVersion = packageJson.version || 'VERSION_NOT_READ';
 
 export class Ch5ShellCli {
-  // private readonly deleteComponents: Ch5DeleteComponentsCli;
-  // private readonly exportAll: Ch5ExportAllCli;
-  // private readonly exportAssets: Ch5ExportAssetsCli;
-  // private readonly exportComponents: Ch5ExportComponentsCli;
-  // private readonly exportLibraries: Ch5ExportLibrariesCli;
+  private readonly deleteComponents: Ch5DeleteComponentsCli;
+  private readonly exportAll: Ch5ExportAllCli;
+  private readonly exportAssets: Ch5ExportAssetsCli;
+  private readonly exportComponents: Ch5ExportComponentsCli;
+  private readonly exportLibraries: Ch5ExportLibrariesCli;
   private readonly exportProject: Ch5ExportProjectCli;
-  // private readonly generatePage: Ch5GeneratePageCli;
-  // private readonly generateWidget: Ch5GenerateWidgetCli;
+  private readonly generatePage: Ch5GeneratePageCli;
+  private readonly generateWidget: Ch5GenerateWidgetCli;
 
   public constructor() {
-    // this.deleteComponents = new Ch5DeleteComponentsCli();
-    // this.exportAll = new Ch5ExportAllCli();
-    // this.exportAssets = new Ch5ExportAssetsCli();
-    // this.exportComponents = new Ch5ExportComponentsCli();
-    // this.exportLibraries = new Ch5ExportLibrariesCli();
+    this.deleteComponents = new Ch5DeleteComponentsCli();
+    this.exportAll = new Ch5ExportAllCli();
+    this.exportAssets = new Ch5ExportAssetsCli();
+    this.exportComponents = new Ch5ExportComponentsCli();
+    this.exportLibraries = new Ch5ExportLibrariesCli();
     this.exportProject = new Ch5ExportProjectCli();
-    // this.generatePage = new Ch5GeneratePageCli();
-    // this.generateWidget = new Ch5GenerateWidgetCli();
+    this.generatePage = new Ch5GeneratePageCli();
+    this.generateWidget = new Ch5GenerateWidgetCli();
   }
 
   public async run(): Promise<void> {
@@ -52,19 +52,18 @@ export class Ch5ShellCli {
     // clear();
     console.log(
       chalk.green(
-        figlet.textSync('Acrestron-shell-cli', { horizontalLayout: 'full' })
+        figlet.textSync('crestron-shell-cli', { horizontalLayout: 'full' })
       )
     );
 
-    await this.exportProject.setupCommand2(program);
-    // await this.deleteComponents.setupCommand(program);
-    // // await this.exportAll.setupCommand(program);
-    // // await this.exportAssets.setupCommand(program);
-    // // await this.exportComponents.setupCommand(program);
-    // // await this.exportLibraries.setupCommand(program);
-
-    // await this.generatePage.setupCommand(program);
-    // await this.generateWidget.setupCommand(program);
+    await this.deleteComponents.setupCommand(program);
+    await this.exportAll.setupCommand(program);
+    await this.exportAssets.setupCommand(program);
+    await this.exportComponents.setupCommand(program);
+    await this.exportLibraries.setupCommand(program);
+    await this.exportProject.setupCommand(program);
+    await this.generatePage.setupCommand(program);
+    await this.generateWidget.setupCommand(program);
 
     // error on unknown command
     program.on('command:*', function () {
