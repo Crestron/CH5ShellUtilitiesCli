@@ -1,20 +1,6 @@
 # Shell Template - Export All
 
 'Export All' exports assets, libraries, and components from the './app/project/' folder (removing the excluded files) using command-line statements.
- 
-## Installation
-
-### Install Dependencies
-
-*npm i rimraf --save-dev*
-
-*npm i fs-extra --save-dev*
-
-*npm i zip-lib --save-dev*
-
-*npm i config --save-dev*
-
-*npm i find-remove --save-dev*
 
 ## How to Use
 
@@ -88,7 +74,7 @@ Parameters for "export:all" are
 
 
 ### Copyright
-Copyright (C) 2020 to the present, Crestron Electronics, Inc.
+Copyright (C) 2021 to the present, Crestron Electronics, Inc.
 
 All rights reserved.
 

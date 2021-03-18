@@ -1,20 +1,6 @@
 # Shell Template - Import Libraries
 
 The 'Import Libraries' function imports libraries to the './app/project/libraries/' folder using command line statements.
- 
-## Installation
-
-### Installation Dependencies
-
-*npm i rimraf --save-dev*
-
-*npm i fs-extra --save-dev*
-
-*npm i zip-lib --save-dev*
-
-*npm i config --save-dev*
-
-*npm i find-remove --save-dev*
 
 ## How to Use
 
@@ -100,7 +86,7 @@ Parameters for "import:library" are as follows:
 - "exportedFolderName": Indicates the name of the folder that was used for exporting the zip file during export:libraries process.
 
 ### Copyright
-Copyright (C) 2020 to the present, Crestron Electronics, Inc.
+Copyright (C) 2021 to the present, Crestron Electronics, Inc.
 
 All rights reserved.
 

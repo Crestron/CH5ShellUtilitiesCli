@@ -12,7 +12,6 @@ const path = require('path');
 const fs = require("fs");
 const fsExtra = require("fs-extra");
 const zl = require("zip-lib");
-const rimraf = require("rimraf");
 const findRemoveSync = require('find-remove');
 
 export class Ch5ExportAssetsCli extends Ch5BaseClassForCli implements ICh5Cli  {
@@ -23,49 +22,7 @@ export class Ch5ExportAssetsCli extends Ch5BaseClassForCli implements ICh5Cli  {
   public constructor() {
     super("export-assets");
   }
-  initialize(): void {
-    throw new Error("Method not implemented.");
-  }
-  checkPrerequisiteValidations(): void {
-    throw new Error("Method not implemented.");
-  }
-  verifyInputParams(): void {
-    throw new Error("Method not implemented.");
-  }
-  checkPromptQuestions(): void {
-    throw new Error("Method not implemented.");
-  }
-  processRequest(): void {
-    throw new Error("Method not implemented.");
-  }
-  cleanUp(): void {
-    throw new Error("Method not implemented.");
-  }
-  logOutput(): void {
-    throw new Error("Method not implemented.");
-  }
-
-  // public async setupCommand(program: commander.Command) {
-  //   let programObject = program
-  //     .command('export:assets')
-  //     .name('export:assets')
-  //     .usage('[options]');
-
-  //     programObject = programObject.option("-l, --list", 'Prefix for list of file names');
-  //     programObject = programObject.option("--all", 'Select this option to export all the assets');
-                   
-  //     const helpContentPath: string = path.join(__dirname, "templates", "help.template");
-  //     const contentForHelp: string = await this.componentHelper.readFileContent(helpContentPath);
-  //     programObject = programObject.addHelpText('after', contentForHelp);
-  //   programObject.action(async (options) => {
-  //     try {
-  //       this.exportAssets();
-  //     } catch (e) {
-  //       this.utils.writeError(e);
-  //     }
-  //   });
-  // }
-
+  
   /**
    * Method for exporting assets
    */

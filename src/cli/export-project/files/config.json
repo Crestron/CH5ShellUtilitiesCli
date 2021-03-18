@@ -1,17 +1,8 @@
 {
-  "command": "delete:components",
-  "name": "delete:components",
+  "command": "export:project",
+  "name": "export:project",
   "usage": "[options]",
-  "options": [
-    {
-      "keys": "-l, --list",
-      "description": "Prefix for list of component names to be deleted"
-    },
-    {
-      "keys": "-f, --force",
-      "description": "Forces the component to be deleted without asking for a confirmation"
-    }
-  ],
+  "options": [],
   "additionalHelp": true,
   "logger": {
     "allowLogging": true,

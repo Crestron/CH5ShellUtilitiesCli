@@ -9,12 +9,12 @@ import { Ch5BaseClassForCli } from "../Ch5BaseClassForCli";
 import { ICh5Cli } from "../ICh5Cli";
 
 const path = require('path');
-const fs = require("fs"); 
+const fs = require("fs");
 const fsExtra = require("fs-extra");
 const Enquirer = require('enquirer');
 const enquirer = new Enquirer();
 
-export class Ch5GeneratePageCli extends Ch5BaseClassForCli implements ICh5Cli  {
+export class Ch5GeneratePageCli extends Ch5BaseClassForCli implements ICh5Cli {
 
   private readonly MIN_LENGTH_OF_PAGE_NAME: number = 2;
   private readonly MAX_LENGTH_OF_PAGE_NAME: number = 31;
@@ -24,27 +24,6 @@ export class Ch5GeneratePageCli extends Ch5BaseClassForCli implements ICh5Cli  {
   public constructor() {
     super("generate-page");
   }
-
-  // public async setupCommand(program: commander.Command) {
-  //   let programObject = program
-  //     .command('generate:page')
-  //     .name('generate:page')
-  //     .usage('[options]');
-
-  //   programObject = programObject.option("-n, --name", 'Set the Name of the page to be created');
-  //   programObject = programObject.option("-m, --menu", "Allow the page navigation to be added to Menu (valid input values are 'Y', 'y', 'N', 'n'");
-
-  //   const helpContentPath: string = path.join(__dirname, "templates", "help.template");
-  //   const contentForHelp: string = await this.componentHelper.readFileContent(helpContentPath);
-  //   programObject = programObject.addHelpText('after', contentForHelp);
-  //   programObject.action(async (options) => {
-  //     try {
-  //       await this.generatePage();
-  //     } catch (e) {
-  //       this.utils.writeError(e);
-  //     }
-  //   });
-  // }
 
   /**
    * Initialize
@@ -66,7 +45,7 @@ export class Ch5GeneratePageCli extends Ch5BaseClassForCli implements ICh5Cli  {
   /**
    * Method for generating page
    */
-  private async generatePage() {
+  async run() {
     try {
       // Initialize
       this.initialize();
@@ -268,7 +247,7 @@ export class Ch5GeneratePageCli extends Ch5BaseClassForCli implements ICh5Cli  {
 
     let folderPath = this.getConfigNode("basePathForPages") + this.outputResponse.data.fileName + "/";
     let folderPathSplit = folderPath.toString().split("/");
-    for (let i:number = 0; i < folderPathSplit.length; i++) {
+    for (let i: number = 0; i < folderPathSplit.length; i++) {
       this.logger.log(folderPathSplit[i]);
       if (folderPathSplit[i] && folderPathSplit[i].trim() !== "") {
         let previousPath = fullPath;
@@ -452,7 +431,7 @@ export class Ch5GeneratePageCli extends Ch5BaseClassForCli implements ICh5Cli  {
   private getInvalidPageStartWithValues() {
     let output = "";
     const templateNames: any = this.getConfigNode("templateNames");
-    for (let i:number = 0; i < templateNames.disallowed["startsWith"].length; i++) {
+    for (let i: number = 0; i < templateNames.disallowed["startsWith"].length; i++) {
       output += "'" + templateNames.disallowed["startsWith"][i] + "', ";
     }
     output = output.trim();
@@ -467,13 +446,13 @@ export class Ch5GeneratePageCli extends Ch5BaseClassForCli implements ICh5Cli  {
   private checkPageNameForDisallowedKeywords(pageName: string, type: string) {
     const templateNames: any = this.getConfigNode("templateNames");
     if (type === "startsWith") {
-      for (let i:number = 0; i < templateNames.disallowed[type].length; i++) {
+      for (let i: number = 0; i < templateNames.disallowed[type].length; i++) {
         if (pageName.trim().toLowerCase().startsWith(templateNames.disallowed[type][i].trim().toLowerCase())) {
           return true;
         }
       }
     } else if (type === "equals") {
-      for (let i:number = 0; i < templateNames.disallowed[type].length; i++) {
+      for (let i: number = 0; i < templateNames.disallowed[type].length; i++) {
         if (pageName.trim().toLowerCase() === templateNames.disallowed[type][i].trim().toLowerCase()) {
           return true;
         }

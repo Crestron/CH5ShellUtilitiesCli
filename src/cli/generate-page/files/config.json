@@ -1,15 +1,15 @@
 {
-  "command": "delete:components",
-  "name": "delete:components",
+  "command": "generate:page",
+  "name": "generate:page",
   "usage": "[options]",
   "options": [
     {
-      "keys": "-l, --list",
-      "description": "Prefix for list of component names to be deleted"
+      "keys": "-n, --name",
+      "description": "Set the Name of the page to be created"
     },
     {
-      "keys": "-f, --force",
-      "description": "Forces the component to be deleted without asking for a confirmation"
+      "keys": "-m, --menu",
+      "description": "Allow the page navigation to be added to Menu (valid input values are 'Y', 'y', 'N', 'n'"
     }
   ],
   "additionalHelp": true,

@@ -1,20 +1,6 @@
 # Shell Template - Export Library
 
 'Export Library' exports libraries from the './app/project/libraries' folder (removing the excluded files) using command-line statements.
- 
-## Installation
-
-### Install Dependencies
-
-*npm i rimraf --save-dev*
-
-*npm i fs-extra --save-dev*
-
-*npm i zip-lib --save-dev*
-
-*npm i config --save-dev*
-
-*npm i find-remove --save-dev*
 
 ## How to Use
 
@@ -29,7 +15,7 @@ You could use shortcuts as the following:
 
 Options:
     -h, --help,         Help for Exporting libraries from the './app/project/libraries/' folder
-    -l, --list,         Prefix for list of file names
+    -l, --list,         Prefix for list of library file names
     --all               Select this option to export all the library files
 
 ```
@@ -100,7 +86,7 @@ Parameters for "export:library" are
 
 
 ### Copyright
-Copyright (C) 2020 to the present, Crestron Electronics, Inc.
+Copyright (C) 2021 to the present, Crestron Electronics, Inc.
 
 All rights reserved.
 

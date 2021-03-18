@@ -9,8 +9,8 @@ You could use shortcuts as the following:
 
 Options:
     -h, --help,         Help for Exporting assets from the './app/project/assets/' folder
-    -l, --list,         Prefix for list of file names
-    --all               Select this option to export all the files
+    -l, --list,         Prefix for list of asset file names
+    --all               Select this option to export all the assets
 
 You could use Yarn / NPM to export the project code. There are two options available to export components:
 

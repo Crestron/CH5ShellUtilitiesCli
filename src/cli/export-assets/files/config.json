@@ -1,15 +1,15 @@
 {
-  "command": "delete:components",
-  "name": "delete:components",
+  "command": "export:assets",
+  "name": "export:assets",
   "usage": "[options]",
   "options": [
     {
       "keys": "-l, --list",
-      "description": "Prefix for list of component names to be deleted"
+      "description": "Prefix for list of asset file names"
     },
     {
-      "keys": "-f, --force",
-      "description": "Forces the component to be deleted without asking for a confirmation"
+      "keys": "--all",
+      "description": "Select this option to export all the assets"
     }
   ],
   "additionalHelp": true,

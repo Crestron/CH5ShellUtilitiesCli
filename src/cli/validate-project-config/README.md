@@ -1,16 +1,6 @@
 # Shell Template - Project Config
 
 The 'Project Config' is used to validate the project-config.json file using command-line statements.
- 
-## Installation
-
-### Install Dependencies
-
-*npm i config --save-dev*
-
-*npm i jsonschema --save-dev*
-
-*npm i edit-json-file --save-dev*
 
 
 ## How to Use
@@ -52,7 +42,7 @@ Based on the responses, the output is classified into errors and warnings. The p
 This validation will review the settings in project configuration file and inform the developer of any invalid configuration before running the browser or running on the touch screen. During the 'start' / 'build' process, this script will be executed and if there are errors (not warning), the script will not continue to the next step.
 
 ### Copyright
-Copyright (C) 2020 to the present, Crestron Electronics, Inc.
+Copyright (C) 2021 to the present, Crestron Electronics, Inc.
 
 All rights reserved.
 

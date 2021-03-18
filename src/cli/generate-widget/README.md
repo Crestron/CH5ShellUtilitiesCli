@@ -1,18 +1,7 @@
 # Shell Template - Generate Widget
 
 The 'generate widget' function creates new widgets using command-line statements.
- 
-## Installation
 
-### Install Dependencies
-
-*npm i enquirer --save-dev*
-
-*npm i rimraf --save-dev*
-
-*npm i config --save-dev*
-
-*npm i edit-json --save-dev*
 
 ## How to Use
 To create a widget, go to the command-prompt or terminal of the Shell Template Project, and execute `yarn generate:widget` or `npm run generate:widget`.
@@ -135,7 +124,7 @@ Parameters for "logger" are
 
 
 ### Copyright
-Copyright (C) 2020 to the present, Crestron Electronics, Inc.
+Copyright (C) 2021 to the present, Crestron Electronics, Inc.
 
 All rights reserved.
 
