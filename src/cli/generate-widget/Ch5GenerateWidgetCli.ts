@@ -14,10 +14,10 @@ const fsExtra = require("fs-extra");
 const Enquirer = require('enquirer');
 const enquirer = new Enquirer();
 
-export class Ch5GenerateWidgetCli extends Ch5BaseClassForCli implements ICh5Cli  {
+export class Ch5GenerateWidgetCli extends Ch5BaseClassForCli implements ICh5Cli {
 
-  private readonly MIN_LENGTH_OF_PAGE_NAME: number = 2;
-  private readonly MAX_LENGTH_OF_PAGE_NAME: number = 31;
+  private readonly MIN_LENGTH_OF_WIDGET_NAME: number = 2;
+  private readonly MAX_LENGTH_OF_WIDGET_NAME: number = 31;
 
   private outputResponse: any = {};
   private readableInputs: any = [];
@@ -25,28 +25,6 @@ export class Ch5GenerateWidgetCli extends Ch5BaseClassForCli implements ICh5Cli 
   public constructor() {
     super("generate-widget");
   }
-
-  // public async setupCommand(program: commander.Command) {
-  //   let programObject = program
-  //     .command('generate:widget')
-  //     .name('generate:widget')
-  //     .usage('[options]');
-
-  //   programObject = programObject.option("-n, --name", 'Set the Name of the widget to be created');
-  //   programObject = programObject.option("-m, --menu", "Allow the page navigation to be added to Menu (valid input values are 'Y', 'y', 'N', 'n'");
-
-  //   const helpContentPath: string = path.join(__dirname, "templates", "help.template");
-  //   const contentForHelp: string = await this.componentHelper.readFileContent(helpContentPath);
-  //   programObject = programObject.addHelpText('after', contentForHelp);
-  //   programObject.action(async (options) => {
-  //     try {
-  //       this.readableInputs = this.componentHelper.processArgs();
-  //       await this.generatePage();
-  //     } catch (e) {
-  //       this.utils.writeError(e);
-  //     }
-  //   });
-  // }
 
   /**
    * Initialize
@@ -57,12 +35,12 @@ export class Ch5GenerateWidgetCli extends Ch5BaseClassForCli implements ICh5Cli 
       errorMessage: "",
       warningMessage: "",
       data: {
-        pageName: "",
-        menuOption: "",
+        widgetName: "",
         fileName: "",
         folderPath: ""
       }
     };
+
     if (this.readableInputs.length === 0) {
       this.readableInputs = this.componentHelper.processArgs();
     }
@@ -72,7 +50,7 @@ export class Ch5GenerateWidgetCli extends Ch5BaseClassForCli implements ICh5Cli 
    * Method for generating page
    * @param {*} processArgs 
    */
-  private async generatePage() {
+  async run() {
     try {
       // Initialize
       this.initialize();
@@ -124,20 +102,11 @@ export class Ch5GenerateWidgetCli extends Ch5BaseClassForCli implements ICh5Cli 
   private verifyInputParams() {
     const tabDisplayText = this.getText("ERRORS.TAB_DELIMITER");
     if (this.utils.isValidInput(this.readableInputs["name"])) {
-      const validationResponse = this.validatePageName(this.readableInputs["name"]);
+      const validationResponse = this.validateWidgetName(this.readableInputs["name"]);
       if (validationResponse === "") {
-        this.outputResponse.data.pageName = this.readableInputs["name"];
+        this.outputResponse.data.widgetName = this.readableInputs["name"];
       } else {
-        this.outputResponse.warningMessage += tabDisplayText + this.getText("ERRORS.PAGE_NAME_INVALID_ENTRY", validationResponse);
-      }
-    }
-
-    if (this.utils.isValidInput(this.readableInputs["menu"])) {
-      const validationResponse = this.validateMenuOption(this.readableInputs["menu"]);
-      if (validationResponse === "") {
-        this.outputResponse.data.menuOption = this.readableInputs["menu"];
-      } else {
-        this.outputResponse.warningMessage += tabDisplayText + validationResponse + "\n";
+        this.outputResponse.warningMessage += tabDisplayText + this.getText("ERRORS.WIDGET_NAME_INVALID_ENTRY", validationResponse);
       }
     }
 
@@ -149,97 +118,48 @@ export class Ch5GenerateWidgetCli extends Ch5BaseClassForCli implements ICh5Cli 
   /**
    * Check if there are questions to be prompted to the developer
    */
-  private async checkPromptQuestions() {
-    if (!this.utils.isValidInput(this.outputResponse.data.pageName)) {
-      let pages = this.projectConfig.getAllPages();
-      pages = pages.sort(this.utils.dynamicsort("asc", "pageName"));
-      this.logger.log("pages", pages);
-      const newPageNameToSet = this.loopAndCheckPage(pages);
+
+  async checkPromptQuestions() {
+    if (!this.utils.isValidInput(this.outputResponse.data.widgetName)) {
+      let widgets = this.projectConfig.getAllWidgets();
+      widgets = widgets.sort(this.utils.dynamicsort("asc", "widgetName"));
+      this.logger.log("widgets", widgets);
+      const newWidgetNameToSet = this.loopAndCheckWidget(widgets);
 
       const questionsArray = [
         {
           type: "text",
-          name: "pageName",
-          initial: newPageNameToSet,
+          name: "widgetName",
+          initial: newWidgetNameToSet,
           hint: "",
-          message: this.getText("VALIDATIONS.GET_PAGE_NAME"),
+          message: this.getText("VALIDATIONS.GET_WIDGET_NAME"),
           validate: (compName: string) => {
-            let output = this.validatePageName(compName);
+            let output = this.validateWidgetName(compName);
             return output === "" ? true : output;
           }
-        }];
-      const response = await enquirer.prompt(questionsArray);
-      if (!this.utils.isValidInput(response.pageName)) {
-        throw new Error(this.getText("ERRORS.PAGE_NAME_EMPTY_IN_REQUEST"));
-      }
-      this.logger.log("  response.pageName: ", response.pageName);
-      this.outputResponse.data.pageName = response.pageName;
-    }
-
-    if (!this.utils.isValidInput(this.outputResponse.data.menuOption)) {
-      const questionsArray = [
-        {
-          type: 'select',
-          name: 'menuOption',
-          message: this.getText("VALIDATIONS.GET_ADD_TO_MENU_MESSAGE"),
-          choices: [
-            { message: this.getText("VALIDATIONS.GET_ADD_TO_MENU_YES"), hint: this.getText("VALIDATIONS.GET_ADD_TO_MENU_HINT_YES"), value: 'Y' },
-            { message: this.getText("VALIDATIONS.GET_ADD_TO_MENU_NO"), hint: this.getText("VALIDATIONS.GET_ADD_TO_MENU_HINT_NO"), value: 'N' }
-          ],
-          initial: 0
         }
       ];
+
       const response = await enquirer.prompt(questionsArray);
-      if (!this.utils.isValidInput(response.menuOption)) {
-        throw new Error(this.getText("ERRORS.ADD_TO_MENU_EMPTY_IN_REQUEST"));
+      if (!this.utils.isValidInput(response.widgetName)) {
+        throw new Error(this.getText("ERRORS.WIDGET_NAME_EMPTY_IN_REQUEST"));
       }
-      this.logger.log("  response.menuOption: ", response.menuOption);
-      this.outputResponse.data.menuOption = response.menuOption;
+      this.logger.log("  response.widgetName: ", response.widgetName);
+      this.outputResponse.data.widgetName = response.widgetName;
     }
 
-    let originalInputName = this.namingHelper.convertMultipleSpacesToSingleSpace(this.outputResponse.data.pageName.trim().toLowerCase());
-    this.outputResponse.data.pageName = this.namingHelper.camelize(originalInputName);
-    this.logger.log("  this.outputResponse.data.pageName: ", this.outputResponse.data.pageName);
-    this.logger.log("  this.outputResponse.data.menuOption: ", this.outputResponse.data.menuOption);
+    let originalInputName = this.namingHelper.convertMultipleSpacesToSingleSpace(this.outputResponse.data.widgetName.trim().toLowerCase());
+    this.outputResponse.data.widgetName = this.namingHelper.camelize(originalInputName);
+    this.logger.log("  this.outputResponse.data.widgetName: ", this.outputResponse.data.widgetName);
     this.outputResponse.data.fileName = this.namingHelper.dasherize(originalInputName);
     this.logger.log("  this.outputResponse.data.fileName: ", this.outputResponse.data.fileName);
 
-    if (!this.utils.isValidInput(this.outputResponse.data.pageName) && !this.utils.isValidInput(this.outputResponse.data.menuOption)) {
+    if (!this.utils.isValidInput(this.outputResponse.data.widgetName)) {
       throw new Error(this.getText("ERRORS.PROGRAM_STOPPED_OR_UNKNOWN_ERROR"));
-    } else if (!this.utils.isValidInput(this.outputResponse.data.pageName)) {
-      throw new Error(this.getText("ERRORS.PAGE_NAME_EMPTY_IN_REQUEST"));
-    } else if (!this.utils.isValidInput(this.outputResponse.data.menuOption)) {
-      throw new Error(this.getText("ERRORS.ADD_TO_MENU_EMPTY_IN_REQUEST"));
+    } else if (!this.utils.isValidInput(this.outputResponse.data.widgetName)) {
+      throw new Error(this.getText("ERRORS.WIDGET_NAME_EMPTY_IN_REQUEST"));
     } else if (!this.utils.isValidInput(this.outputResponse.data.fileName)) {
       throw new Error(this.getText("ERRORS.SOMETHING_WENT_WRONG"));
-    }
-  }
-
-  /**
-   * Implement this component's main purpose
-   */
-  private async processRequest() {
-    if (this.projectConfig.isPageExistInJSON(this.outputResponse.data.pageName)) {
-      throw new Error(this.getText("ERRORS.PAGE_EXISTS_IN_PROJECT_CONFIG_JSON"));
-    } else {
-      await this.createFolder().then(async (folderPathResponseGenerated) => {
-        this.logger.log("  Folder Path (generated): " + folderPathResponseGenerated);
-        this.outputResponse.data.folderPath = folderPathResponseGenerated;
-
-        if (this.utils.isValidInput(this.outputResponse.data.folderPath)) {
-          await this.createNewFile("html", "html.template", "");
-          await this.createNewFile("js", "js.template", "");
-          await this.createNewFile("scss", "scss.template", "");
-          await this.createNewFile("json", "emulator.template", "-emulator");
-
-          this.projectConfig.savePageToJSON(this.createPageObject());
-          this.outputResponse.result = true;
-        } else {
-          throw new Error(this.getText("ERRORS.ERROR_IN_FOLDER_PATH"));
-        }
-      }).catch((err) => {
-        throw new Error(err);
-      });
     }
   }
 
@@ -257,24 +177,21 @@ export class Ch5GenerateWidgetCli extends Ch5BaseClassForCli implements ICh5Cli 
     if (this.outputResponse.result === false) {
       this.logger.printError(this.outputResponse.errorMessage);
     } else {
-      this.logger.printSuccess(this.getText("SUCCESS_MESSAGE", this.outputResponse.data.pageName, this.outputResponse.data.folderPath));
-      if (this.outputResponse.data.menuOption === "Y") {
-        this.logger.printSuccess(this.getText("SUCCESS_MESSAGE_NAVIGATION_ADDED"));
-      }
+      this.logger.printSuccess(this.getText("SUCCESS_MESSAGE", this.outputResponse.data.widgetName, this.outputResponse.data.folderPath));
       this.logger.printSuccess(this.getText("SUCCESS_MESSAGE_CONCLUSION"));
     }
   }
 
   /**
-   * Create Folder for the Pages to be created
+   * Create Folder for the Wudgets to be created
    */
   private async createFolder() {
     let isFolderCreated = false;
     let fullPath = "";
 
-    let folderPath = this.getConfigNode("basePathForPages") + this.outputResponse.data.fileName + "/";
+    let folderPath = this.getConfigNode("basePathForWidgets") + this.outputResponse.data.fileName + "/";
     let folderPathSplit = folderPath.toString().split("/");
-    for (let i:number = 0; i < folderPathSplit.length; i++) {
+    for (let i: number = 0; i < folderPathSplit.length; i++) {
       this.logger.log(folderPathSplit[i]);
       if (folderPathSplit[i] && folderPathSplit[i].trim() !== "") {
         let previousPath = fullPath;
@@ -293,7 +210,7 @@ export class Ch5GenerateWidgetCli extends Ch5BaseClassForCli implements ICh5Cli 
 
     // Check if Folder exists
     if (isFolderCreated === false) {
-      // No folder is created. This implies that the page folder already exists.
+      // No folder is created. This implies that the widget folder already exists.
 
       let files = fs.readdirSync(fullPath);
 
@@ -304,7 +221,7 @@ export class Ch5GenerateWidgetCli extends Ch5BaseClassForCli implements ICh5Cli 
         // listing all files using forEach
         for (let j = 0; j < files.length; j++) {
           let file = files[j];
-          // If a single file exists, do not continue the process of generating page
+          // If a single file exists, do not continue the process of generating widget
           // If not, ensure to send message that folder is not empty but still created new files
           this.logger.log(file);
           let fileName = this.outputResponse.data.fileName;
@@ -328,9 +245,9 @@ export class Ch5GenerateWidgetCli extends Ch5BaseClassForCli implements ICh5Cli 
   private async createNewFile(fileExtension: string, templateFile: string, fileNameSuffix: string) {
     if (templateFile !== "") {
       let actualContent = fsExtra.readFileSync(path.join(__dirname, "templates", templateFile));
-      actualContent = this.utils.replaceAll(actualContent, "<%pageName%>", this.outputResponse.data.pageName);
-      actualContent = this.utils.replaceAll(actualContent, "<%titlePageName%>", this.namingHelper.capitalizeEachWordWithSpaces(this.outputResponse.data.pageName));
-      actualContent = this.utils.replaceAll(actualContent, "<%stylePageName%>", this.namingHelper.dasherize(this.outputResponse.data.pageName));
+      actualContent = this.utils.replaceAll(actualContent, "<%widgetName%>", this.outputResponse.data.widgetName);
+      actualContent = this.utils.replaceAll(actualContent, "<%titleWidgetName%>", this.namingHelper.capitalizeEachWordWithSpaces(this.outputResponse.data.widgetName));
+      actualContent = this.utils.replaceAll(actualContent, "<%styleWidgetName%>", this.namingHelper.dasherize(this.outputResponse.data.widgetName));
       actualContent = this.utils.replaceAll(actualContent, "<%copyrightYear%>", String(new Date().getFullYear()));
       actualContent = this.utils.replaceAll(actualContent, "<%fileName%>", this.outputResponse.data.fileName);
 
@@ -342,123 +259,87 @@ export class Ch5GenerateWidgetCli extends Ch5BaseClassForCli implements ICh5Cli 
   }
 
   /**
-   * Creates the page object in project-config.json.
-   * If the menuOrientation is horizontal, then iconPosition is set to bottom by default.
-   * If the menuOrientation is vertical, then iconPosition is set to empty by default.
-   * If the menuOrientation is none, then iconPosition and iconUrl are set to empty.
+   * Creates the widget object in project-config.json.
    */
-  private createPageObject() {
-    const allowNavigation = this.utils.convertStringToBoolean(this.outputResponse.data.menuOption);
-    let pageObject: any = {
-      "pageName": this.outputResponse.data.pageName,
+  createWidgetObject() {
+    let widgetObject = {
+      "widgetName": this.outputResponse.data.widgetName,
       "fullPath": this.outputResponse.data.folderPath,
       "fileName": this.outputResponse.data.fileName + '.html',
-      "standAloneView": !allowNavigation,
-      "pageProperties": {
-        "class": ""
-      }
+      "widgetProperties": {}
     };
-    if (allowNavigation === true) {
-      const projectConfigJSON = this.projectConfig.getJson();
-      if (projectConfigJSON.menuOrientation === 'horizontal') {
-        pageObject.navigation = {
-          "sequence": this.projectConfig.getHighestNavigationSequence() + 1,
-          "label": this.outputResponse.data.pageName.toLowerCase(),
-          "isI18nLabel": false,
-          "iconClass": "",
-          "iconUrl": "./app/project/assets/img/navigation/page.svg",
-          "iconPosition": "bottom"
-        };
-      } else if (projectConfigJSON.menuOrientation === 'vertical') {
-        pageObject.navigation = {
-          "sequence": this.projectConfig.getHighestNavigationSequence() + 1,
-          "label": this.outputResponse.data.pageName.toLowerCase(),
-          "isI18nLabel": false,
-          "iconClass": "",
-          "iconUrl": "./app/project/assets/img/navigation/page.svg",
-          "iconPosition": ""
-        };
-      } else {
-        pageObject.navigation = {
-          "sequence": this.projectConfig.getHighestNavigationSequence() + 1,
-          "label": this.outputResponse.data.pageName.toLowerCase(),
-          "isI18nLabel": false,
-          "iconClass": "",
-          "iconUrl": "",
-          "iconPosition": ""
-        };
-      }
-    }
-    return pageObject;
+    return widgetObject;
   }
 
-  /**
-   * Loop and check the next valid page to set
-   * @param {*} pages 
-   */
-  private loopAndCheckPage(pages: any) {
-    let pageFound = false;
-    let newPageNameToSet = "";
-    let i = 1;
-    do {
-      newPageNameToSet = "Page" + i;
-      pageFound = false;
-      for (let j = 0; j < pages.length; j++) {
-        if (pages[j].pageName.trim().toLowerCase() === newPageNameToSet.toString().toLowerCase()) {
-          pageFound = true;
-          break;
-        }
-      }
-      i++;
-    }
-    while (pageFound === true);
-    return newPageNameToSet;
-  }
+
 
   /**
-   * Method to validate Page Name
-   * @param {string} pageName
+   * Method to validate Widget Name
+   * @param {string} widgetName
    */
-  private validatePageName(pageName: string) {
-    this.logger.log("pageName to Validate", pageName);
-    if (this.utils.isValidInput(pageName)) {
-      pageName = String(pageName).trim();
-      if (pageName.length < this.MIN_LENGTH_OF_PAGE_NAME || pageName.length > this.MAX_LENGTH_OF_PAGE_NAME) {
-        return this.getText("ERRORS.PAGE_NAME_LENGTH", String(this.MIN_LENGTH_OF_PAGE_NAME), String(this.MAX_LENGTH_OF_PAGE_NAME));
+  validateWidgetName(widgetName: string) {
+    this.logger.log("widgetName to Validate", widgetName);
+    if (this.utils.isValidInput(widgetName)) {
+      widgetName = String(widgetName).trim();
+      if (widgetName.length < this.MIN_LENGTH_OF_WIDGET_NAME || widgetName.length > this.MAX_LENGTH_OF_WIDGET_NAME) {
+        return this.getText("ERRORS.WIDGET_NAME_LENGTH", String(this.MIN_LENGTH_OF_WIDGET_NAME), String(this.MAX_LENGTH_OF_WIDGET_NAME));
       } else {
-        let pageValidity = new RegExp(/^[a-zA-Z][a-zA-Z0-9-_ $]*$/).test(pageName);
-        if (pageValidity === false) {
-          return this.getText("ERRORS.PAGE_NAME_MANDATORY");
+        let widgetValidity = new RegExp(/^[a-zA-Z][a-zA-Z0-9-_ $]*$/).test(widgetName);
+        if (widgetValidity === false) {
+          return this.getText("ERRORS.WIDGET_NAME_MANDATORY");
         } else {
-          let originalInputName = this.namingHelper.convertMultipleSpacesToSingleSpace(pageName.trim().toLowerCase());
+          let originalInputName = this.namingHelper.convertMultipleSpacesToSingleSpace(widgetName.trim().toLowerCase());
           originalInputName = this.namingHelper.camelize(originalInputName);
 
           this.logger.log("  originalInputName: " + originalInputName);
-          if (this.projectConfig.isPageExistInJSON(originalInputName)) {
-            return this.getText("ERRORS.PAGE_EXISTS_IN_PROJECT_CONFIG_JSON");
-          } else if (this.projectConfig.isWidgetExistInJSON(originalInputName)) {
+          if (this.projectConfig.isWidgetExistInJSON(originalInputName)) {
             return this.getText("ERRORS.WIDGET_EXISTS_IN_PROJECT_CONFIG_JSON");
-          } else if (this.checkPageNameForDisallowedKeywords(originalInputName, "startsWith") === true) {
-            return this.getText("ERRORS.PAGE_CANNOT_START_WITH", this.getInvalidPageStartWithValues());
-          } else if (this.checkPageNameForDisallowedKeywords(originalInputName, "equals") === true) {
-            return this.getText("ERRORS.PAGE_DISALLOWED_KEYWORDS");
+          } else if (this.projectConfig.isPageExistInJSON(originalInputName)) {
+            return this.getText("ERRORS.PAGE_EXISTS_IN_PROJECT_CONFIG_JSON");
+          } else if (this.checkWidgetNameForDisallowedKeywords(originalInputName, "startsWith") === true) {
+            return this.getText("ERRORS.WIDGET_CANNOT_START_WITH", this.getInvalidWidgetStartWithValues());
+          } else if (this.checkWidgetNameForDisallowedKeywords(originalInputName, "equals") === true) {
+            return this.getText("ERRORS.WIDGET_DISALLOWED_KEYWORDS");
           } else {
             return "";
           }
         }
       }
     } else {
-      return this.getText("ERRORS.PAGE_NAME_MANDATORY");
+      return this.getText("ERRORS.WIDGET_NAME_MANDATORY");
     }
   }
 
   /**
-   * Gets the keywords that are not allowed for pages to start
+   * Loop and check the next valid widget to set
+   * @param {*} widgets 
    */
-  private getInvalidPageStartWithValues() {
+  private loopAndCheckWidget(widgets: any[]) {
+    let widgetFound: boolean = false;
+    let newWidgetNameToSet: string = "";
+    let i: number = 1;
+    do {
+      newWidgetNameToSet = "widget" + i;
+      widgetFound = false;
+      for (let j: number = 0; j < widgets.length; j++) {
+        if (widgets[j].widgetName.trim().toLowerCase() === newWidgetNameToSet.toString().toLowerCase()) {
+          widgetFound = true;
+          break;
+        }
+      }
+      i++;
+    }
+    while (widgetFound === true);
+    return newWidgetNameToSet;
+  }
+
+  /**
+   * Gets the keywords that are not allowed for widgets to start
+   */
+  private getInvalidWidgetStartWithValues() {
     let output = "";
     const templateNames: any = this.getConfigNode("templateNames");
-    for (let i:number = 0; i < templateNames.disallowed["startsWith"].length; i++) {
+    for (let i: number = 0; i < templateNames.disallowed["startsWith"].length; i++) {
       output += "'" + templateNames.disallowed["startsWith"][i] + "', ";
     }
     output = output.trim();
@@ -466,21 +347,21 @@ export class Ch5GenerateWidgetCli extends Ch5BaseClassForCli implements ICh5Cli 
   }
 
   /**
-   * Checks if the pagename has disallowed keywords
-   * @param {*} pageName 
+   * Checks if the widget name has disallowed keywords
+   * @param {*} widgetName 
    * @param {*} type 
    */
-  private checkPageNameForDisallowedKeywords(pageName: string, type: string) {
+  checkWidgetNameForDisallowedKeywords(widgetName: string, type: string) {
     const templateNames: any = this.getConfigNode("templateNames");
     if (type === "startsWith") {
-      for (let i:number = 0; i < templateNames.disallowed[type].length; i++) {
-        if (pageName.trim().toLowerCase().startsWith(templateNames.disallowed[type][i].trim().toLowerCase())) {
+      for (let i: number = 0; i < templateNames.disallowed[type].length; i++) {
+        if (widgetName.trim().toLowerCase().startsWith(templateNames.disallowed[type][i].trim().toLowerCase())) {
           return true;
         }
       }
     } else if (type === "equals") {
-      for (let i:number = 0; i < templateNames.disallowed[type].length; i++) {
-        if (pageName.trim().toLowerCase() === templateNames.disallowed[type][i].trim().toLowerCase()) {
+      for (let i: number = 0; i < templateNames.disallowed[type].length; i++) {
+        if (widgetName.trim().toLowerCase() === templateNames.disallowed[type][i].trim().toLowerCase()) {
           return true;
         }
       }
@@ -489,20 +370,30 @@ export class Ch5GenerateWidgetCli extends Ch5BaseClassForCli implements ICh5Cli 
   }
 
   /**
-   * Validate Menu Option
-   * @param {*} menuOption 
+   * Implement this component's main purpose
    */
-  private validateMenuOption(menuOption: string) {
-    this.logger.log("menuOption to Validate", menuOption);
-    if (this.utils.isValidInput(menuOption)) {
-      menuOption = String(menuOption).trim().toLowerCase();
-      if (menuOption === "y" || menuOption === "n") {
-        return "";
-      } else {
-        return this.getText("ERRORS.ADD_TO_MENU_INVALID_ENTRY");
-      }
+  async processRequest() {
+    if (this.projectConfig.isWidgetExistInJSON(this.outputResponse.data.widgetName)) {
+      throw new Error(this.getText("ERRORS.WIDGET_EXISTS_IN_PROJECT_CONFIG_JSON"));
     } else {
-      return this.getText("ERRORS.ADD_TO_MENU_INVALID_ENTRY");
+      await this.createFolder().then(async (folderPathResponseGenerated) => {
+        this.logger.log("  Folder Path (generated): " + folderPathResponseGenerated);
+        this.outputResponse.data.folderPath = folderPathResponseGenerated;
+
+        if (this.utils.isValidInput(this.outputResponse.data.folderPath)) {
+          await this.createNewFile("html", "html.template", "");
+          await this.createNewFile("js", "js.template", "");
+          await this.createNewFile("scss", "scss.template", "");
+          await this.createNewFile("json", "emulator.template", "-emulator");
+
+          this.projectConfig.saveWidgetToJSON(this.createWidgetObject());
+          this.outputResponse.result = true;
+        } else {
+          throw new Error(this.getText("ERRORS.ERROR_IN_FOLDER_PATH"));
+        }
+      }).catch((err) => {
+        throw new Error(err);
+      });
     }
   }
 

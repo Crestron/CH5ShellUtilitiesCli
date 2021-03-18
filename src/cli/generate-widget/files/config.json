@@ -1,15 +1,11 @@
 {
-  "command": "delete:components",
-  "name": "delete:components",
+  "command": "generate:widget",
+  "name": "generate:widget",
   "usage": "[options]",
   "options": [
     {
-      "keys": "-l, --list",
-      "description": "Prefix for list of component names to be deleted"
-    },
-    {
-      "keys": "-f, --force",
-      "description": "Forces the component to be deleted without asking for a confirmation"
+      "keys": "-n, --name",
+      "description": "Set the name of the widget to be created"
     }
   ],
   "additionalHelp": true,

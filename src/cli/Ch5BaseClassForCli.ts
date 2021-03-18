@@ -83,13 +83,13 @@ export class Ch5BaseClassForCli {
       const contentForHelp: string = await this.componentHelper.readFileContent(path.join(__dirname, this._folderPath, "files", "help.txt"));
       programObject = programObject.addHelpText('after', contentForHelp);
     }
-    programObject.action(async (options) => {
-      try {
-        await this.run();
-      } catch (e) {
-        this.utils.writeError(e);
-      }
-    });
+    // programObject.action(async (options) => {
+    //   try {
+    //     await this.run();
+    //   } catch (e) {
+    //     this.utils.writeError(e);
+    //   }
+    // });
     return programObject;
   }
 

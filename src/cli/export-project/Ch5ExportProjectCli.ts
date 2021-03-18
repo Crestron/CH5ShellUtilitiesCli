@@ -5,6 +5,7 @@
 // Use of this source code is subject to the terms of the Crestron Software License Agreement
 // under which you licensed this source code.
 
+import commander from "commander";
 import { Ch5BaseClassForCli } from "../Ch5BaseClassForCli";
 import { ICh5Cli } from "../ICh5Cli";
 
@@ -21,7 +22,7 @@ export class Ch5ExportProjectCli extends Ch5BaseClassForCli implements ICh5Cli {
   /**
    * Method for exporting project
    */
-  async exportProject() {
+  async run1() {
     const packageJson: any = JSON.parse(JSON.stringify(fsExtra.readJSONSync("./package.json")));
 
     let fileName = this.namingHelper.removeAllSpaces(String(packageJson.name).trim());
@@ -40,6 +41,18 @@ export class Ch5ExportProjectCli extends Ch5BaseClassForCli implements ICh5Cli {
     // console.log("excludedFiles", excludedFiles);
     const output = await this.copyFiles(folderPathActual, excludedFiles, completeFileName);
     return output;
+  }
+
+  public async setupCommand2(program: commander.Command) {
+    super.setupCommand(program);
+    
+    program.action(async (options) => {
+      try {
+        await this.run1();
+      } catch (e) {
+        this.utils.writeError(e);
+      }
+    });
   }
 
   /**
