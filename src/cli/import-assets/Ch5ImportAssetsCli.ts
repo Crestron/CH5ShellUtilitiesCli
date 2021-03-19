@@ -55,7 +55,7 @@ export class Ch5ImportAssetsCli extends Ch5BaseClassForCli implements ICh5Cli  {
   /**
    * Method for importing components
    */
-  async importAssets() {
+  async run() {
     try {
       // Initialize
       this.initialize();

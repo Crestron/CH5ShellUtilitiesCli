@@ -1,6 +1,6 @@
 {
-  "command": "delete:components",
-  "name": "delete:components",
+  "command": "import:assets",
+  "name": "import:assets",
   "usage": "[options]",
   "options": [
     {
@@ -14,6 +14,10 @@
     {
       "keys": "-f, --force",
       "description": "Forces the component to be deleted without asking for a confirmation"
+    },
+    {
+      "keys": "--all",
+      "description": "Select this option to import all the files"
     }
   ],
   "additionalHelp": true,
