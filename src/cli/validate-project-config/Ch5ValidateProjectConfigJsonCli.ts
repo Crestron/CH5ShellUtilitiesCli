@@ -15,14 +15,13 @@ const jsonSchema = require('jsonschema');
 const Enquirer = require('enquirer');
 const enquirer = new Enquirer();
 
-const projectConfigJson = require("../../app/project-config.json");
-const projectConfigJsonSchema = require("../../.vscode/project-config-schema.json");
-
-export class Ch5ExportAssetsCli extends Ch5BaseClassForCli  implements ICh5Cli  {
+export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements ICh5Cli {
 
   private outputResponse: any = {};
   private errorsFound: any = [];
   private warningsFound: any = [];
+  private projectConfigJson: any = {};
+  private projectConfigJsonSchema: any = {};
 
   public constructor() {
     super("validate-project-config");
@@ -55,12 +54,16 @@ export class Ch5ExportAssetsCli extends Ch5BaseClassForCli  implements ICh5Cli  
   /**
    * Method for validating projectconfig.json file
    */
-  validateJSON() {
+  async run() {
     this.logger.printLog(this.getText("PROCESSING_MESSAGE"));
+
+    this.projectConfigJson = JSON.parse(this.componentHelper.readFileContentSync("./app/project-config.json"));
+    this.projectConfigJsonSchema = JSON.parse(this.componentHelper.readFileContentSync("./.vscode/project-config-schema.json"));
 
     this.clearErrors();
     this.clearWarnings();
-    const projectConfigObject = JSON.parse(JSON.stringify(projectConfigJson));
+
+    const projectConfigObject = JSON.parse(JSON.stringify(this.projectConfigJson));
     const pagesArray = projectConfigObject.content.pages;
     const widgetsArray = projectConfigObject.content.widgets;
 
@@ -138,7 +141,7 @@ export class Ch5ExportAssetsCli extends Ch5BaseClassForCli  implements ICh5Cli  
   validateSchema() {
     let Validator = jsonSchema.Validator;
     let v = new Validator();
-    const errors = v.validate(projectConfigJson, projectConfigJsonSchema).errors;
+    const errors = v.validate(this.projectConfigJson, this.projectConfigJsonSchema).errors;
     const errorOrWarningType = this.getText("VALIDATIONS.SCHEMA.HEADER");
     for (let i: number = 0; i < errors.length; i++) {
       this.logger.log("errors[i]", errors[i]);

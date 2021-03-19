@@ -16,6 +16,11 @@ import { Ch5ExportAllCli } from "./export-all/Ch5ExportAllCli";
 import { Ch5ExportLibrariesCli } from "./export-libraries/Ch5ExportLibrariesCli";
 import { Ch5ExportAssetsCli } from "./export-assets/Ch5ExportAssetsCli";
 import { Ch5ExportComponentsCli } from "./export-components/Ch5ExportComponentsCli";
+import { Ch5ImportAssetsCli } from "./import-assets/Ch5ImportAssetsCli";
+import { Ch5ImportLibrariesCli } from "./import-libraries/Ch5ImportLibrariesCli";
+import { Ch5ImportComponentsCli } from "./import-components/Ch5ImportComponentsCli";
+import { Ch5ImportAllCli } from "./import-all/Ch5ImportAllCli";
+import { Ch5ValidateProjectConfigCli } from "./validate-project-config/Ch5ValidateProjectConfigJsonCli";
 
 const clear = require('clear');
 const figlet = require('figlet');
@@ -31,6 +36,11 @@ export class Ch5ShellCli {
   private readonly exportProject: Ch5ExportProjectCli;
   private readonly generatePage: Ch5GeneratePageCli;
   private readonly generateWidget: Ch5GenerateWidgetCli;
+  private readonly importAll: Ch5ImportAllCli;
+  private readonly importAssets: Ch5ImportAssetsCli;
+  private readonly importComponents: Ch5ImportComponentsCli;
+  private readonly importLibraries: Ch5ImportLibrariesCli;
+  private readonly validateProjectConfig: Ch5ValidateProjectConfigCli;
 
   public constructor() {
     this.deleteComponents = new Ch5DeleteComponentsCli();
@@ -41,6 +51,11 @@ export class Ch5ShellCli {
     this.exportProject = new Ch5ExportProjectCli();
     this.generatePage = new Ch5GeneratePageCli();
     this.generateWidget = new Ch5GenerateWidgetCli();
+    this.importAll = new  Ch5ImportAllCli();
+    this.importAssets = new  Ch5ImportAssetsCli();
+    this.importComponents = new  Ch5ImportComponentsCli();
+    this.importLibraries = new  Ch5ImportLibrariesCli();
+    this.validateProjectConfig = new  Ch5ValidateProjectConfigCli();
   }
 
   public async run(): Promise<void> {
@@ -64,6 +79,11 @@ export class Ch5ShellCli {
     await this.exportProject.setupCommand(program);
     await this.generatePage.setupCommand(program);
     await this.generateWidget.setupCommand(program);
+    await this.importAll.setupCommand(program);
+    await this.importAssets.setupCommand(program);
+    await this.importComponents.setupCommand(program);
+    await this.importLibraries.setupCommand(program);
+    await this.validateProjectConfig.setupCommand(program);
 
     // error on unknown command
     program.on('command:*', function () {

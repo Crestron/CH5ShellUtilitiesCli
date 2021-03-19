@@ -16,7 +16,7 @@ const rimraf = require("rimraf");
 const Enquirer = require('enquirer');
 const enquirer = new Enquirer();
 
-export class Ch5ImportAssetsCli extends Ch5BaseClassForCli  implements ICh5Cli  {
+export class Ch5ImportComponentsCli extends Ch5BaseClassForCli  implements ICh5Cli  {
 
   private outputResponse: any = {};
   private folderPaths: any = {};

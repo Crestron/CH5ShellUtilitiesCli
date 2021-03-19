@@ -30,7 +30,7 @@
     "start:watch": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts",
     "refresh": "rm -rf ./node_modules ./package-lock.json && npm install",
     "tsc": "tsc --declaration --declarationDir build/@types",
-    "mtest":"mocha -r ts-node/register test/index.ts --reporter mochawesome"
+    "mtest": "mocha -r ts-node/register test/index.ts --reporter mochawesome"
   },
   "keywords": [
     "ch5",
@@ -52,6 +52,7 @@
     "find-remove": "^2.0.3",
     "fs-extra": "^9.1.0",
     "inquirer": "^8.0.0",
+    "jsonschema": "^1.4.0",
     "mochawesome": "^6.2.2",
     "path": "^0.12.7",
     "rimraf": "^3.0.2",
