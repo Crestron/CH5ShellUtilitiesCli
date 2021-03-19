@@ -1,6 +1,6 @@
 {
-  "command": "delete:components",
-  "name": "delete:components",
+  "command": "validate:project-config",
+  "name": "validate:project-config",
   "usage": "[options]",
   "options": [
     {
@@ -16,17 +16,5 @@
   "logger": {
     "allowLogging": true,
     "logLevel": 1
-  },
- "templateNames": {
-    "disallowed": {
-      "startsWith": [
-        "template"
-      ],
-      "equals": [
-        "service",
-        "translate",
-        "utils"
-      ]
-    }
   }
 }

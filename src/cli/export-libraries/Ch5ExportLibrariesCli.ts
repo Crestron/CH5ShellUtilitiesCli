@@ -26,7 +26,7 @@ export class Ch5ExportLibrariesCli  extends Ch5BaseClassForCli implements ICh5Cl
   /**
    * Method for exporting libraries
    */
-  async exportLibraries() {
+  async run() {
     this.outputResponse = {};
     this.finalOutputZipFile = path.join(this.getConfigNode("zipFileDestinationPath"), this.getConfigNode("outputFileName"));
 

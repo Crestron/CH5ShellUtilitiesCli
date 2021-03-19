@@ -25,27 +25,6 @@ export class Ch5ImportLibrariesCli extends Ch5BaseClassForCli implements ICh5Cli
     super("import-libraries");
   }
 
-  // public async setupCommand(program: commander.Command) {
-  //   let programObject = program
-  //     .command('generate:page')
-  //     .name('generate:page')
-  //     .usage('[options]');
-
-  //   programObject = programObject.option("-n, --name", 'Set the Name of the page to be created');
-  //   programObject = programObject.option("-m, --menu", "Allow the page navigation to be added to Menu (valid input values are 'Y', 'y', 'N', 'n'");
-
-  //   const helpContentPath: string = path.join(__dirname, "templates", "help.template");
-  //   const contentForHelp: string = await this.componentHelper.readFileContent(helpContentPath);
-  //   programObject = programObject.addHelpText('after', contentForHelp);
-  //   programObject.action(async (options) => {
-  //     try {
-  //       await this.importLibraries();
-  //     } catch (e) {
-  //       this.logger.error(e);
-  //     }
-  //   });
-  // }
-
   /**
    * Initialize all variables and set module level constants
    */
@@ -77,7 +56,7 @@ export class Ch5ImportLibrariesCli extends Ch5BaseClassForCli implements ICh5Cli
   /**
    * Method for importing components
    */
-  async importLibraries() {
+  async run() {
     try {
       // Initialize
       this.initialize();

@@ -27,30 +27,6 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
     super("validate-project-config");
   }
 
-  // public async setupCommand(program: commander.Command) {
-  //   let programObject = program
-  //     .command('generate:page')
-  //     .name('generate:page')
-  //     .usage('[options]');
-
-  //   programObject = programObject.option("-n, --name", 'Set the Name of the page to be created');
-  //   programObject = programObject.option("-m, --menu", "Allow the page navigation to be added to Menu (valid input values are 'Y', 'y', 'N', 'n'");
-
-  //   const helpContentPath: string = path.join(__dirname, "templates", "help.template");
-  //   const contentForHelp: string = await this.componentHelper.readFileContent(helpContentPath);
-  //   programObject = programObject.addHelpText('after', contentForHelp);
-  //   programObject.action(async (options) => {
-  //     try {
-  //       //  await console.log("Options", options);
-  //       //   await console.log("archive", archive);
-  //       await this.validateJSON();
-  //       // await this.deploy(archive, options);
-  //     } catch (e) {
-  //       this.logger.error(e);
-  //     }
-  //   });
-  // }
-
   /**
    * Method for validating projectconfig.json file
    */

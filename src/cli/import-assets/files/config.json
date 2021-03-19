@@ -4,6 +4,10 @@
   "usage": "[options]",
   "options": [
     {
+      "keys": "-z, --zipFile",
+      "description": "Prefix for full location path of the zip file to be imported"
+    },
+{
       "keys": "-l, --list",
       "description": "Prefix for list of component names to be deleted"
     },

@@ -15,5 +15,17 @@
   },
   "basePathForWidgets": "./app/project/components/widgets/",
   "minLengthOfWidgetName": 2,
-  "maxLengthOfWidgetName": 31
+  "maxLengthOfWidgetName": 31,
+  "templateNames": {
+     "disallowed": {
+       "startsWith": [
+         "template"
+       ],
+       "equals": [
+         "service",
+         "translate",
+         "utils"
+       ]
+     }
+   }
 }

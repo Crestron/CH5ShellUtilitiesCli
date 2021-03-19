@@ -21,5 +21,17 @@
   "automatedTests": {
     "enable": true,
     "enableComponentDeleteAfterTest": true
-  }
+  },
+  "templateNames": {
+     "disallowed": {
+       "startsWith": [
+         "template"
+       ],
+       "equals": [
+         "service",
+         "translate",
+         "utils"
+       ]
+     }
+   }
 }

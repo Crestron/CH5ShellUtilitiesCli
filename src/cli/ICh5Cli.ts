@@ -1,6 +1,6 @@
 export interface ICh5Cli {
 
-  run(): void;
+  run(): Promise<void>;
 
   
 

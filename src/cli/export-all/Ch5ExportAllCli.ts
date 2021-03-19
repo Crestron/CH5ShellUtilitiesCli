@@ -31,7 +31,7 @@ export class Ch5ExportAllCli extends Ch5BaseClassForCli implements ICh5Cli {
   /**
    * Method for exporting all
    */
-  async exportAll() {
+  async run() {
     this.outputResponse = {};
     if (this.inputArguments["all"] === true) {
       if (fs.existsSync(this.getConfigNode("requiredFolderPath"))) {
