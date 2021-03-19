@@ -16,7 +16,7 @@
     "copyfiles:json": "copyfiles -u 1 src/**/**/*.json build/",
     "copyfiles:template": "copyfiles -u 1 src/**/*.template build/",
     "copyfiles:text": "copyfiles -u 1 src/**/*.txt build/",
-    "build": "tsc -p . && yarn copyfiles:json && yarn copyfiles:template && yarn copyfiles:text",
+    "build": "tsc -p tsconfig.json && yarn copyfiles:json && yarn copyfiles:template && yarn copyfiles:text",
     "test": "sudo npm i -g && pizza",
     "build:rags": "yarn clean && yarn tsc",
     "ch5-utils": "./build/index.js",

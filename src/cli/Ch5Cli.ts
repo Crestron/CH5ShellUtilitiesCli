@@ -67,6 +67,7 @@ export class Ch5ShellCli {
     // clear();
     console.log(
       chalk.green(
+        // figlet.textSync('HH crestron-shell-cli', { horizontalLayout: 'full' })
         figlet.textSync('crestron-shell-cli', { horizontalLayout: 'full' })
       )
     );

@@ -9,7 +9,10 @@
     ],
     "declaration": true,
     "outDir": "build",
-    "rootDir": "src",
+    "rootDirs": [
+      "src",
+      "test"
+    ],
     "strict": true,
     "types": [
       "node",
@@ -18,5 +21,15 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "newLine": "LF"
-  }
+  },
+  "exclude": [
+    "node_modules",
+    "test"
+  ],
+  "include": [
+    "src"
+  ]
+  // "exclude": [
+  //   // "test"
+  // ]
 }
