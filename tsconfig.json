@@ -2,12 +2,19 @@
   "compilerOptions": {
     "target": "es5",
     "module": "commonjs",
-    "lib": ["es6", "es2015", "dom"],
+    "lib": [
+      "es6",
+      "es2015",
+      "dom"
+    ],
     "declaration": true,
     "outDir": "build",
-    "rootDirs": ["src","test"],
+    "rootDir": "src",
     "strict": true,
-    "types": ["node", "mocha"],
+    "types": [
+      "node",
+      "mocha"
+    ],
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "newLine": "LF"
