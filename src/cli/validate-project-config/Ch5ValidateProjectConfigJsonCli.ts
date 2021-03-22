@@ -8,16 +8,14 @@
 import { Ch5BaseClassForCli } from "../Ch5BaseClassForCli";
 import { ICh5Cli } from "../ICh5Cli";
 
-const path = require('path');
+import path from 'path';
+
 const fs = require("fs");
 const process = require("process");
 const jsonSchema = require('jsonschema');
-const Enquirer = require('enquirer');
-const enquirer = new Enquirer();
 
 export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements ICh5Cli {
 
-  private outputResponse: any = {};
   private errorsFound: any = [];
   private warningsFound: any = [];
   private projectConfigJson: any = {};
@@ -114,7 +112,7 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
   /**
    * Validating the schema file
    */
-  validateSchema() {
+  private validateSchema() {
     let Validator = jsonSchema.Validator;
     let v = new Validator();
     const errors = v.validate(this.projectConfigJson, this.projectConfigJsonSchema).errors;
@@ -128,7 +126,7 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
   /**
    * Check if the pages defined in project-config.json exists in project
    */
-  verifyPagesExist(pagesArray: any[]) {
+  private verifyPagesExist(pagesArray: any[]) {
     for (let i: number = 0; i < pagesArray.length; i++) {
       if (!fs.existsSync(pagesArray[i].fullPath)) {
         this.addError(this.getText("VALIDATIONS.PAGE_MISSING_FILE_FOLDER.HEADER", pagesArray[i].pageName), this.getText("VALIDATIONS.PAGE_MISSING_FILE_FOLDER.FOLDER_PATH_MISSING", pagesArray[i].fullPath, pagesArray[i].fileName), "");
@@ -143,7 +141,7 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
   /**
    * Check if the widgets defined in project-config.json exists in project
    */
-  verifyWidgetsExist(widgetsArray: string | any[]) {
+  private verifyWidgetsExist(widgetsArray: string | any[]) {
     for (let i: number = 0; i < widgetsArray.length; i++) {
       if (!fs.existsSync(widgetsArray[i].fullPath)) {
         this.addError(this.getText("VALIDATIONS.WIDGET_MISSING_FILE_FOLDER.HEADER", widgetsArray[i].widgetName), this.getText("VALIDATIONS.WIDGET_MISSING_FILE_FOLDER.FOLDER_PATH_MISSING", widgetsArray[i].fullPath, widgetsArray[i].fileName), "");
@@ -158,7 +156,7 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
   /**
    * Check if the selected theme is not empty and available in the list of themes
    */
-  checkInvalidSelectedTheme(projectConfigObject: { selectedTheme: string; themes: string | any[]; }) {
+  private checkInvalidSelectedTheme(projectConfigObject: { selectedTheme: string; themes: string | any[]; }) {
     let isThemeAvailable = false;
     const errorOrWarningType = this.getText("VALIDATIONS.SELECTED_THEME_INCORRECT.HEADER");
 
@@ -183,7 +181,7 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
   /**
    * Check if any other folders exist in the app which are not defined in project-config.json
    */
-  checkIfPagesAreRepeated(pagesArray: string | any[]) {
+  private checkIfPagesAreRepeated(pagesArray: string | any[]) {
     const errorOrWarningType = this.getText("VALIDATIONS.PAGE_NAMES_REPEATED.HEADER");
     const newPageArray: any[] = [];
     for (let i: number = 0; i < pagesArray.length; i++) {
@@ -198,7 +196,7 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
   /**
    * Check if any other folders exist in the app which are not defined in project-config.json
    */
-  checkIfWidgetsAreRepeated(widgetsArray: string | any[]) {
+  private checkIfWidgetsAreRepeated(widgetsArray: string | any[]) {
     const errorOrWarningType = this.getText("VALIDATIONS.WIDGET_NAMES_REPEATED.HEADER");
     const newWidgetArray: any[] = [];
     for (let i: number = 0; i < widgetsArray.length; i++) {
@@ -213,7 +211,7 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
   /**
    * Check if any other folders exist in the app which are not defined in project-config.json
    */
-  checkPageSequence(pagesArray: string | any[]) {
+  private checkPageSequence(pagesArray: string | any[]) {
     const errorOrWarningType = this.getText("VALIDATIONS.NAVIGATION_PAGE_SEQUENCE.HEADER");
     const newPageArraySequence: any[] = [];
     for (let i: number = 0; i < pagesArray.length; i++) {
@@ -231,7 +229,7 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
    * Checks if the theme name is repeated in the themes array.
    * @param {*} pagesArray 
    */
-  checkIfThemeNamesAreRepeated(themes: string | any[]) {
+  private checkIfThemeNamesAreRepeated(themes: string | any[]) {
     const errorOrWarningType = this.getText("VALIDATIONS.REPEATED_THEME_NAME_IN_ARRAY.HEADER");
     const newPageArraySequence: any[] = [];
     for (let i: number = 0; i < themes.length; i++) {
@@ -246,7 +244,7 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
   /**
    * If menuOrientation is either veritcal or horizontal , then check if atleast 1 navigation item exists in the list
    */
-  checkAtleastOneNavigationForMenu(pagesArray: string | any[], menuOrientation: string) {
+  private checkAtleastOneNavigationForMenu(pagesArray: string | any[], menuOrientation: string) {
     if (menuOrientation === "horizontal" || menuOrientation === "vertical") {
       const errorOrWarningType = this.getText("VALIDATIONS.ATLEAST_ONE_MENU.HEADER");
       let menuCount = 0;
@@ -266,7 +264,7 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
    * @param {*} pagesArray 
    * @param {*} menuOrientation 
    */
-  checkIconPositionForVerticalMenu(pagesArray: any[], menuOrientation: string) {
+  private checkIconPositionForVerticalMenu(pagesArray: any[], menuOrientation: string) {
     if (menuOrientation === "vertical") {
       const errorOrWarningType = this.getText("VALIDATIONS.ICON_POSITION_VERTICAL.HEADER");
       for (let i: number = 0; i < pagesArray.length; i++) {
@@ -283,7 +281,7 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
    * @param {*} pagesArray 
    * @param {*} menuOrientation 
    */
-  checkHeaderAvailabilityForVerticalMenu(headerDisplay: boolean, menuOrientation: string) {
+  private checkHeaderAvailabilityForVerticalMenu(headerDisplay: boolean, menuOrientation: string) {
     if (menuOrientation === "vertical" && headerDisplay === false) {
       const errorOrWarningType = this.getText("VALIDATIONS.VERTICAL_MENU_HEADER_AVAILABLE.HEADER");
       this.addError(errorOrWarningType, this.getText("VALIDATIONS.VERTICAL_MENU_HEADER_AVAILABLE.MESSAGE"), "");
@@ -297,7 +295,7 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
    * @param {*} headerDisplay 
    * @param {*} menuOrientation 
    */
-  checkIfHeaderComponentsHaveNavigation(projectConfigObject: { header: { [x: string]: any; }; }, pagesArray: any[], headerDisplay: boolean, menuOrientation: string) {
+  private checkIfHeaderComponentsHaveNavigation(projectConfigObject: { header: { [x: string]: any; }; }, pagesArray: any[], headerDisplay: boolean, menuOrientation: string) {
     if (menuOrientation !== "none" && headerDisplay === true) {
       const headerComponentName = projectConfigObject.header["$component"];
       if (this.utils.isValidInput(headerComponentName)) {
@@ -326,7 +324,7 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
    * @param {*} footerDisplay 
    * @param {*} menuOrientation 
    */
-  checkIfFooterComponentsHaveNavigation(projectConfigObject: { footer: { [x: string]: any; }; }, pagesArray: any[], footerDisplay: boolean, menuOrientation: string) {
+  private checkIfFooterComponentsHaveNavigation(projectConfigObject: { footer: { [x: string]: any; }; }, pagesArray: any[], footerDisplay: boolean, menuOrientation: string) {
     if (menuOrientation !== "none" && footerDisplay === true) {
       const footerComponentName = projectConfigObject.footer["$component"];
       if (this.utils.isValidInput(footerComponentName)) {
@@ -352,7 +350,7 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
    * Pages array is empty
    * @param {*} pagesArray 
    */
-  checkIfNoPagesExist(pagesArray: any[]) {
+  private checkIfNoPagesExist(pagesArray: any[]) {
     if (!(pagesArray && pagesArray.length > 0)) {
       const errorOrWarningType = this.getText("VALIDATIONS.EMPTY_PAGES_ARRAY.HEADER");
       this.addError(errorOrWarningType, this.getText("VALIDATIONS.EMPTY_PAGES_ARRAY.MESSAGE"), "");
@@ -364,7 +362,7 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
    * @param {*} pagesArray 
    * @param {*} widgetsArray 
    */
-  checkIfPagesAndWidgetNamesDuplicate(pagesArray: any[], widgetsArray: any[]) {
+  private checkIfPagesAndWidgetNamesDuplicate(pagesArray: any[], widgetsArray: any[]) {
     const errorOrWarningType = this.getText("VALIDATIONS.PAGE_AND_WIDGET_DUPLICATES.HEADER");
     for (let i: number = 0; i < pagesArray.length; i++) {
       for (let j = 0; j < widgetsArray.length; j++) {
@@ -380,7 +378,7 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
    * @param {*} pagesArray 
    */
   //response.content.$defaultView
-  checkIfDefaultViewIsValid(defaultView: string, pagesArray: any[]) {
+  private checkIfDefaultViewIsValid(defaultView: string, pagesArray: any[]) {
     const errorOrWarningType = this.getText("VALIDATIONS.DEFAULT_VIEW_INVALID.HEADER");
     if (defaultView && this.utils.isValidInput(defaultView)) {
       let lblnDefaultViewExists = false;
@@ -407,7 +405,7 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
   /**
    * Check if any other folders exist in the app which are not defined in project-config.json
    */
-  async checkIfUnwantedFilesAndFoldersExist(arrayObject: any[], moveFrom: string) {
+  private async checkIfUnwantedFilesAndFoldersExist(arrayObject: any[], moveFrom: string) {
     return new Promise<void>(resolve => {
       try {
         // Get the files as an array
@@ -445,7 +443,7 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
    * @param {*} objectArray 
    * @param {*} filePath 
    */
-  checkIfFileExists(objectArray: any[], filePath: string) {
+  private checkIfFileExists(objectArray: any[], filePath: string) {
     const newFilePath: string = "./" + filePath.trim().toLowerCase();
     const errorOrWarningType = this.getText("VALIDATIONS.PAGE_AND_WIDGET_DUPLICATES.MESSAGE");
     let lbnPathExists = false;
@@ -465,7 +463,7 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
    * @param {*} objectArray 
    * @param {*} folderPath 
    */
-  checkIfFolderExists(objectArray: any[], folderPath: string) {
+  private checkIfFolderExists(objectArray: any[], folderPath: string) {
     const newFilePath = "./" + folderPath.trim().toLowerCase() + "/";
     const errorOrWarningType = this.getText("VALIDATIONS.PAGE_AND_WIDGET_DUPLICATES.MESSAGE");
     let lbnPathExists = false;
@@ -483,14 +481,14 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
   /**
    * Returns errors found
    */
-  getErrors() {
+  private getErrors() {
     return this.errorsFound;
   }
 
   /**
    * Clears the errors array
    */
-  clearErrors() {
+  private clearErrors() {
     this.errorsFound = [];
   }
 
@@ -500,7 +498,7 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
    * @param {string} message 
    * @param {string} resolution 
    */
-  addError(heading: string, message: string, resolution: string) {
+  private addError(heading: string, message: string, resolution: string) {
     this.errorsFound.push({
       heading: heading,
       message: message,
@@ -511,14 +509,14 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
   /**
    * Returns warnings found
    */
-  getWarnings() {
+  private getWarnings() {
     return this.warningsFound;
   }
 
   /**
    * Clears the warning array
    */
-  clearWarnings() {
+  private clearWarnings() {
     this.warningsFound = [];
   }
 
@@ -528,7 +526,7 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
    * @param {string} message 
    * @param {string} resolution 
    */
-  addWarning(heading: string, message: string, resolution: string) {
+  private addWarning(heading: string, message: string, resolution: string) {
     this.warningsFound.push({
       heading: heading,
       message: message,
@@ -541,7 +539,7 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
    * @param {array} dataArray 
    * @param {string} type 
    */
-  composeOutput(dataArray: any[], type: string) {
+  private composeOutput(dataArray: any[], type: string) {
     let outputMessage = this.getText("OUTPUT_ERROR_HEADER", type, String(dataArray.length)) + "\n";
     let tab = "    ";
     let numbering = 1;
@@ -557,4 +555,5 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
     }
     return outputMessage;
   }
+
 }

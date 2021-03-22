@@ -2,16 +2,7 @@
   "command": "validate:project-config",
   "name": "validate:project-config",
   "usage": "[options]",
-  "options": [
-    {
-      "keys": "-l, --list",
-      "description": "Prefix for list of component names to be deleted"
-    },
-    {
-      "keys": "-f, --force",
-      "description": "Forces the component to be deleted without asking for a confirmation"
-    }
-  ],
+  "options": [],
   "additionalHelp": true,
   "logger": {
     "allowLogging": true,
