@@ -17,6 +17,7 @@
       "../src"
     ],
     "include": [
-        "../test/**/*. spec.ts"
+        "./cli/*.spec.ts",
+        "./helpers/*.spec.ts"
     ]
   }

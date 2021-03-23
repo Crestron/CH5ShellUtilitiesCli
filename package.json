@@ -30,7 +30,7 @@
     "start:watch": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts",
     "refresh": "rm -rf ./node_modules ./package-lock.json && npm install",
     "tsc": "tsc --declaration --declarationDir build/@types",
-    "mtest": "mocha -r ts-node/register test/index.ts --reporter mochawesome"
+    "mtest": "mocha -r ts-node/register test/index.ts --timeout 15000 --reporter mochawesome"
   },
   "keywords": [
     "ch5",
@@ -66,6 +66,7 @@
     "chai": "^4.3.4",
     "figlet-cli": "^0.1.0",
     "mocha": "^8.3.2",
+    "mock-stdin": "^1.0.0",
     "nodemon": "^2.0.7",
     "ts-node": "^9.1.1",
     "typescript": "^4.2.3",
