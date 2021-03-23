@@ -7,8 +7,6 @@ import { Ch5DeleteComponentsCli } from '../../src/cli/delete-components/Ch5Delet
 const deleteComponent = new Ch5DeleteComponentsCli();
 
 let io: any = null;
-before(() => (io = stdin()));
-after(() => io.restore());
 
 // Key codes
 const keys = {

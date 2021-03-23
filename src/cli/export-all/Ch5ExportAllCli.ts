@@ -28,6 +28,10 @@ export class Ch5ExportAllCli extends Ch5BaseClassForCli implements ICh5Cli {
     this.finalOutputZipFile = path.join(this.getConfigNode("zipFileDestinationPath"), this.getConfigNode("outputFileName"));
   }
 
+  updateInputArgs(key: string, val: any) {
+    this.inputArguments[key] = val;
+  }
+
   /**
    * Method for exporting all
    */
@@ -154,7 +158,7 @@ export class Ch5ExportAllCli extends Ch5BaseClassForCli implements ICh5Cli {
 
     const temporaryFolderPath = path.join(this.getConfigNode("zipFileDestinationPath"), this.getConfigNode("outputTempFolderName"));
     try {
-       this.utils.deleteFolderSync(temporaryFolderPath);
+      this.utils.deleteFolderSync(temporaryFolderPath);
       //Create Temporary Folder for copy files before zipping
       fs.mkdirSync(temporaryFolderPath, {
         recursive: true,
