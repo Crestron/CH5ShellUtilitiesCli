@@ -8,3 +8,8 @@ Use `yarn mtest` to execute the test cases.
 
 ## DEV NOTE:
 The `app/project-config.json` controls most of the CLI activities and must be refurbished before each test, since the spec relies on it to execute the commands.
+
+### Dev References:
+https://www.codota.com/code/javascript/functions/mock-stdin/stdin
+https://glebbahmutov.com/blog/unit-testing-cli-programs/
+https://shift.infinite.red/integration-testing-interactive-clis-93af3cc0d56f

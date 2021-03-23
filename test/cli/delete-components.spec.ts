@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import { stdin } from 'mock-stdin';
-import { doesNotMatch } from 'node:assert';
+// import {fs} from 'file-system';
+import * as fs from 'fs';
 import { Ch5DeleteComponentsCli } from '../../src/cli/delete-components/Ch5DeleteComponentsCli';
 
 const deleteComponent = new Ch5DeleteComponentsCli();
@@ -17,9 +18,29 @@ const keys = {
     space: '\x20'
 }
 
+const configPath = './app/project-config.json';
+const configResetPath = './app/project-config-backup.json';
+
+const deleteProjectConfigFile = () => {
+    try {
+        fs.unlinkSync(configPath);
+        //file removed
+    } catch (err) {
+        console.error(err)
+    }
+}
+
+const resetProjectConfig = async () => {
+    console.log('Copying project config file before testing starts');
+    await fs.copyFileSync(configResetPath, configPath);
+}
+
 describe('Delete a project component >>>>>>>> ', () => {
     // tests here
-    beforeEach(() => {
+    beforeEach(async () => {
+        const del = await deleteProjectConfigFile();
+        const cpy = await resetProjectConfig();
+        console.log('done : ', del, ' | ', cpy);
         io = stdin();
     })
 
@@ -56,11 +77,11 @@ describe('Delete a project component >>>>>>>> ', () => {
             io.send(keys.enter)
         }
         let response;
-        for(let i=0; i < 10; i++) {
+        for (let i = 0; i < 10; i++) {
             setTimeout(() => sendKeystrokes().then(), 5);
             setTimeout(() => sendKeystrokesForConfirm().then(), 500);
             response = await deleteComponent.run();
-            if(!response) { // response becomes false when no files exist to delete
+            if (!response) { // response becomes false when no files exist to delete
                 break;
             }
         }

@@ -5,9 +5,9 @@
     "passes": 2,
     "pending": 0,
     "failures": 0,
-    "start": "2021-03-22T13:36:43.555Z",
-    "end": "2021-03-22T13:36:47.648Z",
-    "duration": 4093,
+    "start": "2021-03-23T05:38:16.557Z",
+    "end": "2021-03-23T05:38:21.190Z",
+    "duration": 4633,
     "testsRegistered": 2,
     "passPercent": 100,
     "pendingPercent": 0,
@@ -18,7 +18,7 @@
   },
   "results": [
     {
-      "uuid": "6670c155-445e-4b1d-828f-ba77ad17b9f8",
+      "uuid": "74c7a175-6998-47cf-8c01-72165213c212",
       "title": "",
       "fullFile": "",
       "file": "",
@@ -36,8 +36,8 @@
           "context": null,
           "code": "return (io = mock_stdin_1.stdin());",
           "err": {},
-          "uuid": "7a1264f6-9697-44be-a3ba-fba1f0484979",
-          "parentUUID": "6670c155-445e-4b1d-828f-ba77ad17b9f8",
+          "uuid": "5d72a589-9540-4af5-9996-d1c516d5873d",
+          "parentUUID": "74c7a175-6998-47cf-8c01-72165213c212",
           "isHook": true,
           "skipped": false
         }
@@ -56,8 +56,8 @@
           "context": null,
           "code": "return io.restore();",
           "err": {},
-          "uuid": "64113dd1-4a0f-480f-9353-45dea7008592",
-          "parentUUID": "6670c155-445e-4b1d-828f-ba77ad17b9f8",
+          "uuid": "73806a3d-7836-441b-a840-0777c217209b",
+          "parentUUID": "74c7a175-6998-47cf-8c01-72165213c212",
           "isHook": true,
           "skipped": false
         }
@@ -65,7 +65,7 @@
       "tests": [],
       "suites": [
         {
-          "uuid": "64fcc5a3-4a6f-447d-9c85-a23266bce45d",
+          "uuid": "cd5823b3-b97c-4fa9-98fe-1abb93bcca22",
           "title": "Delete a project component >>>>>>>> ",
           "fullFile": "C:\\REPOS\\GH_Code\\CH5Utilities\\ch5-shell-utilities-cli\\test\\index.ts",
           "file": "\\test\\index.ts",
@@ -74,17 +74,17 @@
               "title": "\"before each\" hook in \"Delete a project component >>>>>>>> \"",
               "fullTitle": "Delete a project component >>>>>>>>  \"before each\" hook in \"Delete a project component >>>>>>>> \"",
               "timedOut": false,
-              "duration": 0,
+              "duration": 3,
               "state": null,
               "speed": null,
               "pass": false,
               "fail": false,
               "pending": false,
               "context": null,
-              "code": "io = mock_stdin_1.stdin();",
+              "code": "return __awaiter(void 0, void 0, void 0, function () {\n        var del, cpy;\n        return __generator(this, function (_a) {\n            switch (_a.label) {\n                case 0: return [4 /*yield*/, deleteProjectConfigFile()];\n                case 1:\n                    del = _a.sent();\n                    return [4 /*yield*/, resetProjectConfig()];\n                case 2:\n                    cpy = _a.sent();\n                    console.log('done : ', del, ' | ', cpy);\n                    io = mock_stdin_1.stdin();\n                    return [2 /*return*/];\n            }\n        });\n    });",
               "err": {},
-              "uuid": "d6820b89-920e-4a69-bb44-2974b891db68",
-              "parentUUID": "64fcc5a3-4a6f-447d-9c85-a23266bce45d",
+              "uuid": "05123df1-cd29-406f-898e-9bfb80ec792f",
+              "parentUUID": "cd5823b3-b97c-4fa9-98fe-1abb93bcca22",
               "isHook": true,
               "skipped": false
             }
@@ -103,8 +103,8 @@
               "context": null,
               "code": "io.restore();",
               "err": {},
-              "uuid": "292994f8-0abe-4f47-9856-90e0ab9a5112",
-              "parentUUID": "64fcc5a3-4a6f-447d-9c85-a23266bce45d",
+              "uuid": "76dfd4b1-f887-40f2-8d06-570f2c21b12e",
+              "parentUUID": "cd5823b3-b97c-4fa9-98fe-1abb93bcca22",
               "isHook": true,
               "skipped": false
             }
@@ -114,7 +114,7 @@
               "title": "If component exists",
               "fullTitle": "Delete a project component >>>>>>>>  If component exists",
               "timedOut": false,
-              "duration": 509,
+              "duration": 513,
               "state": "passed",
               "speed": "slow",
               "pass": true,
@@ -123,8 +123,8 @@
               "context": null,
               "code": "return __awaiter(void 0, void 0, void 0, function () {\n        var sendKeystrokes, sendKeystrokesForConfirm, response;\n        return __generator(this, function (_a) {\n            switch (_a.label) {\n                case 0:\n                    sendKeystrokes = function () { return __awaiter(void 0, void 0, void 0, function () {\n                        return __generator(this, function (_a) {\n                            switch (_a.label) {\n                                case 0: return [4 /*yield*/, io.send(keys.down)];\n                                case 1:\n                                    _a.sent();\n                                    io.send(keys.down);\n                                    io.send(keys.space);\n                                    io.send(keys.enter);\n                                    return [2 /*return*/];\n                            }\n                        });\n                    }); };\n                    sendKeystrokesForConfirm = function () { return __awaiter(void 0, void 0, void 0, function () {\n                        return __generator(this, function (_a) {\n                            switch (_a.label) {\n                                case 0: return [4 /*yield*/, io.send(keys.space)];\n                                case 1:\n                                    _a.sent();\n                                    io.send(keys.enter);\n                                    return [2 /*return*/];\n                            }\n                        });\n                    }); };\n                    setTimeout(function () { return sendKeystrokes().then(); }, 5);\n                    setTimeout(function () { return sendKeystrokesForConfirm().then(); }, 500);\n                    return [4 /*yield*/, deleteComponent.run()];\n                case 1:\n                    response = _a.sent();\n                    chai_1.expect(response).to.equal(true);\n                    return [2 /*return*/];\n            }\n        });\n    });",
               "err": {},
-              "uuid": "ac6a4120-9cc6-4cae-b09c-84656cdc65a9",
-              "parentUUID": "64fcc5a3-4a6f-447d-9c85-a23266bce45d",
+              "uuid": "a434db13-b2f7-4c5c-a244-595dc750abf8",
+              "parentUUID": "cd5823b3-b97c-4fa9-98fe-1abb93bcca22",
               "isHook": false,
               "skipped": false
             },
@@ -132,7 +132,7 @@
               "title": "If component doesn't exist",
               "fullTitle": "Delete a project component >>>>>>>>  If component doesn't exist",
               "timedOut": false,
-              "duration": 3577,
+              "duration": 4105,
               "state": "passed",
               "speed": "slow",
               "pass": true,
@@ -141,21 +141,21 @@
               "context": null,
               "code": "return __awaiter(void 0, void 0, void 0, function () {\n        var sendKeystrokes, sendKeystrokesForConfirm, response, i;\n        return __generator(this, function (_a) {\n            switch (_a.label) {\n                case 0:\n                    sendKeystrokes = function () { return __awaiter(void 0, void 0, void 0, function () {\n                        return __generator(this, function (_a) {\n                            switch (_a.label) {\n                                case 0: return [4 /*yield*/, io.send(keys.down)];\n                                case 1:\n                                    _a.sent();\n                                    io.send(keys.down);\n                                    io.send(keys.space);\n                                    io.send(keys.enter);\n                                    return [2 /*return*/];\n                            }\n                        });\n                    }); };\n                    sendKeystrokesForConfirm = function () { return __awaiter(void 0, void 0, void 0, function () {\n                        return __generator(this, function (_a) {\n                            switch (_a.label) {\n                                case 0: return [4 /*yield*/, io.send(keys.space)];\n                                case 1:\n                                    _a.sent();\n                                    io.send(keys.enter);\n                                    return [2 /*return*/];\n                            }\n                        });\n                    }); };\n                    i = 0;\n                    _a.label = 1;\n                case 1:\n                    if (!(i < 10)) return [3 /*break*/, 4];\n                    setTimeout(function () { return sendKeystrokes().then(); }, 5);\n                    setTimeout(function () { return sendKeystrokesForConfirm().then(); }, 500);\n                    return [4 /*yield*/, deleteComponent.run()];\n                case 2:\n                    response = _a.sent();\n                    if (!response) { // response becomes false when no files exist to delete\n                        return [3 /*break*/, 4];\n                    }\n                    _a.label = 3;\n                case 3:\n                    i++;\n                    return [3 /*break*/, 1];\n                case 4:\n                    chai_1.expect(response).to.equal(false);\n                    return [2 /*return*/];\n            }\n        });\n    });",
               "err": {},
-              "uuid": "f6d27b88-d105-4d99-9b77-963251979384",
-              "parentUUID": "64fcc5a3-4a6f-447d-9c85-a23266bce45d",
+              "uuid": "c49a790f-77a2-4d33-9c87-5f48d6d989d1",
+              "parentUUID": "cd5823b3-b97c-4fa9-98fe-1abb93bcca22",
               "isHook": false,
               "skipped": false
             }
           ],
           "suites": [],
           "passes": [
-            "ac6a4120-9cc6-4cae-b09c-84656cdc65a9",
-            "f6d27b88-d105-4d99-9b77-963251979384"
+            "a434db13-b2f7-4c5c-a244-595dc750abf8",
+            "c49a790f-77a2-4d33-9c87-5f48d6d989d1"
           ],
           "failures": [],
           "pending": [],
           "skipped": [],
-          "duration": 4086,
+          "duration": 4618,
           "root": false,
           "rootEmpty": false,
           "_timeout": 15000
