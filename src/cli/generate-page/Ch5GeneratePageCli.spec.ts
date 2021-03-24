@@ -1,8 +1,8 @@
 import { expect } from 'chai';
 import { stdin } from 'mock-stdin';
-import { Ch5ExportAllCli } from '../../src/cli/export-all/Ch5ExportAllCli';
+import { Ch5GeneratePageCli } from './Ch5GeneratePageCli';
 
-const exportAllComponent = new Ch5ExportAllCli();
+const exportAllComponent = new Ch5GeneratePageCli();
 
 let io: any = null;
 // Key codes
@@ -41,7 +41,7 @@ describe('Export All of the project directory component >>>>>>>> ', () => {
         //     //     io.send(keys.charL)
         //     // }
         //     // sendKeystrokesForParam().then();
-           exportAllComponent.setInputArgsForTesting(["--all"]); // this is a dummy method to force set value of args before proceeding with the testing
+           exportAllComponent.setInputArgsForTesting(["--name", "page88"]); // this is a dummy method to force set value of args before proceeding with the testing
             const response = await exportAllComponent.run();
             expect(response).to.equal(true);
 

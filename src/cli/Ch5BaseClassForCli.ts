@@ -64,6 +64,10 @@ export class Ch5BaseClassForCli {
     this.CONFIG_FILE = JSON.parse( this.componentHelper.readFileContentSync(path.join(__dirname, this._folderPath, "files", "config.json")));
   }
 
+  public setInputArgsForTesting(args:any) {
+    this._inputArguments = this.componentHelper.processArgsAnalyze(args)
+  }
+  
   /**
   * 
   * @param program 

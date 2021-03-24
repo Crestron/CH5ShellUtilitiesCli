@@ -28,10 +28,6 @@ export class Ch5ExportAllCli extends Ch5BaseClassForCli implements ICh5Cli {
     this.finalOutputZipFile = path.join(this.getConfigNode("zipFileDestinationPath"), this.getConfigNode("outputFileName"));
   }
 
-  updateInputArgs(key: string, val: any) {
-    this.inputArguments[key] = val;
-  }
-
   /**
    * Method for exporting all
    */

@@ -3,4 +3,6 @@
 
 // require('./cli/delete-components.spec'); // 2 test cases
 
-require('./cli/export-all.spec'); // 1 test cases
+// require('./cli/export-all.spec'); // 1 test cases
+
+require('./../src/cli/generate-page/Ch5GeneratePageCli.spec'); // 1 test cases
