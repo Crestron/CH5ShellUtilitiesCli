@@ -57,8 +57,10 @@ describe('Delete a project component >>>>>>>> ', () => {
             await io.send(keys.space)
             io.send(keys.enter)
         }
+        // push the keystrokes under the event stack, it will execute post the 
+        // deleteComponent.run() method and deletes a page as selected using the keystrokes array
         setTimeout(() => sendKeystrokes().then(), 5);
-        setTimeout(() => sendKeystrokesForConfirm().then(), 500);
+        setTimeout(() => sendKeystrokesForConfirm().then(), 10);
         const response = await deleteComponent.run();
         expect(response).to.equal(true);
     });
@@ -75,7 +77,10 @@ describe('Delete a project component >>>>>>>> ', () => {
             io.send(keys.enter)
         }
         let response;
+        // delete all files before testing "no file is available to delete" scenario
         for (let i = 0; i < 10; i++) {
+            // push the keystrokes under the event stack, it will execute post the 
+            // deleteComponent.run() method and deletes a page as selected using the keystrokes array
             setTimeout(() => sendKeystrokes().then(), 5);
             setTimeout(() => sendKeystrokesForConfirm().then(), 500);
             response = await deleteComponent.run();
