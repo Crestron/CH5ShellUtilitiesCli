@@ -1,14 +1,14 @@
 {
   "stats": {
-    "suites": 1,
-    "tests": 1,
-    "passes": 1,
+    "suites": 3,
+    "tests": 3,
+    "passes": 3,
     "pending": 0,
     "failures": 0,
-    "start": "2021-03-23T19:35:34.231Z",
-    "end": "2021-03-23T19:35:34.378Z",
-    "duration": 147,
-    "testsRegistered": 1,
+    "start": "2021-03-26T07:14:45.411Z",
+    "end": "2021-03-26T07:14:45.421Z",
+    "duration": 10,
+    "testsRegistered": 3,
     "passPercent": 100,
     "pendingPercent": 0,
     "other": 0,
@@ -18,7 +18,7 @@
   },
   "results": [
     {
-      "uuid": "deea2609-848d-43b8-8c4d-644de40e0e81",
+      "uuid": "267b7810-1c7f-4dd9-b738-1e9a12135f8f",
       "title": "",
       "fullFile": "",
       "file": "",
@@ -27,78 +27,118 @@
       "tests": [],
       "suites": [
         {
-          "uuid": "69bfcd1b-b328-4577-b37c-72d699517d61",
-          "title": "Export All of the project directory component >>>>>>>> ",
-          "fullFile": "/Users/rdabbir/Desktop/My/Work/Projects/CH5/CH5Utilities/ch5-shell-utilities-cli/test/index.ts",
-          "file": "/test/index.ts",
-          "beforeHooks": [
-            {
-              "title": "\"before each\" hook in \"Export All of the project directory component >>>>>>>> \"",
-              "fullTitle": "Export All of the project directory component >>>>>>>>  \"before each\" hook in \"Export All of the project directory component >>>>>>>> \"",
-              "timedOut": false,
-              "duration": 3,
-              "state": null,
-              "speed": null,
-              "pass": false,
-              "fail": false,
-              "pending": false,
-              "context": null,
-              "code": "return __awaiter(void 0, void 0, void 0, function () {\n        return __generator(this, function (_a) {\n            io = mock_stdin_1.stdin();\n            return [2 /*return*/];\n        });\n    });",
-              "err": {},
-              "uuid": "d3379c52-6709-4dca-be9f-7d87ba301810",
-              "parentUUID": "69bfcd1b-b328-4577-b37c-72d699517d61",
-              "isHook": true,
-              "skipped": false
-            }
-          ],
-          "afterHooks": [
-            {
-              "title": "\"after each\" hook in \"Export All of the project directory component >>>>>>>> \"",
-              "fullTitle": "Export All of the project directory component >>>>>>>>  \"after each\" hook in \"Export All of the project directory component >>>>>>>> \"",
-              "timedOut": false,
-              "duration": 0,
-              "state": null,
-              "speed": null,
-              "pass": false,
-              "fail": false,
-              "pending": false,
-              "context": null,
-              "code": "io.restore();",
-              "err": {},
-              "uuid": "1ade1631-a352-490f-8eac-4cd0bebc091c",
-              "parentUUID": "69bfcd1b-b328-4577-b37c-72d699517d61",
-              "isHook": true,
-              "skipped": false
-            }
-          ],
+          "uuid": "3b12a444-347e-4008-a74e-24ec9211d336",
+          "title": "Ch5CliComponentsHelper:readFileContent >>>>>>> Total Test cases - 1",
+          "fullFile": "C:\\REPOS\\GH_Code\\CH5Utilities\\ch5-shell-utilities-cli\\test\\index.ts",
+          "file": "\\test\\index.ts",
+          "beforeHooks": [],
+          "afterHooks": [],
           "tests": [
             {
-              "title": "Export all of project",
-              "fullTitle": "Export All of the project directory component >>>>>>>>  Export all of project",
+              "title": "should test readFileContent",
+              "fullTitle": "Ch5CliComponentsHelper:readFileContent >>>>>>> Total Test cases - 1 should test readFileContent",
               "timedOut": false,
-              "duration": 139,
+              "duration": 2,
               "state": "passed",
-              "speed": "slow",
+              "speed": "fast",
               "pass": true,
               "fail": false,
               "pending": false,
               "context": null,
-              "code": "return __awaiter(void 0, void 0, void 0, function () {\n        var response;\n        return __generator(this, function (_a) {\n            switch (_a.label) {\n                case 0:\n                    //     // const sendKeystrokesForParam = async () => {\n                    //     //     await io.send(keys.space)\n                    //     //     io.send(keys.hiphen)\n                    //     //     io.send(keys.hiphen)\n                    //     //     io.send(keys.charA)\n                    //     //     io.send(keys.charL)\n                    //     //     io.send(keys.charL)\n                    //     // }\n                    //     // sendKeystrokesForParam().then();\n                    exportAllComponent.setInputArgsForTesting([\"--all\"]); // this is a dummy method to force set value of args before proceeding with the testing\n                    return [4 /*yield*/, exportAllComponent.run()];\n                case 1:\n                    response = _a.sent();\n                    chai_1.expect(response).to.equal(true);\n                    return [2 /*return*/];\n            }\n        });\n    });",
+              "code": "var res = helper.readFileContent(path);\nconsole.log(typeof res);\nchai_1.expect(typeof res).to.equal('object');",
               "err": {},
-              "uuid": "639ed35f-7bdc-414a-be2e-7672a4847184",
-              "parentUUID": "69bfcd1b-b328-4577-b37c-72d699517d61",
+              "uuid": "48e74b04-6fc9-4822-915d-0c04ae91fdc1",
+              "parentUUID": "3b12a444-347e-4008-a74e-24ec9211d336",
               "isHook": false,
               "skipped": false
             }
           ],
           "suites": [],
           "passes": [
-            "639ed35f-7bdc-414a-be2e-7672a4847184"
+            "48e74b04-6fc9-4822-915d-0c04ae91fdc1"
           ],
           "failures": [],
           "pending": [],
           "skipped": [],
-          "duration": 139,
+          "duration": 2,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 15000
+        },
+        {
+          "uuid": "459b6c32-dad5-4031-8d01-fd7828a6c337",
+          "title": "Ch5CliComponentsHelper:readFileContentSync >>>>>>> Total Test cases - 1",
+          "fullFile": "C:\\REPOS\\GH_Code\\CH5Utilities\\ch5-shell-utilities-cli\\test\\index.ts",
+          "file": "\\test\\index.ts",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "should test readFileContentSync",
+              "fullTitle": "Ch5CliComponentsHelper:readFileContentSync >>>>>>> Total Test cases - 1 should test readFileContentSync",
+              "timedOut": false,
+              "duration": 1,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "return __awaiter(_this, void 0, void 0, function () {\n            var res;\n            return __generator(this, function (_a) {\n                switch (_a.label) {\n                    case 0: return [4 /*yield*/, helper.readFileContentSync(path)];\n                    case 1:\n                        res = _a.sent();\n                        console.log(typeof res);\n                        chai_1.expect(typeof res).to.equal('string');\n                        return [2 /*return*/];\n                }\n            });\n        });",
+              "err": {},
+              "uuid": "d194513b-9fae-401f-9d4a-63c51c30cc85",
+              "parentUUID": "459b6c32-dad5-4031-8d01-fd7828a6c337",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "d194513b-9fae-401f-9d4a-63c51c30cc85"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 1,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 15000
+        },
+        {
+          "uuid": "2c5b139c-558f-45c4-8ffc-0d55ca16f407",
+          "title": "Ch5CliComponentsHelper:readFile >>>>>>> Total Test cases ",
+          "fullFile": "C:\\REPOS\\GH_Code\\CH5Utilities\\ch5-shell-utilities-cli\\test\\index.ts",
+          "file": "\\test\\index.ts",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "should test readFile",
+              "fullTitle": "Ch5CliComponentsHelper:readFile >>>>>>> Total Test cases  should test readFile",
+              "timedOut": false,
+              "duration": 1,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "var res = helper.readFile(path);\nconsole.log(typeof res);\nchai_1.expect(typeof res).to.equal('object');",
+              "err": {},
+              "uuid": "36d3f48d-0b72-422a-826c-bd49c6234426",
+              "parentUUID": "2c5b139c-558f-45c4-8ffc-0d55ca16f407",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "36d3f48d-0b72-422a-826c-bd49c6234426"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 1,
           "root": false,
           "rootEmpty": false,
           "_timeout": 15000
