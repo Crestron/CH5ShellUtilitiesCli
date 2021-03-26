@@ -1,6 +1,5 @@
 import { expect } from 'chai';
 import { stdin } from 'mock-stdin';
-// import {fs} from 'file-system';
 import * as fs from 'fs';
 import { Ch5DeleteComponentsCli } from '../../src/cli/delete-components/Ch5DeleteComponentsCli';
 
