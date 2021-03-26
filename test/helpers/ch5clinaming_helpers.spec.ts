@@ -1,11 +1,14 @@
 /* eslint-disable no-undef */
 
 import { expect } from 'chai';
+import * as fse from 'fs-extra';
 import { Ch5CliNamingHelper } from '../../src/cli/Ch5CliNamingHelper';
 
 const helper = new Ch5CliNamingHelper();
 
 const paramArray = ['EMPTY_STRING', 'hello world', 'innerHTML', 'action_name', 'ALLCAPS', 'css-class-name', 'my favorite items', '-~!@#$%^&*()+='];
+const configPath = './app/project-config.json';
+const configResetPath = './app/project-config-backup.json';
 
 Execute_Suite_Ch5CliNamingHelper();
 
@@ -26,6 +29,32 @@ function Execute_Suite_Ch5CliNamingHelper() {
   test_capitalizeEachWord();
   test_capitalizeEachWordWithSpaces();
 }
+
+/**
+ * Function to delete the project config before resetting it
+ */
+async function deleteProjectConfigFile() {
+    try {
+        fse.unlinkSync(configPath);
+        //file removed
+    } catch (err) {
+        console.error(err)
+    }
+}
+
+/**
+ * Function to reset the project config before beginning the test suite
+ */
+async function resetProjectConfig() {
+    console.log('Copying project config file before testing starts');
+    await fse.copyFileSync(configResetPath, configPath);
+    console.log('Copying project config file before testing starts');
+    await fse.copyFileSync(configResetPath, configPath);
+    const dir = './app/project';
+    await fse.remove(dir);
+    await fse.copy(dir + '-backup', dir);
+}
+
 /**
  * Test suite for Ch5CliNamingHelper:decamelize
  */
@@ -33,6 +62,11 @@ function test_decamelize() {
   const params = [...paramArray];
   describe(`Ch5CliNamingHelper:decamelize >>>>>>> Total Test cases : ${params.length}`, () => {
     const expectedOutputArr = ['', 'hello world', 'inner_html', 'action_name', 'allcaps', 'css-class-name', 'my favorite items', '-~!@#$%^&*()+='];
+    beforeEach(async () => {
+        const del = await deleteProjectConfigFile();
+        const cpy = await resetProjectConfig();
+        console.log('done : ', del, ' | ', cpy);
+    })
     for (let i = 0; i < params.length; i++) {
       const key = params[i];
       it(`should test for ${key}`, () => {

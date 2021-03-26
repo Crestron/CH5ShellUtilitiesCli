@@ -1,15 +1,16 @@
 /* eslint-disable no-undef */
 
 import { expect } from 'chai';
-import * as fs from 'fs';
+import * as fse from 'fs-extra';
 import { Ch5CliProjectConfig } from '../../src/cli/Ch5CliProjectConfig';
 
 const moduleConfig = new Ch5CliProjectConfig();
+const configPath = './app/project-config.json';
+const configResetPath = './app/project-config-backup.json';
 
 Execute_Suite_Ch5CliProjectConfig();
 
 async function Execute_Suite_Ch5CliProjectConfig() {
-    await resetProjectConfig();
     test_getJson();
     test_getAllPages();
     test_getAllWidgets();
@@ -19,13 +20,28 @@ async function Execute_Suite_Ch5CliProjectConfig() {
 }
 
 /**
+ * Function to delete the project config before resetting it
+ */
+async function deleteProjectConfigFile() {
+    try {
+        fse.unlinkSync(configPath);
+        //file removed
+    } catch (err) {
+        console.error(err)
+    }
+}
+
+/**
  * Function to reset the project config before beginning the test suite
  */
 async function resetProjectConfig() {
-    const configPath = './app/project-config.json';
-    const configResetPath = './app/project-config-backup.json';
     console.log('Copying project config file before testing starts');
-    await fs.copyFileSync(configResetPath, configPath);
+    await fse.copyFileSync(configResetPath, configPath);
+    console.log('Copying project config file before testing starts');
+    await fse.copyFileSync(configResetPath, configPath);
+    const dir = './app/project';
+    await fse.remove(dir);
+    await fse.copy(dir + '-backup', dir);
 }
 
 /**
@@ -33,6 +49,11 @@ async function resetProjectConfig() {
  */
 function test_getJson() {
     describe(`Ch5CliProjectConfig:getJson >>>>>>> Total Test cases - 1`, () => {
+        beforeEach(async () => {
+            const del = await deleteProjectConfigFile();
+            const cpy = await resetProjectConfig();
+            console.log('done : ', del, ' | ', cpy);
+        })
         it(`should test getJson`, () => {
             const res = moduleConfig.getJson();
             expect(typeof res).to.equal('object');
@@ -75,7 +96,7 @@ function test_getAllWidgets() {
  */
 function test_getAllPagesAndWidgets() {
     describe(`Ch5CliProjectConfig:getAllPagesAndWidgets >>>>>>> Total Test cases - 2`, () => {
-        const res:any = moduleConfig.getAllPagesAndWidgets();
+        const res: any = moduleConfig.getAllPagesAndWidgets();
         it(`should test getAllPagesAndWidgets length - pages 7 + widgets 1 = 8`, () => {
             expect(res.length).to.equal(8);
         });
@@ -88,7 +109,7 @@ function test_getAllPagesAndWidgets() {
 /**
  * Test suite for Ch5CliProjectConfig:getAllNavigations
  */
- function test_getAllNavigations() {
+function test_getAllNavigations() {
     describe(`Ch5CliProjectConfig:getAllNavigations >>>>>>> Total Test cases - 2`, () => {
         const res = moduleConfig.getAllNavigations();
         it(`should test getAllNavigations length`, () => {
@@ -103,7 +124,7 @@ function test_getAllPagesAndWidgets() {
 /**
  * Test suite for Ch5CliProjectConfig:getHighestNavigationSequence
  */
- function test_getHighestNavigationSequence() {
+function test_getHighestNavigationSequence() {
     describe(`Ch5CliProjectConfig:getHighestNavigationSequence >>>>>>> Total Test cases - 2`, () => {
         const res = moduleConfig.getHighestNavigationSequence();
         it(`should test getHighestNavigationSequence value`, () => {

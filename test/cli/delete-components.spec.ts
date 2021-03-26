@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { stdin } from 'mock-stdin';
-import * as fs from 'fs';
+import * as fse from 'fs-extra';
 import { Ch5DeleteComponentsCli } from '../../src/cli/delete-components/Ch5DeleteComponentsCli';
 
 const deleteComponent = new Ch5DeleteComponentsCli();
@@ -20,7 +20,7 @@ const configResetPath = './app/project-config-backup.json';
 
 const deleteProjectConfigFile = () => {
     try {
-        fs.unlinkSync(configPath);
+        fse.unlinkSync(configPath);
         //file removed
     } catch (err) {
         console.error(err)
@@ -29,7 +29,10 @@ const deleteProjectConfigFile = () => {
 
 const resetProjectConfig = async () => {
     console.log('Copying project config file before testing starts');
-    await fs.copyFileSync(configResetPath, configPath);
+    await fse.copyFileSync(configResetPath, configPath);
+    const dir = './app/project';
+    await fse.remove(dir);
+    await fse.copy(dir + '-backup', dir);
 }
 
 describe('Delete a project component >>>>>>>> ', () => {
@@ -41,7 +44,7 @@ describe('Delete a project component >>>>>>>> ', () => {
         io = stdin();
     })
 
-    afterEach(() => {
+    afterEach(async () => {
         io.restore();
     })
 
