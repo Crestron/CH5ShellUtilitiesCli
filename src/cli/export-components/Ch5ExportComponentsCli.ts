@@ -224,6 +224,7 @@ export class Ch5ExportComponentsCli extends Ch5BaseClassForCli implements ICh5Cl
         });
       } else {
         this.outputResponse['result'] = false;
+        this.utils.deleteFolderSync(temporaryFolderPath);
         if (validInputs.length === 0) {
           this.outputResponse['errorMessage'] = this.getText("FAILURE_MESSAGE_NO_VALID_INPUTS");
         } else {
@@ -233,6 +234,7 @@ export class Ch5ExportComponentsCli extends Ch5BaseClassForCli implements ICh5Cl
       }
     } catch (e) {
       this.outputResponse['result'] = false;
+      this.utils.deleteFolderSync(temporaryFolderPath);
       this.outputResponse['errorMessage'] = e;
       this.logFinalResponses();
     }
