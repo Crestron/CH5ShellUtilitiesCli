@@ -17,9 +17,17 @@
       "HEADER": "Page names repeated in project-config.json",
       "MESSAGE": "Page name '{0}' is repeated."
     },
+    "PAGE_NAME_MISSING": {
+      "HEADER": "Page name missing in project-config.json",
+      "MESSAGE": "Page name '{0}' param does not exist."
+    },
     "WIDGET_NAMES_REPEATED": {
       "HEADER": "Widget names repeated in project-config.json",
       "MESSAGE": "Widget name '{0}' is repeated."
+    },
+    "WIDGET_NAME_MISSING": {
+      "HEADER": "Widget name missing in project-config.json",
+      "MESSAGE": "Widget name '{0}' param does not exist."
     },
     "DEFAULT_VIEW_INVALID": {
       "HEADER": "content.$defaultView in project-config.json",

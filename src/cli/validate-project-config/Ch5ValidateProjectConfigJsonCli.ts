@@ -128,11 +128,18 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
    */
   private verifyPagesExist(pagesArray: any[]) {
     for (let i: number = 0; i < pagesArray.length; i++) {
-      if (!fs.existsSync(pagesArray[i].fullPath)) {
-        this.addError(this.getText("VALIDATIONS.PAGE_MISSING_FILE_FOLDER.HEADER", pagesArray[i].pageName), this.getText("VALIDATIONS.PAGE_MISSING_FILE_FOLDER.FOLDER_PATH_MISSING", pagesArray[i].fullPath, pagesArray[i].fileName), "");
+      const page = pagesArray[i];
+      if (!(page.hasOwnProperty("pageName"))) {
+        this.addError(this.getText("VALIDATIONS.PAGE_NAME_MISSING.HEADER", page.pageName),
+          this.getText("VALIDATIONS.PAGE_NAME_MISSING.MESSAGE", page.fullPath, page.fileName), "");
+      } else if (!fs.existsSync(page.fullPath)) {
+        this.addError(this.getText("VALIDATIONS.PAGE_MISSING_FILE_FOLDER.HEADER", page.pageName),
+          this.getText("VALIDATIONS.PAGE_MISSING_FILE_FOLDER.FOLDER_PATH_MISSING", page.fullPath, page.fileName), "");
       } else {
-        if (!fs.existsSync(pagesArray[i].fullPath + pagesArray[i].fileName)) {
-          this.addError(this.getText("VALIDATIONS.PAGE_MISSING_FILE_FOLDER.HEADER", pagesArray[i].pageName), this.getText("VALIDATIONS.PAGE_MISSING_FILE_FOLDER.FILE_NOT_IN_FOLDER", pagesArray[i].fileName, pagesArray[i].fullPath, pagesArray[i].pageName), "");
+        if (!fs.existsSync(page.fullPath + page.fileName)) {
+          this.addError(this.getText("VALIDATIONS.PAGE_MISSING_FILE_FOLDER.HEADER", page.pageName),
+            this.getText("VALIDATIONS.PAGE_MISSING_FILE_FOLDER.FILE_NOT_IN_FOLDER", page.fileName,
+              page.fullPath, page.pageName), "");
         }
       }
     }
@@ -143,11 +150,21 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
    */
   private verifyWidgetsExist(widgetsArray: string | any[]) {
     for (let i: number = 0; i < widgetsArray.length; i++) {
-      if (!fs.existsSync(widgetsArray[i].fullPath)) {
-        this.addError(this.getText("VALIDATIONS.WIDGET_MISSING_FILE_FOLDER.HEADER", widgetsArray[i].widgetName), this.getText("VALIDATIONS.WIDGET_MISSING_FILE_FOLDER.FOLDER_PATH_MISSING", widgetsArray[i].fullPath, widgetsArray[i].fileName), "");
+      const widget = widgetsArray[i];
+      if (!(widget.hasOwnProperty("widgetName"))) {
+        this.addError(this.getText("VALIDATIONS.WIDGET_NAME_MISSING.HEADER", widget.widgetName),
+          this.getText("VALIDATIONS.WIDGET_NAME_MISSING.MESSAGE", widget.fullPath, widget.fileName), "");
+      } else if (!fs.existsSync(widget.fullPath)) {
+        this.addError(this.getText("VALIDATIONS.WIDGET_MISSING_FILE_FOLDER.HEADER",
+          widget.widgetName),
+          this.getText("VALIDATIONS.WIDGET_MISSING_FILE_FOLDER.FOLDER_PATH_MISSING",
+            widget.fullPath, widget.fileName), "");
       } else {
-        if (!fs.existsSync(widgetsArray[i].fullPath + widgetsArray[i].fileName)) {
-          this.addError(this.getText("VALIDATIONS.WIDGET_MISSING_FILE_FOLDER.HEADER", widgetsArray[i].widgetName), this.getText("VALIDATIONS.WIDGET_MISSING_FILE_FOLDER.FILE_NOT_IN_FOLDER", widgetsArray[i].fileName, widgetsArray[i].fullPath, widgetsArray[i].widgetName), "");
+        if (!fs.existsSync(widget.fullPath + widget.fileName)) {
+          this.addError(this.getText("VALIDATIONS.WIDGET_MISSING_FILE_FOLDER.HEADER",
+            widget.widgetName),
+            this.getText("VALIDATIONS.WIDGET_MISSING_FILE_FOLDER.FILE_NOT_IN_FOLDER",
+              widget.fileName, widget.fullPath, widget.widgetName), "");
         }
       }
     }
@@ -185,10 +202,14 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
     const errorOrWarningType = this.getText("VALIDATIONS.PAGE_NAMES_REPEATED.HEADER");
     const newPageArray: any[] = [];
     for (let i: number = 0; i < pagesArray.length; i++) {
-      if (newPageArray.includes(pagesArray[i].pageName.trim().toLowerCase())) {
-        this.addError(errorOrWarningType, this.getText("VALIDATIONS.PAGE_NAMES_REPEATED.MESSAGE", pagesArray[i].pageName), "");
+      const page = pagesArray[i];
+      if (!(page.hasOwnProperty("pageName"))) {
+        this.addError(this.getText("VALIDATIONS.PAGE_NAME_MISSING.HEADER", page.pageName),
+          this.getText("VALIDATIONS.PAGE_NAME_MISSING.MESSAGE", page.fullPath, page.fileName), "");
+      } else if (newPageArray.includes(page.pageName.trim().toLowerCase())) {
+        this.addError(errorOrWarningType, this.getText("VALIDATIONS.PAGE_NAMES_REPEATED.MESSAGE", page.pageName), "");
       } else {
-        newPageArray.push(pagesArray[i].pageName.trim().toLowerCase());
+        newPageArray.push(page.pageName.trim().toLowerCase());
       }
     }
   }
@@ -200,10 +221,14 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
     const errorOrWarningType = this.getText("VALIDATIONS.WIDGET_NAMES_REPEATED.HEADER");
     const newWidgetArray: any[] = [];
     for (let i: number = 0; i < widgetsArray.length; i++) {
-      if (newWidgetArray.includes(widgetsArray[i].widgetName.trim().toLowerCase())) {
-        this.addError(errorOrWarningType, this.getText("VALIDATIONS.PAGE_NAMES_REPEATED.MESSAGE", widgetsArray[i].widgetName), "");
+      const widget = widgetsArray[i];
+      if (!(widget.hasOwnProperty("widgetName"))) {
+        this.addError(this.getText("VALIDATIONS.WIDGET_NAME_MISSING.HEADER", widget.pageName),
+          this.getText("VALIDATIONS.WIDGET_NAME_MISSING.MESSAGE", widget.fullPath, widget.fileName), "");
+      } else if (newWidgetArray.includes(widget.widgetName.trim().toLowerCase())) {
+        this.addError(errorOrWarningType, this.getText("VALIDATIONS.PAGE_NAMES_REPEATED.MESSAGE", widget.widgetName), "");
       } else {
-        newWidgetArray.push(widgetsArray[i].widgetName.trim().toLowerCase());
+        newWidgetArray.push(widget.widgetName.trim().toLowerCase());
       }
     }
   }
@@ -300,14 +325,17 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
       const headerComponentName = projectConfigObject.header["$component"];
       if (this.utils.isValidInput(headerComponentName)) {
         const errorOrWarningType = this.getText("VALIDATIONS.HEADER_COMPONENT_MISMATCH.HEADER");
-        const getPageObject = pagesArray.find((tempObj: { pageName: string; }) => tempObj.pageName.trim().toLowerCase() === headerComponentName.trim().toLowerCase());
+        const getPageObject = pagesArray.find((tempObj: { pageName: string; }) =>
+          tempObj.pageName.trim().toLowerCase() === headerComponentName.trim().toLowerCase());
         if (getPageObject) {
           if (getPageObject.navigation) {
             // If navigation, then we have to throw error for now
-            this.addError(errorOrWarningType, this.getText("VALIDATIONS.HEADER_COMPONENT_MISMATCH.ERROR_MESSAGE_NAVIGATION"), "");
+            this.addError(errorOrWarningType,
+              this.getText("VALIDATIONS.HEADER_COMPONENT_MISMATCH.ERROR_MESSAGE_NAVIGATION"), "");
           } else {
             if (getPageObject.standAloneView === true) {
-              this.addError(errorOrWarningType, this.getText("VALIDATIONS.HEADER_COMPONENT_MISMATCH.ERROR_MESSAGE_STANDALONE_TRUE"), "");
+              this.addError(errorOrWarningType,
+                this.getText("VALIDATIONS.HEADER_COMPONENT_MISMATCH.ERROR_MESSAGE_STANDALONE_TRUE"), "");
             }
           }
         } else {
@@ -329,7 +357,8 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
       const footerComponentName = projectConfigObject.footer["$component"];
       if (this.utils.isValidInput(footerComponentName)) {
         const errorOrWarningType = this.getText("VALIDATIONS.FOOTER_COMPONENT_MISMATCH.HEADER");
-        const getPageObject = pagesArray.find((tempObj: { pageName: string; }) => tempObj.pageName.trim().toLowerCase() === footerComponentName.trim().toLowerCase());
+        const getPageObject = pagesArray.find((tempObj: { pageName: string; }) =>
+          tempObj.pageName.trim().toLowerCase() === footerComponentName.trim().toLowerCase());
         if (getPageObject) {
           if (getPageObject.navigation) {
             // If navigation, then we have to throw error for now
@@ -366,8 +395,17 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
     const errorOrWarningType = this.getText("VALIDATIONS.PAGE_AND_WIDGET_DUPLICATES.HEADER");
     for (let i: number = 0; i < pagesArray.length; i++) {
       for (let j = 0; j < widgetsArray.length; j++) {
-        if (widgetsArray[j].widgetName.trim().toLowerCase() === pagesArray[i].pageName.trim().toLowerCase()) {
-          this.addError(errorOrWarningType, this.getText("VALIDATIONS.PAGE_AND_WIDGET_DUPLICATES.MESSAGE", pagesArray[i].pageName, widgetsArray[j].widgetName), "");
+        if (!(pagesArray[i].hasOwnProperty("pageName"))) {
+          this.addError(this.getText("VALIDATIONS.PAGE_NAME_MISSING.HEADER", pagesArray[i].pageName),
+            this.getText("VALIDATIONS.PAGE_NAME_MISSING.MESSAGE",
+              pagesArray[i].fullPath, pagesArray[i].fileName), "");
+        } else if (!(widgetsArray[j].hasOwnProperty("widgetName"))) {
+          this.addError(this.getText("VALIDATIONS.WIDGET_NAME_MISSING.HEADER", widgetsArray[j].widgetName),
+            this.getText("VALIDATIONS.WIDGET_NAME_MISSING.MESSAGE", widgetsArray[j].fullPath, widgetsArray[j].fileName), "");
+        } else if (widgetsArray[j].widgetName.trim().toLowerCase() === pagesArray[i].pageName.trim().toLowerCase()) {
+          this.addError(errorOrWarningType,
+            this.getText("VALIDATIONS.PAGE_AND_WIDGET_DUPLICATES.MESSAGE",
+              pagesArray[i].pageName, widgetsArray[j].widgetName), "");
         }
       }
     }
@@ -420,8 +458,6 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
               if (stat.isFile()) {
                 this.checkIfFileExists(arrayObject, fromPath);
               } else if (stat.isDirectory()) {
-                // console.log("'%s' is a directory.", fromPath);
-                // checkIfUnwantedFilesAndFoldersExist(fromPath);
                 this.checkIfFolderExists(arrayObject, fromPath);
                 this.checkIfUnwantedFilesAndFoldersExist(arrayObject, fromPath);
               }
@@ -499,11 +535,22 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
    * @param {string} resolution 
    */
   private addError(heading: string, message: string, resolution: string) {
-    this.errorsFound.push({
-      heading: heading,
-      message: message,
-      resolution: resolution
-    });
+    let valueExists = false;
+    if (this.errorsFound.length > 0) {
+      for (let item of this.errorsFound) {
+        if (message === item.message) {
+          valueExists = true;
+          break;
+        }
+      }
+    }
+    if (!valueExists) {
+      this.errorsFound.push({
+        heading: heading,
+        message: message,
+        resolution: resolution
+      });
+    }
   }
 
   /**
