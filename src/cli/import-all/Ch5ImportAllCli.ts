@@ -24,7 +24,7 @@ export class Ch5ImportAllCli extends Ch5BaseClassForCli implements ICh5Cli  {
   public constructor() {
     super("import-all");
   }
-  
+
   /**
    * Initialize all variables and set module level constants
    */
@@ -73,8 +73,6 @@ export class Ch5ImportAllCli extends Ch5BaseClassForCli implements ICh5Cli  {
       // Update project-config first (so that if this fails, we don't worry about file deletion). Next Delete Files
       await this.processRequest();
 
-      // Clean up
-      this.cleanUp();
 
     } catch (e) {
       if (e && this.utils.isValidInput(e.message)) {
@@ -83,6 +81,9 @@ export class Ch5ImportAllCli extends Ch5BaseClassForCli implements ICh5Cli  {
         this.outputResponse.errorMessage = this.getText("ERRORS.SOMETHING_WENT_WRONG");
         this.logger.log(e);
       }
+    } finally {
+      // Clean up
+      this.cleanUp();
     }
 
     // Show output response
@@ -157,7 +158,7 @@ export class Ch5ImportAllCli extends Ch5BaseClassForCli implements ICh5Cli  {
       If overwrite = true or ForceFlag
         Generic Message
       Else
-        Identify the copied files 
+        Identify the copied files
     */
 
     // Check if proper folder exists after unzip.
@@ -194,7 +195,7 @@ export class Ch5ImportAllCli extends Ch5BaseClassForCli implements ICh5Cli  {
       checkedFilesForLoop.push(inputListOfFiles[i]);
     }
 
-    // Identify source files in target folder 
+    // Identify source files in target folder
     // if (this.inputArguments["force"] === false) {
     for (let i:number = 0; i < this.outputResponse.data.inputFileExistsInSourceFolder.length; i++) {
       const fileNewPath = path.normalize(this.outputResponse.data.inputFileExistsInSourceFolder[i]);
@@ -219,22 +220,22 @@ export class Ch5ImportAllCli extends Ch5BaseClassForCli implements ICh5Cli  {
       this.outputResponse.data.sourceFilesInTargetFolder [
         './app/project/components/pages/page1/page1.html',
         './app/project/components/pages/page2/page2.html'
-      ] 
+      ]
       this.outputResponse.data.newSourceFiles [
         './app/project/components/widgets/pagedisplay/pagedisplay.htm',
         './app/project/components/pages/page7/page7.html',
         './app/project/components/widgets/widget1/widget1.html'
-      ] 
+      ]
       this.outputResponse.data.invalidInputFiles [
         './app/project/components/widgets/pagedisplay/pagedisplay.htm',
         './app/project/components/pages/page2/'
-      ] 
+      ]
       this.outputResponse.data.inputFileExistsInSourceFolder [
         './app/project/components/pages/page1/page1.html',
         './app/project/components/pages/page2/page2.html',
         './app/project/components/pages/page7/page7.html',
         './app/project/components/widgets/widget1/widget1.html'
-      ] 
+      ]
     */
 
     for (let i:number = 0; i < this.outputResponse.data.inputFileExistsInSourceFolder.length; i++) {
@@ -262,8 +263,8 @@ export class Ch5ImportAllCli extends Ch5BaseClassForCli implements ICh5Cli  {
   }
 
   /**
-   * 
-   * @param {*} fileName 
+   *
+   * @param {*} fileName
    */
   isFileToBeAvoided(fileName: string) {
     for (let i:number = 0; i < this.outputResponse.data.filesToBeAvoidedFromCopying.length; i++) {
@@ -275,8 +276,8 @@ export class Ch5ImportAllCli extends Ch5BaseClassForCli implements ICh5Cli  {
   }
 
   /**
-   * 
-   * @param {*} input 
+   *
+   * @param {*} input
    */
   replaceDistFolderPathNameInInput(input: any) {
     if (input && input.length > 0) {
@@ -291,8 +292,8 @@ export class Ch5ImportAllCli extends Ch5BaseClassForCli implements ICh5Cli  {
   }
 
   /**
-   * 
-   * @param {*} sourcePath 
+   *
+   * @param {*} sourcePath
    */
   getAllFiles(sourcePath: string) {
     return fs.readdirSync(sourcePath).reduce((files: any, file: any) => {
@@ -422,7 +423,7 @@ export class Ch5ImportAllCli extends Ch5BaseClassForCli implements ICh5Cli  {
           If overwrite = true
             Generic Message
           Else
-            Identify the copied files 
+            Identify the copied files
         */
         if (this.inputArguments["all"] === true) {
           if (this.outputResponse.data.overwriteFiles === true) {
@@ -465,9 +466,9 @@ export class Ch5ImportAllCli extends Ch5BaseClassForCli implements ICh5Cli  {
   }
 
   /**
-   * 
-   * @param {*} arrayOfFiles 
-   * @param {*} newFile 
+   *
+   * @param {*} arrayOfFiles
+   * @param {*} newFile
    */
   checkIfNewFileInput(arrayOfFiles: string[], newFile: string) {
     const outputObj = arrayOfFiles.find((tempObj: any) => path.normalize(tempObj).trim().toLowerCase() === path.normalize(newFile).trim().toLowerCase());
@@ -481,9 +482,9 @@ export class Ch5ImportAllCli extends Ch5BaseClassForCli implements ICh5Cli  {
   /**
    * Check if the file is a zip file and exists, and follows proper folder structure
    * Suggestion - Export and import should have version number
-   * Note that we are not checking for export-components.zip file as filename because the 
+   * Note that we are not checking for export-components.zip file as filename because the
    * user can rename his file if required.
-   * @param {*} fileName 
+   * @param {*} fileName
    */
   isZipFileValid(fileName: string) {
     if (fs.existsSync(fileName)) {
@@ -503,9 +504,9 @@ export class Ch5ImportAllCli extends Ch5BaseClassForCli implements ICh5Cli  {
   }
 
   /**
-   * For 'page' type components without conflicting name 
+   * For 'page' type components without conflicting name
    * -   The target project content view should be appended with the imported pages in the same order they were in the source project.
-   * -   If the navigation buttons were defined in source project, the target project navigation buttons should be appended with buttons for imported page in same order they were in the source project. 
+   * -   If the navigation buttons were defined in source project, the target project navigation buttons should be appended with buttons for imported page in same order they were in the source project.
    * For 'page' type components with conflicting name
    * -   the location in the content view of the imported page should remain the same as before the import
    * -   if navigation buttons were defined in both the source and target project, the order should remain the same

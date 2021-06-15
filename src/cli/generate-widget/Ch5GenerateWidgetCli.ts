@@ -48,7 +48,7 @@ export class Ch5GenerateWidgetCli extends Ch5BaseClassForCli implements ICh5Cli 
 
   /**
    * Method for generating page
-   * @param {*} processArgs 
+   * @param {*} processArgs
    */
   async run() {
     try {
@@ -67,9 +67,6 @@ export class Ch5GenerateWidgetCli extends Ch5BaseClassForCli implements ICh5Cli 
       // Update project-config first (so that if this fails, we don't worry about file deletion). Next Delete Files
       await this.processRequest();
 
-      // Clean up
-      this.cleanUp();
-
     } catch (e) {
       if (e && this.utils.isValidInput(e.message)) {
         if (e.message.trim().toLowerCase() === 'error') {
@@ -81,6 +78,9 @@ export class Ch5GenerateWidgetCli extends Ch5BaseClassForCli implements ICh5Cli 
         this.outputResponse.errorMessage = this.getText("ERRORS.SOMETHING_WENT_WRONG");
         this.logger.log(e);
       }
+    } finally {
+      // Clean up
+      this.cleanUp();
     }
 
     // Show output response
@@ -312,7 +312,7 @@ export class Ch5GenerateWidgetCli extends Ch5BaseClassForCli implements ICh5Cli 
 
   /**
    * Loop and check the next valid widget to set
-   * @param {*} widgets 
+   * @param {*} widgets
    */
   private loopAndCheckWidget(widgets: any[]) {
     let widgetFound: boolean = false;
@@ -348,8 +348,8 @@ export class Ch5GenerateWidgetCli extends Ch5BaseClassForCli implements ICh5Cli 
 
   /**
    * Checks if the widget name has disallowed keywords
-   * @param {*} widgetName 
-   * @param {*} type 
+   * @param {*} widgetName
+   * @param {*} type
    */
   checkWidgetNameForDisallowedKeywords(widgetName: string, type: string) {
     const templateNames: any = this.getConfigNode("templateNames");

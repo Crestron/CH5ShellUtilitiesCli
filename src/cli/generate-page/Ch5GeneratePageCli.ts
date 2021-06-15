@@ -62,9 +62,6 @@ export class Ch5GeneratePageCli extends Ch5BaseClassForCli implements ICh5Cli {
       // Update project-config first (so that if this fails, we don't worry about file deletion). Next Delete Files
       await this.processRequest();
 
-      // Clean up
-      this.cleanUp();
-
     } catch (e) {
       if (e && this.utils.isValidInput(e.message)) {
         if (e.message.trim().toLowerCase() === 'error') {
@@ -76,6 +73,9 @@ export class Ch5GeneratePageCli extends Ch5BaseClassForCli implements ICh5Cli {
         this.outputResponse.errorMessage = this.getText("ERRORS.SOMETHING_WENT_WRONG");
         this.logger.log(e);
       }
+    } finally {
+      // Clean up
+      this.cleanUp();
     }
 
     // Show output response
@@ -367,7 +367,7 @@ export class Ch5GeneratePageCli extends Ch5BaseClassForCli implements ICh5Cli {
 
   /**
    * Loop and check the next valid page to set
-   * @param {*} pages 
+   * @param {*} pages
    */
   private loopAndCheckPage(pages: any) {
     let pageFound = false;
@@ -440,8 +440,8 @@ export class Ch5GeneratePageCli extends Ch5BaseClassForCli implements ICh5Cli {
 
   /**
    * Checks if the pagename has disallowed keywords
-   * @param {*} pageName 
-   * @param {*} type 
+   * @param {*} pageName
+   * @param {*} type
    */
   private checkPageNameForDisallowedKeywords(pageName: string, type: string) {
     const templateNames: any = this.getConfigNode("templateNames");
@@ -463,7 +463,7 @@ export class Ch5GeneratePageCli extends Ch5BaseClassForCli implements ICh5Cli {
 
   /**
    * Validate Menu Option
-   * @param {*} menuOption 
+   * @param {*} menuOption
    */
   private validateMenuOption(menuOption: string) {
     this.logger.log("menuOption to Validate", menuOption);
