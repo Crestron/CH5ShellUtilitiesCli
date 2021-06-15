@@ -21,7 +21,7 @@ export class Ch5ExportAllCli extends Ch5BaseClassForCli implements ICh5Cli {
   private finalOutputZipFile: string = "";
 
   /**
-   * 
+   *
    */
   public constructor() {
     super("export-all");
@@ -63,7 +63,7 @@ export class Ch5ExportAllCli extends Ch5BaseClassForCli implements ICh5Cli {
 
   /**
    * Log Final Response Message
-   * @param {*} errorMessage 
+   * @param {*} errorMessage
    */
   logFinalResponses() {
     if (this.utils.isValidInput(this.outputResponse['errorMessage'])) {
@@ -87,7 +87,7 @@ export class Ch5ExportAllCli extends Ch5BaseClassForCli implements ICh5Cli {
 
   /**
    * Identify the exported components and create a sample project-config.json file internally to this export.
-   * @param {*} copyAll 
+   * @param {*} copyAll
    */
   processProjectConfigJSONFile(copyAll: boolean, validInputs: string[]) {
     const allPages = this.projectConfig.getAllPages();
@@ -121,7 +121,7 @@ export class Ch5ExportAllCli extends Ch5BaseClassForCli implements ICh5Cli {
 
   /**
    * Get folderPath from project-config.json file.
-   * @param {string} htmlFileName 
+   * @param {string} htmlFileName
    */
   getFolderPathFromProjectConfigJSON(htmlFileName: string) {
     const allPages = this.projectConfig.getAllPages();
@@ -141,8 +141,8 @@ export class Ch5ExportAllCli extends Ch5BaseClassForCli implements ICh5Cli {
 
   /**
    * Copy and Zip files
-   * @param {*} inputNames 
-   * @param {*} copyAll 
+   * @param {*} inputNames
+   * @param {*} copyAll
    */
   async copyAndZipFiles(inputNames: string[], copyAll: boolean) {
     const invalidInputs = [];
@@ -230,6 +230,7 @@ export class Ch5ExportAllCli extends Ch5BaseClassForCli implements ICh5Cli {
         });
       } else {
         this.outputResponse['result'] = false;
+        this.utils.deleteFolderSync(temporaryFolderPath);
         if (validInputs.length === 0) {
           this.outputResponse['errorMessage'] = this.getText("FAILURE_MESSAGE_NO_VALID_INPUTS");
         } else {
@@ -239,6 +240,7 @@ export class Ch5ExportAllCli extends Ch5BaseClassForCli implements ICh5Cli {
       }
     } catch (e) {
       this.outputResponse['result'] = false;
+      this.utils.deleteFolderSync(temporaryFolderPath);
       this.outputResponse['errorMessage'] = e;
       this.logFinalResponses();
     }

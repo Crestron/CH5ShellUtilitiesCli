@@ -9,7 +9,7 @@ import { Ch5BaseClassForCli } from "../Ch5BaseClassForCli";
 import { ICh5Cli } from "../ICh5Cli";
 
 const path = require('path');
-const fs = require("fs"); 
+const fs = require("fs");
 const fsExtra = require("fs-extra");
 const zl = require("zip-lib");
 const findRemoveSync = require('find-remove');
@@ -60,7 +60,7 @@ export class Ch5ExportLibrariesCli  extends Ch5BaseClassForCli implements ICh5Cl
 
   /**
    * Log Final Response Message
-   * @param {*} errorMessage 
+   * @param {*} errorMessage
    */
   logFinalResponses() {
     if (this.utils.isValidInput(this.outputResponse['errorMessage'])) {
@@ -84,8 +84,8 @@ export class Ch5ExportLibrariesCli  extends Ch5BaseClassForCli implements ICh5Cl
 
   /**
    * Copy and Zip files
-   * @param {*} inputNames 
-   * @param {*} copyAll 
+   * @param {*} inputNames
+   * @param {*} copyAll
    */
   async copyAndZipFiles(inputNames:string[], copyAll:boolean) {
     const invalidInputs = [];
@@ -163,6 +163,7 @@ export class Ch5ExportLibrariesCli  extends Ch5BaseClassForCli implements ICh5Cl
         });
       } else {
         this.outputResponse['result'] = false;
+        this.utils.deleteFolderSync(temporaryFolderPath);
         if (validInputs.length === 0) {
           this.outputResponse['errorMessage'] = this.getText("FAILURE_MESSAGE_NO_VALID_INPUTS");
         } else {
@@ -172,6 +173,7 @@ export class Ch5ExportLibrariesCli  extends Ch5BaseClassForCli implements ICh5Cl
       }
     } catch (e) {
       this.outputResponse['result'] = false;
+      this.utils.deleteFolderSync(temporaryFolderPath);
       this.outputResponse['errorMessage'] = e;
       this.logFinalResponses();
     }
