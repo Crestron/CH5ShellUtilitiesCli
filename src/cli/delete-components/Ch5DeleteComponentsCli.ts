@@ -62,7 +62,7 @@ export class Ch5DeleteComponentsCli extends Ch5BaseClassForCli implements ICh5Cl
   }
 
   /**
-   * 
+   *
    */
   initialize() {
     this.outputResponse = {
@@ -187,7 +187,7 @@ export class Ch5DeleteComponentsCli extends Ch5BaseClassForCli implements ICh5Cl
       for (let i: number = 0; i < this.outputResponse.data.components.length; i++) {
         const componentObject = this.pagesAndWidgets.find((tempObj: { name: string; }) => tempObj.name.trim().toLowerCase() === this.outputResponse.data.components[i].trim().toLowerCase());
         if (componentObject) {
-          this.utils.deleteFolderSync(componentObject.component.fullPath);
+          this.utils.deleteFolder(componentObject.component.fullPath);
         } else {
           throw new Error(this.getText("ERRORS.SOMETHING_WENT_WRONG"));
         }
@@ -213,7 +213,7 @@ export class Ch5DeleteComponentsCli extends Ch5BaseClassForCli implements ICh5Cl
 
   /**
    * Log Final Response Message
-   * @param {*} errorMessage 
+   * @param {*} errorMessage
    */
   logOutput() {
     if (this.outputResponse.result === false) {

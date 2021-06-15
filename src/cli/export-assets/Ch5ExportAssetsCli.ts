@@ -98,7 +98,7 @@ export class Ch5ExportAssetsCli extends Ch5BaseClassForCli implements ICh5Cli  {
 
     const temporaryFolderPath = path.join(this.getConfigNode("zipFileDestinationPath"), this.getConfigNode("outputTempFolderName"));
     try {
-       this.utils.deleteFolderSync(temporaryFolderPath);
+       this.utils.deleteFolder(temporaryFolderPath);
       //Create Temporary Folder for copy files before zipping
       fs.mkdirSync(temporaryFolderPath, {
         recursive: true,
@@ -146,7 +146,7 @@ export class Ch5ExportAssetsCli extends Ch5BaseClassForCli implements ICh5Cli  {
         const outputArchive = await zl.archiveFolder(temporaryFolderPath, zipFileName).then(async () => {
           this.logger.info("Zip Done.");
           try {
-             this.utils.deleteFolderSync(temporaryFolderPath);
+             this.utils.deleteFolder(temporaryFolderPath);
             this.logger.info("Clean up Done.");
             this.outputResponse['result'] = true;
             this.outputResponse['errorMessage'] = "";
@@ -163,7 +163,7 @@ export class Ch5ExportAssetsCli extends Ch5BaseClassForCli implements ICh5Cli  {
         });
       } else {
         this.outputResponse['result'] = false;
-        this.utils.deleteFolderSync(temporaryFolderPath);
+        this.utils.deleteFolder(temporaryFolderPath);
         if (validInputs.length === 0) {
           this.outputResponse['errorMessage'] = this.getText("FAILURE_MESSAGE_NO_VALID_INPUTS");
         } else {
@@ -173,7 +173,7 @@ export class Ch5ExportAssetsCli extends Ch5BaseClassForCli implements ICh5Cli  {
       }
     } catch (e) {
       this.outputResponse['result'] = false;
-      this.utils.deleteFolderSync(temporaryFolderPath);
+      this.utils.deleteFolder(temporaryFolderPath);
       this.outputResponse['errorMessage'] = e;
       this.logFinalResponses();
     }

@@ -43,9 +43,9 @@ export class Ch5ExportProjectCli extends Ch5BaseClassForCli implements ICh5Cli {
 
   /**
    * Copy Files
-   * @param {*} folderPathActual 
-   * @param {*} excludedFiles 
-   * @param {*} completeFileName 
+   * @param {*} folderPathActual
+   * @param {*} excludedFiles
+   * @param {*} completeFileName
    */
   async copyFiles(folderPathActual: string, excludedFiles: string[], completeFileName: string) {
     try {
@@ -81,8 +81,8 @@ export class Ch5ExportProjectCli extends Ch5BaseClassForCli implements ICh5Cli {
 
   /**
    * Zip files
-   * @param {*} folderPathActual 
-   * @param {*} completeFileName 
+   * @param {*} folderPathActual
+   * @param {*} completeFileName
    */
   async zipFiles(folderPathActual: any, completeFileName: string) {
     const output = await zl.archiveFolder(folderPathActual, completeFileName).then(async () => {
@@ -92,7 +92,7 @@ export class Ch5ExportProjectCli extends Ch5BaseClassForCli implements ICh5Cli {
         if (cleanupPath === this.getConfigNode("zipFileDestinationPath")) {
           cleanupPath = folderPathActual;
         }
-        this.utils.deleteFolderSync(cleanupPath);
+        this.utils.deleteFolder(cleanupPath);
         this.logger.info("Clean up Done for the path: " + cleanupPath);
         this.logger.printSuccess(this.getText("SUCCESS_MESSAGE", completeFileName));
         return true;

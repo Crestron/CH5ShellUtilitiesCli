@@ -60,7 +60,7 @@ export class Ch5ExportComponentsCli extends Ch5BaseClassForCli implements ICh5Cl
 
   /**
    * Log Final Response Message
-   * @param {*} errorMessage 
+   * @param {*} errorMessage
    */
   logFinalResponses() {
     if (this.utils.isValidInput(this.outputResponse['errorMessage'])) {
@@ -84,7 +84,7 @@ export class Ch5ExportComponentsCli extends Ch5BaseClassForCli implements ICh5Cl
 
   /**
    * Identify the exported components and create a sample project-config.json file internally to this export.
-   * @param {*} copyAll 
+   * @param {*} copyAll
    */
   processProjectConfigJSONFile(copyAll: boolean, validInputs: string[]) {
     const allPages = this.projectConfig.getAllPages();
@@ -118,7 +118,7 @@ export class Ch5ExportComponentsCli extends Ch5BaseClassForCli implements ICh5Cl
 
   /**
    * Get folderPath from project-config.json file.
-   * @param {*} htmlFileName 
+   * @param {*} htmlFileName
    */
   getFolderPathFromProjectConfigJSON(htmlFileName: string) {
     const allPages = this.projectConfig.getAllPages();
@@ -138,8 +138,8 @@ export class Ch5ExportComponentsCli extends Ch5BaseClassForCli implements ICh5Cl
 
   /**
    * Copy and Zip files
-   * @param {*} inputNames 
-   * @param {*} copyAll 
+   * @param {*} inputNames
+   * @param {*} copyAll
    */
   async copyAndZipFiles(inputNames: string[], copyAll: boolean) {
     const invalidInputs = [];
@@ -152,7 +152,7 @@ export class Ch5ExportComponentsCli extends Ch5BaseClassForCli implements ICh5Cl
 
     const temporaryFolderPath = path.join(this.getConfigNode("zipFileDestinationPath"), this.getConfigNode("outputTempFolderName"));
     try {
-      this.utils.deleteFolderSync(temporaryFolderPath);
+      this.utils.deleteFolder(temporaryFolderPath);
       // Create Temporary Folder for copy files before zipping
       fs.mkdirSync(temporaryFolderPath, {
         recursive: true,
@@ -207,7 +207,7 @@ export class Ch5ExportComponentsCli extends Ch5BaseClassForCli implements ICh5Cl
         const outputArchive = await zl.archiveFolder(temporaryFolderPath, zipFileName).then(async () => {
           this.logger.info("Zip Done.");
           try {
-            this.utils.deleteFolderSync(temporaryFolderPath);
+            this.utils.deleteFolder(temporaryFolderPath);
             this.logger.info("Clean up Done.");
             this.outputResponse['result'] = true;
             this.outputResponse['errorMessage'] = "";
@@ -224,7 +224,7 @@ export class Ch5ExportComponentsCli extends Ch5BaseClassForCli implements ICh5Cl
         });
       } else {
         this.outputResponse['result'] = false;
-        this.utils.deleteFolderSync(temporaryFolderPath);
+        this.utils.deleteFolder(temporaryFolderPath);
         if (validInputs.length === 0) {
           this.outputResponse['errorMessage'] = this.getText("FAILURE_MESSAGE_NO_VALID_INPUTS");
         } else {
@@ -234,7 +234,7 @@ export class Ch5ExportComponentsCli extends Ch5BaseClassForCli implements ICh5Cl
       }
     } catch (e) {
       this.outputResponse['result'] = false;
-      this.utils.deleteFolderSync(temporaryFolderPath);
+      this.utils.deleteFolder(temporaryFolderPath);
       this.outputResponse['errorMessage'] = e;
       this.logFinalResponses();
     }

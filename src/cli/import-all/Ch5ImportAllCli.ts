@@ -128,7 +128,7 @@ export class Ch5ImportAllCli extends Ch5BaseClassForCli implements ICh5Cli  {
       }
     });
 
-     this.utils.deleteFolderSync(this.folderPaths.temporaryLocationForExtractedFilesFolder);
+     this.utils.deleteFolder(this.folderPaths.temporaryLocationForExtractedFilesFolder);
 
     // Extract the developer input zip file into a temporary location in dist folder.
     await unzip.extract(this.folderPaths.temporaryLocationForCopiedZipFile, this.folderPaths.temporaryLocationForExtractedFilesFolder).then(async () => {
