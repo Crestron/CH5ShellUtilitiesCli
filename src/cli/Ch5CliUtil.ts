@@ -30,7 +30,7 @@ export class Ch5CliUtil {
 */
   public async deleteFolder(directoryName: string) {
     try {
-      return await rimraf(directoryName);
+      return await rimraf.sync(directoryName);
     } catch (e) {
       return false;
     }
@@ -67,7 +67,7 @@ export class Ch5CliUtil {
 
   /**
    * Check if input is valid. Invalid are "", 0, {}, [], null, undefined.
-   * @param {*} input 
+   * @param {*} input
    */
   public isValidInput(input: any) {
     if (typeof input === 'undefined' || input === null) {
@@ -94,8 +94,8 @@ export class Ch5CliUtil {
   }
 
   /**
-   * 
-   * @param {*} input 
+   *
+   * @param {*} input
    */
   public isValidObject(input: any) {
     // // Polyfill is array check
@@ -115,7 +115,7 @@ export class Ch5CliUtil {
 
   /**
    * Convert string to array
-   * @param {*} inputArray 
+   * @param {*} inputArray
    */
   public convertArrayToString(inputArray: string[], delimiter = ",") {
     if (typeof (delimiter) != "string") {
@@ -140,7 +140,7 @@ export class Ch5CliUtil {
 
   /**
    * Convert string to boolean
-   * @param {*} input 
+   * @param {*} input
    */
   public convertStringToBoolean(input: string) {
     if (this.isValidInput(input) && typeof (input) === "string") {
@@ -158,8 +158,8 @@ export class Ch5CliUtil {
 
   /**
  * Gets the text from the config default.json file.
- * @param {*} key 
- * @param  {...any} values 
+ * @param {*} key
+ * @param  {...any} values
  */
   public getText(DYNAMIC_TEXT_MESSAGES: any, key: string, ...values: string[]) {
     try {
@@ -185,9 +185,9 @@ export class Ch5CliUtil {
   }
 
   /**
-   * 
-   * @param {*} order 
-   * @param  {...any} property 
+   *
+   * @param {*} order
+   * @param  {...any} property
    */
   public dynamicsort(order: string, ...property: any) {
     let sort_order = 1;
@@ -228,8 +228,8 @@ export class Ch5CliUtil {
   }
 
   /**
-   * 
-   * @param {*} input 
+   *
+   * @param {*} input
    */
   public deepCopy(input: string) {
     if (this.isValidInput(input) && typeof (input) === 'object')
@@ -239,10 +239,10 @@ export class Ch5CliUtil {
   }
 
   /**
-   * 
-   * @param {*} str 
-   * @param {*} find 
-   * @param {*} replace 
+   *
+   * @param {*} str
+   * @param {*} find
+   * @param {*} replace
    */
   public replaceAll(str: string, find: string, replace: string) {
     if (str && String(str).trim() !== "") {
