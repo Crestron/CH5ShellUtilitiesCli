@@ -16,21 +16,9 @@ export class Ch5CliUtil {
  * Delete directory by path
  * @param {string} directoryName
  */
-  public deleteFolderSync(directoryName: string) {
+  public deleteFolder(directoryName: string) {
     try {
       return rimraf.sync(directoryName);
-    } catch (e) {
-      return false;
-    }
-  }
-
-  /**
-* Delete directory by path
-* @param {string} directoryName
-*/
-  public async deleteFolder(directoryName: string) {
-    try {
-      return await rimraf.sync(directoryName);
     } catch (e) {
       return false;
     }
@@ -40,9 +28,9 @@ export class Ch5CliUtil {
    * Delete File
    * @param {string} completeFilePath
    */
-  public async deleteFile(completeFilePath: string) {
+  public deleteFile(completeFilePath: string) {
     try {
-      return await rimraf.sync(completeFilePath);
+      return rimraf.sync(completeFilePath);
     } catch (e) {
       return false;
     }
