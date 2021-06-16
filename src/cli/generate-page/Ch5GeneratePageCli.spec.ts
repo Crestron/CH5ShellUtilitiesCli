@@ -41,9 +41,9 @@ describe('Export All of the project directory component >>>>>>>> ', () => {
         //     //     io.send(keys.charL)
         //     // }
         //     // sendKeystrokesForParam().then();
-           exportAllComponent.setInputArgsForTesting(["--name", "page88"]); // this is a dummy method to force set value of args before proceeding with the testing
-            const response = await exportAllComponent.run();
-            expect(response).to.equal(true);
+        //    exportAllComponent.setInputArgsForTesting(["--name", "page88"]); // this is a dummy method to force set value of args before proceeding with the testing
+            // const response = await exportAllComponent.run();
+            // expect(response).to.equal(true);
 
         // process.nextTick(function mockResponse() {
         //     io.send('response1');

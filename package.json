@@ -30,7 +30,8 @@
     "start:watch": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts",
     "refresh": "rm -rf ./node_modules ./package-lock.json && npm install",
     "tsc": "tsc --declaration --declarationDir build/@types",
-    "mtest": "mocha -r ts-node/register test/index.ts --timeout 15000 --reporter mochawesome"
+    "mtest": "mocha -r ts-node/register test/index.ts --timeout 15000 --reporter mochawesome",
+    "test:mocha": "yarn build && mocha --config=.mocharc.json"
   },
   "keywords": [
     "ch5",
@@ -64,11 +65,13 @@
     "@types/fs-extra": "^9.0.9",
     "@types/mocha": "^8.2.1",
     "@types/node": "^14.14.35",
+    "@types/sinon": "^10.0.2",
     "chai": "^4.3.4",
     "figlet-cli": "^0.1.0",
-    "mocha": "^8.3.2",
+    "mocha": "^9.0.0",
     "mock-stdin": "^1.0.0",
     "nodemon": "^2.0.7",
+    "sinon": "^11.1.1",
     "ts-node": "^9.1.1",
     "typescript": "^4.2.3",
     "typings": "^2.1.1"
