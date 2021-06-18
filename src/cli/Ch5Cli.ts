@@ -65,11 +65,11 @@ export class Ch5ShellCli {
       .description("CH5 Shell Utilities CLI");
 
     // This adds a nice fancy ch5-shell-cli in console whenever a command is executed.
-    console.log(
-      chalk.greenBright(
-        figlet.textSync('ch5-shell-cli', { horizontalLayout: 'controlled smushing' })
-      )
-    );
+    // console.log(
+    //   chalk.greenBright(
+    //     figlet.textSync('ch5-shell-cli', { horizontalLayout: 'controlled smushing' })
+    //   )
+    // );
 
     await this.deleteComponents.setupCommand(program);
     await this.exportAll.setupCommand(program);
