@@ -51,11 +51,11 @@ export class Ch5ShellCli {
     this.exportProject = new Ch5ExportProjectCli();
     this.generatePage = new Ch5GeneratePageCli();
     this.generateWidget = new Ch5GenerateWidgetCli();
-    this.importAll = new  Ch5ImportAllCli();
-    this.importAssets = new  Ch5ImportAssetsCli();
-    this.importComponents = new  Ch5ImportComponentsCli();
-    this.importLibraries = new  Ch5ImportLibrariesCli();
-    this.validateProjectConfig = new  Ch5ValidateProjectConfigCli();
+    this.importAll = new Ch5ImportAllCli();
+    this.importAssets = new Ch5ImportAssetsCli();
+    this.importComponents = new Ch5ImportComponentsCli();
+    this.importLibraries = new Ch5ImportLibrariesCli();
+    this.validateProjectConfig = new Ch5ValidateProjectConfigCli();
   }
 
   public async run(): Promise<void> {
@@ -64,11 +64,10 @@ export class Ch5ShellCli {
       .version(buildVersion)
       .description("CH5 Shell Utilities CLI");
 
-    // clear();
+    // This adds a nice fancy ch5-shell-cli in console whenever a command is executed.
     console.log(
-      chalk.green(
-        // figlet.textSync('HH crestron-shell-cli', { horizontalLayout: 'full' })
-        figlet.textSync('crestron-shell-cli', { horizontalLayout: 'full' })
+      chalk.greenBright(
+        figlet.textSync('ch5-shell-cli', { horizontalLayout: 'controlled smushing' })
       )
     );
 

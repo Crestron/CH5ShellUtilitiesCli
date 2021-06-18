@@ -1,32 +1,32 @@
+Usage: 
+    ch5-shell-cli delete:components [options]
 
-Use ch5-shell-utilities-cli directly:
+You could also use `yarn` or `npm run` to delete components. The following are the commands:
+    yarn delete:components
+    npm run delete:components
 
-    The following are the commands to delete components:
-        ch5-shell-cli delete:components
-
-    The following are some examples to delete components with additional options:
-        ch5-shell-cli delete:components --list page6 page5
-        ch5-shell-cli delete:components -l page6
-        ch5-shell-cli delete:components --list page6 --force
-        ch5-shell-cli delete:components -l page6 -f
+Options:
+    -h, --help          Help for Generate Documentation
+    -l, --list,         Prefix for list of component names to be deleted
+    -f, --force         Forces the script to delete the component without asking for a confirmation
 
 
-Use with Yarn / NPM (ensure scripts are available in package.json):
+You could use shortcut script `del:c` as the following:
+    yarn del:c
+    npm run del:c
 
-    The following are the commands to delete components:
-        yarn delete:components
-        npm run delete:components
+You could use ch5-shell-cli to delete components with additional options. The following are some examples:
+    ch5-shell-cli del:c --list page6 page5
+    ch5-shell-cli del:c -l page6
+    ch5-shell-cli del:c --list page6 --force
+    ch5-shell-cli del:c -l page6 -f
 
-    You could use shortcuts as the following:
-        yarn del:c
-        npm run del:c
-
-    The following are some examples to delete components with additional options:
-        yarn del:c --list page6 page5
-        yarn del:c -l page6
-        yarn del:c --list page6 --force
-        yarn del:c -l page6 -f
-        npm run del:c -- --list page6 page5
-        npm run del:c -- -l page6
-        npm run del:c -- --list page6 --force
-        npm run del:c -- -l page6 -f
+You can also use YARN or NPM to gene
+    yarn del:c --list page6 page5
+    yarn del:c -l page6
+    yarn del:c --list page6 --force
+    yarn del:c -l page6 -f
+    npm run del:c -- --list page6 page5
+    npm run del:c -- -l page6
+    npm run del:c -- --list page6 --force
+    npm run del:c -- -l page6 -f

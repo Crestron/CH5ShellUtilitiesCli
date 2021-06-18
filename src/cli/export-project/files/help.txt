@@ -1,4 +1,13 @@
+Usage: 
+    ch5-shell-cli export:project [options]
+    
+You could also use `yarn` or `npm run` to export project. The following are the commands:
+    yarn export:project [options]
+    npm run export:project [options]
 
-You could use Yarn / NPM to export the project code. The below are the commands:
+Options:
+    -h, --help,         Help for Exporting project code
+
+You could use Yarn / npm to export the project code. The below are the commands:
     yarn export:project
     npm run export:project

@@ -1,5 +1,7 @@
-
-Usage:
+Usage: 
+    ch5-shell-cli export:library [options]
+    
+You could also use `yarn` or `npm run` to export assets. The following are the commands:
     yarn export:library [options]
     npm run export:library [options]
 
@@ -12,18 +14,17 @@ Options:
     -l, --list,         Prefix for list of library file names
     --all               Select this option to export all the library files
 
-You could use Yarn / NPM to export the project libraries. There are two options available to export libraries:
+Export the complete libraries directory from './app/project/libraries/' folder. To achieve this, use the below commands:
+- yarn export:library --all
+- npm run export:library -- --all
+- yarn exp:l --all
+- npm run exp:l -- --all
 
-1. Export the complete libraries directory from './app/project/libraries/' folder. To achieve this, use the below commands:
-   
-    yarn export:library --all 
-    npm run export:library -- --all 
-    yarn exp:l --all 
-    npm run exp:l -- --all 
+Export selected libraries from './app/project/libraries/' folder. In this case, the {fileNames} are mandatory in the command-prompt. The filename must follow the complete path starting from './app/project/libraries/....'. Only file names can be provided here (no folder paths). Multiple file names can be provided in the command-prompt. To achieve this, use the below commands:
 
-2. Export selected libraries from './app/project/libraries/' folder. In this case, the file names are mandatory in the command-prompt. The filename must follow the complete path starting from './app/project/libraries/....'. Only file names can be provided here (no folder paths). Multiple file names can be provided in the command-prompt. To achieve this, use the below commands:
-   
-    yarn export:library -l ./app/project/libraries/a.js ./app/project/libraries/b.js
-    npm run export:library -- -l ./app/project/libraries/a.js ./app/project/libraries/b.js
-
-You can use the tab completion for file names.
+- yarn export:library -l ./app/project/libraries/a.js ./app/project/libraries/b.js
+- npm run export:library -- -l ./app/project/libraries/a.js ./app/project/libraries/b.js
+- yarn export:library --list ./app/project/libraries/a.js ./app/project/libraries/b.js
+- npm run export:library -- --list ./app/project/libraries/a.js ./app/project/libraries/b.js
+- yarn exp:l -l ./app/project/libraries/a.js ./app/project/libraries/b.js
+- npm run exp:l -- -l ./app/project/libraries/a.js ./app/project/libraries/b.js

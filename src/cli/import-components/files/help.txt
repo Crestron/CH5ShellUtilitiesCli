@@ -1,5 +1,7 @@
-
-Usage: 
+Usage:
+    ch5-shell-cli import:components [options]
+    
+You could also use `yarn` or `npm run` to import components. The following are the commands:
     yarn import:components [options]
     npm run import:components [options]
 
@@ -14,30 +16,23 @@ Options:
     -f, --force         Force the program to overwrite the target files with the source files and avoid any confirmation
     --all,              Select this option to import all the files
 
-Yarn or NPM can be used to import the project components. There are two options available to import components:
+You could use `ch5-shell-cli` to import the complete contents of the zip file to './app/project/components/' folder.
 
-1. Import the complete contents of the zip file to './app/project/components/' folder. To achieve this, use the following commands:
+- ch5-shell-cli import:components -z {path} --all
+- ch5-shell-cli imp:c -z {path} --all
 
-    yarn import:components -z {path} --all 
+You could also use `yarn` or `npm run` to import components. The following are the commands:
 
-    npm run import:components -- -z {path} --all 
+- yarn import:components -z {path} --all
+- npm run import:components -- -z {path} --all
+- yarn imp:c -z {path} --all
+- npm run imp:c -- -z {path} --all
 
-    yarn imp:c -z {path} --all 
+Import selected components from './app/project/components/' folder. In this case, the filenames are mandatory in the command prompt. The filename must follow the complete path starting from './app/project/components/....'. Only file names can be provided here (no folder paths). Multiple file names can be provided in the command prompt. To achieve this, use the following commands:
 
-    npm run imp:c -- -z {path} --all 
-
-2. Import selected components from './app/project/components/' folder. In this case, the filenames are mandatory in the command prompt. The filename must follow the complete path starting from './app/project/components/....'. Only file names can be provided here (no folder paths). Multiple file names can be provided in the command prompt. To achieve this, use the following commands:
-
-    yarn import:components -z ./dist/exported-components.zip -l ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
-
-    npm run import:components -- -z ./dist/exported-components.zip -l ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
-
-    yarn import:components -z ./dist/exported-components.zip --list ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
-
-    npm run import:components -- -z ./dist/exported-components.zip --list ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
-
-    yarn imp:c -z ./dist/exported-components.zip -l ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
-
-    npm run imp:c -- -z ./dist/exported-components.zip -l ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
-
-You can use the tab completion for file names.
+- yarn import:components -z ./dist/exported-components.zip -l ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
+- npm run import:components -- -z ./dist/exported-components.zip -l ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
+- yarn import:components -z ./dist/exported-components.zip --list ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
+- npm run import:components -- -z ./dist/exported-components.zip --list ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
+- yarn imp:c -z ./dist/exported-components.zip -l ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
+- npm run imp:c -- -z ./dist/exported-components.zip -l ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html

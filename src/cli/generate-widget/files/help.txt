@@ -1,33 +1,43 @@
-
-Usage: yarn generate:widget [options]
+Usage:
+    ch5-shell-cli generate:widget [options]
+    
+You could also use `yarn` or `npm run` to generate widgets. The following are the commands:
+    yarn generate:widget [options]
+    npm run generate:widget [options]
 
 Options:
     -h, --help          Help for Generate Documentation
     -n, --name          Set the Name of the widget to be created
 
-You could use Yarn / npm to generate widgets. The following are the commands:
-    yarn generate:widget
-    npm run generate:widget
-
 You could use shortcuts as the following:
     yarn gen:w
     npm run gen:w
 
-You could use Yarn / npm to generate widgets with additional options. The following are some examples:
+You could use `ch5-shell-cli` to generate widgets with additional options. The following are some examples:
+    ch5-shell-cli gen:w --name LEDLights
+    ch5-shell-cli gen:w -n LEDLights
+    
+You could also use `yarn` or `npm run` to generate widgets. The following are the commands:
     yarn gen:w --name LEDLights
     yarn gen:w -n LEDLights
     npm run gen:w --  --name LEDLights
     npm run gen:w --  -n LEDLights
+```
 
-The widget name is mandatory to create a widget. It must start with a letter and can contain letters, hyphens, spaces, underscores, and numbers. 
+The widget name is mandatory to create a widget. It must start with a letter and can contain letters, hyphens, spaces, underscores, and numbers.
 
 If the widget name is not provided in the 'generate:widget' command, or if the widget name is incorrect, the developer will be prompted to enter a widget name, and a default value for the widget name will be displayed. This widget name will be set with the following rules:
     • Sets the name of widget as 'WidgetX', where 'X' is an incremental number.
     • If 'WidgetX' already exists, then X is incremented by 1.
 
 Examples:
-    • For a list of existing widgets (Widget1, Widget2, Widget04, Widget3), the new prompted widget name would be Widget4. 
-    • For a list of existing widgets (Widget1, Widget2, Widget6, Widget7), the new prompted widget name would be Widget3.
+• For a list of existing widgets (Widget1, Widget2, Widget04, Widget3), the new prompted widget name would be Widget4.
+• For a list of existing widgets (Widget1, Widget2, Widget6, Widget7), the new prompted widget name would be Widget3.
+
+The developer can accept the default widget name, or can change the default widget name as needed. The default is widget name is displayed as a placeholder in the terminal window. Some additional features to modify default widget name are as follows:
+• Click the 'Tab' key to make changes to this value.
+• Click the 'Enter' key to accept the widget name.
+• Start typing on the placeholder to create a custom widget name.
 
 Based on the input for widget name, the following will be the generated widgets and file or folder names:
 
@@ -42,3 +52,9 @@ Based on the input for widget name, the following will be the generated widgets 
 | 07 | led_lights           | ledLights                 | led-lights                      |
 | 08 | led lights           | ledLights                 | led-lights                      |
 
+Each widget generated will contain the following files:
+
+- {widget}.html
+- {widget}.js
+- {widget}.scss
+- {widget}-emulator.json
