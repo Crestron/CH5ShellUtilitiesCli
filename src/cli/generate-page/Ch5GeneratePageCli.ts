@@ -25,6 +25,10 @@ export class Ch5GeneratePageCli extends Ch5BaseClassForCli implements ICh5Cli {
     super("generate-page");
   }
 
+  public get getEnquirer() {
+    return enquirer;
+  }
+
   /**
    * Initialize
    */
@@ -141,7 +145,7 @@ export class Ch5GeneratePageCli extends Ch5BaseClassForCli implements ICh5Cli {
             return output === "" ? true : output;
           }
         }];
-      const response = await enquirer.prompt(questionsArray);
+      const response = await this.getEnquirer.prompt(questionsArray);
       if (!this.utils.isValidInput(response.pageName)) {
         throw new Error(this.getText("ERRORS.PAGE_NAME_EMPTY_IN_REQUEST"));
       }
@@ -162,7 +166,7 @@ export class Ch5GeneratePageCli extends Ch5BaseClassForCli implements ICh5Cli {
           initial: 0
         }
       ];
-      const response = await enquirer.prompt(questionsArray);
+      const response = await this.getEnquirer.prompt(questionsArray);
       if (!this.utils.isValidInput(response.menuOption)) {
         throw new Error(this.getText("ERRORS.ADD_TO_MENU_EMPTY_IN_REQUEST"));
       }

@@ -1,106 +1,93 @@
 import { expect } from 'chai';
-import { Ch5GeneratePageCli } from './Ch5GeneratePageCli';
 import * as sinon from "sinon";
 import mock from 'mock-fs';
 import {Ch5CliLogger} from "../Ch5CliLogger";
 import {SinonStub} from "sinon";
+import {Ch5DeleteComponentsCli} from "./Ch5DeleteComponentsCli";
 
-const generatePageComponent = new Ch5GeneratePageCli();
+const deleteComponents = new Ch5DeleteComponentsCli();
 
-describe('Generate page >>>>>>>> ', () => {
+describe('Delete components >>>>>>>> ', () => {
     let loggerPrintWarningStub: SinonStub;
     let loggerPrintErrorStub: SinonStub;
     let loggerPrintSuccessStub: SinonStub;
 
-    before(() => {
-        mock();
-    });
-
-    after(() => {
-        mock.restore();
-    });
-
     beforeEach(() => {
+        mock({
+            'app': {
+                'project-config.json': JSON.stringify(mockedAppJson),
+            }
+        });
         loggerPrintWarningStub = sinon.stub(Ch5CliLogger.prototype, 'printWarning');
         loggerPrintErrorStub = sinon.stub(Ch5CliLogger.prototype, 'printError');
         loggerPrintSuccessStub = sinon.stub(Ch5CliLogger.prototype, 'printSuccess');
         // Mock external enquirer library
-        sinon.stub(Ch5GeneratePageCli.prototype, 'getEnquirer').get(() => {
+        sinon.stub(Ch5DeleteComponentsCli.prototype, 'getEnquirer').get(() => {
             return {
-                prompt: () =>  new Promise(resolve => resolve({
-                    pageName: 'page',
-                    menuOption: 'option'
-                }))
+                prompt: () =>  new Promise(resolve => resolve({}))
+            }
+        });
+        sinon.stub(Ch5DeleteComponentsCli.prototype, 'getMultiSelect').get(() => () => {
+            return {
+                run: () => new Promise(resolve => resolve({}))
             }
         })
     });
 
     afterEach(() => {
+        mock.restore();
         // Revert any stubs / mocks created using sinon
         sinon.restore();
     });
 
-    it('Expect to fail if page name already exists in project-config', async () => {
-        mock({
-            'app': {
-                'project-config.json': JSON.stringify(mockedAppJson),
-            }
-        });
-
-        generatePageComponent.setInputArgsForTesting(["--name", "page1"]); // this is a dummy method to force set value of args before proceeding with the testing
-        const response = await generatePageComponent.run();
+    it('Delete components without parameters - trigger error if no components have been selected', async () => {
+        const response = await deleteComponents.run();
         expect(response).to.equal(false);
+        expect(loggerPrintErrorStub.calledWith('No components have been selected for deletion.'));
     });
 
-    it(`Expect certain function to be called inside run method`, async () => {
-        mock({
-            'app': {
-                'project-config.json': JSON.stringify(mockedAppJson),
-            },
-            'build': {
-                'cli': {
-                    'generate-page': {
-                        'templates': {
-                            'html.template': '',
-                            'js.template': '',
-                            'scss.template': '',
-                            'emulator.template': ''
-                        }
-                    }
-                }
+    it('Delete components without parameters - with components selected, no confirmation', async () => {
+        sinon.stub(Ch5DeleteComponentsCli.prototype, 'getMultiSelect').get(() => () => {
+            return {
+                run: () => new Promise(resolve => resolve([{component: 'component'}]))
             }
         });
-        const initializeSpy = sinon.spy(generatePageComponent, <any>'initialize');
-        const checkPreValidationsSpy = sinon.spy(generatePageComponent, <any>'checkPrerequisiteValidations');
-        const verifyInputSpy = sinon.spy(generatePageComponent, <any>'verifyInputParams');
-        const checkPromptQuestionSpy = sinon.spy(generatePageComponent, <any>'checkPromptQuestions');
-        const processRequestSpy = sinon.spy(generatePageComponent, <any>'processRequest');
-        const cleanUpSpy = sinon.spy(generatePageComponent, <any>'cleanUp');
 
-        generatePageComponent.setInputArgsForTesting(["--name", "page88"]); // this is a dummy method to force set value of args before proceeding with the testing
-        const response = await generatePageComponent.run();
+        const response = await deleteComponents.run();
+        expect(response).to.equal(false);
+        expect(loggerPrintErrorStub.calledWith('Process terminated since you do not wish to delete the selected components.')).equals(true);
+    });
+
+    it('Delete components without parameters - with components selected, with confirmation', async () => {
+        sinon.stub(Ch5DeleteComponentsCli.prototype, 'getMultiSelect').get(() => () => {
+            return {
+                run: () => new Promise(resolve => resolve(['page1']))
+            }
+        });
+        sinon.stub(Ch5DeleteComponentsCli.prototype, 'getEnquirer').get(() => {
+            return {
+                prompt: () =>  new Promise(resolve => resolve({
+                    deleteConfirmation: 'y'
+                }))
+            }
+        });
+
+        const response = await deleteComponents.run();
         expect(response).to.equal(true);
-
-        sinon.assert.callOrder(initializeSpy, checkPreValidationsSpy, verifyInputSpy, checkPromptQuestionSpy, processRequestSpy, cleanUpSpy);
     });
 
-    it(`Expect to trigger error if template files are missing`, async () => {
-        mock({
-            'app': {
-                'project-config.json': JSON.stringify(mockedAppJson),
+    it('Delete components with and confirmation', async () => {
+        deleteComponents.setInputArgsForTesting(['--list', 'page1']); // this is a dummy method to force set value of args before proceeding with the testing
+        sinon.stub(Ch5DeleteComponentsCli.prototype, 'getEnquirer').get(() => {
+            return {
+                prompt: () =>  new Promise(resolve => resolve({
+                    deleteConfirmation: 'y'
+                }))
             }
         });
-        const initializeSpy = sinon.spy(generatePageComponent, <any>'initialize');
-        const checkPreValidationsSpy = sinon.spy(generatePageComponent, <any>'checkPrerequisiteValidations');
-        const verifyInputSpy = sinon.spy(generatePageComponent, <any>'verifyInputParams');
-        const checkPromptQuestionSpy = sinon.spy(generatePageComponent, <any>'checkPromptQuestions');
-        const processRequestSpy = sinon.spy(generatePageComponent, <any>'processRequest');
 
-        generatePageComponent.setInputArgsForTesting(["--name", "page88"]); // this is a dummy method to force set value of args before proceeding with the testing
-        const response = await generatePageComponent.run();
-        expect(response).to.equal(false);
-
-        sinon.assert.callOrder(initializeSpy, checkPreValidationsSpy, verifyInputSpy, checkPromptQuestionSpy, processRequestSpy);
+        const response = await deleteComponents.run();
+        expect(response).to.equal(true);
     });
 });
 

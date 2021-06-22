@@ -103,10 +103,11 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
     }
     if (this.getErrors().length > 0) {
       // Exit after printing both errors and warnings
-      process.exit(1);
+      return false;
     }
 
     this.logger.printSuccess(this.getText("SUCCESS_MESSAGE"));
+    return true;
   }
 
   /**
@@ -252,7 +253,7 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
 
   /**
    * Checks if the theme name is repeated in the themes array.
-   * @param {*} pagesArray 
+   * @param {*} pagesArray
    */
   private checkIfThemeNamesAreRepeated(themes: string | any[]) {
     const errorOrWarningType = this.getText("VALIDATIONS.REPEATED_THEME_NAME_IN_ARRAY.HEADER");
@@ -286,8 +287,8 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
 
   /**
    * Warning for iconposition for vertical menu orientation
-   * @param {*} pagesArray 
-   * @param {*} menuOrientation 
+   * @param {*} pagesArray
+   * @param {*} menuOrientation
    */
   private checkIconPositionForVerticalMenu(pagesArray: any[], menuOrientation: string) {
     if (menuOrientation === "vertical") {
@@ -302,9 +303,9 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
   }
 
   /**
-   * Check menuOrientation="vertical" and header display="false" 
-   * @param {*} pagesArray 
-   * @param {*} menuOrientation 
+   * Check menuOrientation="vertical" and header display="false"
+   * @param {*} pagesArray
+   * @param {*} menuOrientation
    */
   private checkHeaderAvailabilityForVerticalMenu(headerDisplay: boolean, menuOrientation: string) {
     if (menuOrientation === "vertical" && headerDisplay === false) {
@@ -315,10 +316,10 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
 
   /**
    * Check if the header component has navigation
-   * @param {*} projectConfigObject 
-   * @param {*} pagesArray 
-   * @param {*} headerDisplay 
-   * @param {*} menuOrientation 
+   * @param {*} projectConfigObject
+   * @param {*} pagesArray
+   * @param {*} headerDisplay
+   * @param {*} menuOrientation
    */
   private checkIfHeaderComponentsHaveNavigation(projectConfigObject: { header: { [x: string]: any; }; }, pagesArray: any[], headerDisplay: boolean, menuOrientation: string) {
     if (menuOrientation !== "none" && headerDisplay === true) {
@@ -347,10 +348,10 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
 
   /**
    * Check if the footer component has navigation
-   * @param {*} projectConfigObject 
-   * @param {*} pagesArray 
-   * @param {*} footerDisplay 
-   * @param {*} menuOrientation 
+   * @param {*} projectConfigObject
+   * @param {*} pagesArray
+   * @param {*} footerDisplay
+   * @param {*} menuOrientation
    */
   private checkIfFooterComponentsHaveNavigation(projectConfigObject: { footer: { [x: string]: any; }; }, pagesArray: any[], footerDisplay: boolean, menuOrientation: string) {
     if (menuOrientation !== "none" && footerDisplay === true) {
@@ -377,7 +378,7 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
 
   /**
    * Pages array is empty
-   * @param {*} pagesArray 
+   * @param {*} pagesArray
    */
   private checkIfNoPagesExist(pagesArray: any[]) {
     if (!(pagesArray && pagesArray.length > 0)) {
@@ -388,8 +389,8 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
 
   /**
    * Page and Widget Names collide
-   * @param {*} pagesArray 
-   * @param {*} widgetsArray 
+   * @param {*} pagesArray
+   * @param {*} widgetsArray
    */
   private checkIfPagesAndWidgetNamesDuplicate(pagesArray: any[], widgetsArray: any[]) {
     const errorOrWarningType = this.getText("VALIDATIONS.PAGE_AND_WIDGET_DUPLICATES.HEADER");
@@ -413,7 +414,7 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
 
   /**
    * Check if default view is valid
-   * @param {*} pagesArray 
+   * @param {*} pagesArray
    */
   //response.content.$defaultView
   private checkIfDefaultViewIsValid(defaultView: string, pagesArray: any[]) {
@@ -475,9 +476,9 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
   }
 
   /**
-   * 
-   * @param {*} objectArray 
-   * @param {*} filePath 
+   *
+   * @param {*} objectArray
+   * @param {*} filePath
    */
   private checkIfFileExists(objectArray: any[], filePath: string) {
     const newFilePath: string = "./" + filePath.trim().toLowerCase();
@@ -495,9 +496,9 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
   }
 
   /**
-   * 
-   * @param {*} objectArray 
-   * @param {*} folderPath 
+   *
+   * @param {*} objectArray
+   * @param {*} folderPath
    */
   private checkIfFolderExists(objectArray: any[], folderPath: string) {
     const newFilePath = "./" + folderPath.trim().toLowerCase() + "/";
@@ -530,9 +531,9 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
 
   /**
    * Adds error message to the array
-   * @param {string} heading 
-   * @param {string} message 
-   * @param {string} resolution 
+   * @param {string} heading
+   * @param {string} message
+   * @param {string} resolution
    */
   private addError(heading: string, message: string, resolution: string) {
     let valueExists = false;
@@ -569,9 +570,9 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
 
   /**
    * Adds warning message to the array
-   * @param {string} heading 
-   * @param {string} message 
-   * @param {string} resolution 
+   * @param {string} heading
+   * @param {string} message
+   * @param {string} resolution
    */
   private addWarning(heading: string, message: string, resolution: string) {
     this.warningsFound.push({
@@ -583,8 +584,8 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
 
   /**
    * Composes the output message for errors
-   * @param {array} dataArray 
-   * @param {string} type 
+   * @param {array} dataArray
+   * @param {string} type
    */
   private composeOutput(dataArray: any[], type: string) {
     let outputMessage = this.getText("OUTPUT_ERROR_HEADER", type, String(dataArray.length)) + "\n";

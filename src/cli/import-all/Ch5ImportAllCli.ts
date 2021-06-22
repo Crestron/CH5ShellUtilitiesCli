@@ -80,7 +80,6 @@ export class Ch5ImportAllCli extends Ch5BaseClassForCli implements ICh5Cli  {
 
 
     } catch (e) {
-      console.log(e);
       if (e && this.utils.isValidInput(e.message)) {
         this.outputResponse.errorMessage = e.message;
       } else {
