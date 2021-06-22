@@ -53,6 +53,11 @@ export class Ch5ImportAllCli extends Ch5BaseClassForCli implements ICh5Cli  {
     };
   }
 
+  // Utils function so that we can mock zl library in our test cases
+  public get getZl() {
+    return zl;
+  }
+
   /**
    * Method for importing components
    */
@@ -75,6 +80,7 @@ export class Ch5ImportAllCli extends Ch5BaseClassForCli implements ICh5Cli  {
 
 
     } catch (e) {
+      console.log(e);
       if (e && this.utils.isValidInput(e.message)) {
         this.outputResponse.errorMessage = e.message;
       } else {
@@ -118,7 +124,7 @@ export class Ch5ImportAllCli extends Ch5BaseClassForCli implements ICh5Cli  {
     fsExtra.copySync(this.folderPaths.inputZipFileToImport, this.folderPaths.temporaryLocationForCopiedZipFile);
 
     // Unzip the exported zip file.
-    const unzip = new zl.Unzip({
+    const unzip = new this.getZl.Unzip({
       // Called before an item is extracted.
       onEntry: function (event: { entryName: string; preventDefault: () => void; }) {
         if (/^__MACOSX\//.test(event.entryName)) {
