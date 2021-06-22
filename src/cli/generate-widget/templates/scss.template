@@ -10,7 +10,7 @@
 */
 
 .<%styleWidgetName%>-widget {
-    /* Widget level styles go here */
+    // BEGIN::CHANGEAREA - your widget level styles go here 
 
-    
+    // END::CHANGEAREA    
 }

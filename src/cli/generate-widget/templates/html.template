@@ -11,5 +11,8 @@
 
 <template id="<%styleWidgetName%>-widget"> 
     <div class="<%styleWidgetName%>-widget" aria-labelledby="<%titleWidgetName%>"> 
+    <!-- BEGIN::CHANGEAREA - your widget html markup goes here --> 
+
+    <!-- END::CHANGEAREA -->
     </div>
 </template>

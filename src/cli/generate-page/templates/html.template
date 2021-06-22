@@ -10,6 +10,7 @@
 -->
 
 <section id="<%stylePageName%>-page" class="details-container" aria-labelledby="<%titlePageName%>">
+    <!-- BEGIN::CHANGEAREA - your page html markup goes here --> 
     <h1><%titlePageName%></h1>
     <div class="message-text">
         You can add page details here
@@ -35,5 +36,5 @@
             <div class="col-6">.col-6</div>
         </div>
     </div>
-
+    <!-- END::CHANGEAREA -->
 </section>
