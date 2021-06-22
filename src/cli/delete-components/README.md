@@ -14,34 +14,33 @@ Usage:
     ch5-shell-cli delete:components [options]
 
 You could also use `yarn` or `npm run` to delete components. The following are the commands:
-    yarn delete:components
-    npm run delete:components
+    yarn delete:components [options]
+    npm run delete:components [options]
 
 Options:
-    -h, --help          Help for Generate Documentation
+    -h, --help          Help for deleting components
     -l, --list,         Prefix for list of component names to be deleted
     -f, --force         Forces the script to delete the component without asking for a confirmation
 
-You could use shortcut script `del:c` as the following:
+You could use ch5-shell-cli to delete components with additional options. The following are some examples:
+    ch5-shell-cli delete:components --list page6 page5
+    ch5-shell-cli delete:components -l page6
+    ch5-shell-cli delete:components --list page6 --force
+    ch5-shell-cli delete:components -l page6 -f
+
+You could also use `yarn` or `npm run` to export assets. The following are the commands:
+    yarn delete:components --list page6 page5
+    yarn delete:components -l page6
+    yarn delete:components --list page6 --force
+    yarn delete:components -l page6 -f
+    npm run delete:components -- --list page6 page5
+    npm run delete:components -- -l page6
+    npm run delete:components -- --list page6 --force
+    npm run delete:components -- -l page6 -f
+
+You could use shortcut script `del:c` with yarn and npm commands as the following:
     yarn del:c
     npm run del:c
-
-You could use ch5-shell-cli to delete components with additional options. The following are some examples:
-    ch5-shell-cli del:c --list page6 page5
-    ch5-shell-cli del:c -l page6
-    ch5-shell-cli del:c --list page6 --force
-    ch5-shell-cli del:c -l page6 -f
-
-You can also use YARN or NPM to execute the commands:
-    yarn del:c --list page6 page5
-    yarn del:c -l page6
-    yarn del:c --list page6 --force
-    yarn del:c -l page6 -f
-    npm run del:c -- --list page6 page5
-    npm run del:c -- -l page6
-    npm run del:c -- --list page6 --force
-    npm run del:c -- -l page6 -f
-  
 ```
 
 ### Change Configuration Parameters

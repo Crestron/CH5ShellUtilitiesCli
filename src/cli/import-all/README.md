@@ -25,19 +25,17 @@ Options:
     --all,              Select this option to import all the files
 
 You could use `ch5-shell-cli` to import the complete contents of the zip file to './app/project/' folder.
-- ch5-shell-cli import:all -z {path} --all
+    ch5-shell-cli import:all -z {path} --all
     
 You could also use `yarn` or `npm run` to import all. The following are the commands:
-
-- yarn import:all -z {path} --all
-- npm run import:all -- -z {path} --all
+    yarn import:all -z {path} --all
+    npm run import:all -- -z {path} --all
 
 Import selected assets, libraries, components from './app/project/' folder. In this case, the filenames are mandatory in the command prompt. The filename must follow the complete path starting from './app/project/....'. Only filenames can be provided here (no folder paths). Multiple filenames can be provided in the command prompt. To achieve this, use the following commands
-
-- yarn import:all -z ./dist/exported-all.zip -l ./app/project/components/pages/page1/page1.html ./app/project/assets/scss/_variables.scss
-- npm run import:all -- -z ./dist/exported-all.zip -l ./app/project/components/pages/page1/page1.html ./app/project/assets/scss/_variables.scss
-- yarn import:all -z ./dist/exported-all.zip --list ./app/project/components/pages/page1/page1.html ./app/project/assets/scss/_variables.scss
-- npm run import:all -- -z ./dist/exported-all.zip --list ./app/project/components/pages/page1/page1.html ./app/project/assets/scss/_variables.scss
+    yarn import:all -z ./dist/exported-all.zip -l ./app/project/components/pages/page1/page1.html ./app/project/assets/scss/_variables.scss
+    npm run import:all -- -z ./dist/exported-all.zip -l ./app/project/components/pages/page1/page1.html ./app/project/assets/scss/_variables.scss
+    yarn import:all -z ./dist/exported-all.zip --list ./app/project/components/pages/page1/page1.html ./app/project/assets/scss/_variables.scss
+    npm run import:all -- -z ./dist/exported-all.zip --list ./app/project/components/pages/page1/page1.html ./app/project/assets/scss/_variables.scss
 ```
 
 ### Use Tab Completion Feature

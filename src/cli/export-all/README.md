@@ -9,41 +9,37 @@ The package.json has scripts to handle this execution -for yarn, use `yarn expor
 
 To access help, execute `ch5-shell-cli export:all --help`. Note that, replacing `ch5-shell-cli` with `yarn` or `npm run` will also execute the script.
 
+To access help, you need to execute `ch5-shell-cli export:all --help`, `yarn export:all --help` or `npm run export:all -- --help`.
+
+By default, the zip file is created inside the project 'dist' folder. This file has the naming convention of exported-all.zip
+
 ```bash
 Usage: 
     ch5-shell-cli export:all [options]
 
-You could also use `yarn` or `npm run` to delete components. The following are the commands:
-    yarn export:all
-    npm run export:all
+You could also use `yarn` or `npm run` to export assets, libraries, and components. The following are the commands:
+    yarn export:all [options]
+    npm run export:all [options]
 
 Options:
-    -h, --help,         Help for Exporting assets, libraries, and components from the './app/project/' folder
+    -h, --help,         Help for exporting assets, libraries, and components from the './app/project/' folder
     -l, --list,         Prefix for list of file names
     --all               Select this option to export all the files
-
-
-You could use Yarn / NPM to export components. There are two options available to export all (assets, libraries, and components):
 
 Export the complete project directory from './app/project/' folder. To achieve this, use the below command:
     ch5-shell-cli export:all --all
 
 Export selected files from './app/project/' folder. In this case, the file names are mandatory in the command-prompt. The filename must follow the complete path starting from './app/project/assets/....'. Only file names can be provided here (no folder paths). Multiple file names can be provided in the command-prompt. To achieve this, use the below commands:
+    ch5-shell-cli export:all -l ./app/project/assets/data/translation/en.json ./app/project/components/pages/page1/page1.html
+    ch5-shell-cli export:all --list ./app/project/components/pages/page1/page1.html ./app/project/assets/scss/_variables.scss
 
-- ch5-shell-cli export:all -l ./app/project/assets/data/translation/en.json ./app/project/components/pages/page1/page1.html
-- ch5-shell-cli export:all --list ./app/project/components/pages/page1/page1.html ./app/project/assets/scss/_variables.scss
-
-You could also use `yarn` or `npm run` to delete components. The following are the commands:
-- yarn export:all -l ./app/project/assets/data/translation/en.json ./app/project/components/pages/page1/page1.html
-- npm run export:all -- -l ./app/project/components/pages/page1/page1.html ./app/project/assets/scss/_variables.scss
-- yarn export:all --list ./app/project/components/pages/page1/page1.html ./app/project/assets/scss/_variables.scss
-- npm run export:all -- --list ./app/project/assets/data/translation/en.json ./app/project/components/pages/page1/page1.html
+You could also use `yarn` or `npm run` to export all. The following are the commands:
+    yarn export:all -l ./app/project/assets/data/translation/en.json ./app/project/components/pages/page1/page1.html
+    npm run export:all -- -l ./app/project/components/pages/page1/page1.html ./app/project/assets/scss/_variables.scss
+    yarn export:all --list ./app/project/components/pages/page1/page1.html ./app/project/assets/scss/_variables.scss
+    npm run export:all -- --list ./app/project/assets/data/translation/en.json ./app/project/components/pages/page1/page1.html
 
 ```
-
-To access help, you need to execute `ch5-shell-cli export:all --help`, `yarn export:all --help` or `npm run export:all -- --help`.
-
-By default, the zip file is created inside the project 'dist' folder. This file has the naming convention of exported-all.zip
 
 ### Use Tab Completion Feature
 

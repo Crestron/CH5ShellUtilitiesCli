@@ -26,25 +26,25 @@ Options:
     -n, --name          Set the Name of the page to be created
     -m, --menu          Allow the page navigation to be added to Menu (valid input values are 'Y', 'y', 'N', 'n')
 
-You could use shortcuts as the following:
-    yarn gen:p
-    npm run gen:p
-
 You could use `ch5-shell-cli` to generate pages with additional options. The following are some examples:
-    ch5-shell-cli gen:p --name LEDLights
-    ch5-shell-cli gen:p -n LEDLights
-    ch5-shell-cli gen:p --name LEDLights --menu Y
-    ch5-shell-cli gen:p -n LEDLights -m Y
+    ch5-shell-cli generate:page --name LEDLights
+    ch5-shell-cli generate:page -n LEDLights
+    ch5-shell-cli generate:page --name LEDLights --menu Y
+    ch5-shell-cli generate:page -n LEDLights -m Y
     
 You could also use `yarn` or `npm run` to generate pages. The following are the commands:
-    yarn gen:p --name LEDLights
-    yarn gen:p -n LEDLights
-    yarn gen:p --name LEDLights --menu Y
-    yarn gen:p -n LEDLights -m Y
-    npm run gen:p --  --name LEDLights
-    npm run gen:p --  -n LEDLights
-    npm run gen:p --  --name LEDLights --menu N
-    npm run gen:p --  -n LEDLights -m N
+    yarn generate:page --name LEDLights
+    yarn generate:page -n LEDLights
+    yarn generate:page --name LEDLights --menu Y
+    yarn generate:page -n LEDLights -m Y
+    npm run generate:page --  --name LEDLights
+    npm run generate:page --  -n LEDLights
+    npm run generate:page --  --name LEDLights --menu N
+    npm run generate:page --  -n LEDLights -m N
+
+You could use shortcut script `gen:p` with yarn and npm commands as the following:
+    yarn gen:p
+    npm run gen:p
 
 The Page Name is mandatory to create a page. It must start with a letter and can contain letters, hyphens, spaces, underscores and numbers.
 

@@ -19,14 +19,15 @@ You could also use `yarn` or `npm run` to import components. The following are t
     yarn validate:projectconfig
     npm run validate:projectconfig
 
-You could use shortcuts as the following:
+You could use shortcut script `imp:l` with yarn and npm commands as the following:
     yarn val:pc
     npm run val:pc
 
 Options:
     -h, --help,         Help for Validating project-config.json file
 
-Based on the responses, the output is classified into errors and warnings. The project-config.json is validated for the following cases:
+Based on the responses, the output is classified into errors and warnings. 
+The project-config.json is validated for the following cases:
 
 1. Validate project-config.json based on project-config-schema.json
 2. Verify if the pages defined in project-config.json exists in the physical folders.
@@ -42,8 +43,10 @@ Based on the responses, the output is classified into errors and warnings. The p
 12. Check if the Pages array is empty.
 13. Check if page names are reused in widgets and vice-versa.
 
-This validation will review the settings in project configuration file and inform the developer of any invalid configuration before running the browser or running on the touch screen. During the 'start' / 'build' process, this script will be executed and if there are errors (not warning), the script will not continue to the next step.
-
+This validation will review the settings in project configuration file and inform the developer 
+of any invalid configuration before running the browser or running on the touch screen. 
+During the 'start' / 'build' process, this script will be executed and if there are errors 
+(not warning), the script will not continue to the next step.
 ```
 
 ### Copyright

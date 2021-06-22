@@ -25,20 +25,19 @@ Options:
     -h, --help          Help for Generate Documentation
     -n, --name          Set the Name of the widget to be created
 
+You could use `ch5-shell-cli` to generate widgets with additional options. The following are some examples:
+    ch5-shell-cli generate:widget --name LEDLights
+    ch5-shell-cli generate:widget -n LEDLights
+    
+You could also use `yarn` or `npm run` to generate widgets. The following are the commands:
+    yarn generate:widget --name LEDLights
+    yarn generate:widget -n LEDLights
+    npm run generate:widget --  --name LEDLights
+    npm run generate:widget --  -n LEDLights
+
 You could use shortcuts as the following:
     yarn gen:w
     npm run gen:w
-
-You could use `ch5-shell-cli` to generate widgets with additional options. The following are some examples:
-    ch5-shell-cli gen:w --name LEDLights
-    ch5-shell-cli gen:w -n LEDLights
-    
-You could also use `yarn` or `npm run` to generate widgets. The following are the commands:
-    yarn gen:w --name LEDLights
-    yarn gen:w -n LEDLights
-    npm run gen:w --  --name LEDLights
-    npm run gen:w --  -n LEDLights
-```
 
 The widget name is mandatory to create a widget. It must start with a letter and can contain letters, hyphens, spaces, underscores, and numbers.
 
@@ -74,6 +73,7 @@ Each widget generated will contain the following files:
 - {widget}.js
 - {widget}.scss
 - {widget}-emulator.json
+```
 
 ## Understanding the generated code
 

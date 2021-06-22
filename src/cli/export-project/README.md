@@ -22,13 +22,15 @@ You could also use `yarn` or `npm run` to export project. The following are the 
     yarn export:project [options]
     npm run export:project [options]
 
-You could use shortcuts as the following:
+You could use shortcut script `exp:p` with yarn and npm commands as the following:
     yarn exp:p
     npm run exp:p
 
 Options:
     -h, --help,         Help for Exporting project code
 
+Export the complete project from './app/' folder. To achieve this, use the below commands:
+    ch5-shell-cli export:project --all
 ```
 
 ### Change Configuration Parameters

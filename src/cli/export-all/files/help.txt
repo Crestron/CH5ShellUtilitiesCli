@@ -10,9 +10,6 @@ Options:
     -l, --list,         Prefix for list of file names
     --all               Select this option to export all the files
 
-
-You could use Yarn / NPM to export all. There are two options available to export all (assets, libraries, and components):
-
 Export the complete project directory from './app/project/' folder. To achieve this, use the below command:
     ch5-shell-cli export:all --all
 

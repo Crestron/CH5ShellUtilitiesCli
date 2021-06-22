@@ -20,31 +20,30 @@ You could also use `yarn` or `npm run` to export assets. The following are the c
     npm run export:assets [options]
 
 Options:
-    -h, --help,         Help for Exporting assets from the './app/project/assets/' folder
+    -h, --help,         Help for exporting assets from the './app/project/assets/' folder
     -l, --list,         Prefix for list of asset file names
     --all               Select this option to export all the asset files
 
-You could use shortcuts as the following:
+Export the complete assets directory from './app/project/assets/' folder. To achieve this, use the below commands:
+    ch5-shell-cli export:assets --all
+
+You could also use `yarn` or `npm run` to export assets. The following are the commands:
+    yarn export:assets --all
+    npm run export:assets -- --all
+    yarn exp:a --all
+    npm run exp:a -- --all
+
+You could use shortcut script `exp:a` with yarn and npm commands as the following:
     yarn exp:a
     npm run exp:a
 
-Export the complete assets directory from './app/project/assets/' folder. To achieve this, use the below commands:
-- ch5-shell-cli export:assets --all
-- ch5-shell-cli exp:a --all
-
-You can also use YARN or NPM to execute the commands:
-- yarn export:assets --all
-- npm run export:assets -- --all
-- yarn exp:a --all
-- npm run exp:a -- --all
-
 Export selected assets from './app/project/assets/' folder. In this case, the file names are mandatory in the command-prompt. The filename must follow the complete path starting from './app/project/assets/....'. Only file names can be provided here (no folder paths). Multiple file names can be provided in the command-prompt. To achieve this, use the below commands:
-- yarn export:assets -l ./app/project/assets/data/translation/en.json ./app/project/assets/scss/_variables.scss
-- npm run export:assets -- -l ./app/project/assets/data/translation/en.json ./app/project/assets/scss/_variables.scss
-- yarn export:assets --list ./app/project/assets/data/translation/en.json ./app/project/assets/scss/_variables.scss
-- npm run export:assets -- --list ./app/project/assets/data/translation/en.json ./app/project/assets/scss/_variables.scss
-- yarn exp:a -l ./app/project/assets/data/translation/en.json ./app/project/assets/scss/_variables.scss
-- npm run exp:a -- -l ./app/project/assets/data/translation/en.json ./app/project/assets/scss/_variables.scss
+    yarn export:assets -l ./app/project/assets/data/translation/en.json ./app/project/assets/scss/_variables.scss
+    npm run export:assets -- -l ./app/project/assets/data/translation/en.json ./app/project/assets/scss/_variables.scss
+    yarn export:assets --list ./app/project/assets/data/translation/en.json ./app/project/assets/scss/_variables.scss
+    npm run export:assets -- --list ./app/project/assets/data/translation/en.json ./app/project/assets/scss/_variables.scss
+    yarn exp:a -l ./app/project/assets/data/translation/en.json ./app/project/assets/scss/_variables.scss
+    npm run exp:a -- -l ./app/project/assets/data/translation/en.json ./app/project/assets/scss/_variables.scss
 
 ```
 
