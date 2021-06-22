@@ -1,23 +1,23 @@
 Usage: ch5-shell-cli export:assets [options]
-You could also use `yarn` or `npm run` to delete components. The following are the commands:
+
+You could also use `yarn` or `npm run` to export assets. The following are the commands:
     yarn export:assets [options]
     npm run export:assets [options]
 
 Options:
-    -h, --help,         Help for Exporting assets from the './app/project/assets/' folder
+    -h, --help,         Help for exporting assets from the './app/project/assets/' folder
     -l, --list,         Prefix for list of asset file names
     --all               Select this option to export all the asset files
+
+Export the complete assets directory from './app/project/assets/' folder. To achieve this, use the below commands:
+    ch5-shell-cli export:assets --all
+
+You can also use YARN or NPM to execute the commands:
+    yarn export:assets --all
+    npm run export:assets -- --all
+    yarn exp:a --all
+    npm run exp:a -- --all
 
 You could use shortcuts as the following:
     yarn exp:a
     npm run exp:a
-
-Export the complete assets directory from './app/project/assets/' folder. To achieve this, use the below commands:
-- ch5-shell-cli export:assets --all
-- ch5-shell-cli exp:a --all
-
-You can also use YARN or NPM to execute the commands:
-- yarn export:assets --all
-- npm run export:assets -- --all
-- yarn exp:a --all
-- npm run exp:a -- --all
