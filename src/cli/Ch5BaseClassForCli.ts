@@ -51,7 +51,7 @@ export class Ch5BaseClassForCli {
   protected get projectConfig() {
     return this._cliProjectConfig;
   }
-  
+
   public constructor(folderPath: string) {
     this._folderPath = folderPath;
     this._cliUtil = new Ch5CliUtil();
@@ -67,10 +67,10 @@ export class Ch5BaseClassForCli {
   public setInputArgsForTesting(args:any) {
     this._inputArguments = this.componentHelper.processArgsAnalyze(args)
   }
-  
+
   /**
-  * 
-  * @param program 
+  *
+  * @param program
   */
   public async setupCommand(program: commander.Command) {
     let programObject = program
@@ -99,7 +99,7 @@ export class Ch5BaseClassForCli {
   /**
    * DO NOT DELETE
    */
-  async run() {
+  async run(): Promise<void | boolean> {
 
   }
 
@@ -109,8 +109,8 @@ export class Ch5BaseClassForCli {
 
   /**
    * Get the String output from default.json file in config
-   * @param {*} key 
-   * @param  {...any} values 
+   * @param {*} key
+   * @param  {...any} values
    */
   getText(key: string, ...values: string[]) {
     return this._cliUtil.getText(this.TRANSLATION_FILE, key, ...values);
