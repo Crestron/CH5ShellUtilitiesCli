@@ -94,7 +94,6 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
 
     // Check if the header and footer components have navigation
     this.checkIfFooterComponentsHaveNavigation(projectConfigObject, pagesArray, projectConfigObject.footer.display, projectConfigObject.menuOrientation);
-
     if (this.getErrors().length > 0) {
       this.logger.printError(this.composeOutput(this.getErrors(), this.getText("TYPE_ERROR")));
     }
@@ -103,6 +102,7 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
     }
     if (this.getErrors().length > 0) {
       // Exit after printing both errors and warnings
+      process.exit(1);
       return false;
     }
 
