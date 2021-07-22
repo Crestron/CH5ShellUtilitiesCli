@@ -1,6 +1,9 @@
 {
   "command": "delete:components",
   "name": "delete:components",
+  "aliases": [
+    "del:c"
+  ],
   "usage": "[options]",
   "options": [
     {

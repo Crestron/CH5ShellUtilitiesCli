@@ -1,6 +1,9 @@
 {
   "command": "generate:page",
   "name": "generate:page",
+  "aliases": [
+    "gen:p"
+  ],
   "usage": "[options]",
   "options": [
     {

@@ -1,6 +1,9 @@
 {
   "command": "import:components",
   "name": "import:components",
+  "aliases": [
+    "imp:c"
+  ],
   "usage": "[options]",
   "options": [
     {

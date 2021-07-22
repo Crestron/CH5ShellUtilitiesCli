@@ -1,6 +1,9 @@
 {
   "command": "import:assets",
   "name": "import:assets",
+  "aliases": [
+    "imp:a"
+  ],
   "usage": "[options]",
   "options": [
     {

@@ -1,6 +1,9 @@
 {
   "command": "export:project",
   "name": "export:project",
+  "aliases": [
+    "exp:p"
+  ],
   "usage": "[options]",
   "options": [],
   "additionalHelp": true,

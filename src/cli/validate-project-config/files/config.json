@@ -1,6 +1,9 @@
 {
   "command": "validate:project-config",
   "name": "validate:project-config",
+  "aliases": [
+    "val:pc"
+  ],
   "usage": "[options]",
   "options": [],
   "additionalHelp": true,

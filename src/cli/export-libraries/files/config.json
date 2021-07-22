@@ -1,6 +1,9 @@
 {
   "command": "export:library",
   "name": "export:library",
+  "aliases": [
+    "exp:l"
+  ],
   "usage": "[options]",
   "options": [
     {

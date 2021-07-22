@@ -1,6 +1,9 @@
 {
   "command": "export:components",
   "name": "export:components",
+  "aliases": [
+    "exp:c"
+  ],
   "usage": "[options]",
   "options": [
     {

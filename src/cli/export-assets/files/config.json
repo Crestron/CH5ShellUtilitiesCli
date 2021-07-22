@@ -1,6 +1,9 @@
 {
   "command": "export:assets",
   "name": "export:assets",
+  "aliases": [
+    "exp:a"
+  ],
   "usage": "[options]",
   "options": [
     {

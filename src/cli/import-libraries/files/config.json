@@ -1,6 +1,9 @@
 {
   "command": "import:library",
   "name": "import:library",
+  "aliases": [
+    "imp:l"
+  ],
   "usage": "[options]",
   "options": [
     {

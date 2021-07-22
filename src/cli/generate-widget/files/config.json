@@ -1,6 +1,9 @@
 {
   "command": "generate:widget",
   "name": "generate:widget",
+  "aliases": [
+    "gen:w"
+  ],
   "usage": "[options]",
   "options": [
     {
