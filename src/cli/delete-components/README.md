@@ -17,11 +17,6 @@ You could also use `yarn` or `npm run` to delete components. The following are t
     yarn delete:components [options]
     npm run delete:components [options]
 
-Options:
-    -h, --help          Help for deleting components
-    -l, --list,         Prefix for list of component names to be deleted
-    -f, --force         Forces the script to delete the component without asking for a confirmation
-
 You could use ch5-shell-cli to delete components with additional options. The following are some examples:
     ch5-shell-cli delete:components --list page6 page5
     ch5-shell-cli delete:components -l page6
@@ -38,9 +33,12 @@ You could also use `yarn` or `npm run` to export assets. The following are the c
     npm run delete:components -- --list page6 --force
     npm run delete:components -- -l page6 -f
 
+You could use shortcut script `del:c` with options:
+    ch5-shell-cli del:c [options]
+
 You could use shortcut script `del:c` with yarn and npm commands as the following:
-    yarn del:c
-    npm run del:c
+    yarn del:c [options]
+    npm run del:c [options]
 ```
 
 ### Change Configuration Parameters

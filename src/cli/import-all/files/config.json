@@ -4,12 +4,16 @@
   "usage": "[options]",
   "options": [
     {
+      "keys": "-h, --help",
+      "description": "Help for Importing assets, libraries, components from the './app/project/' folder"
+    },
+    {
       "keys": "-z, --zipFile",
       "description": "Prefix for full location path of the zip file to be imported"
     },
     {
       "keys": "-l, --list",
-      "description": "Prefix for list of component names to be deleted"
+      "description": "Prefix for list of file names"
     },
     {
       "keys": "-f, --force",

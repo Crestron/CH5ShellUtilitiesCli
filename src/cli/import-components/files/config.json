@@ -7,16 +7,20 @@
   "usage": "[options]",
   "options": [
     {
+      "keys": "-h, --help",
+      "description": "Help for Importing components from the './app/project/components/' folder"
+    },
+    {
       "keys": "-z, --zipFile",
       "description": "Prefix for full location path of the zip file to be imported"
     },
 {
       "keys": "-l, --list",
-      "description": "Prefix for list of component names to be deleted"
+      "description": "Prefix for list of file names"
     },
     {
       "keys": "-f, --force",
-      "description": "Forces the component to be deleted without asking for a confirmation"
+      "description": "Force the program to overwrite the target files with the source files and avoid any confirmation"
     },
     {
       "keys": "--all",

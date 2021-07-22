@@ -5,11 +5,6 @@ You could also use `yarn` or `npm run` to export assets, libraries, and componen
     yarn export:all [options]
     npm run export:all [options]
 
-Options:
-    -h, --help,         Help for exporting assets, libraries, and components from the './app/project/' folder
-    -l, --list,         Prefix for list of file names
-    --all               Select this option to export all the files
-
 Export the complete project directory from './app/project/' folder. To achieve this, use the below command:
     ch5-shell-cli export:all --all
 

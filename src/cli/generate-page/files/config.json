@@ -7,6 +7,10 @@
   "usage": "[options]",
   "options": [
     {
+      "keys": "-h, --help",
+      "description": "Help for Generate Documentation"
+    },
+    {
       "keys": "-n, --name",
       "description": "Set the Name of the page to be created"
     },

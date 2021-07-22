@@ -23,6 +23,9 @@ You could also use `yarn` or `npm run` to import assets. The following are the c
 - yarn import:assets -z {path} --all
 - npm run import:assets -- -z {path} --all
 
+You could use shortcut script `imp:a` with options:
+    ch5-shell-cli imp:a [options]
+
 You could use shortcut script `imp:a` with yarn and npm commands as the following:
     yarn imp:a
     npm run imp:a

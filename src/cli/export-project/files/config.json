@@ -5,7 +5,12 @@
     "exp:p"
   ],
   "usage": "[options]",
-  "options": [],
+  "options": [
+    {
+      "keys": "-h, --help",
+      "description": "Help for Exporting project code"
+    }
+  ],
   "additionalHelp": true,
   "logger": {
     "allowLogging": true,

@@ -17,13 +17,6 @@ You could also use `yarn` or `npm run` to import all. The following are the comm
     yarn import:all [options]
     npm run import:all [options]
 
-Options:
-    -h, --help,         Help for Importing assets, libraries, components from the './app/project/' folder
-    -z, --zipFile,      Prefix for full location path of the zip file to be imported
-    -l, --list,         Prefix for list of file names
-    -f, --force         Force the program to overwrite the target files with the source files and avoid any confirmation
-    --all,              Select this option to import all the files
-
 You could use `ch5-shell-cli` to import the complete contents of the zip file to './app/project/' folder.
     ch5-shell-cli import:all -z {path} --all
     
