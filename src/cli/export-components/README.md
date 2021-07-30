@@ -19,11 +19,6 @@ You could also use `yarn` or `npm run` to export components. The following are t
     yarn export:components [options]
     npm run export:components [options]
 
-Options:
-    -h, --help,         Help for exporting components from the './app/project/components/' folder
-    -l, --list,         Prefix for list of file names
-    --all               Select this option to export all the component files
-
 Export the complete components directory from './app/project/components/' folder. To achieve this, use the below commands:
     ch5-shell-cli export:components --all
 
@@ -32,6 +27,9 @@ You could also use `yarn` or `npm run` to export components. The following are t
     npm run export:components -- --all
     yarn exp:c --all
     npm run exp:c -- --all
+
+You could use shortcut script `exp:c` with options:
+    ch5-shell-cli exp:c [options]
 
 You could use shortcut script `exp:c` with yarn and npm commands as the following:
     yarn exp:c

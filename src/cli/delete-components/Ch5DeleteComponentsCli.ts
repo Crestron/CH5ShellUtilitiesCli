@@ -24,6 +24,14 @@ export class Ch5DeleteComponentsCli extends Ch5BaseClassForCli implements ICh5Cl
     super("delete-components");
   }
 
+  public get getEnquirer() {
+    return enquirer;
+  }
+
+  public get getMultiSelect() {
+    return MultiSelect;
+  }
+
   /**
    * Method for deleting components
    */
@@ -43,9 +51,6 @@ export class Ch5DeleteComponentsCli extends Ch5BaseClassForCli implements ICh5Cl
       // Update project-config first (so that if this fails, we don't worry about file deletion). Next Delete Files
       await this.processRequest();
 
-      // Clean up
-      await this.cleanUp();
-
     } catch (e) {
       if (e && this.utils.isValidInput(e.message)) {
         this.outputResponse.errorMessage = e.message;
@@ -53,6 +58,9 @@ export class Ch5DeleteComponentsCli extends Ch5BaseClassForCli implements ICh5Cl
         this.outputResponse.errorMessage = this.getText("ERRORS.SOMETHING_WENT_WRONG");
         this.logger.log(e);
       }
+    } finally {
+      // Clean up
+      await this.cleanUp();
     }
 
     // Show output response
@@ -135,7 +143,7 @@ export class Ch5DeleteComponentsCli extends Ch5BaseClassForCli implements ICh5Cl
       }
       this.logger.log("choicesList", choicesList);
 
-      const componentsQuery = new MultiSelect({
+      const componentsQuery = new this.getMultiSelect({
         name: 'value',
         message: this.getText("VALIDATIONS.SELECT_COMPONENT_TO_DELETE"),
         choices: choicesList
@@ -165,7 +173,7 @@ export class Ch5DeleteComponentsCli extends Ch5BaseClassForCli implements ICh5Cl
             initial: 0
           }
         ];
-        this.outputResponse.data.deleteConfirmation = await enquirer.prompt(questionsArray)
+        this.outputResponse.data.deleteConfirmation = await this.getEnquirer.prompt(questionsArray)
           .then((response: { deleteConfirmation: any; }) => {
             this.logger.log(response);
             return this.utils.convertStringToBoolean(response.deleteConfirmation);

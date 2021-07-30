@@ -17,19 +17,15 @@ You could also use `yarn` or `npm run` to import components. The following are t
     yarn import:library [options]
     npm run import:library [options]
 
-Options:
-    -h, --help,         Help for Importing libraries from the './app/project/libraries/' folder
-    -z, --zipFile,      Prefix for full location path of the zip file to be imported
-    -l, --list,         Prefix for list of file names
-    -f, --force         Force the program to overwrite the target files with the source files and avoid any confirmation
-    --all,              Select this option to import all the files
-
 You could use `ch5-shell-cli` to import the complete contents of the zip file to './app/project/libraries/' folder (replace {path} with the location of the exported zip file):
     yarn import:library -z {path} --all
 
 You could also use `yarn` or `npm run` to import library. The following are the commands:
     yarn import:library -z {path} --all
     npm run import:library -- -z {path} --all
+
+You could use shortcut script `imp:l` with options:
+    ch5-shell-cli imp:l [options]
 
 You could use shortcut script `imp:l` with yarn and npm commands as the following:
     yarn imp:l

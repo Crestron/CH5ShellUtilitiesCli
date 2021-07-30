@@ -1,8 +1,15 @@
 {
   "command": "import:assets",
   "name": "import:assets",
+  "aliases": [
+    "imp:a"
+  ],
   "usage": "[options]",
   "options": [
+    {
+      "keys": "-h, --help",
+      "description": "Help for deleting components"
+    },
     {
       "keys": "-z, --zipFile",
       "description": "Prefix for full location path of the zip file to be imported"

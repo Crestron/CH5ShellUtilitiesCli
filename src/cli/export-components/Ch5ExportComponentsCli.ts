@@ -87,8 +87,8 @@ export class Ch5ExportComponentsCli extends Ch5BaseClassForCli implements ICh5Cl
    * @param {*} copyAll
    */
   processProjectConfigJSONFile(copyAll: boolean, validInputs: string[]) {
-    const allPages = this.projectConfig.getAllPages();
-    const allWidgets = this.projectConfig.getAllWidgets();
+    const allPages = this.projectConfig.getAllPages() || [];
+    const allWidgets = this.projectConfig.getAllWidgets() || [];
     let outputJSON: any = {};
     if (copyAll === true) {
       outputJSON.pages = allPages;
@@ -121,8 +121,8 @@ export class Ch5ExportComponentsCli extends Ch5BaseClassForCli implements ICh5Cl
    * @param {*} htmlFileName
    */
   getFolderPathFromProjectConfigJSON(htmlFileName: string) {
-    const allPages = this.projectConfig.getAllPages();
-    const allWidgets = this.projectConfig.getAllWidgets();
+    const allPages = this.projectConfig.getAllPages() || [];
+    const allWidgets = this.projectConfig.getAllWidgets() || [];
     const pageObject = allPages.find((tempObj: { fullPath: any; fileName: any; }) => path.join(path.normalize(tempObj.fullPath), path.normalize(tempObj.fileName)).trim().toLowerCase() === path.normalize(htmlFileName).trim().toLowerCase());
     if (pageObject) {
       return pageObject.fullPath;

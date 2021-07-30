@@ -1,13 +1,13 @@
 import { expect } from 'chai';
-import { Ch5GeneratePageCli } from './Ch5GeneratePageCli';
 import * as sinon from "sinon";
 import mock from 'mock-fs';
 import {Ch5CliLogger} from "../Ch5CliLogger";
 import {SinonStub} from "sinon";
+import {Ch5GenerateWidgetCli} from "./Ch5GenerateWidgetCli";
 
-const generatePageComponent = new Ch5GeneratePageCli();
+const generateWidgetComponent = new Ch5GenerateWidgetCli();
 
-describe('Generate page >>>>>>>> ', () => {
+describe('Generate widget >>>>>>>> ', () => {
     let loggerPrintWarningStub: SinonStub;
     let loggerPrintErrorStub: SinonStub;
     let loggerPrintSuccessStub: SinonStub;
@@ -25,10 +25,10 @@ describe('Generate page >>>>>>>> ', () => {
         loggerPrintErrorStub = sinon.stub(Ch5CliLogger.prototype, 'printError');
         loggerPrintSuccessStub = sinon.stub(Ch5CliLogger.prototype, 'printSuccess');
         // Mock external enquirer library
-        sinon.stub(Ch5GeneratePageCli.prototype, 'getEnquirer').get(() => {
+        sinon.stub(Ch5GenerateWidgetCli.prototype, 'getEnquirer').get(() => {
             return {
                 prompt: () =>  new Promise(resolve => resolve({
-                    pageName: 'page',
+                    widgetName: 'leds',
                     menuOption: 'option'
                 }))
             }
@@ -47,8 +47,8 @@ describe('Generate page >>>>>>>> ', () => {
             }
         });
 
-        generatePageComponent.setInputArgsForTesting(["--name", "page1"]); // this is a dummy method to force set value of args before proceeding with the testing
-        const response = await generatePageComponent.run();
+        generateWidgetComponent.setInputArgsForTesting(["--name", "pagedisplay"]); // this is a dummy method to force set value of args before proceeding with the testing
+        const response = await generateWidgetComponent.run();
         expect(response).to.equal(false);
     });
 
@@ -59,7 +59,7 @@ describe('Generate page >>>>>>>> ', () => {
             },
             'build': {
                 'cli': {
-                    'generate-page': {
+                    'generate-widget': {
                         'templates': {
                             'html.template': '',
                             'js.template': '',
@@ -70,15 +70,15 @@ describe('Generate page >>>>>>>> ', () => {
                 }
             }
         });
-        const initializeSpy = sinon.spy(generatePageComponent, <any>'initialize');
-        const checkPreValidationsSpy = sinon.spy(generatePageComponent, <any>'checkPrerequisiteValidations');
-        const verifyInputSpy = sinon.spy(generatePageComponent, <any>'verifyInputParams');
-        const checkPromptQuestionSpy = sinon.spy(generatePageComponent, <any>'checkPromptQuestions');
-        const processRequestSpy = sinon.spy(generatePageComponent, <any>'processRequest');
-        const cleanUpSpy = sinon.spy(generatePageComponent, <any>'cleanUp');
+        const initializeSpy = sinon.spy(generateWidgetComponent, <any>'initialize');
+        const checkPreValidationsSpy = sinon.spy(generateWidgetComponent, <any>'checkPrerequisiteValidations');
+        const verifyInputSpy = sinon.spy(generateWidgetComponent, <any>'verifyInputParams');
+        const checkPromptQuestionSpy = sinon.spy(generateWidgetComponent, <any>'checkPromptQuestions');
+        const processRequestSpy = sinon.spy(generateWidgetComponent, <any>'processRequest');
+        const cleanUpSpy = sinon.spy(generateWidgetComponent, <any>'cleanUp');
 
-        generatePageComponent.setInputArgsForTesting(["--name", "page88"]); // this is a dummy method to force set value of args before proceeding with the testing
-        const response = await generatePageComponent.run();
+        generateWidgetComponent.setInputArgsForTesting(["--name", "leds"]); // this is a dummy method to force set value of args before proceeding with the testing
+        const response = await generateWidgetComponent.run();
         expect(response).to.equal(true);
 
         sinon.assert.callOrder(initializeSpy, checkPreValidationsSpy, verifyInputSpy, checkPromptQuestionSpy, processRequestSpy, cleanUpSpy);
@@ -90,14 +90,14 @@ describe('Generate page >>>>>>>> ', () => {
                 'project-config.json': JSON.stringify(mockedAppJson),
             }
         });
-        const initializeSpy = sinon.spy(generatePageComponent, <any>'initialize');
-        const checkPreValidationsSpy = sinon.spy(generatePageComponent, <any>'checkPrerequisiteValidations');
-        const verifyInputSpy = sinon.spy(generatePageComponent, <any>'verifyInputParams');
-        const checkPromptQuestionSpy = sinon.spy(generatePageComponent, <any>'checkPromptQuestions');
-        const processRequestSpy = sinon.spy(generatePageComponent, <any>'processRequest');
+        const initializeSpy = sinon.spy(generateWidgetComponent, <any>'initialize');
+        const checkPreValidationsSpy = sinon.spy(generateWidgetComponent, <any>'checkPrerequisiteValidations');
+        const verifyInputSpy = sinon.spy(generateWidgetComponent, <any>'verifyInputParams');
+        const checkPromptQuestionSpy = sinon.spy(generateWidgetComponent, <any>'checkPromptQuestions');
+        const processRequestSpy = sinon.spy(generateWidgetComponent, <any>'processRequest');
 
-        generatePageComponent.setInputArgsForTesting(["--name", "page88"]); // this is a dummy method to force set value of args before proceeding with the testing
-        const response = await generatePageComponent.run();
+        generateWidgetComponent.setInputArgsForTesting(["--name", "leds"]); // this is a dummy method to force set value of args before proceeding with the testing
+        const response = await generateWidgetComponent.run();
         expect(response).to.equal(false);
 
         sinon.assert.callOrder(initializeSpy, checkPreValidationsSpy, verifyInputSpy, checkPromptQuestionSpy, processRequestSpy);

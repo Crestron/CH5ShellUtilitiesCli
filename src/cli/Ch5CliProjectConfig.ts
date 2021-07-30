@@ -213,7 +213,7 @@ export class Ch5CliProjectConfig {
   removePagesFromJSON(listOfInputPages: string[]) {
     try {
       if (listOfInputPages && listOfInputPages.length > 0) {
-        let pagesList = this.getAllPages();
+        let pagesList = this.getAllPages() || [];
         const newList = [];
         for (let i: number = 0; i < pagesList.length; i++) {
           let isFileExisting = false;
@@ -242,7 +242,7 @@ export class Ch5CliProjectConfig {
   removeWidgetsFromJSON(listOfInputWidgets: any[]) {
     try {
       if (listOfInputWidgets && listOfInputWidgets.length > 0) {
-        let widgetList = this.getAllWidgets();
+        let widgetList = this.getAllWidgets() || [];
         const newList = [];
         for (let i: number = 0; i < widgetList.length; i++) {
           let isFileExisting = false;

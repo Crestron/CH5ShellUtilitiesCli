@@ -46,6 +46,10 @@ export class Ch5GenerateWidgetCli extends Ch5BaseClassForCli implements ICh5Cli 
     }
   }
 
+  public get getEnquirer() {
+    return enquirer;
+  }
+
   /**
    * Method for generating page
    * @param {*} processArgs
@@ -140,7 +144,7 @@ export class Ch5GenerateWidgetCli extends Ch5BaseClassForCli implements ICh5Cli 
         }
       ];
 
-      const response = await enquirer.prompt(questionsArray);
+      const response = await this.getEnquirer.prompt(questionsArray);
       if (!this.utils.isValidInput(response.widgetName)) {
         throw new Error(this.getText("ERRORS.WIDGET_NAME_EMPTY_IN_REQUEST"));
       }

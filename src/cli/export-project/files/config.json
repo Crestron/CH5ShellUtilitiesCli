@@ -1,8 +1,16 @@
 {
   "command": "export:project",
   "name": "export:project",
+  "aliases": [
+    "exp:p"
+  ],
   "usage": "[options]",
-  "options": [],
+  "options": [
+    {
+      "keys": "-h, --help",
+      "description": "Help for Exporting project code"
+    }
+  ],
   "additionalHelp": true,
   "logger": {
     "allowLogging": true,

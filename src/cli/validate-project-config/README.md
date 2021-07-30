@@ -19,12 +19,12 @@ You could also use `yarn` or `npm run` to import components. The following are t
     yarn validate:projectconfig
     npm run validate:projectconfig
 
-You could use shortcut script `imp:l` with yarn and npm commands as the following:
+You could use shortcut script `val:pc` with options:
+    ch5-shell-cli val:pc [options]
+
+You could use shortcut script `val:pc` with yarn and npm commands as the following:
     yarn val:pc
     npm run val:pc
-
-Options:
-    -h, --help,         Help for Validating project-config.json file
 
 Based on the responses, the output is classified into errors and warnings. 
 The project-config.json is validated for the following cases:

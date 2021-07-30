@@ -72,7 +72,7 @@ let <%widgetName%>Module = (function () {
     /**
      * private method for widget instance addition and removal
      */
-    CrComLib.subscribeState('o', 'ch5-template:<%widgetName%>-widget', (value) => {
+    CrComLib.subscribeState('o', 'ch5-template:<%styleWidgetName%>-widget', (value) => {
         if (value['loaded'] !== undefined && value['id'] !== undefined) {
             if (value.loaded) {
                 widgetInstances[value.id] = <%widgetName%>InstanceModule(value.id, value['elementIds']);

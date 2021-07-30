@@ -1,8 +1,15 @@
 {
   "command": "generate:widget",
   "name": "generate:widget",
+  "aliases": [
+    "gen:w"
+  ],
   "usage": "[options]",
   "options": [
+    {
+      "keys": "-h, --help",
+      "description": "Help for deleting components"
+    },
     {
       "keys": "-n, --name",
       "description": "Set the name of the widget to be created"

@@ -1,8 +1,15 @@
 {
   "command": "delete:components",
   "name": "delete:components",
+  "aliases": [
+    "del:c"
+  ],
   "usage": "[options]",
   "options": [
+    {
+      "keys": "-h, --help",
+      "description": "Help for deleting components"
+    },
     {
       "keys": "-l, --list",
       "description": "Prefix for list of component names to be deleted"

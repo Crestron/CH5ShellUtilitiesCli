@@ -1,8 +1,15 @@
 {
   "command": "export:assets",
   "name": "export:assets",
+  "aliases": [
+    "exp:a"
+  ],
   "usage": "[options]",
   "options": [
+    {
+      "keys": "-h, --help",
+      "description": "Help for exporting assets from the './app/project/assets/' folder"
+    },
     {
       "keys": "-l, --list",
       "description": "Prefix for list of asset file names"

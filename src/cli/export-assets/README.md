@@ -19,11 +19,6 @@ You could also use `yarn` or `npm run` to export assets. The following are the c
     yarn export:assets [options]
     npm run export:assets [options]
 
-Options:
-    -h, --help,         Help for exporting assets from the './app/project/assets/' folder
-    -l, --list,         Prefix for list of asset file names
-    --all               Select this option to export all the asset files
-
 Export the complete assets directory from './app/project/assets/' folder. To achieve this, use the below commands:
     ch5-shell-cli export:assets --all
 
@@ -32,6 +27,9 @@ You could also use `yarn` or `npm run` to export assets. The following are the c
     npm run export:assets -- --all
     yarn exp:a --all
     npm run exp:a -- --all
+
+You could use shortcut script `exp:a` with options:
+    ch5-shell-cli exp:a [options]
 
 You could use shortcut script `exp:a` with yarn and npm commands as the following:
     yarn exp:a

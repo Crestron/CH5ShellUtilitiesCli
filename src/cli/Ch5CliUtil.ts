@@ -219,7 +219,7 @@ export class Ch5CliUtil {
    *
    * @param {*} input
    */
-  public deepCopy(input: string) {
+  public deepCopy(input: object) {
     if (this.isValidInput(input) && typeof (input) === 'object')
       return JSON.parse(JSON.stringify(input));
     else

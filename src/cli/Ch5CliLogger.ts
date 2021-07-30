@@ -58,8 +58,8 @@ export class Ch5CliLogger {
   }
 
   /**
-   * 
-   * @param {*} noOfLineBreaks 
+   *
+   * @param {*} noOfLineBreaks
    */
   public linebreak(noOfLineBreaks: number) {
     let lineBreakText = "";
@@ -72,8 +72,8 @@ export class Ch5CliLogger {
   }
 
   /**
-   * 
-   * @param  {...any} input 
+   *
+   * @param  {...any} input
    */
   public log(...input: any) {
     if (this.allowLogging === true && this.logLevel <= LOG_LEVELS.DEBUG) {
@@ -82,8 +82,8 @@ export class Ch5CliLogger {
   }
 
   /**
-   * 
-   * @param  {...any} input 
+   *
+   * @param  {...any} input
    */
   public warn(...input: any) {
     if (this.allowLogging === true && this.logLevel <= LOG_LEVELS.WARN) {
@@ -92,8 +92,8 @@ export class Ch5CliLogger {
   }
 
   /**
-   * 
-   * @param  {...any} input 
+   *
+   * @param  {...any} input
    */
   public error(...input: any) {
     if (this.allowLogging === true && this.logLevel <= LOG_LEVELS.ERROR) {
@@ -102,8 +102,8 @@ export class Ch5CliLogger {
   }
 
   /**
-   * 
-   * @param  {...any} input 
+   *
+   * @param  {...any} input
    */
   public info(...input: any) {
     if (this.allowLogging === true && this.logLevel <= LOG_LEVELS.INFO) {
@@ -112,8 +112,8 @@ export class Ch5CliLogger {
   }
 
   /**
-   * 
-   * @param  {...any} input 
+   *
+   * @param  {...any} input
    */
   public trace(...input: any) {
     if (this.allowLogging === true && this.logLevel <= LOG_LEVELS.TRACE) {
@@ -122,32 +122,32 @@ export class Ch5CliLogger {
   }
 
   /**
-   * 
-   * @param  {...any} input 
+   *
+   * @param  {...any} input
    */
   public printSuccess(...input: any) {
     console.info(this.FOREGROUND_COLORS.Green, ...input, this.FORMATTING.Reset);
   }
 
   /**
-   * 
-   * @param  {...any} input 
+   *
+   * @param  {...any} input
    */
   public printWarning(...input: any) {
     console.info(this.FOREGROUND_COLORS.Yellow, ...input, this.FORMATTING.Reset);
   }
 
   /**
-   * 
-   * @param  {...any} input 
+   *
+   * @param  {...any} input
    */
   public printError(...input: any) {
     console.error(this.FOREGROUND_COLORS.Red, ...input, this.FORMATTING.Reset);
   }
 
   /**
-   * 
-   * @param  {...any} input 
+   *
+   * @param  {...any} input
    */
   public printLog(...input: any) {
     console.error(...input);

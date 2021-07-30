@@ -1,8 +1,8 @@
 export interface ICh5Cli {
 
-  run(): Promise<void>;
+  run(): Promise<void | boolean>;
 
-  
+
 
   // projectName: string; // used for archive file name and manifest file name
   // directoryName: string; // source folder for archiving - everything that is in this folder will be archived
@@ -18,6 +18,6 @@ export interface ICh5Cli {
   // deviceType: DeviceTypeEnum; // device type - value in [touchscreen, controlsystem, web]
   // contractFile: string | undefined; // Relative or absolute file path for contract editor config.
   // privateKey: string | undefined; // Relative or absolute file path for private key.
-  // passphrase: string | undefined; // Passphrase for the private key 
+  // passphrase: string | undefined; // Passphrase for the private key
   // slowMode: boolean; // flag to be used when deploying to touchscreen devices
 }

@@ -21,11 +21,6 @@ You could also use `yarn` or `npm run` to generate pages. The following are the 
     yarn generate:page [options]
     npm run generate:page [options]
 
-Options:
-    -h, --help          Help for Generate Documentation
-    -n, --name          Set the Name of the page to be created
-    -m, --menu          Allow the page navigation to be added to Menu (valid input values are 'Y', 'y', 'N', 'n')
-
 You could use `ch5-shell-cli` to generate pages with additional options. The following are some examples:
     ch5-shell-cli generate:page --name LEDLights
     ch5-shell-cli generate:page -n LEDLights
@@ -41,6 +36,9 @@ You could also use `yarn` or `npm run` to generate pages. The following are the 
     npm run generate:page --  -n LEDLights
     npm run generate:page --  --name LEDLights --menu N
     npm run generate:page --  -n LEDLights -m N
+
+You could use shortcut script `gen:p` with options:
+    ch5-shell-cli gen:p [options]
 
 You could use shortcut script `gen:p` with yarn and npm commands as the following:
     yarn gen:p

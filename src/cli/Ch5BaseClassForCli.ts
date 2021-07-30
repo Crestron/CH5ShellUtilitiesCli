@@ -51,7 +51,7 @@ export class Ch5BaseClassForCli {
   protected get projectConfig() {
     return this._cliProjectConfig;
   }
-  
+
   public constructor(folderPath: string) {
     this._folderPath = folderPath;
     this._cliUtil = new Ch5CliUtil();
@@ -60,17 +60,17 @@ export class Ch5BaseClassForCli {
     this._cliNamingHelper = new Ch5CliNamingHelper();
     this._cliProjectConfig = new Ch5CliProjectConfig();
     this._inputArguments = this.componentHelper.processArgs();
-    this.TRANSLATION_FILE = JSON.parse( this.componentHelper.readFileContentSync(path.join(__dirname, this._folderPath, "i18n", "en.json")));
-    this.CONFIG_FILE = JSON.parse( this.componentHelper.readFileContentSync(path.join(__dirname, this._folderPath, "files", "config.json")));
+    this.TRANSLATION_FILE = JSON.parse(this.componentHelper.readFileContentSync(path.join(__dirname, this._folderPath, "i18n", "en.json")));
+    this.CONFIG_FILE = JSON.parse(this.componentHelper.readFileContentSync(path.join(__dirname, this._folderPath, "files", "config.json")));
   }
 
-  public setInputArgsForTesting(args:any) {
+  public setInputArgsForTesting(args: any) {
     this._inputArguments = this.componentHelper.processArgsAnalyze(args)
   }
-  
+
   /**
-  * 
-  * @param program 
+  *
+  * @param program
   */
   public async setupCommand(program: commander.Command) {
     let programObject = program
@@ -86,6 +86,11 @@ export class Ch5BaseClassForCli {
       const contentForHelp: string = await this.componentHelper.readFileContent(path.join(__dirname, this._folderPath, "files", "help.txt"));
       programObject = programObject.addHelpText('after', contentForHelp);
     }
+
+    if (this.CONFIG_FILE.aliases && this.CONFIG_FILE.aliases.length > 0) {
+      programObject = programObject.aliases(this.CONFIG_FILE.aliases);
+    }
+
     programObject.action(async (options) => {
       try {
         await this.run();
@@ -99,7 +104,7 @@ export class Ch5BaseClassForCli {
   /**
    * DO NOT DELETE
    */
-  async run() {
+  async run(): Promise<void | boolean> {
 
   }
 
@@ -109,8 +114,8 @@ export class Ch5BaseClassForCli {
 
   /**
    * Get the String output from default.json file in config
-   * @param {*} key 
-   * @param  {...any} values 
+   * @param {*} key
+   * @param  {...any} values
    */
   getText(key: string, ...values: string[]) {
     return this._cliUtil.getText(this.TRANSLATION_FILE, key, ...values);
