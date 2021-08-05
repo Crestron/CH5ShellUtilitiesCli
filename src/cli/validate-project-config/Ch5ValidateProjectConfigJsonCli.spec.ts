@@ -1,9 +1,9 @@
 import { expect } from 'chai';
 import * as sinon from "sinon";
 import mock from 'mock-fs';
-import {Ch5CliLogger} from "../Ch5CliLogger";
-import {SinonStub} from "sinon";
-import {Ch5ValidateProjectConfigCli} from "./Ch5ValidateProjectConfigJsonCli";
+import { Ch5CliLogger } from "../Ch5CliLogger";
+import { SinonStub } from "sinon";
+import { Ch5ValidateProjectConfigCli } from "./Ch5ValidateProjectConfigJsonCli";
 
 const validateProjectComponent = new Ch5ValidateProjectConfigCli();
 
@@ -31,7 +31,7 @@ describe('Validate project config >>>>>>>> ', () => {
     it('Validate valid json - incorrect folder structure', async () => {
         mock({
             '.vscode': {
-              'project-config-schema.json': JSON.stringify(projectConfigSchema)
+                'project-config-schema.json': JSON.stringify(projectConfigSchema)
             },
             'app': {
                 'project-config.json': JSON.stringify(validAppJson),
@@ -852,7 +852,7 @@ const projectConfigSchema = {
                                                 "title": "label",
                                                 "description": "The label for the navigation menu item."
                                             },
-                                            "isI18nLabel":{
+                                            "isI18nLabel": {
                                                 "$id": "#/properties/content/properties/pages/items/anyOf/0/properties/navigation/properties/isI18nLabel",
                                                 "type": "boolean",
                                                 "title": "isI18nLabel",

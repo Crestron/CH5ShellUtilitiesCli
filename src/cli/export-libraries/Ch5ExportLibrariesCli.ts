@@ -1,4 +1,4 @@
-// Copyright (C) 2018 to the present, Crestron Electronics, Inc.
+// Copyright (C) 2021 to the present, Crestron Electronics, Inc.
 // All rights reserved.
 // No part of this software may be reproduced in any form, machine
 // or natural, without the express written consent of Crestron Electronics.
@@ -14,7 +14,7 @@ const fsExtra = require("fs-extra");
 const zl = require("zip-lib");
 const findRemoveSync = require('find-remove');
 
-export class Ch5ExportLibrariesCli  extends Ch5BaseClassForCli implements ICh5Cli  {
+export class Ch5ExportLibrariesCli extends Ch5BaseClassForCli implements ICh5Cli {
 
   private outputResponse: any = {};
   private finalOutputZipFile: string = "";
@@ -60,7 +60,6 @@ export class Ch5ExportLibrariesCli  extends Ch5BaseClassForCli implements ICh5Cl
 
   /**
    * Log Final Response Message
-   * @param {*} errorMessage
    */
   logFinalResponses() {
     if (this.utils.isValidInput(this.outputResponse['errorMessage'])) {
@@ -87,7 +86,7 @@ export class Ch5ExportLibrariesCli  extends Ch5BaseClassForCli implements ICh5Cl
    * @param {*} inputNames
    * @param {*} copyAll
    */
-  async copyAndZipFiles(inputNames:string[], copyAll:boolean) {
+  async copyAndZipFiles(inputNames: string[], copyAll: boolean) {
     const invalidInputs = [];
     const validInputs = [];
     this.outputResponse['copyAll'] = copyAll;
@@ -98,7 +97,7 @@ export class Ch5ExportLibrariesCli  extends Ch5BaseClassForCli implements ICh5Cl
 
     const temporaryFolderPath = path.join(this.getConfigNode("zipFileDestinationPath"), this.getConfigNode("outputTempFolderName"));
     try {
-       this.utils.deleteFolder(temporaryFolderPath);
+      this.utils.deleteFolder(temporaryFolderPath);
       //Create Temporary Folder for copy files before zipping
       fs.mkdirSync(temporaryFolderPath, {
         recursive: true,
@@ -108,7 +107,7 @@ export class Ch5ExportLibrariesCli  extends Ch5BaseClassForCli implements ICh5Cl
       if (copyAll === true) {
         fsExtra.copySync(this.getConfigNode("requiredFolderPath"), path.join(temporaryFolderPath, this.getConfigNode("zipFolderName"), path.normalize(this.getConfigNode("requiredFolderPath"))), { recursive: true });
       } else {
-        for (let i:number = 0; i < inputNames.length; i++) {
+        for (let i: number = 0; i < inputNames.length; i++) {
           if (path.normalize(inputNames[i]).indexOf(path.normalize(this.getConfigNode("requiredFolderPath"))) >= 0) {
             if (fs.existsSync(inputNames[i])) {
               const checkFileOrFolder = fs.statSync(inputNames[i]);
@@ -146,7 +145,7 @@ export class Ch5ExportLibrariesCli  extends Ch5BaseClassForCli implements ICh5Cl
         const outputArchive = await zl.archiveFolder(temporaryFolderPath, zipFileName).then(async () => {
           this.logger.info("Zip Done.");
           try {
-             this.utils.deleteFolder(temporaryFolderPath);
+            this.utils.deleteFolder(temporaryFolderPath);
             this.logger.info("Clean up Done.");
             this.outputResponse['result'] = true;
             this.outputResponse['errorMessage'] = "";
@@ -156,7 +155,7 @@ export class Ch5ExportLibrariesCli  extends Ch5BaseClassForCli implements ICh5Cl
             this.outputResponse['errorMessage'] = e;
             this.logFinalResponses();
           }
-        } ,(err: any) => {
+        }, (err: any) => {
           this.outputResponse['result'] = false;
           this.outputResponse['errorMessage'] = err;
           this.logFinalResponses();

@@ -14,7 +14,7 @@ const fsExtra = require("fs-extra");
 const zl = require("zip-lib");
 const findRemoveSync = require('find-remove');
 
-export class Ch5ExportAssetsCli extends Ch5BaseClassForCli implements ICh5Cli  {
+export class Ch5ExportAssetsCli extends Ch5BaseClassForCli implements ICh5Cli {
 
   private outputResponse: any = {};
   private finalOutputZipFile: string = "";
@@ -60,7 +60,6 @@ export class Ch5ExportAssetsCli extends Ch5BaseClassForCli implements ICh5Cli  {
 
   /**
    * Log Final Response Message
-   * @param {*} errorMessage
    */
   logFinalResponses() {
     if (this.utils.isValidInput(this.outputResponse['errorMessage'])) {
@@ -98,7 +97,7 @@ export class Ch5ExportAssetsCli extends Ch5BaseClassForCli implements ICh5Cli  {
 
     const temporaryFolderPath = path.join(this.getConfigNode("zipFileDestinationPath"), this.getConfigNode("outputTempFolderName"));
     try {
-       this.utils.deleteFolder(temporaryFolderPath);
+      this.utils.deleteFolder(temporaryFolderPath);
       //Create Temporary Folder for copy files before zipping
       fs.mkdirSync(temporaryFolderPath, {
         recursive: true,
@@ -108,7 +107,7 @@ export class Ch5ExportAssetsCli extends Ch5BaseClassForCli implements ICh5Cli  {
       if (copyAll === true) {
         fsExtra.copySync(this.getConfigNode("requiredFolderPath"), path.join(temporaryFolderPath, this.getConfigNode("zipFolderName"), path.normalize(this.getConfigNode("requiredFolderPath"))), { recursive: true });
       } else {
-        for (let i:number = 0; i < inputNames.length; i++) {
+        for (let i: number = 0; i < inputNames.length; i++) {
           if (path.normalize(inputNames[i]).indexOf(path.normalize(this.getConfigNode("requiredFolderPath"))) >= 0) {
             if (fs.existsSync(inputNames[i])) {
               const checkFileOrFolder = fs.statSync(inputNames[i]);
@@ -146,7 +145,7 @@ export class Ch5ExportAssetsCli extends Ch5BaseClassForCli implements ICh5Cli  {
         const outputArchive = await zl.archiveFolder(temporaryFolderPath, zipFileName).then(async () => {
           this.logger.info("Zip Done.");
           try {
-             this.utils.deleteFolder(temporaryFolderPath);
+            this.utils.deleteFolder(temporaryFolderPath);
             this.logger.info("Clean up Done.");
             this.outputResponse['result'] = true;
             this.outputResponse['errorMessage'] = "";

@@ -1,9 +1,9 @@
 import { expect } from 'chai';
 import * as sinon from "sinon";
 import mock from 'mock-fs';
-import {Ch5CliLogger} from "../Ch5CliLogger";
-import {SinonStub} from "sinon";
-import {Ch5DeleteComponentsCli} from "./Ch5DeleteComponentsCli";
+import { Ch5CliLogger } from "../Ch5CliLogger";
+import { SinonStub } from "sinon";
+import { Ch5DeleteComponentsCli } from "./Ch5DeleteComponentsCli";
 
 const deleteComponents = new Ch5DeleteComponentsCli();
 
@@ -24,7 +24,7 @@ describe('Delete components >>>>>>>> ', () => {
         // Mock external enquirer library
         sinon.stub(Ch5DeleteComponentsCli.prototype, 'getEnquirer').get(() => {
             return {
-                prompt: () =>  new Promise(resolve => resolve({}))
+                prompt: () => new Promise(resolve => resolve({}))
             }
         });
         sinon.stub(Ch5DeleteComponentsCli.prototype, 'getMultiSelect').get(() => () => {
@@ -49,7 +49,7 @@ describe('Delete components >>>>>>>> ', () => {
     it('Delete components without parameters - with components selected, no confirmation', async () => {
         sinon.stub(Ch5DeleteComponentsCli.prototype, 'getMultiSelect').get(() => () => {
             return {
-                run: () => new Promise(resolve => resolve([{component: 'component'}]))
+                run: () => new Promise(resolve => resolve([{ component: 'component' }]))
             }
         });
 
@@ -66,7 +66,7 @@ describe('Delete components >>>>>>>> ', () => {
         });
         sinon.stub(Ch5DeleteComponentsCli.prototype, 'getEnquirer').get(() => {
             return {
-                prompt: () =>  new Promise(resolve => resolve({
+                prompt: () => new Promise(resolve => resolve({
                     deleteConfirmation: 'y'
                 }))
             }
@@ -80,7 +80,7 @@ describe('Delete components >>>>>>>> ', () => {
         deleteComponents.setInputArgsForTesting(['--list', 'page1']); // this is a dummy method to force set value of args before proceeding with the testing
         sinon.stub(Ch5DeleteComponentsCli.prototype, 'getEnquirer').get(() => {
             return {
-                prompt: () =>  new Promise(resolve => resolve({
+                prompt: () => new Promise(resolve => resolve({
                     deleteConfirmation: 'y'
                 }))
             }

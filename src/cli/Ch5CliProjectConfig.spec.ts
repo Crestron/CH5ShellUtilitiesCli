@@ -1,10 +1,7 @@
-import {expect} from 'chai';
+import { expect } from 'chai';
 import * as sinon from 'sinon';
 import mock from 'mock-fs';
-import {Ch5CliProjectConfig} from "./Ch5CliProjectConfig";
-
-const fs = require('fs');
-const fsExtra = require('fs-extra');
+import { Ch5CliProjectConfig } from "./Ch5CliProjectConfig";
 
 const ch5projectConfig = new Ch5CliProjectConfig();
 
@@ -60,8 +57,6 @@ describe('Ch5 CLI Project Config >>>>>>>> ', () => {
     expect(ch5projectConfig.getHighestNavigationSequence()).equals(mockedAppJson.content.pages[5].navigation.sequence);
   });
 });
-
-
 
 const mockedAppJson = {
   "projectName": "Shell-Template",

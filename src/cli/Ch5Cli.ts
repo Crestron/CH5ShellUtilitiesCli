@@ -1,4 +1,4 @@
-// Copyright (C) 2018 to the present, Crestron Electronics, Inc.
+// Copyright (C) 2021 to the present, Crestron Electronics, Inc.
 // All rights reserved.
 // No part of this software may be reproduced in any form, machine
 // or natural, without the express written consent of Crestron Electronics.
@@ -22,8 +22,6 @@ import { Ch5ImportComponentsCli } from "./import-components/Ch5ImportComponentsC
 import { Ch5ImportAllCli } from "./import-all/Ch5ImportAllCli";
 import { Ch5ValidateProjectConfigCli } from "./validate-project-config/Ch5ValidateProjectConfigJsonCli";
 
-const clear = require('clear');
-const figlet = require('figlet');
 const packageJson = require('../../package.json');
 const buildVersion = packageJson.version || 'VERSION_NOT_READ';
 
@@ -92,20 +90,5 @@ export class Ch5ShellCli {
     });
 
     program.parse(process.argv);
-
-    // if (!process.argv.slice(2).length) {
-    //   clear();
-    //   console.log(
-    //     chalk.blue(
-    //       figlet.textSync(`Crestron CH5 Utilities © ${new Date().getFullYear()}`,
-    //         {
-    //           font: 'Standard',
-    //           horizontalLayout: 'full',
-    //           verticalLayout: 'full'
-    //         })
-    //     )
-    //   );
-    //   program.outputHelp();
-    // }
   }
 }

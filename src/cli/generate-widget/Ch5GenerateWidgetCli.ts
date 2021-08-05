@@ -52,7 +52,6 @@ export class Ch5GenerateWidgetCli extends Ch5BaseClassForCli implements ICh5Cli 
 
   /**
    * Method for generating page
-   * @param {*} processArgs
    */
   async run() {
     try {
@@ -122,7 +121,6 @@ export class Ch5GenerateWidgetCli extends Ch5BaseClassForCli implements ICh5Cli 
   /**
    * Check if there are questions to be prompted to the developer
    */
-
   async checkPromptQuestions() {
     if (!this.utils.isValidInput(this.outputResponse.data.widgetName)) {
       let widgets = this.projectConfig.getAllWidgets();
@@ -274,8 +272,6 @@ export class Ch5GenerateWidgetCli extends Ch5BaseClassForCli implements ICh5Cli 
     };
     return widgetObject;
   }
-
-
 
   /**
    * Method to validate Widget Name

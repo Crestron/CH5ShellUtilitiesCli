@@ -1,13 +1,10 @@
-import {expect} from 'chai';
+import { expect } from 'chai';
 import * as sinon from 'sinon';
-import {SinonSpy, SinonStub} from 'sinon';
+import { SinonSpy, SinonStub } from 'sinon';
 import mock from 'mock-fs';
-import {Ch5CliUtil} from "./Ch5CliUtil";
+import { Ch5CliUtil } from "./Ch5CliUtil";
 import chalk from "chalk";
-import {OutputLevel} from "@crestron/ch5-utilities";
-
-const fs = require('fs');
-const fsExtra = require('fs-extra');
+import { OutputLevel } from "@crestron/ch5-utilities";
 
 const ch5utils = new Ch5CliUtil();
 
@@ -36,18 +33,18 @@ describe('Ch5 CLI Utils >>>>>>>> ', () => {
     expect(consoleLogStub.calledWith(chalk.red(`Error: message`))).equals(true);
   });
 
-  it ('get output level - quiet', () => {
-    const outputLevel = ch5utils.getOutputLevel({quiet: true});
+  it('get output level - quiet', () => {
+    const outputLevel = ch5utils.getOutputLevel({ quiet: true });
     expect(outputLevel).equals(OutputLevel.Quiet);
   });
 
-  it ('get output level - verbose', () => {
-    const outputLevel = ch5utils.getOutputLevel({verbose: true});
+  it('get output level - verbose', () => {
+    const outputLevel = ch5utils.getOutputLevel({ verbose: true });
     expect(outputLevel).equals(OutputLevel.Verbose);
   });
 
-  it ('get output level - normal', () => {
-    const outputLevel = ch5utils.getOutputLevel({other: true});
+  it('get output level - normal', () => {
+    const outputLevel = ch5utils.getOutputLevel({ other: true });
     expect(outputLevel).equals(OutputLevel.Normal);
   });
 
@@ -71,18 +68,18 @@ describe('Ch5 CLI Utils >>>>>>>> ', () => {
     expect(ch5utils.isValidInput([21])).equals(true);
     expect(ch5utils.isValidInput(1)).equals(true);
     expect(ch5utils.isValidInput('asd')).equals(true);
-    expect(ch5utils.isValidInput({asd: true})).equals(true);
+    expect(ch5utils.isValidInput({ asd: true })).equals(true);
   });
 
-  it ('is valid object - invalid scenarios', () => {
+  it('is valid object - invalid scenarios', () => {
     expect(ch5utils.isValidObject(null)).equals(false);
     expect(ch5utils.isValidObject(['asd'])).equals(false);
     expect(ch5utils.isValidObject(undefined)).equals(false);
-    expect(ch5utils.isValidObject([{'asd': true}])).equals(false);
+    expect(ch5utils.isValidObject([{ 'asd': true }])).equals(false);
   });
 
   it('is valid object - valid scenarios', () => {
-    expect(ch5utils.isValidObject({'asd': true})).equals(true);
+    expect(ch5utils.isValidObject({ 'asd': true })).equals(true);
     expect(ch5utils.isValidObject({})).equals(true);
   });
 
@@ -90,7 +87,7 @@ describe('Ch5 CLI Utils >>>>>>>> ', () => {
     expect(ch5utils.convertArrayToString(['asd', 'xcv', 'ppt'])).equals('asd,xcv,ppt');
   });
 
-  it ('convert string too boolean', () => {
+  it('convert string too boolean', () => {
     expect(ch5utils.convertStringToBoolean('n')).equals(false);
     expect(ch5utils.convertStringToBoolean('y')).equals(true);
   });

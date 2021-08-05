@@ -1,4 +1,4 @@
-// Copyright (C) 2018 to the present, Crestron Electronics, Inc.
+// Copyright (C) 2021 to the present, Crestron Electronics, Inc.
 // All rights reserved.
 // No part of this software may be reproduced in any form, machine
 // or natural, without the express written consent of Crestron Electronics.
@@ -60,7 +60,6 @@ export class Ch5ExportComponentsCli extends Ch5BaseClassForCli implements ICh5Cl
 
   /**
    * Log Final Response Message
-   * @param {*} errorMessage
    */
   logFinalResponses() {
     if (this.utils.isValidInput(this.outputResponse['errorMessage'])) {
@@ -84,7 +83,9 @@ export class Ch5ExportComponentsCli extends Ch5BaseClassForCli implements ICh5Cl
 
   /**
    * Identify the exported components and create a sample project-config.json file internally to this export.
-   * @param {*} copyAll
+   * @param copyAll 
+   * @param validInputs 
+   * @returns 
    */
   processProjectConfigJSONFile(copyAll: boolean, validInputs: string[]) {
     const allPages = this.projectConfig.getAllPages() || [];

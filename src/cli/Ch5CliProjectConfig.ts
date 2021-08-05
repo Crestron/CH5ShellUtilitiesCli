@@ -1,4 +1,4 @@
-// Copyright (C) 2018 to the present, Crestron Electronics, Inc.
+// Copyright (C) 2021 to the present, Crestron Electronics, Inc.
 // All rights reserved.
 // No part of this software may be reproduced in any form, machine
 // or natural, without the express written consent of Crestron Electronics.
@@ -9,8 +9,6 @@ import { Ch5CliUtil } from "./Ch5CliUtil";
 import { Ch5CliLogger } from "./Ch5CliLogger";
 
 const fs = require("fs");
-const process = require("process");
-const path = require("path");
 const editJsonFile = require("edit-json-file");
 const fsExtra = require("fs-extra");
 
@@ -27,21 +25,20 @@ export class Ch5CliProjectConfig {
 
   getJson() {
     return fsExtra.readJSONSync("./app/project-config.json");
-    // return JSON.parse(JSON.stringify(projectConfigJson));
   }
 
   getAllPages() {
-    let projectConfigObject = this.getJson(); //    JSON.parse(JSON.stringify(projectConfigJson));
+    let projectConfigObject = this.getJson();
     return projectConfigObject.content.pages;
   }
 
   getAllWidgets() {
-    const projectConfigObject = this.getJson(); //JSON.parse(JSON.stringify(projectConfigJson));
+    const projectConfigObject = this.getJson();
     return projectConfigObject.content.widgets;
   }
 
   getAllPagesAndWidgets() {
-    const projectConfigObject = this.getJson(); // JSON.parse(JSON.stringify(projectConfigJson));
+    const projectConfigObject = this.getJson();
     const output = [];
     for (let i: number = 0; i < projectConfigObject.content.pages.length; i++) {
       output.push({ index: i, name: projectConfigObject.content.pages[i].pageName, component: projectConfigObject.content.pages[i], type: "page" });

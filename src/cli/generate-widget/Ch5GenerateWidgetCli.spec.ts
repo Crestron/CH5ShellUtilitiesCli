@@ -1,9 +1,9 @@
 import { expect } from 'chai';
 import * as sinon from "sinon";
 import mock from 'mock-fs';
-import {Ch5CliLogger} from "../Ch5CliLogger";
-import {SinonStub} from "sinon";
-import {Ch5GenerateWidgetCli} from "./Ch5GenerateWidgetCli";
+import { Ch5CliLogger } from "../Ch5CliLogger";
+import { SinonStub } from "sinon";
+import { Ch5GenerateWidgetCli } from "./Ch5GenerateWidgetCli";
 
 const generateWidgetComponent = new Ch5GenerateWidgetCli();
 
@@ -27,7 +27,7 @@ describe('Generate widget >>>>>>>> ', () => {
         // Mock external enquirer library
         sinon.stub(Ch5GenerateWidgetCli.prototype, 'getEnquirer').get(() => {
             return {
-                prompt: () =>  new Promise(resolve => resolve({
+                prompt: () => new Promise(resolve => resolve({
                     widgetName: 'leds',
                     menuOption: 'option'
                 }))

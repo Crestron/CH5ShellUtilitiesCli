@@ -1,10 +1,10 @@
-import {expect} from 'chai';
+import { expect } from 'chai';
 import * as sinon from 'sinon';
-import {SinonSpy, SinonStub} from 'sinon';
+import { SinonSpy, SinonStub } from 'sinon';
 import mock from 'mock-fs';
-import {Ch5CliLogger} from "../Ch5CliLogger";
-import {Ch5CliUtil} from "../Ch5CliUtil";
-import {Ch5ImportAssetsCli} from "./Ch5ImportAssetsCli";
+import { Ch5CliLogger } from "../Ch5CliLogger";
+import { Ch5CliUtil } from "../Ch5CliUtil";
+import { Ch5ImportAssetsCli } from "./Ch5ImportAssetsCli";
 
 const fs = require('fs');
 const fsExtra = require('fs-extra');
@@ -24,11 +24,9 @@ describe('Import an asset >>>>>>>> ', () => {
   let existsSyncSpy: SinonSpy;
   let cleanupSpy: SinonSpy;
 
-
   before(() => {
     mock();
   });
-
 
   after(() => {
     mock.restore();

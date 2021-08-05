@@ -1,8 +1,5 @@
-import {expect} from 'chai';
-import {Ch5CliNamingHelper} from "./Ch5CliNamingHelper";
-
-const fs = require('fs');
-const fsExtra = require('fs-extra');
+import { expect } from 'chai';
+import { Ch5CliNamingHelper } from "./Ch5CliNamingHelper";
 
 const ch5namingHelper = new Ch5CliNamingHelper();
 

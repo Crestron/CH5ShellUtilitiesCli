@@ -2,8 +2,8 @@ import { expect } from 'chai';
 import { Ch5GeneratePageCli } from './Ch5GeneratePageCli';
 import * as sinon from "sinon";
 import mock from 'mock-fs';
-import {Ch5CliLogger} from "../Ch5CliLogger";
-import {SinonStub} from "sinon";
+import { Ch5CliLogger } from "../Ch5CliLogger";
+import { SinonStub } from "sinon";
 
 const generatePageComponent = new Ch5GeneratePageCli();
 
@@ -27,7 +27,7 @@ describe('Generate page >>>>>>>> ', () => {
         // Mock external enquirer library
         sinon.stub(Ch5GeneratePageCli.prototype, 'getEnquirer').get(() => {
             return {
-                prompt: () =>  new Promise(resolve => resolve({
+                prompt: () => new Promise(resolve => resolve({
                     pageName: 'page',
                     menuOption: 'option'
                 }))

@@ -70,7 +70,7 @@ export class Ch5DeleteComponentsCli extends Ch5BaseClassForCli implements ICh5Cl
   }
 
   /**
-   *
+   * Initialize process
    */
   initialize() {
     this.outputResponse = {
@@ -221,7 +221,6 @@ export class Ch5DeleteComponentsCli extends Ch5BaseClassForCli implements ICh5Cl
 
   /**
    * Log Final Response Message
-   * @param {*} errorMessage
    */
   logOutput() {
     if (this.outputResponse.result === false) {

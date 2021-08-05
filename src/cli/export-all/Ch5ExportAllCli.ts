@@ -21,11 +21,10 @@ export class Ch5ExportAllCli extends Ch5BaseClassForCli implements ICh5Cli {
   private finalOutputZipFile: string = "";
 
   /**
-   *
+   * Constructor
    */
   public constructor() {
     super("export-all");
-    this.finalOutputZipFile = path.join(this.getConfigNode("zipFileDestinationPath"), this.getConfigNode("outputFileName"));
   }
 
   /**
@@ -33,6 +32,7 @@ export class Ch5ExportAllCli extends Ch5BaseClassForCli implements ICh5Cli {
    */
   async run() {
     this.outputResponse = {};
+    this.finalOutputZipFile = path.join(this.getConfigNode("zipFileDestinationPath"), this.getConfigNode("outputFileName"));
     if (this.inputArguments["all"] === true) {
       if (fs.existsSync(this.getConfigNode("requiredFolderPath"))) {
         if (fs.readdirSync(this.getConfigNode("requiredFolderPath")).length > 0) {
@@ -63,7 +63,6 @@ export class Ch5ExportAllCli extends Ch5BaseClassForCli implements ICh5Cli {
 
   /**
    * Log Final Response Message
-   * @param {*} errorMessage
    */
   logFinalResponses() {
     if (this.utils.isValidInput(this.outputResponse['errorMessage'])) {
@@ -87,7 +86,9 @@ export class Ch5ExportAllCli extends Ch5BaseClassForCli implements ICh5Cli {
 
   /**
    * Identify the exported components and create a sample project-config.json file internally to this export.
-   * @param {*} copyAll
+   * @param copyAll 
+   * @param validInputs 
+   * @returns 
    */
   processProjectConfigJSONFile(copyAll: boolean, validInputs: string[]) {
     const allPages = this.projectConfig.getAllPages() || [];

@@ -376,11 +376,11 @@ export class Ch5GeneratePageCli extends Ch5BaseClassForCli implements ICh5Cli {
   private loopAndCheckPage(pages: any) {
     let pageFound = false;
     let newPageNameToSet = "";
-    let i = 1;
+    let i:number = 1;
     do {
       newPageNameToSet = "Page" + i;
       pageFound = false;
-      for (let j = 0; j < pages.length; j++) {
+      for (let j:number = 0; j < pages.length; j++) {
         if (pages[j].pageName.trim().toLowerCase() === newPageNameToSet.toString().toLowerCase()) {
           pageFound = true;
           break;

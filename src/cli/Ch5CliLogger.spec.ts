@@ -1,10 +1,7 @@
-import {Ch5CliLogger, LOG_LEVELS} from "./Ch5CliLogger";
-import {expect} from 'chai';
+import { Ch5CliLogger, LOG_LEVELS } from "./Ch5CliLogger";
+import { expect } from 'chai';
 import * as sinon from "sinon";
-import {SinonStub} from "sinon";
-
-const fs = require('fs');
-const fsExtra = require('fs-extra');
+import { SinonStub } from "sinon";
 
 const ch5CliLogger = new Ch5CliLogger(true, LOG_LEVELS.TRACE);
 const ch5CliLoggerDisabled = new Ch5CliLogger(false, LOG_LEVELS.TRACE);
@@ -81,7 +78,7 @@ describe('Ch5 CLI Logger enabled >>>>>>>> ', () => {
   it('on error', () => {
     try {
       ch5CliLogger.onErr(new Error(''));
-    } catch (err) {}
+    } catch (err) { }
     expect(consoleErrorStub.called).equals(true);
   })
 });
@@ -158,7 +155,7 @@ describe('Ch5 CLI Logger disabled >>>>>>>> ', () => {
   it('on error', () => {
     try {
       ch5CliLogger.onErr(new Error(''));
-    } catch (err) {}
+    } catch (err) { }
     expect(consoleErrorStub.called).equals(true);
   });
 });

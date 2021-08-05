@@ -1,4 +1,4 @@
-// Copyright (C) 2018 to the present, Crestron Electronics, Inc.
+// Copyright (C) 2021 to the present, Crestron Electronics, Inc.
 // All rights reserved.
 // No part of this software may be reproduced in any form, machine
 // or natural, without the express written consent of Crestron Electronics.
@@ -51,7 +51,6 @@ export class Ch5CliUtil {
 
     return OutputLevel.Normal;
   }
-
 
   /**
    * Check if input is valid. Invalid are "", 0, {}, [], null, undefined.
@@ -113,7 +112,7 @@ export class Ch5CliUtil {
       return inputArray; // since its of string type, return as is
     } else if (this.isValidInput(inputArray) && inputArray.length > 0) {
       let output = "";
-      for (let i:number = 0; i < inputArray.length; i++) {
+      for (let i: number = 0; i < inputArray.length; i++) {
         output += inputArray[i] + delimiter;
       }
       if (delimiter.trim() === "") {
@@ -145,10 +144,10 @@ export class Ch5CliUtil {
   }
 
   /**
- * Gets the text from the config default.json file.
- * @param {*} key
- * @param  {...any} values
- */
+   * Gets the text from the config default.json file.
+   * @param {*} key
+   * @param  {...any} values
+   */
   public getText(DYNAMIC_TEXT_MESSAGES: any, key: string, ...values: string[]) {
     try {
       let output: any = "";
@@ -162,7 +161,7 @@ export class Ch5CliUtil {
         output = DYNAMIC_TEXT_MESSAGES[key];
       }
       if (values && values.length > 0) {
-        for (let i:number = 0; i < values.length; i++) {
+        for (let i: number = 0; i < values.length; i++) {
           output = this.replaceAll(output, "{" + i + "}", values[i]);
         }
       }
@@ -186,7 +185,7 @@ export class Ch5CliUtil {
       if (property.length > 1) {
         let propA = a[property[0]];
         let propB = b[property[0]];
-        for (let i:number = 1; i < property.length; i++) {
+        for (let i: number = 1; i < property.length; i++) {
           propA = propA[property[i]];
           propB = propB[property[i]];
         }

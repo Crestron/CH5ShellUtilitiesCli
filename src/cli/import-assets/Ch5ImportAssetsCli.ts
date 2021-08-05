@@ -1,4 +1,4 @@
-// Copyright (C) 2018 to the present, Crestron Electronics, Inc.
+// Copyright (C) 2021 to the present, Crestron Electronics, Inc.
 // All rights reserved.
 // No part of this software may be reproduced in any form, machine
 // or natural, without the express written consent of Crestron Electronics.
@@ -15,7 +15,7 @@ const zl = require("zip-lib");
 const Enquirer = require('enquirer');
 const enquirer = new Enquirer();
 
-export class Ch5ImportAssetsCli extends Ch5BaseClassForCli implements ICh5Cli  {
+export class Ch5ImportAssetsCli extends Ch5BaseClassForCli implements ICh5Cli {
 
   private outputResponse: any = {};
   private folderPaths: any = {};
@@ -52,7 +52,9 @@ export class Ch5ImportAssetsCli extends Ch5BaseClassForCli implements ICh5Cli  {
     };
   }
 
-  // Utils function so that we can mock zl library in our test cases
+  /**
+   * Utils function so that we can mock zl library in our test cases
+   */
   public get getZl() {
     return zl;
   }
@@ -96,8 +98,8 @@ export class Ch5ImportAssetsCli extends Ch5BaseClassForCli implements ICh5Cli  {
   }
 
   /**
-  * Check any validations that need to be done before verifying input parameters
-  */
+   * Check any validations that need to be done before verifying input parameters
+   */
   checkPrerequisiteValidations() {
     // Nothing for this component
   }
@@ -130,7 +132,7 @@ export class Ch5ImportAssetsCli extends Ch5BaseClassForCli implements ICh5Cli  {
       }
     });
 
-     this.utils.deleteFolder(this.folderPaths.temporaryLocationForExtractedFilesFolder);
+    this.utils.deleteFolder(this.folderPaths.temporaryLocationForExtractedFilesFolder);
 
     // Extract the developer input zip file into a temporary location in dist folder.
     await unzip.extract(this.folderPaths.temporaryLocationForCopiedZipFile, this.folderPaths.temporaryLocationForExtractedFilesFolder).then(async () => {
@@ -178,7 +180,7 @@ export class Ch5ImportAssetsCli extends Ch5BaseClassForCli implements ICh5Cli  {
     this.logger.log("inputListOfFiles", inputListOfFiles);
 
     const checkedFilesForLoop = [];
-    for (let i:number = 0; i < inputListOfFiles.length; i++) {
+    for (let i: number = 0; i < inputListOfFiles.length; i++) {
       if (this.checkIfNewFileInput(checkedFilesForLoop, inputListOfFiles[i])) {
         const fileNewPath = path.join(path.normalize(this.folderPaths.temporaryLocationForAllFilesCopyFrom), path.normalize(inputListOfFiles[i]));
         if (fs.existsSync(fileNewPath)) {
@@ -198,8 +200,7 @@ export class Ch5ImportAssetsCli extends Ch5BaseClassForCli implements ICh5Cli  {
     }
 
     // Identify source files in target folder
-    // if (this.inputArguments["force"] === false) {
-    for (let i:number = 0; i < this.outputResponse.data.inputFileExistsInSourceFolder.length; i++) {
+    for (let i: number = 0; i < this.outputResponse.data.inputFileExistsInSourceFolder.length; i++) {
       const fileNewPath = path.normalize(this.outputResponse.data.inputFileExistsInSourceFolder[i]);
       if (fs.existsSync(fileNewPath)) {
         const checkFileOrFolder = fs.statSync(fileNewPath);
@@ -216,7 +217,6 @@ export class Ch5ImportAssetsCli extends Ch5BaseClassForCli implements ICh5Cli  {
         }
       }
     }
-    // }
 
     /*
       this.outputResponse.data.sourceFilesInTargetFolder [
@@ -240,7 +240,7 @@ export class Ch5ImportAssetsCli extends Ch5BaseClassForCli implements ICh5Cli  {
       ]
     */
 
-    for (let i:number = 0; i < this.outputResponse.data.inputFileExistsInSourceFolder.length; i++) {
+    for (let i: number = 0; i < this.outputResponse.data.inputFileExistsInSourceFolder.length; i++) {
       let isExists = false;
       for (let j = 0; j < this.outputResponse.data.sourceFilesInTargetFolder.length; j++) {
         if (this.outputResponse.data.inputFileExistsInSourceFolder[i] === this.outputResponse.data.sourceFilesInTargetFolder[j]) {
@@ -269,7 +269,7 @@ export class Ch5ImportAssetsCli extends Ch5BaseClassForCli implements ICh5Cli  {
    * @param {*} fileName
    */
   isFileToBeAvoided(fileName: string) {
-    for (let i:number = 0; i < this.outputResponse.data.filesToBeAvoidedFromCopying.length; i++) {
+    for (let i: number = 0; i < this.outputResponse.data.filesToBeAvoidedFromCopying.length; i++) {
       if (path.normalize(this.outputResponse.data.filesToBeAvoidedFromCopying[i]).trim().toLowerCase() === path.normalize(fileName).trim().toLowerCase()) {
         return true;
       }
@@ -284,7 +284,7 @@ export class Ch5ImportAssetsCli extends Ch5BaseClassForCli implements ICh5Cli  {
   replaceDistFolderPathNameInInput(input: string) {
     if (input && input.length > 0) {
       const output = [];
-      for (let i:number = 0; i < input.length; i++) {
+      for (let i: number = 0; i < input.length; i++) {
         output.push(input[i].replace(this.folderPaths.temporaryLocationForAllFilesCopyFrom, "."));
       }
       return output;
@@ -319,7 +319,7 @@ export class Ch5ImportAssetsCli extends Ch5BaseClassForCli implements ICh5Cli  {
       let invalidFilesText = "";
 
       if (this.outputResponse.data.newSourceFiles && this.outputResponse.data.newSourceFiles.length > 0) {
-        for (let i:number = 0; i < this.outputResponse.data.newSourceFiles.length; i++) {
+        for (let i: number = 0; i < this.outputResponse.data.newSourceFiles.length; i++) {
           newSourceText += this.outputResponse.data.newSourceFiles[i] + "\n";
         }
         newSourceText = this.getText("VALIDATIONS.NEW_FILES_TO_BE_IMPORTED") + "\n" + newSourceText + "\n";
@@ -328,14 +328,14 @@ export class Ch5ImportAssetsCli extends Ch5BaseClassForCli implements ICh5Cli  {
       }
 
       if (this.outputResponse.data.invalidInputFiles && this.outputResponse.data.invalidInputFiles.length > 0) {
-        for (let i:number = 0; i < this.outputResponse.data.invalidInputFiles.length; i++) {
+        for (let i: number = 0; i < this.outputResponse.data.invalidInputFiles.length; i++) {
           invalidFilesText += this.outputResponse.data.invalidInputFiles[i] + "\n";
         }
         invalidFilesText = this.getText("VALIDATIONS.INVALID_FILES_IN_IMPORT_LIST") + "\n" + invalidFilesText + "\n";
       }
 
       if (this.outputResponse.data.sourceFilesInTargetFolder && this.outputResponse.data.sourceFilesInTargetFolder.length > 0) {
-        for (let i:number = 0; i < this.outputResponse.data.sourceFilesInTargetFolder.length; i++) {
+        for (let i: number = 0; i < this.outputResponse.data.sourceFilesInTargetFolder.length; i++) {
           existingFilesText += this.outputResponse.data.sourceFilesInTargetFolder[i] + "\n";
         }
         existingFilesText = this.getText("VALIDATIONS.EXISTING_FILES_IN_IMPORT_FOLDER") + "\n" + existingFilesText + "\n";
@@ -376,7 +376,7 @@ export class Ch5ImportAssetsCli extends Ch5BaseClassForCli implements ICh5Cli  {
     if (this.inputArguments["all"] === true) {
       fsExtra.copySync(this.folderPaths.temporaryLocationForAllFilesCopyFrom, "./", { overwrite: this.outputResponse.data.overwriteFiles, filter: (file: any) => { if (path.basename(file).toLowerCase() === "project-config.json") { return false; } else { return true; } } });
     } else {
-      for (let i:number = 0; i < this.outputResponse.data.inputFileExistsInSourceFolder.length; i++) {
+      for (let i: number = 0; i < this.outputResponse.data.inputFileExistsInSourceFolder.length; i++) {
         this.logger.log("this.folderPaths.temporaryLocationForAllFilesCopyFrom", this.folderPaths.temporaryLocationForAllFilesCopyFrom);
         this.logger.log("this.outputResponse.data.inputFileExistsInSourceFolder[i]", this.outputResponse.data.inputFileExistsInSourceFolder[i]);
         const fromPath = path.normalize((path.join(this.folderPaths.temporaryLocationForAllFilesCopyFrom, path.normalize(this.outputResponse.data.inputFileExistsInSourceFolder[i]))));
@@ -388,8 +388,8 @@ export class Ch5ImportAssetsCli extends Ch5BaseClassForCli implements ICh5Cli  {
   }
 
   /**
-  * Log Final Response Message
-  */
+   * Log Final Response Message
+   */
   logOutput() {
     this.logger.log("this.outputResponse", JSON.stringify(this.outputResponse));
     if (this.utils.isValidInput(this.outputResponse.errorMessage)) {
@@ -450,8 +450,8 @@ export class Ch5ImportAssetsCli extends Ch5BaseClassForCli implements ICh5Cli  {
    */
   async cleanUp() {
     // Delete the copied zip file from temp folder
-    await  this.utils.deleteFile(this.folderPaths.temporaryLocationForCopiedZipFile);
-    await  this.utils.deleteFolder(this.folderPaths.temporaryLocationForExtractedFilesFolder);
+    await this.utils.deleteFile(this.folderPaths.temporaryLocationForCopiedZipFile);
+    await this.utils.deleteFolder(this.folderPaths.temporaryLocationForExtractedFilesFolder);
   }
 
   /**
