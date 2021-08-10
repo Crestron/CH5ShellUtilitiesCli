@@ -114,177 +114,200 @@ const mockedAppJson = {
     "selectedTheme": "light-theme",
     "useWebXPanel": true,
     "themes": [
-        {
-            "name": "light-theme",
-            "path": "./assets/theme/light.css",
-            "brandLogo": {
-                "url": "./app/template/assets/img/ch5-logo-light.svg",
-                "alt": "Crestron Logo",
-                "receiveStateUrl": ""
-            },
-            "backgroundProperties": {
-                "url": [
-                    "./app/template/assets/img/ch5-stone-light-bg.jpg"
-                ]
-            }
+      {
+        "name": "light-theme",
+        "brandLogo": {
+          "url": "./app/template/assets/img/ch5-logo-light.svg",
+          "alt": "Crestron Logo",
+          "receiveStateUrl": ""
         },
-        {
-            "name": "dark-theme",
-            "path": "./assets/theme/dark.css",
-            "brandLogo": {
-                "url": "./app/template/assets/img/ch5-logo-dark.svg",
-                "alt": "Crestron Logo",
-                "receiveStateUrl": ""
-            },
-            "backgroundProperties": {
-                "url": [
-                    "./app/template/assets/img/ch5-stone-dark-bg.jpg"
-                ]
-            }
-        },
-        {
-            "name": "custom-theme",
-            "path": "./assets/theme/custom.css",
-            "brandLogo": {
-                "url": "./app/template/assets/img/ch5-logo-light.svg",
-                "alt": "Crestron Logo",
-                "receiveStateUrl": ""
-            },
-            "backgroundProperties": {
-                "url": [
-                    "./app/template/assets/img/ch5-stone-light-bg.jpg"
-                ]
-            }
+        "backgroundProperties": {
+          "url": [
+            "./app/template/assets/img/ch5-stone-light-bg.jpg"
+          ]
         }
+      },
+      {
+        "name": "dark-theme",
+        "brandLogo": {
+          "url": "./app/template/assets/img/ch5-logo-dark.svg",
+          "alt": "Crestron Logo",
+          "receiveStateUrl": ""
+        },
+        "backgroundProperties": {
+          "url": [
+            "./app/template/assets/img/ch5-stone-dark-bg.jpg"
+          ]
+        }
+      },
+      {
+        "name": "project-light-theme",
+        "brandLogo": {
+          "url": "./app/template/assets/img/ch5-logo-light.svg",
+          "alt": "Crestron Logo",
+          "receiveStateUrl": ""
+        },
+        "backgroundProperties": {
+          "url": [
+            "./app/template/assets/img/ch5-stone-light-bg.jpg"
+          ]
+        }
+      },
+      {
+        "name": "project-dark-theme",
+        "brandLogo": {
+          "url": "./app/template/assets/img/ch5-logo-dark.svg",
+          "alt": "Crestron Logo",
+          "receiveStateUrl": ""
+        },
+        "backgroundProperties": {
+          "url": [
+            "./app/template/assets/img/ch5-stone-dark-bg.jpg"
+          ]
+        }
+      },
+      {
+        "name": "project-custom-theme",
+        "brandLogo": {
+          "url": "./app/template/assets/img/ch5-logo-light.svg",
+          "alt": "Crestron Logo",
+          "receiveStateUrl": ""
+        },
+        "backgroundProperties": {
+          "url": [
+            "./app/template/assets/img/ch5-stone-light-bg.jpg"
+          ]
+        }
+      }
     ],
     "config": {
-        "controlSystem": {}
+      "controlSystem": {}
     },
     "header": {
-        "display": true,
-        "displayInfo": true,
-        "$component": ""
+      "display": true,
+      "displayInfo": true,
+      "$component": ""
     },
     "footer": {
-        "display": true,
-        "$component": ""
+      "display": true,
+      "$component": ""
     },
     "content": {
-        "$defaultView": "page1",
-        "triggerViewProperties": {
-            "gestureable": true
+      "$defaultView": "page1",
+      "triggerViewProperties": {
+        "gestureable": true
+      },
+      "pages": [
+        {
+          "pageName": "page1",
+          "fullPath": "./app/project/components/pages/page1/",
+          "fileName": "page1.html",
+          "standAloneView": false,
+          "pageProperties": {
+            "class": ""
+          },
+          "navigation": {
+            "sequence": 1,
+            "label": "menu.page1",
+            "isI18nLabel": true,
+            "iconClass": "fas fa-file-alt",
+            "iconUrl": "",
+            "iconPosition": "bottom"
+          }
         },
-        "pages": [
-            {
-                "pageName": "page1",
-                "fullPath": "./app/project/components/pages/page1/",
-                "fileName": "page1.html",
-                "standAloneView": false,
-                "pageProperties": {
-                    "class": ""
-                },
-                "navigation": {
-                    "sequence": 1,
-                    "label": "menu.page1",
-                    "isI18nLabel": true,
-                    "iconClass": "",
-                    "iconUrl": "./app/project/assets/img/navigation/page.svg",
-                    "iconPosition": "bottom"
-                }
-            },
-            {
-                "pageName": "page2",
-                "fullPath": "./app/project/components/pages/page2/",
-                "fileName": "page2.html",
-                "standAloneView": false,
-                "pageProperties": {
-                    "class": ""
-                },
-                "navigation": {
-                    "sequence": 2,
-                    "label": "menu.page2",
-                    "isI18nLabel": true,
-                    "iconClass": "",
-                    "iconUrl": "./app/project/assets/img/navigation/page.svg",
-                    "iconPosition": "bottom"
-                }
-            },
-            {
-                "pageName": "page3",
-                "fullPath": "./app/project/components/pages/page3/",
-                "fileName": "page3.html",
-                "standAloneView": false,
-                "pageProperties": {
-                    "class": ""
-                },
-                "navigation": {
-                    "sequence": 3,
-                    "label": "menu.page3",
-                    "isI18nLabel": true,
-                    "iconClass": "",
-                    "iconUrl": "./app/project/assets/img/navigation/page.svg",
-                    "iconPosition": "bottom"
-                }
-            },
-            {
-                "pageName": "page4",
-                "fullPath": "./app/project/components/pages/page4/",
-                "fileName": "page4.html",
-                "standAloneView": false,
-                "pageProperties": {
-                    "class": ""
-                },
-                "navigation": {
-                    "sequence": 4,
-                    "label": "menu.page4",
-                    "isI18nLabel": true,
-                    "iconClass": "",
-                    "iconUrl": "./app/project/assets/img/navigation/page.svg",
-                    "iconPosition": "bottom"
-                }
-            },
-            {
-                "pageName": "page5",
-                "fullPath": "./app/project/components/pages/page5/",
-                "fileName": "page5.html",
-                "standAloneView": false,
-                "pageProperties": {
-                    "class": ""
-                },
-                "navigation": {
-                    "sequence": 5,
-                    "label": "menu.page5",
-                    "isI18nLabel": true,
-                    "iconClass": "",
-                    "iconUrl": "./app/project/assets/img/navigation/page.svg",
-                    "iconPosition": "bottom"
-                }
-            },
-            {
-                "pageName": "page6",
-                "fullPath": "./app/project/components/pages/page6/",
-                "fileName": "page6.html",
-                "standAloneView": false,
-                "pageProperties": {
-                    "class": ""
-                },
-                "navigation": {
-                    "sequence": 6,
-                    "label": "menu.page6",
-                    "isI18nLabel": true,
-                    "iconClass": "",
-                    "iconUrl": "./app/project/assets/img/navigation/page.svg",
-                    "iconPosition": "bottom"
-                }
-            }
-        ],
-        "widgets": [
-            {
-                "widgetName": "pagedisplay",
-                "fullPath": "./app/project/components/widgets/pagedisplay/",
-                "fileName": "pagedisplay.html",
-                "widgetProperties": {}
-            }
-        ]
+        {
+          "pageName": "page2",
+          "fullPath": "./app/project/components/pages/page2/",
+          "fileName": "page2.html",
+          "standAloneView": false,
+          "pageProperties": {
+            "class": ""
+          },
+          "navigation": {
+            "sequence": 2,
+            "label": "menu.page2",
+            "isI18nLabel": true,
+            "iconClass": "fas fa-file-alt",
+            "iconUrl": "",
+            "iconPosition": "bottom"
+          }
+        },
+        {
+          "pageName": "page3",
+          "fullPath": "./app/project/components/pages/page3/",
+          "fileName": "page3.html",
+          "standAloneView": false,
+          "pageProperties": {
+            "class": ""
+          },
+          "navigation": {
+            "sequence": 3,
+            "label": "menu.page3",
+            "isI18nLabel": true,
+            "iconClass": "fas fa-file-alt",
+            "iconUrl": "",
+            "iconPosition": "bottom"
+          }
+        },
+        {
+          "pageName": "page4",
+          "fullPath": "./app/project/components/pages/page4/",
+          "fileName": "page4.html",
+          "standAloneView": false,
+          "pageProperties": {
+            "class": ""
+          },
+          "navigation": {
+            "sequence": 4,
+            "label": "menu.page4",
+            "isI18nLabel": true,
+            "iconClass": "fas fa-file-alt",
+            "iconUrl": "",
+            "iconPosition": "bottom"
+          }
+        },
+        {
+          "pageName": "page5",
+          "fullPath": "./app/project/components/pages/page5/",
+          "fileName": "page5.html",
+          "standAloneView": false,
+          "pageProperties": {
+            "class": ""
+          },
+          "navigation": {
+            "sequence": 5,
+            "label": "menu.page5",
+            "isI18nLabel": true,
+            "iconClass": "fas fa-file-alt",
+            "iconUrl": "",
+            "iconPosition": "bottom"
+          }
+        },
+        {
+          "pageName": "page6",
+          "fullPath": "./app/project/components/pages/page6/",
+          "fileName": "page6.html",
+          "standAloneView": false,
+          "pageProperties": {
+            "class": ""
+          },
+          "navigation": {
+            "sequence": 6,
+            "label": "menu.page6",
+            "isI18nLabel": true,
+            "iconClass": "fas fa-file-alt",
+            "iconUrl": "",
+            "iconPosition": "bottom"
+          }
+        }
+      ],
+      "widgets": [
+        {
+          "widgetName": "pagedisplay",
+          "fullPath": "./app/project/components/widgets/pagedisplay/",
+          "fileName": "pagedisplay.html",
+          "widgetProperties": {}
+        }
+      ]
     }
-}
+  }

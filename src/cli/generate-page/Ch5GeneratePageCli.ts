@@ -342,8 +342,8 @@ export class Ch5GeneratePageCli extends Ch5BaseClassForCli implements ICh5Cli {
           "sequence": this.projectConfig.getHighestNavigationSequence() + 1,
           "label": this.outputResponse.data.pageName.toLowerCase(),
           "isI18nLabel": false,
-          "iconClass": "",
-          "iconUrl": "./app/project/assets/img/navigation/page.svg",
+          "iconClass": "fas fa-file-alt",
+          "iconUrl": "",
           "iconPosition": "bottom"
         };
       } else if (projectConfigJSON.menuOrientation === 'vertical') {
@@ -351,8 +351,8 @@ export class Ch5GeneratePageCli extends Ch5BaseClassForCli implements ICh5Cli {
           "sequence": this.projectConfig.getHighestNavigationSequence() + 1,
           "label": this.outputResponse.data.pageName.toLowerCase(),
           "isI18nLabel": false,
-          "iconClass": "",
-          "iconUrl": "./app/project/assets/img/navigation/page.svg",
+          "iconClass": "fas fa-file-alt",
+          "iconUrl": "",
           "iconPosition": ""
         };
       } else {
