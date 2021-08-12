@@ -13,7 +13,6 @@ import { Ch5CliNamingHelper } from "./Ch5CliNamingHelper";
 import { Ch5CliComponentsHelper } from "./Ch5CliComponentsHelper";
 import { Ch5CliProjectConfig } from "./Ch5CliProjectConfig";
 
-const inquirer = require('inquirer');
 const path = require('path');
 
 export class Ch5BaseClassForCli {
@@ -82,13 +81,13 @@ export class Ch5BaseClassForCli {
       programObject = programObject.option(this.CONFIG_FILE.options[i].keys, this.CONFIG_FILE.options[i].description);
     }
 
+    if (this.CONFIG_FILE.aliases && this.CONFIG_FILE.aliases.length > 0) {
+      programObject = programObject.aliases(this.CONFIG_FILE.aliases);
+    }
+
     if (this.CONFIG_FILE.additionalHelp === true) {
       const contentForHelp: string = await this.componentHelper.readFileContent(path.join(__dirname, this._folderPath, "files", "help.txt"));
       programObject = programObject.addHelpText('after', contentForHelp);
-    }
-
-    if (this.CONFIG_FILE.aliases && this.CONFIG_FILE.aliases.length > 0) {
-      programObject = programObject.aliases(this.CONFIG_FILE.aliases);
     }
 
     programObject.action(async (options) => {
@@ -121,74 +120,4 @@ export class Ch5BaseClassForCli {
     return this._cliUtil.getText(this.TRANSLATION_FILE, key, ...values);
   }
 
-  private async deploy(archive: string, options: any): Promise<void> {
-    this.validateDeployOptions(archive, options);
-
-
-    // let deviceType = this._cliUtil.getDeviceType(options.deviceType);
-
-    // const userAndPassword = await this.getUserAndPassword(options.promptForCredentials);
-
-    // let configOptions = {
-    //   controlSystemHost: options.deviceHost,
-    //   deviceType: deviceType,
-    //   sftpDirectory: options.deviceDirectory,
-    //   sftpUser: userAndPassword.user,
-    //   sftpPassword: userAndPassword.password,
-    //   outputLevel: this._cliUtil.getOutputLevel(options)
-    // } as IConfigOptions;
-    // await distributor(archive, configOptions);
-    // process.exit(0); // required, takes too long to exit :|
-  }
-
-  private validateDeployOptions(archive: string, options: any): void {
-    let missingArguments = [];
-    let missingOptions = [];
-
-    if (!archive) {
-      missingArguments.push('archive');
-    }
-
-    if (!options.deviceHost) {
-      missingOptions.push('deviceHost');
-    }
-
-    if (!options.deviceType) {
-      missingOptions.push('deviceType');
-    }
-
-    if (missingArguments.length == 0 && missingOptions.length == 0) {
-      return;
-    }
-
-    const argumentsMessage = missingArguments.length > 0 ? `Missing arguments: ${missingArguments.join(', ')}.` : '';
-    const optionsMessage = missingOptions.length > 0 ? `Missing options: ${missingOptions.join('. ')}.` : '';
-    throw new Error(`${argumentsMessage} ${optionsMessage} Type 'ch5-cli deploy --help' for usage information.`)
-  }
-
-  private async getUserAndPassword(promptForCredentials: boolean): Promise<any> {
-    if (!promptForCredentials) {
-      return {
-        user: 'crestron',
-        password: ''
-      }
-    }
-    return await inquirer.prompt(
-      [
-        {
-          type: 'string',
-          message: 'Enter SFTP user',
-          name: 'user',
-          default: 'crestron',
-        },
-        {
-          type: 'password',
-          message: 'Enter SFTP password',
-          name: 'password',
-          mask: '*',
-          default: ''
-        }
-      ]
-    );
-  }
 }

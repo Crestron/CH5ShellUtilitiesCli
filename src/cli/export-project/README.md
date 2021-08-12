@@ -16,30 +16,26 @@ The file name is picked from 'name' parameter in package.json file
 
 ```bash
 Usage: 
-    ch5-shell-cli export:project [options]
+    ch5-shell-cli export:project
     
 You could also use `yarn` or `npm run` to export project. The following are the commands:
-    yarn export:project [options]
-    npm run export:project [options]
+    yarn export:project
+    npm run export:project
 
 You could use shortcut script `exp:p` with options:
-    ch5-shell-cli exp:p [options]
+    ch5-shell-cli exp:p
 
 You could use shortcut script `exp:p` with yarn and npm commands as the following:
     yarn exp:p
     npm run exp:p
 
-Export the complete project from './app/' folder. To achieve this, use the below commands:
-    ch5-shell-cli export:project --all
 ```
 
 ### Change Configuration Parameters
 
-All configuration parameters are available in the default.json file located at ./shell-utilities/config/
+All configuration parameters are available in the config.json file located at `./ch5-shell-utilities-cli/src/cli/export-project/files/config.json`.
 
 Parameters for "export" are
-
-- "templatesPath": `./node_modules/@crestron/ch5-shell-utilities-cli/build/cli/delete-components/templates` - This indicates the path where the templates can be found
 - "ignoreFilesFolders": Indicates all the files / folders that must not be included in the zip file.
 - "zipFileDestinationPath": "./dist/", - This is the path where the zip file will be created. Ensure that it starts with './' and ends with '/'.
 

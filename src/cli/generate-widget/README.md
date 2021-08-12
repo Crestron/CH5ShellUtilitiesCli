@@ -21,6 +21,13 @@ You could also use `yarn` or `npm run` to generate widgets. The following are th
     yarn generate:widget [options]
     npm run generate:widget [options]
 
+You could use shortcut script `gen:w` with options:
+    ch5-shell-cli gen:w [options]
+    
+You could use shortcut script `gen:w` with yarn and npm commands as the following:
+    yarn gen:w [options]
+    npm run gen:w [options]
+    
 Options:
     -h, --help          Help for Generate Documentation
     -n, --name          Set the Name of the widget to be created
@@ -28,16 +35,18 @@ Options:
 You could use `ch5-shell-cli` to generate widgets with additional options. The following are some examples:
     ch5-shell-cli generate:widget --name LEDLights
     ch5-shell-cli generate:widget -n LEDLights
+    ch5-shell-cli gen:w --name LEDLights
+    ch5-shell-cli gen:w -n LEDLights
     
 You could also use `yarn` or `npm run` to generate widgets. The following are the commands:
     yarn generate:widget --name LEDLights
     yarn generate:widget -n LEDLights
     npm run generate:widget --  --name LEDLights
     npm run generate:widget --  -n LEDLights
-
-You could use shortcuts as the following:
-    yarn gen:w
-    npm run gen:w
+    yarn gen:w --name LEDLights
+    yarn gen:w -n LEDLights
+    npm run gen:w --  --name LEDLights
+    npm run gen:w --  -n LEDLights
 
 The widget name is mandatory to create a widget. It must start with a letter and can contain letters, hyphens, spaces, underscores, and numbers.
 
@@ -77,7 +86,7 @@ Each widget generated will contain the following files:
 
 ## Understanding the generated code
 
-All template files are available in the folder `./shell-utilities/generate-widget/templates`.
+All template files are available in the folder `./ch5-shell-utilities-cli/src/cli/generate-widget/templates`.
 
 ### {widget}.html
 
@@ -120,12 +129,12 @@ Refer to the project-config.json section for more details regarding the newly ge
 
 ### Change Configuration Parameters
 
-All configuration parameters are available in the default.json file located at './shell-utilities/config/'.
+All configuration parameters are available in the config.json file located at `./ch5-shell-utilities-cli/src/cli/generate-widget/files/config.json`.
 
 Parameters for "generateWidget" are
 
 - "basePathForWidgets": "./app/project/components/widgets/" - This indicates the path where the widget will be generated.
-- "templatesPath": "./shell-utilities/generate-widget/templates/" - This indicates the path where the templates can be found.
+- "templatesPath": "./ch5-shell-utilities-cli/src/cli/generate-widget/templates/" - This indicates the path where the templates can be found.
 - "minLengthOfWidgetName": 2 - The minimum length for widget name.
 - "maxLengthOfWidgetName": 31 - The maximum length for widget name.
 

@@ -17,33 +17,51 @@ You could also use `yarn` or `npm run` to delete components. The following are t
     yarn delete:components [options]
     npm run delete:components [options]
 
-You could use ch5-shell-cli to delete components with additional options. The following are some examples:
-    ch5-shell-cli delete:components --list page6 page5
-    ch5-shell-cli delete:components -l page6
-    ch5-shell-cli delete:components --list page6 --force
-    ch5-shell-cli delete:components -l page6 -f
-
-You could also use `yarn` or `npm run` to export assets. The following are the commands:
-    yarn delete:components --list page6 page5
-    yarn delete:components -l page6
-    yarn delete:components --list page6 --force
-    yarn delete:components -l page6 -f
-    npm run delete:components -- --list page6 page5
-    npm run delete:components -- -l page6
-    npm run delete:components -- --list page6 --force
-    npm run delete:components -- -l page6 -f
-
 You could use shortcut script `del:c` with options:
     ch5-shell-cli del:c [options]
 
 You could use shortcut script `del:c` with yarn and npm commands as the following:
     yarn del:c [options]
     npm run del:c [options]
+    
+Options:
+    -h, --help          Help for Generate Documentation
+    -l, --list,         Prefix for list of component names to be deleted
+    -f, --force         Forces the script to delete the component without asking for a confirmation
+
+You could use ch5-shell-cli to delete components with additional options. The following are some examples:
+    ch5-shell-cli delete:components --list page6 page5
+    ch5-shell-cli delete:components -l page6
+    ch5-shell-cli delete:components --list page6 --force
+    ch5-shell-cli delete:components -l page6 -f
+    ch5-shell-cli del:c --list page6 page5
+    ch5-shell-cli del:c -l page6
+    ch5-shell-cli del:c --list page6 --force
+    ch5-shell-cli del:c -l page6 -f
+
+You could also use `yarn` or `npm run` to delete components. The following are the commands:
+    yarn delete:components --list page6 page5
+    yarn delete:components -l page6
+    yarn delete:components --list page6 --force
+    yarn delete:components -l page6 -f
+    yarn del:c --list page6 page5
+    yarn del:c -l page6
+    yarn del:c --list page6 --force
+    yarn del:c -l page6 -f
+    npm run delete:components -- --list page6 page5
+    npm run delete:components -- -l page6
+    npm run delete:components -- --list page6 --force
+    npm run delete:components -- -l page6 -f
+    npm run del:c -- --list page6 page5
+    npm run del:c -- -l page6
+    npm run del:c -- --list page6 --force
+    npm run del:c -- -l page6 -f
+
 ```
 
 ### Change Configuration Parameters
 
-All configuration parameters are available in the default.json file located at `./node_modules/@crestron/ch5-shell-utilities-cli/build/cli/delete-components/files/config.json`.
+All configuration parameters are available in the config.json file located at `./ch5-shell-utilities-cli/src/cli/delete-components/files/config.json`.
 
 Parameters for "deleteComponents" are as follows:
 `-- list` | `-l`: parameter to receive a list of components to be deleted.

@@ -17,9 +17,12 @@ You could also use `yarn` or `npm run` to import assets. The following are the c
     yarn import:assets [options]
     npm run import:assets [options]
 
-You could use shortcuts as the following:
-    yarn imp:a
-    npm run imp:a
+You could use shortcut script `imp:a` with options:
+    ch5-shell-cli imp:a [options]
+
+You could use shortcut script `imp:a` with yarn and npm commands as the following:
+    yarn imp:a [options]
+    npm run imp:a [options]
 
 Options:
     -h, --help,         Help for Importing assets from the './app/project/assets/' folder
@@ -29,20 +32,18 @@ Options:
     --all,              Select this option to import all the files
 
 You could use `ch5-shell-cli` to import the complete contents of the zip file to './app/project/assets/' folder. 
-- ch5-shell-cli import:assets -z {path} --all
+    ch5-shell-cli import:assets -z {path} --all
 
 You could also use `yarn` or `npm run` to import assets. The following are the commands:
-- yarn import:assets -z {path} --all
-- npm run import:assets -- -z {path} --all
-
-You could use shortcut script `imp:a` with options:
-    ch5-shell-cli imp:a [options]
-
-You could use shortcut script `imp:a` with yarn and npm commands as the following:
-    yarn imp:a
-    npm run imp:a
+    yarn import:assets -z {path} --all
+    npm run import:assets -- -z {path} --all
 
 Import selected assets from './app/project/assets/' folder. In this case, the filenames are mandatory in the command-prompt. The filename must follow the complete path starting from './app/project/assets/....'. Only file names can be provided here (no folder paths). Multiple file names can be provided in the command prompt. To achieve this, use the following commands:
+    ch5-shell-cli import:assets -z ./dist/exported-assets.zip -l ./app/project/assets/data/translation/en.json ./app/project/assets/scss/_variables.scss
+    ch5-shell-cli import:assets -z ./dist/exported-assets.zip --list ./app/project/assets/data/translation/en.json ./app/project/assets/scss/_variables.scss
+    ch5-shell-cli imp:a -z ./dist/exported-assets.zip -l ./app/project/assets/data/translation/en.json ./app/project/assets/scss/_variables.scss
+    
+You could also use `yarn` or `npm run` to import selected assets from './app/project/assets/' folder. The following are the commands:
     yarn import:assets -z ./dist/exported-assets.zip -l ./app/project/assets/data/translation/en.json ./app/project/assets/scss/_variables.scss
     npm run import:assets -- -z ./dist/exported-assets.zip -l ./app/project/assets/data/translation/en.json ./app/project/assets/scss/_variables.scss
     yarn import:assets -z ./dist/exported-assets.zip --list ./app/project/assets/data/translation/en.json ./app/project/assets/scss/_variables.scss
@@ -77,12 +78,11 @@ Any other operating system that uses the bash shell will work the same. Tab comp
 
 ### Change Configuration Parameters
 
-All configuration parameters are available in the default.json file located at './shell-utilities/config/'.
+All configuration parameters are available in the config.json file located at `./ch5-shell-utilities-cli/src/cli/import-assets/files/config.json`.
 
 Parameters for "import:assets" are as follows:
 
 - "requiredFolderPath": "./app/project/assets/" - This indicates the folder path of the project asset files.
-- "templatesPath": `./node_modules/@crestron/ch5-shell-utilities-cli/build/cli/delete-components/templates` - This indicates the path where  the shell-utilities templates can be found.
 - "outputFileName": "imported-assets.zip" - This indicates the output zip file name.
 - "outputTempFolderName": "Imported-Assets-Code-Folder-Temp" - This indicates the temporary path created for copying output files.
 - "zipFolderName": "imported-assets", - This is the name of the folder inside outputTempFolderName where the zip file will be created.

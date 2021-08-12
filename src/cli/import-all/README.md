@@ -17,6 +17,13 @@ You could also use `yarn` or `npm run` to import all. The following are the comm
     yarn import:all [options]
     npm run import:all [options]
 
+Options:
+    -h, --help,         Help for Importing assets, libraries, components from the './app/project/' folder
+    -z, --zipFile,      Prefix for full location path of the zip file to be imported
+    -l, --list,         Prefix for list of file names
+    -f, --force         Force the program to overwrite the target files with the source files and avoid any confirmation
+    --all,              Select this option to import all the files
+
 You could use `ch5-shell-cli` to import the complete contents of the zip file to './app/project/' folder.
     ch5-shell-cli import:all -z {path} --all
     
@@ -25,6 +32,10 @@ You could also use `yarn` or `npm run` to import all. The following are the comm
     npm run import:all -- -z {path} --all
 
 Import selected assets, libraries, components from './app/project/' folder. In this case, the filenames are mandatory in the command prompt. The filename must follow the complete path starting from './app/project/....'. Only filenames can be provided here (no folder paths). Multiple filenames can be provided in the command prompt. To achieve this, use the following commands
+    ch5-shell-cli import:all -z ./dist/exported-all.zip -l ./app/project/components/pages/page1/page1.html ./app/project/assets/scss/_variables.scss
+    ch5-shell-cli import:all -z ./dist/exported-all.zip --list ./app/project/components/pages/page1/page1.html ./app/project/assets/scss/_variables.scss
+
+You could also use `yarn` or `npm run` to import selected assets, libraries, components from './app/project/' folder. The following are the commands:
     yarn import:all -z ./dist/exported-all.zip -l ./app/project/components/pages/page1/page1.html ./app/project/assets/scss/_variables.scss
     npm run import:all -- -z ./dist/exported-all.zip -l ./app/project/components/pages/page1/page1.html ./app/project/assets/scss/_variables.scss
     yarn import:all -z ./dist/exported-all.zip --list ./app/project/components/pages/page1/page1.html ./app/project/assets/scss/_variables.scss
@@ -57,12 +68,11 @@ Any other operating system that uses the bash shell will work the same. Tab comp
 
 ### Change Configuration Parameters
 
-All configuration parameters are available in the default.json file located at './shell-utilities/config/'.
+All configuration parameters are available in the config.json file located at `./ch5-shell-utilities-cli/src/cli/import-all/files/config.json`.
 
 Parameters for "import:all" are as follows:
 
 - "requiredFolderPath": "./app/project/" - This indicates the folder path of the project asset files.
-- "templatesPath": `./node_modules/@crestron/ch5-shell-utilities-cli/build/cli/delete-components/templates` - This indicates the path where  the shell-utilities templates can be found.
 - "outputFileName": "imported-all.zip" - This indicates the output zip file name.
 - "outputTempFolderName": "Imported-All-Code-Folder-Temp" - This indicates the temporary path created for copying output files.
 - "zipFolderName": "imported-all", - This is the name of the folder inside outputTempFolderName where the zip file will be created.

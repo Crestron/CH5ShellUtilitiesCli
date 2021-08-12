@@ -21,28 +21,45 @@ You could also use `yarn` or `npm run` to generate pages. The following are the 
     yarn generate:page [options]
     npm run generate:page [options]
 
+You could use shortcut script `gen:p` with options:
+    ch5-shell-cli gen:p [options]
+
+You could use shortcut script `gen:p` with yarn and npm commands as the following:
+    yarn gen:p [options]
+    npm run gen:p [options]
+
+Options:
+    -h, --help          Help for Generate Documentation
+    -n, --name          Set the Name of the page to be created
+    -m, --menu          Allow the page navigation to be added to Menu (valid input values are 'Y', 'y', 'N', 'n')
+
 You could use `ch5-shell-cli` to generate pages with additional options. The following are some examples:
     ch5-shell-cli generate:page --name LEDLights
     ch5-shell-cli generate:page -n LEDLights
     ch5-shell-cli generate:page --name LEDLights --menu Y
     ch5-shell-cli generate:page -n LEDLights -m Y
+    ch5-shell-cli gen:p --name LEDLights
+    ch5-shell-cli gen:p -n LEDLights
+    ch5-shell-cli gen:p --name LEDLights --menu Y
+    ch5-shell-cli gen:p -n LEDLights -m Y
     
 You could also use `yarn` or `npm run` to generate pages. The following are the commands:
     yarn generate:page --name LEDLights
     yarn generate:page -n LEDLights
     yarn generate:page --name LEDLights --menu Y
     yarn generate:page -n LEDLights -m Y
+    yarn gen:p --name LEDLights
+    yarn gen:p -n LEDLights
+    yarn gen:p --name LEDLights --menu Y
+    yarn gen:p -n LEDLights -m Y
     npm run generate:page --  --name LEDLights
     npm run generate:page --  -n LEDLights
     npm run generate:page --  --name LEDLights --menu N
     npm run generate:page --  -n LEDLights -m N
-
-You could use shortcut script `gen:p` with options:
-    ch5-shell-cli gen:p [options]
-
-You could use shortcut script `gen:p` with yarn and npm commands as the following:
-    yarn gen:p
-    npm run gen:p
+    npm run gen:p --  --name LEDLights
+    npm run gen:p --  -n LEDLights
+    npm run gen:p --  --name LEDLights --menu N
+    npm run gen:p --  -n LEDLights -m N
 
 The Page Name is mandatory to create a page. It must start with a letter and can contain letters, hyphens, spaces, underscores and numbers.
 
@@ -79,11 +96,13 @@ Each page generated will contain the following files:
 - {page}.scss
 - {page}-emulator.json
 
+The page files will be created inside `./app/project/components/pages/{page}` folder. 
+
 ```
 
 ## Understanding the generated code
 
-All template files are available in the folder `./shell-utilities/generate-page/templates`
+All template files are available in the folder `./ch5-shell-utilities-cli/src/cli/generate-page/templates`
 
 ### {page}.html
 
@@ -93,7 +112,7 @@ The generated file consists of the following:
 2. Title - Generated based on name of the page.
 3. *div* tag - Styled with reference to the styles in {page}.scss file.
 
-### {page}
+### {page}.js
 
 The generated file consists of the following:
 
@@ -128,9 +147,9 @@ A file named 'project-config.json' is located in the './app/' directory. This fi
         "navigation": {
           "sequence": 7,
           "label": "page7",
-          "iconClass": "",
-          "iconUrl": "./app/project/assets/img/navigation/page.svg",
-          "iconPosition": ""
+          "iconClass": "fas fa-file-alt",
+          "iconUrl": "",
+          "iconPosition": "bottom"
         }
     }
 ```
@@ -139,12 +158,12 @@ Refer to the project-config.json section for more details regarding the newly ge
 
 ### Change Configuration Parameters
 
-All configuration parameters are available in the default.json file located at './shell-utilities/config/'.
+All configuration parameters are available in the config.json file located at `./ch5-shell-utilities-cli/src/cli/generate-page/files/config.json`.
 
 Parameters for "generatePage" are
 
 - "basePathForPages": "./app/project/components/pages/" - This indicates the path where the page will be generated.
-- "templatesPath": "./shell-utilities/generate-page/templates/" - This indicates the path where the templates can be found
+- "templatesPath": "./ch5-shell-utilities-cli/src/cli/generate-page/templates/" - This indicates the path where the templates can be found
 - "minLengthOfPageName": 2 - The minimum length for page name
 - "maxLengthOfPageName": 31 - The maximum length for page name
 

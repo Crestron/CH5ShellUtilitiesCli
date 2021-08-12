@@ -19,6 +19,18 @@ You could also use `yarn` or `npm run` to export assets. The following are the c
     yarn export:assets [options]
     npm run export:assets [options]
 
+You could use shortcut script `exp:a` with options:
+    ch5-shell-cli exp:a [options]
+
+You could use shortcut script `exp:a` with yarn and npm commands as the following:
+    yarn exp:a [options]
+    npm run exp:a [options]
+
+Options:
+    -h, --help,         Help for Exporting assets from the './app/project/assets/' folder
+    -l, --list,         Prefix for list of file names
+    --all               Select this option to export all the files
+
 Export the complete assets directory from './app/project/assets/' folder. To achieve this, use the below commands:
     ch5-shell-cli export:assets --all
 
@@ -28,14 +40,12 @@ You could also use `yarn` or `npm run` to export assets. The following are the c
     yarn exp:a --all
     npm run exp:a -- --all
 
-You could use shortcut script `exp:a` with options:
-    ch5-shell-cli exp:a [options]
-
-You could use shortcut script `exp:a` with yarn and npm commands as the following:
-    yarn exp:a
-    npm run exp:a
-
 Export selected assets from './app/project/assets/' folder. In this case, the file names are mandatory in the command-prompt. The filename must follow the complete path starting from './app/project/assets/....'. Only file names can be provided here (no folder paths). Multiple file names can be provided in the command-prompt. To achieve this, use the below commands:
+    ch5-shell-cli export:assets -l ./app/project/assets/data/translation/en.json ./app/project/assets/scss/_variables.scss
+    ch5-shell-cli export:assets --list ./app/project/assets/data/translation/en.json ./app/project/assets/scss/_variables.scss     
+    ch5-shell-cli exp:a -l ./app/project/assets/data/translation/en.json ./app/project/assets/scss/_variables.scss
+
+You could also use `yarn` or `npm run` to export assets. The following are the commands:
     yarn export:assets -l ./app/project/assets/data/translation/en.json ./app/project/assets/scss/_variables.scss
     npm run export:assets -- -l ./app/project/assets/data/translation/en.json ./app/project/assets/scss/_variables.scss
     yarn export:assets --list ./app/project/assets/data/translation/en.json ./app/project/assets/scss/_variables.scss
@@ -71,12 +81,11 @@ Any other operating system that uses the Bash shell will work the same. Tab comp
 
 ### Change Configuration Parameters
 
-All configuration parameters are available in the default.json file located at './shell-utilities/config/'
+All configuration parameters are available in the config.json file located at `./ch5-shell-utilities-cli/src/cli/export-assets/files/config.json`.
 
 Parameters for "export:assets" are
 
 - "requiredFolderPath": "./app/project/assets/" - This indicates the folder path of the project asset files.
-- "templatesPath": `./node_modules/@crestron/ch5-shell-utilities-cli/build/cli/delete-components/templates` - This indicates the path where  the shell-utilities templates can be found.
 - "outputFileName": "exported-assets.zip" - This indicates the output zip file name.
 - "outputTempFolderName": "Exported-Assets-Code-Folder-Temp" - This indicates the temporary path created for copying output files.
 - "zipFolderName": "exported-assets", - This is the name of the folder inside outputTempFolderName where the zip file will be created.

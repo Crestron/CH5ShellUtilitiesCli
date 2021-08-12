@@ -1,6 +1,6 @@
 # Shell Template - Export All
 
-The 'Export All' exports assets, libraries, and components from the './app/project/' folder (removing the excluded files) using command-line statements.
+'Export All' exports assets, libraries, and components from the './app/project/' folder (removing the excluded files) using command-line statements.
 
 ## How to Use
 
@@ -8,8 +8,6 @@ To export all, go to the command-prompt or terminal of the Shell Template projec
 The package.json has scripts to handle this execution -for yarn, use `yarn export:all` command or npm  `npm run export:all` command.
 
 To access help, execute `ch5-shell-cli export:all --help`. Note that, replacing `ch5-shell-cli` with `yarn` or `npm run` will also execute the script.
-
-To access help, you need to execute `ch5-shell-cli export:all --help`, `yarn export:all --help` or `npm run export:all -- --help`.
 
 By default, the zip file is created inside the project 'dist' folder. This file has the naming convention of exported-all.zip
 
@@ -21,8 +19,17 @@ You could also use `yarn` or `npm run` to export assets, libraries, and componen
     yarn export:all [options]
     npm run export:all [options]
 
+Options:
+    -h, --help,         Help for Exporting assets, libraries, and components from the './app/project/' folder
+    -l, --list,         Prefix for list of file names
+    --all               Select this option to export all the files
+
 Export the complete project directory from './app/project/' folder. To achieve this, use the below command:
     ch5-shell-cli export:all --all
+
+You could also use `yarn` or `npm run` to export complete project directory. The following are the commands:
+    yarn export:all --all
+    npm run export:all -- --all
 
 Export selected files from './app/project/' folder. In this case, the file names are mandatory in the command-prompt. The filename must follow the complete path starting from './app/project/assets/....'. Only file names can be provided here (no folder paths). Multiple file names can be provided in the command-prompt. To achieve this, use the below commands:
     ch5-shell-cli export:all -l ./app/project/assets/data/translation/en.json ./app/project/components/pages/page1/page1.html
@@ -62,12 +69,11 @@ Any other operating system that uses the Bash shell will work the same. Tab comp
 
 ### Change Configuration Parameters
 
-All configuration parameters are available in the default.json file located at './shell-utilities/config/'
+All configuration parameters are available in the config.json file located at `./ch5-shell-utilities-cli/src/cli/export-all/files/config.json`.
 
 Parameters for "export:all" are
 
 - "requiredFolderPath": "./app/project/" - This indicates the folder path of the project files.
-- "templatesPath": `./node_modules/@crestron/ch5-shell-utilities-cli/build/cli/delete-components/templates` - This indicates the path where the shell-utilities templates can be found.
 - "outputFileName": "exported-all.zip" - This indicates the output zip file name.
 - "outputTempFolderName": "Exported-All-Code-Folder-Temp" - This indicates the temporary path created for copying output files.
 - "zipFolderName": "exported-all", - This is the name of the folder inside outputTempFolderName where the zip file will be created.

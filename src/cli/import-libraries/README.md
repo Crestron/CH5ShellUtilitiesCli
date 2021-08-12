@@ -18,7 +18,14 @@ You could also use `yarn` or `npm run` to import components. The following are t
     npm run import:library [options]
 
 You could use `ch5-shell-cli` to import the complete contents of the zip file to './app/project/libraries/' folder (replace {path} with the location of the exported zip file):
-    yarn import:library -z {path} --all
+    ch5-shell-cli import:library -z {path} --all
+
+Options:
+    -h, --help,         Help for Importing libraries from the './app/project/libraries/' folder
+    -z, --zipFile,      Prefix for full location path of the zip file to be imported
+    -l, --list,         Prefix for list of file names
+    -f, --force         Force the program to overwrite the target files with the source files and avoid any confirmation
+    --all,              Select this option to import all the files
 
 You could also use `yarn` or `npm run` to import library. The following are the commands:
     yarn import:library -z {path} --all
@@ -32,6 +39,11 @@ You could use shortcut script `imp:l` with yarn and npm commands as the followin
     npm run imp:l
 
 Import selected libraries from './app/project/libraries/' folder. In this case, the filenames are mandatory in the command prompt. The filename must follow the complete path starting from './app/project/libraries/....'. Only filenames can be provided here (no folder paths). Multiple file names can be provided in the command prompt. To achieve this, use the following commands:
+    ch5-shell-cli import:library -z ./dist/exported-library.zip -l ./app/project/libraries/a.js ./app/project/libraries/b.js
+    ch5-shell-cli import:library -z ./dist/exported-library.zip --list ./app/project/libraries/a.js ./app/project/libraries/b.js
+    ch5-shell-cli imp:l -z ./dist/exported-library.zip -l ./app/project/libraries/a.js ./app/project/libraries/b.js
+
+You could also use `yarn` or `npm run` to import selected libraries from './app/project/libraries/' folder. The following are the commands:
     yarn import:library -z ./dist/exported-library.zip -l ./app/project/libraries/a.js ./app/project/libraries/b.js
     npm run import:library -- -z ./dist/exported-library.zip -l ./app/project/libraries/a.js ./app/project/libraries/b.js
     yarn import:library -z ./dist/exported-library.zip --list ./app/project/libraries/a.js ./app/project/libraries/b.js
@@ -67,12 +79,11 @@ Any other operating system that uses the bash shell will work the same. Tab comp
 
 ### Change Configuration Parameters
 
-All configuration parameters are available in the default.json file located at './shell-utilities/config/'.
+All configuration parameters are available in the config.json file located at `./ch5-shell-utilities-cli/src/cli/import-libraries/files/config.json`.
 
 Parameters for "import:library" are as follows:
 
 - "requiredFolderPath": "./app/project/libraries/" - This indicates the folder path of the project asset files.
-- "templatesPath": `./node_modules/@crestron/ch5-shell-utilities-cli/build/cli/delete-components/templates` - This indicates the path where  the shell-utilities templates can be found.
 - "outputFileName": "imported-libraries.zip" - This indicates the output zip file name.
 - "outputTempFolderName": "Imported-Libraries-Code-Folder-Temp" - This indicates the temporary path created for copying output files.
 - "zipFolderName": "imported-libraries", - This is the name of the folder inside outputTempFolderName where the zip file will be created.

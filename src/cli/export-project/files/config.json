@@ -4,13 +4,8 @@
   "aliases": [
     "exp:p"
   ],
-  "usage": "[options]",
-  "options": [
-    {
-      "keys": "-h, --help",
-      "description": "Help for Exporting project code"
-    }
-  ],
+  "usage": "",
+  "options": [],
   "additionalHelp": true,
   "logger": {
     "allowLogging": true,

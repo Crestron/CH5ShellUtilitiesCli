@@ -4,13 +4,8 @@
   "aliases": [
     "val:pc"
   ],
-  "usage": "[options]",
-  "options": [
-    {
-      "keys": "-h, --help",
-      "description": "Help for Validating project-config.json file"
-    }
-  ],
+  "usage": "",
+  "options": [],
   "additionalHelp": true,
   "logger": {
     "allowLogging": true,

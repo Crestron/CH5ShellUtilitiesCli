@@ -4,10 +4,6 @@
   "usage": "[options]",
   "options": [
     {
-      "keys": "-h, --help",
-      "description": "Help for Importing assets, libraries, components from the './app/project/' folder"
-    },
-    {
       "keys": "-z, --zipFile",
       "description": "Prefix for full location path of the zip file to be imported"
     },

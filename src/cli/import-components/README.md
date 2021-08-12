@@ -18,13 +18,11 @@ You could also use `yarn` or `npm run` to import components. The following are t
     npm run import:components [options]
 
 You could use `ch5-shell-cli` to import the complete contents of the zip file to './app/project/components/' folder.
-
-- ch5-shell-cli import:components -z {path} --all
+    ch5-shell-cli import:components -z {path} --all
 
 You could also use `yarn` or `npm run` to import components. The following are the commands:
-
-- yarn import:components -z {path} --all
-- npm run import:components -- -z {path} --all
+    yarn import:components -z {path} --all
+    npm run import:components -- -z {path} --all
 
 You could use shortcut script `imp:c` with options:
     ch5-shell-cli imp:c [options]
@@ -33,7 +31,19 @@ You could use shortcut script `imp:c` with yarn and npm commands as the followin
     yarn imp:c
     npm run imp:c
 
+Options:
+    -h, --help,         Help for Importing components from the './app/project/components/' folder
+    -z, --zipFile,      Prefix for full location path of the zip file to be imported
+    -l, --list,         Prefix for list of file names
+    -f, --force         Force the program to overwrite the target files with the source files and avoid any confirmation
+    --all,              Select this option to import all the files
+    
 Import selected components from './app/project/components/' folder. In this case, the filenames are mandatory in the command prompt. The filename must follow the complete path starting from './app/project/components/....'. Only file names can be provided here (no folder paths). Multiple file names can be provided in the command prompt. To achieve this, use the following commands:
+    ch5-shell-cli import:components -z ./dist/exported-components.zip -l ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
+    ch5-shell-cli import:components -z ./dist/exported-components.zip --list ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
+    ch5-shell-cli imp:c -z ./dist/exported-components.zip -l ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
+
+You could also use `yarn` or `npm run` to import selected components from './app/project/components/' folder. The following are the commands:
     yarn import:components -z ./dist/exported-components.zip -l ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
     npm run import:components -- -z ./dist/exported-components.zip -l ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
     yarn import:components -z ./dist/exported-components.zip --list ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
@@ -69,12 +79,11 @@ Any other operating system that uses the bash shell will work the same. Tab comp
 
 ### Change Configuration Parameters
 
-All configuration parameters are available in the default.json file located at './shell-utilities/config/'.
+All configuration parameters are available in the config.json file located at `./ch5-shell-utilities-cli/src/cli/import-components/files/config.json`.
 
 Parameters for "import:components" are as follows:
 
 - "requiredFolderPath": "./app/project/components/" - This indicates the folder path of the project asset files.
-- "templatesPath": "./shell-utilities/import-components/templates/" - This indicates the path where  the shell-utilities templates can be found.
 - "outputFileName": "imported-components.zip" - This indicates the output zip file name.
 - "outputTempFolderName": "Imported-Components-Code-Folder-Temp" - This indicates the temporary path created for copying output files.
 - "zipFolderName": "imported-components", - This is the name of the folder inside outputTempFolderName where the zip file will be created.

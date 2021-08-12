@@ -7,10 +7,6 @@
   "usage": "[options]",
   "options": [
     {
-      "keys": "-h, --help",
-      "description": "Help for exporting components from the './app/project/components/' folder"
-    },
-    {
       "keys": "-l, --list",
       "description": "Prefix for list of component file names"
     },

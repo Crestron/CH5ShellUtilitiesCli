@@ -19,6 +19,18 @@ You could also use `yarn` or `npm run` to export components. The following are t
     yarn export:components [options]
     npm run export:components [options]
 
+You could use shortcut script `exp:c` with options:
+    ch5-shell-cli exp:c [options]
+
+You could use shortcut script `exp:c` with yarn and npm commands as the following:
+    yarn exp:c [options]
+    npm run exp:c [options]
+
+Options:
+    -h, --help,         Help for Exporting components from the './app/project/components/' folder
+    -l, --list,         Prefix for list of file names
+    --all               Select this option to export all the files
+
 Export the complete components directory from './app/project/components/' folder. To achieve this, use the below commands:
     ch5-shell-cli export:components --all
 
@@ -28,20 +40,21 @@ You could also use `yarn` or `npm run` to export components. The following are t
     yarn exp:c --all
     npm run exp:c -- --all
 
-You could use shortcut script `exp:c` with options:
-    ch5-shell-cli exp:c [options]
-
-You could use shortcut script `exp:c` with yarn and npm commands as the following:
-    yarn exp:c
-    npm run exp:c
-
 Export selected components from './app/project/components/' folder. In this case, the file names are mandatory in the command-prompt. The filename must follow the complete path starting from './app/project/components/....'. Only file names can be provided here (no folder paths). Multiple file names can be provided in the command-prompt. All the file names must be .html files only. To achieve this, use the below commands:
+    ch5-shell-cli export:components -l ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
+    ch5-shell-cli export:components --list ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
+    ch5-shell-cli exp:c -l ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
+
+You could also use `yarn` or `npm run` to export components. The following are the commands:
     yarn export:components -l ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
     npm run export:components -- -l ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
+
     yarn export:components --list ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
     npm run export:components -- --list ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
+
     yarn exp:c -l ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
     npm run exp:c -- -l ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
+
 ```
 
 ### Use Tab Completion Feature
@@ -70,12 +83,11 @@ Any other operating system that uses the Bash shell will work the same. Tab comp
 
 ### Change Configuration Parameters
 
-All configuration parameters are available in the default.json file located at './shell-utilities/config/'
+All configuration parameters are available in the config.json file located at `./ch5-shell-utilities-cli/src/cli/export-components/files/config.json`.
 
 Parameters for "export:components" are
 
 - "requiredFolderPath": "./app/project/components/" - This indicates the folder path of the project component files.
-- "templatesPath": `./node_modules/@crestron/ch5-shell-utilities-cli/build/cli/delete-components/templates` - This indicates the path where the shell-utilities templates can be found.
 - "outputFileName": "exported-components.zip" - This indicates the output zip file name.
 - "outputTempFolderName": "Exported-Components-Code-Folder-Temp" - This indicates the temporary path created for copying output files.
 - "zipFolderName": "exported-components", - This is the name of the folder inside outputTempFolderName where the zip file will be created.

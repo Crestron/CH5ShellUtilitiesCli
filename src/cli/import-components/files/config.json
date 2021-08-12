@@ -7,10 +7,6 @@
   "usage": "[options]",
   "options": [
     {
-      "keys": "-h, --help",
-      "description": "Help for Importing components from the './app/project/components/' folder"
-    },
-    {
       "keys": "-z, --zipFile",
       "description": "Prefix for full location path of the zip file to be imported"
     },
