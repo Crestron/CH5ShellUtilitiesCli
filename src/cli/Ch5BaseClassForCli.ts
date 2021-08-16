@@ -61,6 +61,7 @@ export class Ch5BaseClassForCli {
     this._inputArguments = this.componentHelper.processArgs();
     this.TRANSLATION_FILE = JSON.parse(this.componentHelper.readFileContentSync(path.join(__dirname, this._folderPath, "i18n", "en.json")));
     this.CONFIG_FILE = JSON.parse(this.componentHelper.readFileContentSync(path.join(__dirname, this._folderPath, "files", "config.json")));
+    // this._cliLogger = new Ch5CliLogger(this.CONFIG_FILE.logger.allowLogging, this.CONFIG_FILE.logger.logLevel);
   }
 
   public setInputArgsForTesting(args: any) {

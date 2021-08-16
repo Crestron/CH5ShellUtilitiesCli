@@ -6,7 +6,6 @@
 // under which you licensed this source code.
 
 import commander from "commander";
-import chalk from 'chalk';
 
 import { Ch5GeneratePageCli } from "./generate-page/Ch5GeneratePageCli";
 import { Ch5GenerateWidgetCli } from "./generate-widget/Ch5GenerateWidgetCli";

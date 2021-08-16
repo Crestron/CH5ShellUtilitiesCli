@@ -383,16 +383,15 @@ export class Ch5ImportAllCli extends Ch5BaseClassForCli implements ICh5Cli {
         this.logger.log("this.outputResponse.data.inputFileExistsInSourceFolder[i]", this.outputResponse.data.inputFileExistsInSourceFolder[i]);
         const fromPath = path.normalize(path.dirname(path.join(this.folderPaths.temporaryLocationForAllFilesCopyFrom, path.normalize(this.outputResponse.data.inputFileExistsInSourceFolder[i]))));
         const toPath = path.normalize(path.dirname(path.normalize(this.outputResponse.data.inputFileExistsInSourceFolder[i])));
-        const fromPathFile = path.normalize((path.join(this.folderPaths.temporaryLocationForAllFilesCopyFrom, path.normalize(this.outputResponse.data.inputFileExistsInSourceFolder[i]))));
-        const toPathFile = path.normalize((path.normalize(this.outputResponse.data.inputFileExistsInSourceFolder[i])));
-        if (path.normalize(this.outputResponse.data.inputFileExistsInSourceFolder[i]).toLowerCase().indexOf(path.normalize("./app/project/components/pages/")) >= 0) {
+        if (fromPath.indexOf(path.normalize("components/pages")) >= 0) {
+          pagesSelected.push(path.basename(path.normalize(this.outputResponse.data.inputFileExistsInSourceFolder[i])));
           fsExtra.copySync(fromPath, toPath, { recursive: true, overwrite: this.outputResponse.data.overwriteFiles, filter: (file: any) => { if (path.basename(file).toLowerCase() === "project-config.json") { return false; } else { return true; } } });
-          if (fromPath.indexOf(path.normalize("components/pages")) >= 0) {
-            pagesSelected.push(path.basename(path.normalize(this.outputResponse.data.inputFileExistsInSourceFolder[i])));
-          } else {
-            widgetsSelected.push(path.basename(path.normalize(this.outputResponse.data.inputFileExistsInSourceFolder[i])));
-          }
+        } else if (fromPath.indexOf(path.normalize("components/widgets")) >= 0) {
+          widgetsSelected.push(path.basename(path.normalize(this.outputResponse.data.inputFileExistsInSourceFolder[i])));
+          fsExtra.copySync(fromPath, toPath, { recursive: true, overwrite: this.outputResponse.data.overwriteFiles, filter: (file: any) => { if (path.basename(file).toLowerCase() === "project-config.json") { return false; } else { return true; } } });
         } else {
+          const fromPathFile = path.normalize((path.join(this.folderPaths.temporaryLocationForAllFilesCopyFrom, path.normalize(this.outputResponse.data.inputFileExistsInSourceFolder[i]))));
+          const toPathFile = path.normalize((path.normalize(this.outputResponse.data.inputFileExistsInSourceFolder[i])));
           fsExtra.copySync(fromPathFile, toPathFile, { recursive: true, overwrite: this.outputResponse.data.overwriteFiles, filter: (file: any) => { if (path.basename(file).toLowerCase() === "project-config.json") { return false; } else { return true; } } });
         }
       }
