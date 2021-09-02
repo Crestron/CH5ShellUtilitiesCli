@@ -13,7 +13,7 @@
   ],
   "additionalHelp": true,
   "logger": {
-    "allowLogging": true,
+    "allowLogging": false,
     "logLevel": 1
   },
   "basePathForWidgets": "./app/project/components/widgets/",

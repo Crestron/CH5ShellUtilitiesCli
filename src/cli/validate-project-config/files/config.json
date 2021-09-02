@@ -8,7 +8,7 @@
   "options": [],
   "additionalHelp": true,
   "logger": {
-    "allowLogging": true,
+    "allowLogging": false,
     "logLevel": 1
   }
 }

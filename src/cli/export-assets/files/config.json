@@ -17,7 +17,7 @@
   ],
   "additionalHelp": true,
   "logger": {
-    "allowLogging": true,
+    "allowLogging": false,
     "logLevel": 1
   },
   "requiredFolderPath": "./app/project/assets/",
