@@ -37,7 +37,10 @@ export class Ch5ExportProjectCli extends Ch5BaseClassForCli implements ICh5Cli {
 
     const excludedFiles = this.getConfigNode("ignoreFilesFolders");
     excludedFiles.push(folderPathName);
-    const output = await this.copyFiles(folderPathActual, excludedFiles, completeFileName);
+
+    const includedFiles: string[] = packageJson.files;
+    includedFiles.push("./");
+    const output = await this.copyFiles(folderPathActual, excludedFiles, includedFiles, completeFileName);
     return output;
   }
 
@@ -45,33 +48,42 @@ export class Ch5ExportProjectCli extends Ch5BaseClassForCli implements ICh5Cli {
    * Copy Files
    * @param {*} folderPathActual
    * @param {*} excludedFiles
+   * @param {*} includedFiles
    * @param {*} completeFileName
    */
-  async copyFiles(folderPathActual: string, excludedFiles: string[], completeFileName: string) {
+  async copyFiles(folderPathActual: string, excludedFiles: string[], includedFiles: string[], completeFileName: string) {
     try {
-      const out = await fsExtra
-        .copy("./", folderPathActual, {
-          filter: (path: any) => {
-            let isValidOutput = true;
-            for (let i: number = 0; i < excludedFiles.length; i++) {
-              if (path.indexOf(excludedFiles[i]) > -1) {
-                this.logger.log("path ===", path);
-                isValidOutput = false;
+      const out = await fsExtra.copy("./", folderPathActual, {
+        filter: (path: any) => {
+          let isValidOutput = true;
+          for (let i: number = 0; i < excludedFiles.length; i++) {
+            if (path.indexOf(excludedFiles[i]) > -1) {
+              this.logger.log("excluded path: ", path);
+              isValidOutput = false;
+            }
+          }
+          if (isValidOutput === true) {
+            isValidOutput = false;
+            for (let i: number = 0; i < includedFiles.length; i++) {
+              let pathCheck: string = this.utils.replaceAll(includedFiles[i], "/", "");
+              pathCheck = this.utils.replaceAll(pathCheck, "*", "");
+              if (path.indexOf(pathCheck) > -1) {
+                isValidOutput = true;
+                break;
               }
             }
-            return isValidOutput;
           }
-        })
-        .then(async () => {
-          this.logger.info("Copy Done.");
-          const output = await this.zipFiles(folderPathActual, completeFileName);
-          this.logger.info("output.", output);
-          return output;
-        })
-        .catch((err: any) => {
-          this.logger.error(err);
-          return false;
-        });
+          return isValidOutput;
+        }
+      }).then(async () => {
+        this.logger.info("Copy Done.");
+        const output = await this.zipFiles(folderPathActual, completeFileName);
+        this.logger.info("output.", output);
+        return output;
+      }).catch((err: any) => {
+        this.logger.error(err);
+        return false;
+      });
       return out;
     } catch (e) {
       this.logger.error(e);

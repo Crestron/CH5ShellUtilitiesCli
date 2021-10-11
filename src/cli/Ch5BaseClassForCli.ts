@@ -94,7 +94,7 @@ export class Ch5BaseClassForCli {
     programObject.action(async (options) => {
       try {
         await this.run();
-      } catch (e) {
+      } catch (e: any) {
         this.utils.writeError(e);
       }
     });

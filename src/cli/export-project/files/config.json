@@ -11,7 +11,6 @@
     "allowLogging": false,
     "logLevel": 1
   },
-  "basePathForPages": "./app/project/components/pages/",
   "temporaryFilePath": "./../dist/",
   "zipFileDestinationPath": "./dist/",
   "ignoreFilesFolders": [
@@ -28,8 +27,7 @@
     "yarn-error.log",
     "testem.log",
     ".DS_Store",
-    ".lock",
-    "package-lock.json",
+    "yarn.lock",
     "Thumbs.db"
   ]
 }

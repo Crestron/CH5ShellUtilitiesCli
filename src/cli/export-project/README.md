@@ -39,6 +39,8 @@ Parameters for "export" are
 - "ignoreFilesFolders": Indicates all the files / folders that must not be included in the zip file.
 - "zipFileDestinationPath": "./dist/", - This is the path where the zip file will be created. Ensure that it starts with './' and ends with '/'.
 
+Included files are picked up from 'Shell Template' package.json file (the node is files: [ ]). If any files are missing in export, please add the file names to package.json -> files node.
+
 ### Copyright
 
 Copyright (C) 2021 to the present, Crestron Electronics, Inc.
