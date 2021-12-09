@@ -133,7 +133,7 @@ const mockedAppJson = {
         "fileName": "page1.html",
         "standAloneView": false,
         "pageProperties": {
-          "class": ""
+          "sendEventOnShow": ""
         },
         "navigation": {
           "sequence": 1,
@@ -150,7 +150,7 @@ const mockedAppJson = {
         "fileName": "page2.html",
         "standAloneView": false,
         "pageProperties": {
-          "class": ""
+          "sendEventOnShow": ""
         },
         "navigation": {
           "sequence": 2,
@@ -167,7 +167,7 @@ const mockedAppJson = {
         "fileName": "page3.html",
         "standAloneView": false,
         "pageProperties": {
-          "class": ""
+          "sendEventOnShow": ""
         },
         "navigation": {
           "sequence": 3,
@@ -184,7 +184,7 @@ const mockedAppJson = {
         "fileName": "page4.html",
         "standAloneView": false,
         "pageProperties": {
-          "class": ""
+          "sendEventOnShow": ""
         },
         "navigation": {
           "sequence": 4,
@@ -201,7 +201,7 @@ const mockedAppJson = {
         "fileName": "page5.html",
         "standAloneView": false,
         "pageProperties": {
-          "class": ""
+          "sendEventOnShow": ""
         },
         "navigation": {
           "sequence": 5,
@@ -218,7 +218,7 @@ const mockedAppJson = {
         "fileName": "page6.html",
         "standAloneView": false,
         "pageProperties": {
-          "class": ""
+          "sendEventOnShow": ""
         },
         "navigation": {
           "sequence": 6,

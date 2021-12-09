@@ -727,7 +727,7 @@ const projectConfigSchema = {
                                             "sendeventonshow": ""
                                         },
                                         "pageProperties": {
-                                            "class": ""
+                                            "sendEventOnShow": ""
                                         },
                                         "navigation": {
                                             "sequence": 1,
@@ -781,11 +781,11 @@ const projectConfigSchema = {
                                         "title": "pageProperties",
                                         "description": "The properties of the HTML page snippet.",
                                         "properties": {
-                                            "class": {
-                                                "$id": "#/properties/content/properties/pages/items/anyOf/0/properties/pageProperties/properties/class",
+                                            "sendEventOnShow": {
+                                                "$id": "#/properties/content/properties/pages/items/anyOf/0/properties/pageProperties/properties/sendEventOnShow",
                                                 "type": "string",
-                                                "title": "class",
-                                                "description": "A class name for the page."
+                                                "title": "sendEventOnShow",
+                                                "description": "sendEventOnShow for the page."
                                             }
                                         },
                                         "additionalProperties": true
@@ -1101,7 +1101,7 @@ const validAppJson = {
                 "fileName": "page1.html",
                 "standAloneView": false,
                 "pageProperties": {
-                    "class": ""
+                    "sendEventOnShow": ""
                 },
                 "navigation": {
                     "sequence": 1,
@@ -1198,7 +1198,7 @@ const duplicatePagesAppJson = {
                 "fileName": "page1.html",
                 "standAloneView": false,
                 "pageProperties": {
-                    "class": ""
+                    "sendEventOnShow": ""
                 },
                 "navigation": {
                     "sequence": 1,
@@ -1215,7 +1215,7 @@ const duplicatePagesAppJson = {
                 "fileName": "page1.html",
                 "standAloneView": false,
                 "pageProperties": {
-                    "class": ""
+                    "sendEventOnShow": ""
                 },
                 "navigation": {
                     "sequence": 1,
@@ -1312,7 +1312,7 @@ const duplicateWidgetsAppJson = {
                 "fileName": "page1.html",
                 "standAloneView": false,
                 "pageProperties": {
-                    "class": ""
+                    "sendEventOnShow": ""
                 },
                 "navigation": {
                     "sequence": 1,

@@ -90,7 +90,7 @@ describe('Export a component >>>>>>>> ', () => {
                 "fileName": "page1.html",
                 "standAloneView": false,
                 "pageProperties": {
-                  "class": ""
+                  "sendEventOnShow": ""
                 },
               }
             ],
@@ -140,7 +140,7 @@ describe('Export a component >>>>>>>> ', () => {
                 "fileName": "page1.html",
                 "standAloneView": false,
                 "pageProperties": {
-                  "class": ""
+                  "sendEventOnShow": ""
                 },
               }
             ],
@@ -190,7 +190,7 @@ describe('Export a component >>>>>>>> ', () => {
                 "fileName": "page1.html",
                 "standAloneView": false,
                 "pageProperties": {
-                  "class": ""
+                  "sendEventOnShow": ""
                 },
               }
             ],
@@ -239,7 +239,7 @@ describe('Export a component >>>>>>>> ', () => {
                 "fileName": "page1.html",
                 "standAloneView": false,
                 "pageProperties": {
-                  "class": ""
+                  "sendEventOnShow": ""
                 },
               }
             ],
@@ -289,7 +289,7 @@ describe('Export a component >>>>>>>> ', () => {
                 "fileName": "page1.html",
                 "standAloneView": false,
                 "pageProperties": {
-                  "class": ""
+                  "sendEventOnShow": ""
                 },
               }
             ],

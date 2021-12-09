@@ -332,7 +332,7 @@ export class Ch5GeneratePageCli extends Ch5BaseClassForCli implements ICh5Cli {
       "fileName": this.outputResponse.data.fileName + '.html',
       "standAloneView": !allowNavigation,
       "pageProperties": {
-        "class": ""
+        "sendEventOnShow": ""
       }
     };
     if (allowNavigation === true) {

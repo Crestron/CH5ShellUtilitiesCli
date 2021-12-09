@@ -142,7 +142,7 @@ A file named 'project-config.json' is located in the './app/' directory. This fi
         "fullPath": "./app/project/components/pages/page7/",
         "fileName": "page7.html",
         "pageProperties": {
-          "class": ""
+          "sendEventOnShow": ""
         },
         "navigation": {
           "sequence": 7,
