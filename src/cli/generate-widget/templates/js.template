@@ -63,7 +63,7 @@ let <%widgetName%>Module = (function () {
         if (value['loaded']) {
             onInit();
             setTimeout(() => {
-                CrComLib.unsubscribeState(loadedSubId);
+                CrComLib.unsubscribeState('o', 'ch5-import-htmlsnippet:<%widgetName%>-import-page', loadedSubId);
                 loadedSubId = '';
             });
         }

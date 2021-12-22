@@ -41,7 +41,7 @@ let <%pageName%>Module = (function () {
         if (value['loaded']) {
             onInit();
             setTimeout(() => {
-                CrComLib.unsubscribeState(loadedSubId);
+                CrComLib.unsubscribeState('o', 'ch5-import-htmlsnippet:<%pageName%>-import-page', loadedSubId);
                 loadedSubId = '';
             });
         }
