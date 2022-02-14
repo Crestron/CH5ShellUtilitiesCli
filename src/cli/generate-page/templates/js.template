@@ -11,12 +11,10 @@
 /*jslint es6 */
 /*global serviceModule, CrComLib */
 
-let <%pageName%>Module = (function () {
+const <%pageName%>Module = (() => {
     'use strict';
 
     // BEGIN::CHANGEAREA - your javascript for page module code goes here         
-
-    let outputValue = true;
 
     /**
      * Initialize Method
@@ -25,13 +23,6 @@ let <%pageName%>Module = (function () {
        serviceModule.addEmulatorScenarioNoControlSystem("./app/project/components/pages/<%fileName%>/<%fileName%>-emulator.json");
        // Uncomment the below line and comment the above to load the emulator all the time.
        // serviceModule.addEmulatorScenario("./app/project/components/pages/<%fileName%>/<%fileName%>-emulator.json");       
-    }
-
-    /**
-     * Declare your Public Methods here
-     */
-    function getOutput() {
-        return outputValue;
     }
 
     /**
@@ -51,9 +42,8 @@ let <%pageName%>Module = (function () {
      * All public method and properties are exported here
      */
     return {
-        getOutput
     };
 
     // END::CHANGEAREA
 
-}());
+})();
