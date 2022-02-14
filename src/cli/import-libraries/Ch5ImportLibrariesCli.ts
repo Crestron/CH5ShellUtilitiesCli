@@ -67,9 +67,6 @@ export class Ch5ImportLibrariesCli extends Ch5BaseClassForCli implements ICh5Cli
       // Initialize
       this.initialize();
 
-      // Pre-requisite validations like Check if there are pages to be deleted
-      this.checkPrerequisiteValidations();
-
       // Verify input params
       await this.verifyInputParams();
 
@@ -79,7 +76,7 @@ export class Ch5ImportLibrariesCli extends Ch5BaseClassForCli implements ICh5Cli
       // Update project-config first (so that if this fails, we don't worry about file deletion). Next Delete Files
       await this.processRequest();
 
-    } catch (e) {
+    } catch (e: any) {
       if (e && this.utils.isValidInput(e.message)) {
         this.outputResponse.errorMessage = e.message;
       } else {
@@ -95,13 +92,6 @@ export class Ch5ImportLibrariesCli extends Ch5BaseClassForCli implements ICh5Cli
     this.logOutput();
 
     return this.outputResponse.result; // The return is required to validate in automation test case
-  }
-
-  /**
-  * Check any validations that need to be done before verifying input parameters
-  */
-  checkPrerequisiteValidations() {
-    // Nothing for this component
   }
 
   /**

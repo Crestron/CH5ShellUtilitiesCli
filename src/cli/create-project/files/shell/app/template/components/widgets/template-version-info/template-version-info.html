@@ -1,0 +1,39 @@
+<!-- 
+    Copyright (C) 2022 to the present, Crestron Electronics, Inc.
+    All rights reserved.
+    No part of this software may be reproduced in any form, machine
+    or natural, without the express written consent of Crestron Electronics.
+    Use of this source code is subject to the terms of the Crestron Software License Agreement 
+    under which you licensed this source code.
+-->
+<section id="template-version-info-page" aria-labelledby="Version Information">
+    <ch5-button id="infobtn" shape="circle" size="small" iconClass="material-icons md-info"
+        sendEventOnClick="infoBtn.clicked" role="button" aria-label="Open Version Information" aria-pressed="false">
+    </ch5-button>
+    <ch5-modal-dialog receiveStateShowPulse="infoBtn.clicked" closable closeIcon="fa fa-window-close"
+        hideOkButton="true" hideCancelButton="true">
+        <h4 data-ch5-i18n="-+versionInfo.title+-">Version Info</h4>
+        <p id="versionDescription"></p>
+        <p id="appVersion"></p>
+        <div id="versionDetails" style="display:none">
+            <p id="webXPnlHdr" style="margin-bottom: 5px;"></p>
+            <INPUT TYPE="radio" name="toggler" id="version" checked />
+            <INPUT TYPE="radio" name="toggler" id="license" />
+            <div id="tabBar">
+                <label class="tab" for="version">Connection</label>
+                <label class="tab" for="license">License</label>
+            </div>
+            <div id="versionInfo">
+                <p style="margin-bottom:0px">
+                    <span id="webXPnlStatus"></span>
+                </p>
+                <p id="webXPnlParams"></p>
+            </div>
+            <div id="licenseInfo">
+                <p>
+                    <span id="webXPnlLicense"></span>
+                </p>
+            </div>
+        </div>
+    </ch5-modal-dialog>
+</section>

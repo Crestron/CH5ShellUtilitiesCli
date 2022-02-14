@@ -40,7 +40,7 @@ const <%widgetName%>InstanceModule = (id, elementIds) => {
     // END::CHANGEAREA  
 } 
 
-let <%widgetName%>Module = (function () {
+const <%widgetName%>Module = (() => {
     'use strict';
 
     // BEGIN::CHANGEAREA - your initialization code for each instance of widget goes here  

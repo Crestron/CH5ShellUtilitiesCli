@@ -7,15 +7,15 @@
   "usage": "[options]",
   "options": [
     {
-      "keys": "-n, --name",
-      "description": "Set the name of the widget to be created"
+      "key": "name",
+      "description": "Set the name of the widget to be created",
+      "type": "string",
+      "default": "",
+      "valueIfNotFound": "",
+      "alias": ["-n", "--name"]
     }
   ],
   "additionalHelp": true,
-  "logger": {
-    "allowLogging": false,
-    "logLevel": 1
-  },
   "basePathForWidgets": "./app/project/components/widgets/",
   "minLengthOfWidgetName": 2,
   "maxLengthOfWidgetName": 31,

@@ -57,9 +57,25 @@ export class Ch5CliProjectConfig {
     return navigations;
   }
 
+  getAllThemeNames() {
+    const projectConfigObject = this.getJson();
+    let themeNames = projectConfigObject.themes.map((theme: any) => {
+      return theme.name;
+    });
+    return themeNames;
+  }
+
+  getAllStandalonePages() {
+    const pages = this.getAllPages();
+    let navigations = pages.filter((pageObj: { navigation: any; }) => {
+      return !this._cliUtil.isValidObject(pageObj.navigation);
+    });
+    return navigations;
+  }
+
   getHighestNavigationSequence() {
     let pages = this.getAllNavigations();
-    pages = pages.sort(this._cliUtil.dynamicsort("desc", "navigation", "sequence"));
+    pages = pages.sort(this._cliUtil.dynamicSort("desc", "navigation", "sequence"));
     if (pages && pages[0] && pages[0].navigation && pages[0].navigation.sequence) {
       return pages[0].navigation.sequence;
     } else {
@@ -102,7 +118,6 @@ export class Ch5CliProjectConfig {
       throw e;
     }
   }
-
   savePageToJSON(pageObject: any) {
     try {
       let pagesList = this.getAllPages();
@@ -300,6 +315,12 @@ export class Ch5CliProjectConfig {
         this._cliLogger.log("Component path DOES NOT EXIST: " + pagesArray[i].componentPath);
       }
     }
+  }
+
+  changeNodeValues(nodeName: string, nodeValue: string) {
+    console.log("nodeName", nodeName, "nodeValue", nodeValue);
+    this.file.set(nodeName, nodeValue);
+    this.file.save();
   }
 
 }

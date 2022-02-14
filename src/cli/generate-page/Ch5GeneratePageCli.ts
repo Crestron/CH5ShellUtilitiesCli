@@ -54,9 +54,6 @@ export class Ch5GeneratePageCli extends Ch5BaseClassForCli implements ICh5Cli {
       // Initialize
       this.initialize();
 
-      // Pre-requisite validations
-      this.checkPrerequisiteValidations();
-
       // Verify input params
       this.verifyInputParams();
 
@@ -66,7 +63,7 @@ export class Ch5GeneratePageCli extends Ch5BaseClassForCli implements ICh5Cli {
       // Update project-config first (so that if this fails, we don't worry about file deletion). Next Delete Files
       await this.processRequest();
 
-    } catch (e) {
+    } catch (e: any) {
       if (e && this.utils.isValidInput(e.message)) {
         if (e.message.trim().toLowerCase() === 'error') {
           this.outputResponse.errorMessage = this.getText("ERRORS.SOMETHING_WENT_WRONG");
@@ -86,13 +83,6 @@ export class Ch5GeneratePageCli extends Ch5BaseClassForCli implements ICh5Cli {
     this.logOutput();
 
     return this.outputResponse.result; // The return is required to validate in automation test case
-  }
-
-  /**
-   * Check any validations that need to be done before verifying input parameters
-   */
-  private checkPrerequisiteValidations() {
-    // Nothing for this process
   }
 
   /**
@@ -129,7 +119,7 @@ export class Ch5GeneratePageCli extends Ch5BaseClassForCli implements ICh5Cli {
   private async checkPromptQuestions() {
     if (!this.utils.isValidInput(this.outputResponse.data.pageName)) {
       let pages = this.projectConfig.getAllPages();
-      pages = pages.sort(this.utils.dynamicsort("asc", "pageName"));
+      pages = pages.sort(this.utils.dynamicSort("asc", "pageName"));
       this.logger.log("pages", pages);
       const newPageNameToSet = this.loopAndCheckPage(pages);
 
@@ -330,6 +320,8 @@ export class Ch5GeneratePageCli extends Ch5BaseClassForCli implements ICh5Cli {
       "pageName": this.outputResponse.data.pageName,
       "fullPath": this.outputResponse.data.folderPath,
       "fileName": this.outputResponse.data.fileName + '.html',
+      "cachedPage": true,
+      "preloadPage": false,      
       "standAloneView": !allowNavigation,
       "pageProperties": {
         "sendEventOnShow": ""
@@ -376,11 +368,11 @@ export class Ch5GeneratePageCli extends Ch5BaseClassForCli implements ICh5Cli {
   private loopAndCheckPage(pages: any) {
     let pageFound = false;
     let newPageNameToSet = "";
-    let i:number = 1;
+    let i: number = 1;
     do {
       newPageNameToSet = "Page" + i;
       pageFound = false;
-      for (let j:number = 0; j < pages.length; j++) {
+      for (let j: number = 0; j < pages.length; j++) {
         if (pages[j].pageName.trim().toLowerCase() === newPageNameToSet.toString().toLowerCase()) {
           pageFound = true;
           break;
@@ -443,7 +435,7 @@ export class Ch5GeneratePageCli extends Ch5BaseClassForCli implements ICh5Cli {
   }
 
   /**
-   * Checks if the pagename has disallowed keywords
+   * Checks if the pageName has disallowed keywords
    * @param {*} pageName
    * @param {*} type
    */

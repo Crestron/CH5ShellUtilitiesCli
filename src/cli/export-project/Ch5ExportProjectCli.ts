@@ -11,6 +11,7 @@ import { ICh5Cli } from "../ICh5Cli";
 const fs = require("fs");
 const zl = require("zip-lib");
 const fsExtra = require("fs-extra");
+const path = require('path');
 
 export class Ch5ExportProjectCli extends Ch5BaseClassForCli implements ICh5Cli {
 
@@ -27,7 +28,7 @@ export class Ch5ExportProjectCli extends Ch5BaseClassForCli implements ICh5Cli {
     let fileName = this.namingHelper.removeAllSpaces(String(packageJson.name).trim());
     this.logger.log("File Name: " + fileName);
 
-    const completeFileName = this.getConfigNode("zipFileDestinationPath") + fileName + ".zip";
+    const completeFileName = path.join(this.getConfigNode("zipFileDestinationPath"), fileName + ".zip");
     this.logger.log("Complete File Name: " + completeFileName);
     await this.utils.deleteFile(completeFileName);
 

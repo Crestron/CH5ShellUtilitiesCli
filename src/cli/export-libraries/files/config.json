@@ -7,19 +7,23 @@
   "usage": "[options]",
   "options": [
     {
-      "keys": "-l, --list",
-      "description": "Prefix for list of library file names"
+      "key": "all",
+      "description": "Select this option to export all the library files",
+      "type": "boolean",
+      "default": true,
+      "valueIfNotFound": false,
+      "alias": ["--all"]
     },
     {
-      "keys": "--all",
-      "description": "Select this option to export all the library files"
-    }  
+      "key": "list",
+      "description": "Prefix for list of library file names",
+      "type": "array",
+      "default": [],
+      "valueIfNotFound": [],
+      "alias": ["-l", "--list"]
+    }
   ],
   "additionalHelp": true,
-  "logger": {
-    "allowLogging": false,
-    "logLevel": 1
-  },
   "requiredFolderPath": "./app/project/libraries/",
   "zipFolderName": "exported-library",
   "outputFileName": "exported-library.zip",

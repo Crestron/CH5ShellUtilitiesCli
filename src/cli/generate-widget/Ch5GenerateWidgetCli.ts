@@ -58,9 +58,6 @@ export class Ch5GenerateWidgetCli extends Ch5BaseClassForCli implements ICh5Cli 
       // Initialize
       this.initialize();
 
-      // Pre-requisite validations
-      this.checkPrerequisiteValidations();
-
       // Verify input params
       this.verifyInputParams();
 
@@ -70,7 +67,7 @@ export class Ch5GenerateWidgetCli extends Ch5BaseClassForCli implements ICh5Cli 
       // Update project-config first (so that if this fails, we don't worry about file deletion). Next Delete Files
       await this.processRequest();
 
-    } catch (e) {
+    } catch (e: any) {
       if (e && this.utils.isValidInput(e.message)) {
         if (e.message.trim().toLowerCase() === 'error') {
           this.outputResponse.errorMessage = this.getText("ERRORS.SOMETHING_WENT_WRONG");
@@ -90,13 +87,6 @@ export class Ch5GenerateWidgetCli extends Ch5BaseClassForCli implements ICh5Cli 
     this.logOutput();
 
     return this.outputResponse.result; // The return is required to validate in automation test case
-  }
-
-  /**
-   * Check any validations that need to be done before verifying input parameters
-   */
-  private checkPrerequisiteValidations() {
-    // Nothing for this process
   }
 
   /**
@@ -124,7 +114,7 @@ export class Ch5GenerateWidgetCli extends Ch5BaseClassForCli implements ICh5Cli 
   async checkPromptQuestions() {
     if (!this.utils.isValidInput(this.outputResponse.data.widgetName)) {
       let widgets = this.projectConfig.getAllWidgets();
-      widgets = widgets.sort(this.utils.dynamicsort("asc", "widgetName"));
+      widgets = widgets.sort(this.utils.dynamicSort("asc", "widgetName"));
       this.logger.log("widgets", widgets);
       const newWidgetNameToSet = this.loopAndCheckWidget(widgets);
 
@@ -213,9 +203,7 @@ export class Ch5GenerateWidgetCli extends Ch5BaseClassForCli implements ICh5Cli 
     // Check if Folder exists
     if (isFolderCreated === false) {
       // No folder is created. This implies that the widget folder already exists.
-
-      let files = fs.readdirSync(fullPath);
-
+      const files = fs.readdirSync(fullPath);
       if (files.length === 0) {
         // Check if folder is empty.
         return fullPath;

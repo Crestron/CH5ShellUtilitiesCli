@@ -7,19 +7,23 @@
   "usage": "[options]",
   "options": [
     {
-      "keys": "-l, --list",
-      "description": "Prefix for list of asset file names"
+      "key": "all",
+      "description": "Select this option to export all the assets",
+      "type": "boolean",
+      "default": true,
+      "valueIfNotFound": false,
+      "alias": ["--all"]
     },
     {
-      "keys": "--all",
-      "description": "Select this option to export all the assets"
+      "key": "list",
+      "description": "Prefix for list of asset file names",
+      "type": "array",
+      "default": [],
+      "valueIfNotFound": [],
+      "alias": ["-l", "--list"]
     }
   ],
   "additionalHelp": true,
-  "logger": {
-    "allowLogging": false,
-    "logLevel": 1
-  },
   "requiredFolderPath": "./app/project/assets/",
     "zipFolderName": "exported-assets",
     "outputFileName": "exported-assets.zip",

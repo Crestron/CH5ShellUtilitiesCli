@@ -40,9 +40,6 @@ export class Ch5DeleteComponentsCli extends Ch5BaseClassForCli implements ICh5Cl
       // Initialize
       await this.initialize();
 
-      // Pre-requisite validations like Check if there are pages to be deleted
-      await this.checkPrerequisiteValidations();
-
       // Verify input params
       await this.verifyInputParams();
 
@@ -51,7 +48,7 @@ export class Ch5DeleteComponentsCli extends Ch5BaseClassForCli implements ICh5Cl
       // Update project-config first (so that if this fails, we don't worry about file deletion). Next Delete Files
       await this.processRequest();
 
-    } catch (e) {
+    } catch (e: any) {
       if (e && this.utils.isValidInput(e.message)) {
         this.outputResponse.errorMessage = e.message;
       } else {
@@ -88,18 +85,13 @@ export class Ch5DeleteComponentsCli extends Ch5BaseClassForCli implements ICh5Cl
   }
 
   /**
-   * Check any validations that need to be done before verifying input parameters
-   */
-  checkPrerequisiteValidations() {
-    if (this.pagesAndWidgets.length === 0) {
-      throw new Error(this.getText("ERRORS.NO_PAGES_WIDGETS_AVAILABLE_IN_PROJECT"));
-    }
-  }
-
-  /**
    * Verify input parameters
    */
   verifyInputParams() {
+    if (this.pagesAndWidgets.length === 0) {
+      throw new Error(this.getText("ERRORS.NO_PAGES_WIDGETS_AVAILABLE_IN_PROJECT"));
+    }
+    
     const listOfInputComponents = this.inputArguments["list"];
     if (listOfInputComponents && listOfInputComponents.length > 0) {
       for (let i: number = 0; i < listOfInputComponents.length; i++) {

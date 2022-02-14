@@ -1,0 +1,322 @@
+/* Copyright (C) 2020 to the present, Crestron Electronics, Inc.
+  * All rights reserved.
+  * No part of this software may be reproduced in any form, machine
+  * or natural, without the express written consent of Crestron Electronics.
+  * Use of this source code is subject to the terms of the Crestron Software License Agreement 
+  * under which you licensed this source code.
+  */
+// variables
+$ch5-light-primary: #29abe2 !default;
+$ch5-light-default: #333 !default;
+$ch5-light-secondary: #1c5099 !default;
+$ch5-light-success: #01c851 !default;
+$ch5-light-info: #00af99 !default;
+$ch5-light-warning: #ff8800 !default;
+$ch5-light-danger: #ff3548 !default;
+$ch5-light-purple: #aa66cc !default;
+$ch5-white: #fff !default;
+$ch5-black: #000 !default;
+
+// heading colors
+$ch5-headings-color-light: #212529 !default;
+$ch5-desc-color-light: #6c757d !default;
+
+// navbar
+$ch5-light-navbar-bg: #afafaf !default;
+$ch5-light-navbar-default-bg: #efefef !default;
+$ch5-light-navbar-default-color: $ch5-black !default;
+$ch5-light-navbar-default-active-color: $ch5-light-warning !default;
+
+// buttons pressed color
+$ch5-light-btn-primary-pressed: #228cb9 !default;
+$ch5-light-btn-default-pressed: #3f3f3f !default;
+$ch5-light-btn-secondary-pressed: #2e2e70 !default;
+$ch5-light-btn-success-pressed: #009e3f !default;
+$ch5-light-btn-info-pressed: #007263 !default;
+$ch5-light-btn-warning-pressed: #be6600 !default;
+$ch5-light-btn-danger-pressed: #b12634 !default;
+
+// ch5 gradient button color
+$ch5-light-gradient-btn-peach: (#ff6d63, #ffcb71) !default;
+$ch5-light-gradient-btn-purple: (#aa66cc, #f06ec6) !default;
+$ch5-light-gradient-btn-blue: (#1c5099, #29abe2) !default;
+$ch5-light-gradient-btn-aqua: (#00e499, #1ca3f4) !default;
+
+// bottom navigation
+$bottom-nav-bg-light: #cacaca !default;
+$bottom-nav-item-bg-light: #eeeeee !default;
+$bottom-nav-item-text-light: #121212 !default;
+$bottom-nav-item-img-light: #121212 !default;
+
+// sidebar theme
+$sidebar-light-bg: rgba(#808080, 0.4) !default;
+$sidebar-light-title-bg: rgba(#808080, 0.6) !default;
+$sidebar-light-action-bg: rgba(#808080, 0.5) !default;
+$sidebar-light-action-hover: rgba(#808080, 0.8) !default;
+$sidebar-light-action-selected-color: #808080 !default;
+$sidebar-light-action-selected-bg: rgba(#fff, 0.7) !default;
+
+// container background
+$ch5-container-light-bg: $ch5-white;
+
+// gradient animation colors
+$ch5-light-gradient-animate: (
+  rgba($ch5-container-light-bg, 0),
+  rgba($ch5-container-light-bg, 0.3),
+  rgba(#80bae8, 0),
+  rgba(#7db9e8, 0)
+) !default;
+
+// map merging
+$ch5-light-theme-colors: () !default;
+$ch5-light-theme-colors: map-merge(
+  (
+    "primary": (
+      $ch5-light-primary,
+      $ch5-light-btn-primary-pressed,
+    ),
+    "default": (
+      $ch5-light-default,
+      $ch5-light-btn-default-pressed,
+    ),
+    "secondary": (
+      $ch5-light-secondary,
+      $ch5-light-btn-secondary-pressed,
+    ),
+    "success": (
+      $ch5-light-success,
+      $ch5-light-btn-success-pressed,
+    ),
+    "info": (
+      $ch5-light-info,
+      $ch5-light-btn-info-pressed,
+    ),
+    "warning": (
+      $ch5-light-warning,
+      $ch5-light-btn-warning-pressed,
+    ),
+    "danger": (
+      $ch5-light-danger,
+      $ch5-light-btn-danger-pressed,
+    ),
+  ),
+  $ch5-light-theme-colors
+);
+
+$ch5-light-gradient-buttons: () !default;
+$ch5-light-gradient-buttons: map-merge(
+  (
+    "peach": $ch5-light-gradient-btn-peach,
+    "purple": $ch5-light-gradient-btn-purple,
+    "blue": $ch5-light-gradient-btn-blue,
+    "aqua": $ch5-light-gradient-btn-aqua,
+  ),
+  $ch5-light-gradient-buttons
+);
+
+.project-light-theme {
+  // Contextual colors
+  .text-primary {
+    color: $ch5-light-primary !important;
+  }
+
+  .text-success {
+    color: $ch5-light-success !important;
+  }
+
+  .text-warning {
+    color: $ch5-light-warning !important;
+  }
+
+  .text-purple {
+    color: $ch5-light-purple !important;
+  }
+
+  .footer-page {
+    background-color: $ch5-light-navbar-default-bg;
+    color: $ch5-black;
+  }
+
+  // navbars
+  .navbar-dark {
+    background-color: $ch5-light-navbar-bg;
+
+    &.navbar-default {
+      &,
+      .navbar-nav {
+        background-color: $ch5-light-navbar-default-bg;
+      }
+
+      .btn-link,
+      .navbar-nav .nav-link {
+        color: $ch5-light-navbar-default-color;
+      }
+
+      // VERTICAL MENU START
+      .toggler {
+        .toggle-icon {
+          border-color: $ch5-light-navbar-default-color;
+
+          &::before,
+          &::after {
+            background-color: $ch5-light-navbar-default-color;
+          }
+        }
+      }
+      // VERTICAL MENU END
+
+      .active,
+      .navbar-nav .active a {
+        color: $ch5-light-navbar-default-active-color;
+      }
+    }
+  }
+
+  // buttons
+  .ch5-button {
+    @each $color, $value in $ch5-light-theme-colors {
+      &--#{$color} {
+        @include ch5-button-variant(nth($value, 1), nth($value, 1), nth($value, 2));
+      }
+    }
+  }
+
+  // outline buttons
+  .outline-button {
+    border: 2px solid;
+
+    &.ch5-button {
+      @each $color, $value in $ch5-light-theme-colors {
+        &--#{$color} {
+          @include ch5-button-outline-variant(nth($value, 1), nth($value, 2));
+        }
+      }
+    }
+  }
+
+  // gradient buttons
+  .ch5-button {
+    &.gradient-button {
+      @each $color, $value in $ch5-light-gradient-buttons {
+        &--#{$color} {
+          @include ch5-button-gradient-variant(nth($value, 1), nth($value, 2), #fff);
+        }
+      }
+    }
+  }
+
+  // bottom navigation
+  .swiper-thumb {
+    background-color: $bottom-nav-bg-light;
+
+    .list-item {
+      ch5-button .ch5-button {
+        background-color: $bottom-nav-item-bg-light;
+        color: $bottom-nav-item-text-light;
+        fill: $bottom-nav-item-img-light;
+      }
+
+      .ch5-button--img {
+        fill: $bottom-nav-item-img-light;
+      }
+    }
+  }
+
+  .thumb-action svg {
+    fill: $ch5-light-navbar-default-active-color;
+  }
+
+  .horizontal-menu,
+  .horizontal-footer-menu {
+    .swiper-thumb {
+      .list-item {
+        ch5-button {
+          .fas,
+          .fa {
+            font-size: 55px;
+          }
+          .ch5-button {
+            color: $black;
+          }
+        }
+        .ch5-button--img {
+          fill: $black;
+        }
+      }
+    }
+  }
+
+  .vertical-menu {
+    .swiper-thumb {
+      .list-item {
+        .vertical-list-item {
+          padding-left: 0;
+        }
+        ch5-button {
+          .fas,
+          .fa {
+            font-size: 42px;
+          }
+          .ch5-button {
+            padding-left: 7px;
+            color: $black;
+          }
+        }
+        .ch5-button--img {
+          fill: $black;
+        }
+      }
+    }
+  }
+
+  // sidebar theme
+  .sidebar {
+    background-color: $sidebar-light-bg;
+
+    .action-group {
+      color: $white;
+
+      .title {
+        background-color: $sidebar-light-title-bg;
+      }
+
+      .ch5-button {
+        background-color: $sidebar-light-action-bg;
+
+        &:hover {
+          background-color: $sidebar-light-action-hover;
+        }
+
+        &.ch5-button--selected {
+          background-color: $sidebar-light-action-selected-bg;
+          color: $sidebar-light-action-selected-color;
+        }
+      }
+    }
+
+    @include media-breakpoint-down(sm) {
+      background-color: rgba(#808080, 0.9);
+    }
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color: $ch5-container-light-bg;
+  }
+
+  // heading
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  .h1,
+  .h2,
+  .h3,
+  .h4,
+  .h5,
+  .h6,
+  .heading-color {
+    color: $ch5-headings-color-light;
+  }
+}

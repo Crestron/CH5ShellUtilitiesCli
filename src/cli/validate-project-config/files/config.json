@@ -6,9 +6,7 @@
   ],
   "usage": "",
   "options": [],
-  "additionalHelp": true,
-  "logger": {
-    "allowLogging": false,
-    "logLevel": 1
-  }
+  "projectConfigJSONFile":"./app/project-config.json",
+  "projectConfigJSONSchemaFile": "./.vscode/project-config-schema.json",
+  "additionalHelp": true
 }

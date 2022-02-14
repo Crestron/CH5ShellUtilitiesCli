@@ -1,0 +1,223 @@
+// Copyright (C) 2022 to the present, Crestron Electronics, Inc.
+// All rights reserved.
+// No part of this software may be reproduced in any form, machine
+// or natural, without the express written consent of Crestron Electronics.
+// Use of this source code is subject to the terms of the Crestron Software License Agreement
+// under which you licensed this source code.
+
+@import "./../../../../template/assets/scss/all-var-fns-mix";
+
+#template-remote-logger-settings-page {
+  /* Page level styles go here */
+  $version-modal-dialog-content-color: #9e9191 !default;
+  $border-type: solid;
+  $version-modal-dialog-border-width: 1px;
+
+  div.ch5-modal-dialog {
+    border: $version-modal-dialog-border-width $border-type $black;
+    max-height: calc(100vh - 50px);
+
+    .ch5-modal-dialog-close-icon-btn {
+      padding: 0;
+      margin: 0;
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      z-index: 999999;
+
+      @include size(auto);
+      span.ch5-modal-dialog-close-icon {
+        display: block;
+        font-size: rem-calc(24px);
+      }
+    }
+
+    .ch5-modal-dialog-contents {
+      font-size: calc(12px + 6 * ((100vw - 320px) / 680)); //14px;
+      padding: 0;
+      & > p:last-child {
+        margin-bottom: 0;
+      }
+    }
+    .container {
+      padding: 0;
+      margin: 0;
+    }
+    .logger-modal-wrapper {
+      width: 100%;
+      // font-family: Lato, sans-serif;
+      .logger-modal {
+        // padding: 5px 5px 0 5px;
+        margin: 0 auto;
+        background-color: #fff;
+        margin: 0px auto;
+        position: relative;
+        width: 100%;
+        overflow: auto;
+
+        .logger-modal-content {
+          background-color: #fefefe;
+        }
+
+        .dockerstatus {
+          font-size: 12px;
+          width: 100%;
+          text-align: right;
+
+          .red {
+            color: red;
+          }
+
+          .amber {
+            color: #ffc200;
+          }
+
+          .green {
+            color: green;
+          }
+        }
+
+        .logger-input {
+          margin-bottom: 10px;
+          input {
+            width: 100%;
+            color: #525252;
+            font-size: calc(10px + 6 * ((100vw - 320px) / 680)); //14px;
+            // font-family: Lato, sans-serif;
+            font-weight: 400 !important;
+            padding: 6px 9px !important;
+            border: 1px solid #d1d1d1;
+            -webkit-transition: 0.2s !important;
+            transition: 0.2s !important;
+            background-color: #fafafa;
+            border-radius: 3px;
+            -webkit-border-radius: 3px;
+          }
+        }
+
+        .logger-action {
+          padding: 10px 0 10px 0;
+          width: 100%;
+          text-align: right;
+
+          /* Ripple effect */
+          .ripple {
+            background-position: center;
+            transition: background 0.8s;
+          }
+          .ripple:hover {
+            background: #257dc5 radial-gradient(circle, transparent 1%, #257dc5 1%) center/15000%;
+          }
+          .ripple:active {
+            background-color: #6eb9f7;
+            background-size: 100%;
+            transition: background 0s;
+          }
+
+          /* Button style */
+          button {
+            color: white;
+            background-color: #257dc5;
+            box-shadow: 0 0 4px #999;
+            outline: none;
+            font-weight: normal;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            min-width: 40%;
+            margin: 0 0 0 4%;
+            font-size: calc(12px + 6 * ((100vw - 320px) / 680)); //14px;
+          }
+        }
+
+        .logger-close-btn:hover,
+        .logger-close-btn:focus {
+          color: #000;
+          text-decoration: none;
+          cursor: pointer;
+        }
+      }
+
+      .note-text {
+        color: #000;
+        li {
+          font-size: calc(10px + 6 * ((100vw - 320px) / 680)); //14px;
+        }
+      }
+
+      .no-padding {
+        padding: 0;
+      }
+    }
+
+    .logger-modal-title {
+      color: #355c68;
+      font-size: calc(14px + 6 * ((100vw - 320px) / 680)); //22px;
+    }
+
+    .ui.error.message {
+      color: #721c24;
+      background-color: #f8d7da;
+      border-color: #f5c6cb;
+      position: relative;
+      padding: 0.75rem 1.25rem;
+      margin-bottom: 1rem;
+      border: 1px solid transparent;
+      border-radius: 0.25rem;
+    }
+    ol,
+    form {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+  }
+
+  @media (max-width: 768px) and (orientation: portrait) {
+    div.ch5-modal-dialog {
+      width: 80%;
+    }
+    .logger-action {
+      padding: 8px 0 0 0;
+    }
+  }
+
+  @media (max-height: 640px) and (orientation: landscape) {
+    div.ch5-modal-dialog .logger-modal-wrapper .logger-modal .logger-action {
+      padding: 3px 0 0 0;
+    }
+    hr {
+      margin-top: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+  }
+}
+
+.dark-theme {
+  #template-remote-logger-settings-page {
+    div.ch5-modal-dialog {
+      border: 1px solid $color-darkgrey;
+      color: $color-white;
+      background-color: $color-darkestgrey;
+      .logger-modal-wrapper {
+        .logger-modal,
+        .logger-modal-content {
+          color: $color-white;
+          background-color: $color-darkestgrey;
+        }
+
+        h5.logger-modal-title {
+          color: $color-white;
+        }
+
+        .note-text {
+          color: $color-white;
+          background-color: transparent;
+        }
+      }
+      .ch5-modal-dialog-close-icon-btn {
+        color: $color-white;
+        background-color: transparent;
+      }
+    }
+  }
+}

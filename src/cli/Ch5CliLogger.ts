@@ -16,7 +16,7 @@ export const LOG_LEVELS: any = {
 
 export class Ch5CliLogger {
 
-  private allowLogging = false;
+  private allowLogging = true;
   private logLevel: any = LOG_LEVELS.TRACE;
 
   private readonly FORMATTING: any = {

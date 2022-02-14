@@ -1,0 +1,198 @@
+// Copyright (C) 2022 to the present, Crestron Electronics, Inc.
+// All rights reserved.
+// No part of this software may be reproduced in any form, machine
+// or natural, without the express written consent of Crestron Electronics.
+// Use of this source code is subject to the terms of the Crestron Software License Agreement
+// under which you licensed this source code.
+
+@import "./../../../../template/assets/scss/all-var-fns-mix";
+
+#template-version-info-page {
+  padding: 0.5rem;
+  $version-modal-dialog-content-color: $color-lightgrey !default;
+  $border-type: solid;
+  $version-modal-dialog-border-width: 1px;
+
+  margin-left: 1rem;
+
+  .ch5-button {
+    background-color: transparent;
+    border: none;
+    color: #808080;
+    height: 36px;
+    width: 36px;
+    box-shadow: none;
+    cursor: pointer;
+
+    .cb-btn {
+      @include size(100%);
+      padding: 0;
+    }
+
+    i {
+      font-size: 32px;
+      padding: 0;
+    }
+  }
+
+  #versionDetails {
+    height: 175px;
+    width: 200px;
+    #versionInfo,
+    #licenseInfo {
+      display: none;
+    }
+
+    input[type="radio"] {
+      position: absolute;
+      height: 0;
+      width: 0;
+      opacity: 0;
+    }
+
+    #tabBar {
+      display: flex;
+      margin-top: 10px;
+      .tab {
+        flex: 1;
+        font-size: 1.2rem;
+        color: $color-greyishblue;
+        background: $color-offwhite;
+        padding: 0 5px;
+        box-sizing: border-box;
+        cursor: pointer;
+
+        &[for="version"] {
+          border-right: 2px solid $color-white;
+        }
+      }
+    }
+
+    input#version[type="radio"]:checked {
+      & ~ #versionInfo {
+        display: block;
+      }
+
+      & ~ #tabBar {
+        label[for="version"] {
+          /*this is selected*/
+          border-bottom: 3px solid $color-lightestgrey;
+        }
+      }
+    }
+
+    input#license[type="radio"]:checked {
+      & ~ #licenseInfo {
+        display: block;
+      }
+
+      & ~ #tabBar {
+        label[for="license"] {
+          /*this is selected*/
+          border-bottom: 3px solid $color-lightestgrey;
+        }
+      }
+    }
+  }
+
+  div.ch5-modal-dialog {
+    border: $version-modal-dialog-border-width $border-type $black;
+
+    .ch5-modal-dialog-contents {
+      padding: 0;
+
+      & > p:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    .ch5-modal-dialog-close-icon-btn {
+      padding: 0;
+      margin: 0;
+      @include size(auto);
+      background-color: transparent;
+      span.ch5-modal-dialog-close-icon {
+        display: block;
+        font-size: rem-calc(24px);
+      }
+    }
+
+    p {
+      color: $version-modal-dialog-content-color;
+      font-size: rem-calc(18px);
+      span {
+        display: block;
+      }
+    }
+
+    p.version-error {
+      color: $red;
+    }
+
+    h4 {
+      color: $black;
+      font-size: rem-calc(24px);
+    }
+  }
+}
+
+.dark-theme {
+  #template-version-info-page {
+    .ch5-modal-dialog {
+      border: 1px solid $color-darkgrey;
+      color: $color-white;
+      background-color: $color-darkestgrey;
+      h4 {
+        color: $color-white;
+      }
+      p {
+        color: $color-offwhite;
+      }
+      .ch5-modal-dialog-close-icon-btn {
+        color: $color-white;
+      }
+    }
+
+    .ch5-button {
+      background-color: black;
+      border: none;
+      color: white;
+      height: 32px;
+      width: 32px;
+      box-shadow: none;
+
+      .cb-btn {
+        @include size(100%);
+        padding: 0;
+      }
+    }
+
+    #versionDetails #tabBar {
+      .tab {
+        color: $color-white;
+        background-color: $color-darkgrey;
+        &[for="version"] {
+          border-right: 2px solid $color-lightgrey;
+        }
+      }
+
+      input#version[type="radio"]:checked {
+        & ~ #tabBar {
+          label[for="version"] {
+            /*this is selected*/
+            border-bottom: 3px solid $color-lightgrey;
+          }
+        }
+      }
+
+      input#license[type="radio"]:checked {
+        & ~ #tabBar {
+          label[for="license"] {
+            /*this is selected*/
+            border-bottom: 3px solid $color-lightgrey;
+          }
+        }
+      }
+    }
+  }
+}

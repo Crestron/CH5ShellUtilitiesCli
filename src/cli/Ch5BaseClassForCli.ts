@@ -54,24 +54,32 @@ export class Ch5BaseClassForCli {
   public constructor(folderPath: string) {
     this._folderPath = folderPath;
     this._cliUtil = new Ch5CliUtil();
-    this._cliLogger = new Ch5CliLogger();
-    this._cliComponentHelper = new Ch5CliComponentsHelper();
     this._cliNamingHelper = new Ch5CliNamingHelper();
     this._cliProjectConfig = new Ch5CliProjectConfig();
-    this._inputArguments = this.componentHelper.processArgs();
-    this.TRANSLATION_FILE = JSON.parse(this.componentHelper.readFileContentSync(path.join(__dirname, this._folderPath, "i18n", "en.json")));
+    this._cliComponentHelper = new Ch5CliComponentsHelper();
     this.CONFIG_FILE = JSON.parse(this.componentHelper.readFileContentSync(path.join(__dirname, this._folderPath, "files", "config.json")));
-    // this._cliLogger = new Ch5CliLogger(this.CONFIG_FILE.logger.allowLogging, this.CONFIG_FILE.logger.logLevel);
+    this._cliComponentHelper.configParams = this.CONFIG_FILE.options;
+    this._inputArguments = this.componentHelper.processArgs();
+    this._cliLogger = new Ch5CliLogger(this._inputArguments["verbose"]);
+    this.TRANSLATION_FILE = JSON.parse(this.componentHelper.readFileContentSync(path.join(__dirname, this._folderPath, "i18n", "en.json")));
   }
 
   public setInputArgsForTesting(args: any) {
-    this._inputArguments = this.componentHelper.processArgsAnalyze(args)
+    this._inputArguments = this.componentHelper.processArgsAnalyze(args);
+  }
+
+  public changeConfigParam(key: string, value: any) {
+    const attrs = key.split('.');
+    for (let i = 0; i < attrs.length - 1; i++) {
+      this.CONFIG_FILE = this.CONFIG_FILE[attrs[i]];
+    }
+    this.CONFIG_FILE[attrs[attrs.length - 1]] = value;
   }
 
   /**
-  *
-  * @param program
-  */
+   *
+   * @param program
+   */
   public async setupCommand(program: commander.Command) {
     let programObject = program
       .command(this.CONFIG_FILE.command)
@@ -79,8 +87,9 @@ export class Ch5BaseClassForCli {
       .usage(this.CONFIG_FILE.usage);
 
     for (let i: number = 0; i < this.CONFIG_FILE.options.length; i++) {
-      programObject = programObject.option(this.CONFIG_FILE.options[i].keys, this.CONFIG_FILE.options[i].description);
+      programObject = programObject.option(this.convertArrayToCommaSeparatedString(this.CONFIG_FILE.options[i].alias), this.CONFIG_FILE.options[i].description);
     }
+    programObject = programObject.option("--verbose", "Get detailed output of the process. This is helpful incase any errors are found.");
 
     if (this.CONFIG_FILE.aliases && this.CONFIG_FILE.aliases.length > 0) {
       programObject = programObject.aliases(this.CONFIG_FILE.aliases);
@@ -101,11 +110,23 @@ export class Ch5BaseClassForCli {
     return programObject;
   }
 
+  private convertArrayToCommaSeparatedString(input: string[]) {
+    let output: string = "";
+    for (let i: number = 0; i < input.length; i++) {
+      output += input[i] + ", ";
+    }
+    output = output.trim();
+    if (output.length > 0) {
+      output = output.substring(0, output.length - 1);
+
+    }
+    return output;
+  }
+
   /**
    * DO NOT DELETE
    */
   async run(): Promise<void | boolean> {
-
   }
 
   protected getConfigNode(nodeName: string) {
@@ -119,6 +140,14 @@ export class Ch5BaseClassForCli {
    */
   getText(key: string, ...values: string[]) {
     return this._cliUtil.getText(this.TRANSLATION_FILE, key, ...values);
+  }
+
+  logError(e: any) {
+    if (e && this.utils.isValidInput(e.message)) {
+      return e.message;
+    } else {
+      return this.getText("ERRORS.SOMETHING_WENT_WRONG");
+    }
   }
 
 }

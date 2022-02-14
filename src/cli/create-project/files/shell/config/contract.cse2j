@@ -1,0 +1,1174 @@
+{
+	"name": "QEShellProject",
+	"timestamp": "2020-07-10 23:39:41.004",
+	"version": "1.0.0.0",
+	"schema_version": 1,
+	"extra_value": "Program for Shell Project",
+	"signals": {
+		"states": {
+			"boolean": {
+				"1": {
+					"1": "Component_0.bg1_btn1_fb",
+					"2": "Component_0.bg2_btn2_fb",
+					"3": "Component_0.bg3_btn3_fb",
+					"4": "Component_0.btn1_primary_fb",
+					"5": "Component_0.btn1_danger_fb",
+					"6": "Component_0.btn1_success_fb",
+					"7": "Component_0.btn1_warning_fb",
+					"8": "Component_0.btn2_Icon_fb",
+					"9": "Component_0.btn3_Iconurl_fb",
+					"10": "Component_0.btn4_label_fb",
+					"11": "Component_0.btn5_label_html_fb",
+					"12": "Component_0.btn6_stateSelected_fb",
+					"13": "Component_0.btn7_touch_fb",
+					"14": "Component_0.btn8_disable_fb",
+					"15": "Component_0.btn9_customclass_fb",
+					"16": "Component_0.btn10_customstyle_fb",
+					"17": "Component_0.btn11_stateshow_fb",
+					"18": "Component_0.btn12_stateshow_fb",
+					"19": "Component_0.custom_show_fb",
+					"20": "Component_0.custom_pulse_fb",
+					"21": "Component_0.custom_update_fb",
+					"22": "Component_0.custom_reset_fb",
+					"23": "Component_0.custom_tc_fb",
+					"24": "Component_0.custom_appendstyle_fb",
+					"25": "Component_0.custom_appendclass_fb",
+					"26": "Component_0.custom_customclass_fb",
+					"27": "Component_0.custom_customstyle_fb",
+					"28": "Component_0.custom_customenable_fb",
+					"29": "Component_0.image_url_fb",
+					"30": "Component_0.image_recieve_img_fb",
+					"31": "Component_0.image_send_err_fb",
+					"32": "Component_0.image_send_touch_fb",
+					"33": "Component_0.image_disable_fb",
+					"34": "Component_0.image_stateShow_fb",
+					"35": "Component_0.image_StateShowPulse_fb",
+					"36": "Component_0.image_StateHidePulse_fb",
+					"37": "Component_0.image_OnShow_fb",
+					"38": "Component_0.import_show_fb",
+					"39": "Component_0.import_hide_fb",
+					"40": "Component_0.import_stateshow1_fb",
+					"41": "Component_0.import_stateshow2_fb",
+					"42": "Component_0.import_eventshow_fb",
+					"43": "Component_0.list_stateShowPulse_fb",
+					"44": "Component_0.list_stateHidePulse_fb",
+					"45": "Component_0.list_stateShow_fb",
+					"46": "Component_0.list_eventOnShow_fb",
+					"47": "Component_0.list_scroll_fb",
+					"48": "Component_0.list_size_fb",
+					"49": "Component_0.list_disable_fb",
+					"50": "Component_0.list_scrollToTime_fb",
+					"51": "Component_0.list_stateCustomClass_fb",
+					"52": "Component_0.list_stateCustomStyle_fb",
+					"53": "Component_0.modal_stateshow_fb",
+					"54": "Component_0.modal_customStyle_fb",
+					"55": "Component_0.modal_show_fb",
+					"56": "Component_0.modal_showPulse_fb",
+					"57": "Component_0.modal_stateCustomClass_fb",
+					"58": "Component_0.modal_eventOnBeforeShow_fb",
+					"59": "Component_0.modal_eventOnShow_fb",
+					"60": "Component_0.modal_eventOnAfterShow_fb",
+					"61": "Component_0.modal_eventOnBeforeHide_fb",
+					"62": "Component_0.modal_eventOnAfterHide_fb",
+					"63": "Component_0.overlay_position_fb",
+					"64": "Component_0.overlay_customClass_fb",
+					"65": "Component_0.overlay_customStyle_fb",
+					"66": "Component_0.overlay_offset_fb",
+					"67": "Component_0.overlay_show_fb",
+					"68": "Component_0.overlay_eventOnBeforeShow_fb",
+					"69": "Component_0.overlay_eventOnShow_fb",
+					"70": "Component_0.overlay_sventOnAfterShow_fb",
+					"71": "Component_0.overlay_eventOnBeforeHide_fb",
+					"72": "Component_0.overlay_eventOnAfterHide_fb",
+					"73": "Component_0.overlay_stateHidePulse_fb",
+					"74": "Component_0.select_click_fb",
+					"75": "Component_0.select_btn_size_fb",
+					"76": "Component_0.select_btn_disable_fb",
+					"77": "Component_0.select_receiveStateValue_fb",
+					"78": "Component_0.select_receiveStateSelected_fb",
+					"79": "Component_0.select_signalValueSyncTimeout_fb",
+					"80": "Component_0.select_receiveStateShow_fb",
+					"81": "Component_0.select_receiveStateCustomClass_fb",
+					"82": "Component_0.select_receiveStateCustomStyle_fb",
+					"83": "Component_0.select_receiveStateShowPulse_fb",
+					"84": "Component_0.select_receiveStateHidePulse_fb",
+					"85": "Component_0.select_sendEventOnShow_fb",
+					"86": "Component_0.slider_btn_valueHigh_fb",
+					"87": "Component_0.slider_btn_recieve_fb",
+					"88": "Component_0.spinner_btn_stateValue_fb",
+					"89": "Component_0.spinner_btn_url_fb",
+					"90": "Component_0.spinner_btn_size_fb",
+					"91": "Component_0.spinner_sendEventOnFocus_fb",
+					"92": "Component_0.spinner_receiveStateEnable_fb",
+					"93": "Component_0.spiner_receiveStateShow_fb",
+					"94": "Component_0.spinner_receiveStateShowPulse_fb",
+					"95": "Component_0.spinner_receiveStateHidePulse_fb",
+					"96": "Component_0.spinner_sendEventOnShow_fb",
+					"97": "Component_0.template_fast_rewind_fb",
+					"98": "Component_0.template_play_arrow_fb",
+					"99": "Component_0.template_fast_forward_fb",
+					"100": "Component_0.template_fiber_manual_record_fb",
+					"101": "Component_0.template_stop_fb",
+					"102": "Component_0.template_pause_fb",
+					"103": "Component_0.template_toggle_fb",
+					"104": "Component_0.template_toggle2_fb",
+					"105": "Component_0.template_prevtrack_fb",
+					"106": "Component_0.template_play_fb",
+					"107": "Component_0.template_nexttrack_fb",
+					"108": "Component_0.textTransform_btn_focus_fb",
+					"109": "Component_0.textTransform_btn_value_fb",
+					"110": "Component_0.textTransform_btn_disable_fb",
+					"111": "Component_0.textTransform_sendEventOnBlur_fb",
+					"112": "Component_0.textTransform_receiveStateShow_fb",
+					"113": "Component_0.textTransform_receiveStateShowPulse_fb",
+					"114": "Component_0.textTransform_receiveStateHidePulse_fb",
+					"115": "Component_0.textTransform_sendEventOnShow_fb",
+					"116": "Component_0.toggle_btn_click_fb",
+					"117": "Component_0.toggle_btn_value_fb",
+					"118": "Component_0.toggle_click_fb",
+					"119": "Component_0.toggle_receiveStateEnable_fb",
+					"120": "Component_0.toggle_receiveStateShow_fb",
+					"121": "Component_0.toggle_receiveStateShowPulse_fb",
+					"122": "Component_0.toggle_receiveStateHidePulse_fb",
+					"123": "Component_0.toggle_sendEventOnShow_fb",
+					"124": "Component_0.triggerView_btn_child_fb",
+					"125": "Component_0.triggerView_btn_recieveIndex_fb",
+					"126": "Component_0.triggerViewChild_btn_child_fb",
+					"127": "Component_0.triggerViewChild_btn_show_fb",
+					"128": "Component_0.subscribeStateScript_fb",
+					"129": "Component_0.UFunction_click1_fb",
+					"130": "Component_0.UFunction_click2_fb",
+					"131": "Component_0.UFunction_click3_fb",
+					"132": "Component_0.UFunction_click4_fb",
+					"133": "Component_0.UFunction_click5_fb",
+					"134": "Component_0.UFunction_click6_fb",
+					"135": "Component_0.UFunction_click7_fb",
+					"136": "Component_0.UFunction_click8_fb",
+					"137": "Component_0.ca_appendClassWhenInViewport_fb",
+					"138": "Component_0.ca_receiveStateCustomClass_fb",
+					"139": "Component_0.ca_receiveStateCustomStyle_fb",
+					"140": "Component_0.ca_receiveStateEnable_fb",
+					"141": "Component_0.ca_receiveStateShow_fb",
+					"142": "Component_0.ca_receiveStateShowPulse_fb",
+					"143": "Component_0.ca_receiveStateHidePulse_fb",
+					"144": "Component_0.ca_sendEventOnShow_fb",
+					"145": "Component_0.btn13_stateHide_fb",
+					"146": "Component_0.btn14_eventOnShow_fb",
+					"147": "Component_0.btn15_btn_eventonshow_fb",
+					"148": "Component_0.custom_hidepulse_fb",
+					"149": "Component_0.overlay_showPulse_fb",
+					"150": "Component_0.overlay_sendEventsShow_fb",
+					"151": "Component_0.slider_receiveStateEnable_fb",
+					"152": "Component_0.slider_receiveStateShow_fb",
+					"153": "Component_0.slider_pulse_show_fb",
+					"154": "Component_0.slider_pulse_hide_fb",
+					"155": "Component_0.slider_sendeventonshow_fb",
+					"156": "Component_0.template_list_fb",
+					"157": "Component_0.template_image_toggle_fb",
+					"158": "Component_0.template_img_url_fb",
+					"159": "Component_0.textinput_sendeventonfocus_fb",
+					"160": "Component_0.template_spinner_fb",
+					"161": "Component_0.template_select_fb",
+					"162": "Component_0.template_triggerview_fb",
+					"163": "Component_0.template_image_fb",
+					"164": "Component_0.spinner_recieveLabel_fb",
+					"165": "Component_0.triggerviewchild_1_fb",
+					"166": "Component_0.triggerviewchild_2_fb",
+					"167": "Component_0.triggerviewchild_3_fb",
+					"168": "Component_0.video_url_fb",
+					"169": "Component_0.video_play_fb",
+					"172": "Component_0.select_0_select_fb",
+					"173": "Component_0.select_1_select_fb",
+					"174": "Component_0.select_2_select_fb",
+					"177": "Component_0.select_index_2_fb",
+					"179": "Component_0.template_img_fb"
+				}
+			},
+			"numeric": {
+				"1": {
+					"1": "Component_0.select_eventOnChange_fb",
+					"2": "Component_0.slider_send_fb",
+					"3": "Component_0.slider_sendHigh_fb",
+					"4": "Component_0.spinner_change_fb",
+					"5": "Component_0.spinner_underflow_fb",
+					"6": "Component_0.spinner_overflow_fb",
+					"7": "Component_0.slider_btn_recieve_analog",
+					"8": "Component_0.slider_analog_fb1",
+					"9": "Component_0.template_fb1",
+					"10": "Component_0.template_fb2",
+					"11": "Component_0.template_fb3",
+					"12": "Component_0.triggerview_change_fb",
+					"13": "Component_0.spinner_btn_stateValue_an",
+					"14": "Component_0.spinner_btn_size_an",
+					"15": "Component_0.spinner_Overflow_an",
+					"16": "Component_0.select_statesize_an",
+					"17": "Component_0.select_click_value_an",
+					"18": "Component_0.select_receivestate_an",
+					"19": "Component_0.select_stateSelected_an",
+					"20": "Component_0.select_sync_an",
+					"21": "Component_0.list_scrollToTime_an",
+					"22": "Component_0.list_receiveStateScrollTo_an",
+					"23": "Component_0.list_receiveStateSize_an",
+					"24": "Component_0.triggerview_active_an"
+				}
+			},
+			"string": {
+				"1": {
+					"1": "Component_0.bg1_btn1_sr",
+					"2": "Component_0.bg2_btn2_sr",
+					"3": "Component_0.bg3_btn3_sr",
+					"4": "Component_0.btn1_primary_sr",
+					"5": "Component_0.btn1_danger_sr",
+					"6": "Component_0.btn1_success_sr",
+					"7": "Component_0.btn1_warning_sr",
+					"8": "Component_0.btn2_Icon_sr",
+					"9": "Component_0.btn3_Iconurl_sr",
+					"10": "Component_0.btn4_label_sr",
+					"11": "Component_0.btn5_label_html_sr",
+					"12": "Component_0.btn7_touch_sr",
+					"13": "Component_0.btn9_customclass_sr",
+					"14": "Component_0.btn10_customstyle_sr",
+					"15": "Component_0.custom_show_sr",
+					"16": "Component_0.custom_pulse_sr",
+					"17": "Component_0.custom_update_sr",
+					"18": "Component_0.custom_reset_sr",
+					"19": "Component_0.custom_tc_sr",
+					"20": "Component_0.custom_appendstyle_sr",
+					"21": "Component_0.custom_appendclass_sr",
+					"22": "Component_0.custom_customclass_sr",
+					"23": "Component_0.custom_customstyle_sr",
+					"24": "Component_0.custom_customenable_sr",
+					"25": "Component_0.image_url_sr",
+					"26": "Component_0.image_recieve_img_sr",
+					"27": "Component_0.image_send_err_sr",
+					"28": "Component_0.image_send_touch_sr",
+					"29": "Component_0.image_disable_sr",
+					"30": "Component_0.image_stateShow_sr",
+					"31": "Component_0.image_StateShowPulse_sr",
+					"32": "Component_0.image_StateHidePulse_sr",
+					"33": "Component_0.image_OnShow_sr",
+					"34": "Component_0.import_eventshow_sr",
+					"35": "Component_0.list_stateShowPulse_sr",
+					"36": "Component_0.list_stateHidePulse_sr",
+					"37": "Component_0.list_stateShow_sr",
+					"38": "Component_0.list_eventOnShow_sr",
+					"39": "Component_0.list_scroll_sr",
+					"40": "Component_0.list_size_sr",
+					"41": "Component_0.list_scrollToTime_sr",
+					"42": "Component_0.list_stateCustomClass_sr",
+					"43": "Component_0.list_stateCustomStyle_sr",
+					"44": "Component_0.modal_stateshow_sr",
+					"45": "Component_0.modal_customStyle_sr",
+					"46": "Component_0.modal_stateCustomClass_sr",
+					"47": "Component_0.modal_eventOnBeforeShow_sr",
+					"48": "Component_0.modal_eventOnShow_sr",
+					"49": "Component_0.modal_eventOnAfterShow_sr",
+					"50": "Component_0.modal_eventOnBeforeHide_sr",
+					"51": "Component_0.modal_eventOnAfterHide_sr",
+					"52": "Component_0.overlay_position_sr",
+					"53": "Component_0.overlay_customClass_sr",
+					"54": "Component_0.overlay_customStyle_sr",
+					"55": "Component_0.overlay_offset_sr",
+					"56": "Component_0.overlay_show_sr",
+					"57": "Component_0.overlay_eventOnBeforeShow_sr",
+					"58": "Component_0.overlay_eventOnShow_sr",
+					"59": "Component_0.overlay_sventOnAfterShow_sr",
+					"60": "Component_0.overlay_eventOnBeforeHide_sr",
+					"61": "Component_0.overlay_eventOnAfterHide_sr",
+					"62": "Component_0.overlay_stateHidePulse_sr",
+					"63": "Component_0.select_click_sr",
+					"64": "Component_0.select_btn_size_sr",
+					"65": "Component_0.select_btn_disable_sr",
+					"66": "Component_0.select_eventOnChange_sr",
+					"67": "Component_0.select_receiveStateValue_sr",
+					"68": "Component_0.select_receiveStateSelected_sr",
+					"69": "Component_0.select_signalValueSyncTimeout_sr",
+					"70": "Component_0.select_receiveStateShow_sr",
+					"71": "Component_0.select_receiveStateCustomClass_sr",
+					"72": "Component_0.select_receiveStateCustomStyle_sr",
+					"73": "Component_0.select_receiveStateShowPulse_sr",
+					"74": "Component_0.select_receiveStateHidePulse_sr",
+					"75": "Component_0.select_sendEventOnShow_sr",
+					"76": "Component_0.slider_btn_recieve_sr",
+					"77": "Component_0.slider_btn_valueHigh_sr",
+					"78": "Component_0.spinner_btn_stateValue_sr",
+					"79": "Component_0.spinner_btn_url_sr",
+					"80": "Component_0.spinner_btn_size_sr",
+					"81": "Component_0.spinner_change_sr",
+					"82": "Component_0.spinner_underflow_sr",
+					"83": "Component_0.spinner_overflow_sr",
+					"84": "Component_0.spinner_sendEventOnFocus_sr",
+					"85": "Component_0.spinner_receiveStateEnable_sr",
+					"86": "Component_0.spiner_receiveStateShow_sr",
+					"87": "Component_0.spinner_receiveStateShowPulse_sr",
+					"88": "Component_0.spinner_receiveStateHidePulse_sr",
+					"89": "Component_0.spinner_sendEventOnShow_sr",
+					"90": "Component_0.template_fast_rewind_sr",
+					"91": "Component_0.template_play_arrow_sr",
+					"92": "Component_0.template_fast_forward_sr",
+					"93": "Component_0.template_fiber_manual_record_sr",
+					"94": "Component_0.template_stop_sr",
+					"95": "Component_0.template_pause_sr",
+					"96": "Component_0.template_toggle_sr",
+					"97": "Component_0.template_toggle2_sr",
+					"98": "Component_0.template_nexttrack_sr",
+					"99": "Component_0.textTransform_btn_focus_sr",
+					"100": "Component_0.textTransform_btn_value_sr",
+					"101": "Component_0.textTransform_sendEventOnChange_fb",
+					"102": "Component_0.textTransform_sendEventOnBlur_sr",
+					"103": "Component_0.textTransform_receiveStateShow_sr",
+					"104": "Component_0.textTransform_receiveStateShowPulse_sr",
+					"105": "Component_0.textTransform_receiveStateHidePulse_sr",
+					"106": "Component_0.textTransform_sendEventOnShow_sr",
+					"107": "Component_0.toggle_btn_click_sr",
+					"108": "Component_0.toggle_btn_value_sr",
+					"109": "Component_0.toggle_click_sr",
+					"110": "Component_0.toggle_receiveStateEnable_sr",
+					"111": "Component_0.toggle_receiveStateShow_sr",
+					"112": "Component_0.toggle_receiveStateShowPulse_sr",
+					"113": "Component_0.toggle_receiveStateHidePulse_sr",
+					"114": "Component_0.toggle_sendEventOnShow_sr",
+					"115": "Component_0.triggerView_btn_child_sr",
+					"116": "Component_0.triggerView_btn_recieveIndex_sr",
+					"117": "Component_0.triggerViewChild_btn_child_sr",
+					"118": "Component_0.triggerViewChild_btn_show_sr",
+					"119": "Component_0.textformat_fb",
+					"120": "Component_0.subscribeStateScript_sr_fb",
+					"121": "Component_0.UFunction_click1_sr_fb",
+					"122": "Component_0.UFunction_click2_sr_fb",
+					"123": "Component_0.UFunction_click3_sr_fb",
+					"124": "Component_0.UFunction_click4_sr_fb",
+					"125": "Component_0.UFunction_click5_sr_fb",
+					"126": "Component_0.UFunction_click6_sr_fb",
+					"127": "Component_0.UFunction_click7_sr_fb",
+					"128": "Component_0.UFunction_click8_sr_fb",
+					"129": "Component_0.ca_appendClassWhenInViewport_sr",
+					"130": "Component_0.ca_receiveStateCustomClass_sr",
+					"131": "Component_0.ca_receiveStateCustomStyle_sr",
+					"132": "Component_0.ca_receiveStateEnable_sr",
+					"133": "Component_0.ca_receiveStateShow_sr",
+					"134": "Component_0.ca_receiveStateShowPulse_sr",
+					"135": "Component_0.ca_receiveStateHidePulse_sr",
+					"136": "Component_0.ca_sendEventOnShow_sr",
+					"137": "Component_0.btn15_btn_eventonshow_sr",
+					"138": "Component_0.overlay_sendEventsShow_sr",
+					"139": "Component_0.template_list_sr",
+					"140": "Component_0.template_img_url_sr",
+					"141": "Component_0.textinput_sendeventonfocus_sr",
+					"142": "Component_0.template_spinner_sr",
+					"143": "Component_0.template_select_sr",
+					"144": "Component_0.template_triggerview_sr",
+					"145": "Component_0.template_image_sr",
+					"146": "Component_0.spinner_recieveLabel_sr",
+					"147": "Component_0.triggerviewchild_1_sr",
+					"148": "Component_0.triggerviewchild_2_sr",
+					"149": "Component_0.triggerviewchild_3_sr",
+					"150": "Component_0.video_url_sr",
+					"151": "Component_0.spinner_flow_sr",
+					"152": "Component_0.image_senderror_sr",
+					"153": "Component_0.template_img_sr"
+				}
+			}
+		},
+		"events": {
+			"boolean": {
+				"Component_0.bg1_btn1": {
+					"joinId": 1,
+					"smartObjectId": 1
+				},
+				"Component_0.bg2_btn2": {
+					"joinId": 2,
+					"smartObjectId": 1
+				},
+				"Component_0.bg3_btn3": {
+					"joinId": 3,
+					"smartObjectId": 1
+				},
+				"Component_0.btn1_primary": {
+					"joinId": 4,
+					"smartObjectId": 1
+				},
+				"Component_0.btn1_danger": {
+					"joinId": 5,
+					"smartObjectId": 1
+				},
+				"Component_0.btn1_success": {
+					"joinId": 6,
+					"smartObjectId": 1
+				},
+				"Component_0.btn1_warning": {
+					"joinId": 7,
+					"smartObjectId": 1
+				},
+				"Component_0.btn2_Icon": {
+					"joinId": 8,
+					"smartObjectId": 1
+				},
+				"Component_0.btn3_Iconurl": {
+					"joinId": 9,
+					"smartObjectId": 1
+				},
+				"Component_0.btn4_label": {
+					"joinId": 10,
+					"smartObjectId": 1
+				},
+				"Component_0.btn5_label_html": {
+					"joinId": 11,
+					"smartObjectId": 1
+				},
+				"Component_0.btn6_stateSelected": {
+					"joinId": 12,
+					"smartObjectId": 1
+				},
+				"Component_0.btn7_touch": {
+					"joinId": 13,
+					"smartObjectId": 1
+				},
+				"Component_0.btn8_disable": {
+					"joinId": 14,
+					"smartObjectId": 1
+				},
+				"Component_0.btn9_customclass": {
+					"joinId": 15,
+					"smartObjectId": 1
+				},
+				"Component_0.btn10_customstyle": {
+					"joinId": 16,
+					"smartObjectId": 1
+				},
+				"Component_0.btn11_stateshow": {
+					"joinId": 17,
+					"smartObjectId": 1
+				},
+				"Component_0.btn12_stateshow": {
+					"joinId": 18,
+					"smartObjectId": 1
+				},
+				"Component_0.custom_show": {
+					"joinId": 19,
+					"smartObjectId": 1
+				},
+				"Component_0.custom_pulse": {
+					"joinId": 20,
+					"smartObjectId": 1
+				},
+				"Component_0.custom_update": {
+					"joinId": 21,
+					"smartObjectId": 1
+				},
+				"Component_0.custom_reset": {
+					"joinId": 22,
+					"smartObjectId": 1
+				},
+				"Component_0.custom_tc": {
+					"joinId": 23,
+					"smartObjectId": 1
+				},
+				"Component_0.custom_appendstyle": {
+					"joinId": 24,
+					"smartObjectId": 1
+				},
+				"Component_0.custom_appendclass": {
+					"joinId": 25,
+					"smartObjectId": 1
+				},
+				"Component_0.custom_customclass": {
+					"joinId": 26,
+					"smartObjectId": 1
+				},
+				"Component_0.custom_customstyle": {
+					"joinId": 27,
+					"smartObjectId": 1
+				},
+				"Component_0.custom_customenable": {
+					"joinId": 28,
+					"smartObjectId": 1
+				},
+				"Component_0.image_url": {
+					"joinId": 29,
+					"smartObjectId": 1
+				},
+				"Component_0.image_recieve_img": {
+					"joinId": 30,
+					"smartObjectId": 1
+				},
+				"Component_0.image_send_err": {
+					"joinId": 31,
+					"smartObjectId": 1
+				},
+				"Component_0.image_send_touch": {
+					"joinId": 32,
+					"smartObjectId": 1
+				},
+				"Component_0.image_disable": {
+					"joinId": 33,
+					"smartObjectId": 1
+				},
+				"Component_0.image_stateShow": {
+					"joinId": 34,
+					"smartObjectId": 1
+				},
+				"Component_0.image_StateShowPulse": {
+					"joinId": 35,
+					"smartObjectId": 1
+				},
+				"Component_0.image_StateHidePulse": {
+					"joinId": 36,
+					"smartObjectId": 1
+				},
+				"Component_0.image_OnShow": {
+					"joinId": 37,
+					"smartObjectId": 1
+				},
+				"Component_0.import_show": {
+					"joinId": 38,
+					"smartObjectId": 1
+				},
+				"Component_0.import_hide": {
+					"joinId": 39,
+					"smartObjectId": 1
+				},
+				"Component_0.import_stateshow1": {
+					"joinId": 40,
+					"smartObjectId": 1
+				},
+				"Component_0.import_stateshow2": {
+					"joinId": 41,
+					"smartObjectId": 1
+				},
+				"Component_0.import_eventshow": {
+					"joinId": 42,
+					"smartObjectId": 1
+				},
+				"Component_0.list_stateShowPulse": {
+					"joinId": 43,
+					"smartObjectId": 1
+				},
+				"Component_0.list_stateHidePulse": {
+					"joinId": 44,
+					"smartObjectId": 1
+				},
+				"Component_0.list_stateShow": {
+					"joinId": 45,
+					"smartObjectId": 1
+				},
+				"Component_0.list_eventOnShow": {
+					"joinId": 46,
+					"smartObjectId": 1
+				},
+				"Component_0.list_scroll": {
+					"joinId": 47,
+					"smartObjectId": 1
+				},
+				"Component_0.list_size": {
+					"joinId": 48,
+					"smartObjectId": 1
+				},
+				"Component_0.list_disable": {
+					"joinId": 49,
+					"smartObjectId": 1
+				},
+				"Component_0.list_scrollToTime": {
+					"joinId": 50,
+					"smartObjectId": 1
+				},
+				"Component_0.list_stateCustomClass": {
+					"joinId": 51,
+					"smartObjectId": 1
+				},
+				"Component_0.list_stateCustomStyle": {
+					"joinId": 52,
+					"smartObjectId": 1
+				},
+				"Component_0.modal_stateshow": {
+					"joinId": 53,
+					"smartObjectId": 1
+				},
+				"Component_0.modal_customStyle": {
+					"joinId": 54,
+					"smartObjectId": 1
+				},
+				"Component_0.modal_show": {
+					"joinId": 55,
+					"smartObjectId": 1
+				},
+				"Component_0.modal_showPulse": {
+					"joinId": 56,
+					"smartObjectId": 1
+				},
+				"Component_0.modal_stateCustomClass": {
+					"joinId": 57,
+					"smartObjectId": 1
+				},
+				"Component_0.modal_eventOnBeforeShow": {
+					"joinId": 58,
+					"smartObjectId": 1
+				},
+				"Component_0.modal_eventOnShow": {
+					"joinId": 59,
+					"smartObjectId": 1
+				},
+				"Component_0.modal_eventOnAfterShow": {
+					"joinId": 60,
+					"smartObjectId": 1
+				},
+				"Component_0.modal_eventOnBeforeHide": {
+					"joinId": 61,
+					"smartObjectId": 1
+				},
+				"Component_0.modal_eventOnAfterHide": {
+					"joinId": 62,
+					"smartObjectId": 1
+				},
+				"Component_0.overlay_position": {
+					"joinId": 63,
+					"smartObjectId": 1
+				},
+				"Component_0.overlay_customClass": {
+					"joinId": 64,
+					"smartObjectId": 1
+				},
+				"Component_0.overlay_customStyle": {
+					"joinId": 65,
+					"smartObjectId": 1
+				},
+				"Component_0.overlay_offset": {
+					"joinId": 66,
+					"smartObjectId": 1
+				},
+				"Component_0.overlay_show": {
+					"joinId": 67,
+					"smartObjectId": 1
+				},
+				"Component_0.overlay_eventOnBeforeShow": {
+					"joinId": 68,
+					"smartObjectId": 1
+				},
+				"Component_0.overlay_eventOnShow": {
+					"joinId": 69,
+					"smartObjectId": 1
+				},
+				"Component_0.overlay_sventOnAfterShow": {
+					"joinId": 70,
+					"smartObjectId": 1
+				},
+				"Component_0.overlay_eventOnBeforeHide": {
+					"joinId": 71,
+					"smartObjectId": 1
+				},
+				"Component_0.overlay_eventOnAfterHide": {
+					"joinId": 72,
+					"smartObjectId": 1
+				},
+				"Component_0.overlay_stateHidePulse": {
+					"joinId": 73,
+					"smartObjectId": 1
+				},
+				"Component_0.select_click": {
+					"joinId": 74,
+					"smartObjectId": 1
+				},
+				"Component_0.select_btn_size": {
+					"joinId": 75,
+					"smartObjectId": 1
+				},
+				"Component_0.select_btn_disable": {
+					"joinId": 76,
+					"smartObjectId": 1
+				},
+				"Component_0.select_receiveStateValue": {
+					"joinId": 77,
+					"smartObjectId": 1
+				},
+				"Component_0.select_receiveStateSelected": {
+					"joinId": 78,
+					"smartObjectId": 1
+				},
+				"Component_0.select_signalValueSyncTimeout": {
+					"joinId": 79,
+					"smartObjectId": 1
+				},
+				"Component_0.select_receiveStateShow": {
+					"joinId": 80,
+					"smartObjectId": 1
+				},
+				"Component_0.select_receiveStateCustomClass": {
+					"joinId": 81,
+					"smartObjectId": 1
+				},
+				"Component_0.select_receiveStateCustomStyle": {
+					"joinId": 82,
+					"smartObjectId": 1
+				},
+				"Component_0.select_receiveStateShowPulse": {
+					"joinId": 83,
+					"smartObjectId": 1
+				},
+				"Component_0.select_receiveStateHidePulse": {
+					"joinId": 84,
+					"smartObjectId": 1
+				},
+				"Component_0.select_sendEventOnShow": {
+					"joinId": 85,
+					"smartObjectId": 1
+				},
+				"Component_0.slider_btn_valueHigh": {
+					"joinId": 86,
+					"smartObjectId": 1
+				},
+				"Component_0.slider_btn_recieve": {
+					"joinId": 87,
+					"smartObjectId": 1
+				},
+				"Component_0.spinner_btn_stateValue": {
+					"joinId": 88,
+					"smartObjectId": 1
+				},
+				"Component_0.spinner_btn_url": {
+					"joinId": 89,
+					"smartObjectId": 1
+				},
+				"Component_0.spinner_btn_size": {
+					"joinId": 90,
+					"smartObjectId": 1
+				},
+				"Component_0.spinner_sendEventOnFocus": {
+					"joinId": 91,
+					"smartObjectId": 1
+				},
+				"Component_0.spinner_receiveStateEnable": {
+					"joinId": 92,
+					"smartObjectId": 1
+				},
+				"Component_0.spiner_receiveStateShow": {
+					"joinId": 93,
+					"smartObjectId": 1
+				},
+				"Component_0.spinner_receiveStateShowPulse": {
+					"joinId": 94,
+					"smartObjectId": 1
+				},
+				"Component_0.spinner_receiveStateHidePulse": {
+					"joinId": 95,
+					"smartObjectId": 1
+				},
+				"Component_0.spinner_sendEventOnShow": {
+					"joinId": 96,
+					"smartObjectId": 1
+				},
+				"Component_0.template_fast_rewind": {
+					"joinId": 97,
+					"smartObjectId": 1
+				},
+				"Component_0.template_play_arrow": {
+					"joinId": 98,
+					"smartObjectId": 1
+				},
+				"Component_0.template_fast_forward": {
+					"joinId": 99,
+					"smartObjectId": 1
+				},
+				"Component_0.template_fiber_manual_record": {
+					"joinId": 100,
+					"smartObjectId": 1
+				},
+				"Component_0.template_stop": {
+					"joinId": 101,
+					"smartObjectId": 1
+				},
+				"Component_0.template_pause": {
+					"joinId": 102,
+					"smartObjectId": 1
+				},
+				"Component_0.template_toggle": {
+					"joinId": 103,
+					"smartObjectId": 1
+				},
+				"Component_0.template_toggle2": {
+					"joinId": 104,
+					"smartObjectId": 1
+				},
+				"Component_0.template_prevtrack": {
+					"joinId": 105,
+					"smartObjectId": 1
+				},
+				"Component_0.template_play": {
+					"joinId": 106,
+					"smartObjectId": 1
+				},
+				"Component_0.template_nexttract": {
+					"joinId": 107,
+					"smartObjectId": 1
+				},
+				"Component_0.textTransform_btn_focus": {
+					"joinId": 108,
+					"smartObjectId": 1
+				},
+				"Component_0.textTransform_btn_value": {
+					"joinId": 109,
+					"smartObjectId": 1
+				},
+				"Component_0.textTransform_btn_disable": {
+					"joinId": 110,
+					"smartObjectId": 1
+				},
+				"Component_0.textTransform_sendEventOnBlur": {
+					"joinId": 111,
+					"smartObjectId": 1
+				},
+				"Component_0.textTransform_receiveStateShow": {
+					"joinId": 112,
+					"smartObjectId": 1
+				},
+				"Component_0.textTransform_receiveStateShowPulse": {
+					"joinId": 113,
+					"smartObjectId": 1
+				},
+				"Component_0.textTransform_receiveStateHidePulse": {
+					"joinId": 114,
+					"smartObjectId": 1
+				},
+				"Component_0.textTransform_sendEventOnShow": {
+					"joinId": 115,
+					"smartObjectId": 1
+				},
+				"Component_0.toggle_btn_click": {
+					"joinId": 116,
+					"smartObjectId": 1
+				},
+				"Component_0.toggle_btn_value": {
+					"joinId": 117,
+					"smartObjectId": 1
+				},
+				"Component_0.toggle_click": {
+					"joinId": 118,
+					"smartObjectId": 1
+				},
+				"Component_0.toggle_receiveStateEnable": {
+					"joinId": 119,
+					"smartObjectId": 1
+				},
+				"Component_0.toggle_receiveStateShow": {
+					"joinId": 120,
+					"smartObjectId": 1
+				},
+				"Component_0.toggle_receiveStateShowPulse": {
+					"joinId": 121,
+					"smartObjectId": 1
+				},
+				"Component_0.toggle_receiveStateHidePulse": {
+					"joinId": 122,
+					"smartObjectId": 1
+				},
+				"Component_0.toggle_sendEventOnShow": {
+					"joinId": 123,
+					"smartObjectId": 1
+				},
+				"Component_0.triggerView_btn_child": {
+					"joinId": 124,
+					"smartObjectId": 1
+				},
+				"Component_0.triggerView_btn_recieveIndex": {
+					"joinId": 125,
+					"smartObjectId": 1
+				},
+				"Component_0.triggerViewChild_btn_child": {
+					"joinId": 126,
+					"smartObjectId": 1
+				},
+				"Component_0.triggerViewChild_btn_show": {
+					"joinId": 127,
+					"smartObjectId": 1
+				},
+				"Component_0.subscribeStateScript": {
+					"joinId": 128,
+					"smartObjectId": 1
+				},
+				"Component_0.UFunction_click1": {
+					"joinId": 129,
+					"smartObjectId": 1
+				},
+				"Component_0.UFunction_click2": {
+					"joinId": 130,
+					"smartObjectId": 1
+				},
+				"Component_0.UFunction_click3": {
+					"joinId": 131,
+					"smartObjectId": 1
+				},
+				"Component_0.UFunction_click4": {
+					"joinId": 132,
+					"smartObjectId": 1
+				},
+				"Component_0.UFunction_click5": {
+					"joinId": 133,
+					"smartObjectId": 1
+				},
+				"Component_0.UFunction_click6": {
+					"joinId": 134,
+					"smartObjectId": 1
+				},
+				"Component_0.UFunction_click7": {
+					"joinId": 135,
+					"smartObjectId": 1
+				},
+				"Component_0.UFunction_click8": {
+					"joinId": 136,
+					"smartObjectId": 1
+				},
+				"Component_0.ca_appendClassWhenInViewport": {
+					"joinId": 137,
+					"smartObjectId": 1
+				},
+				"Component_0.ca_receiveStateCustomClass": {
+					"joinId": 138,
+					"smartObjectId": 1
+				},
+				"Component_0.ca_receiveStateCustomStyle": {
+					"joinId": 139,
+					"smartObjectId": 1
+				},
+				"Component_0.ca_receiveStateEnable": {
+					"joinId": 140,
+					"smartObjectId": 1
+				},
+				"Component_0.ca_receiveStateShow": {
+					"joinId": 141,
+					"smartObjectId": 1
+				},
+				"Component_0.ca_receiveStateShowPulse": {
+					"joinId": 142,
+					"smartObjectId": 1
+				},
+				"Component_0.ca_receiveStateHidePulse": {
+					"joinId": 143,
+					"smartObjectId": 1
+				},
+				"Component_0.ca_sendEventOnShow": {
+					"joinId": 144,
+					"smartObjectId": 1
+				},
+				"Component_0.btn13_stateHide": {
+					"joinId": 145,
+					"smartObjectId": 1
+				},
+				"Component_0.btn14_eventOnShow": {
+					"joinId": 146,
+					"smartObjectId": 1
+				},
+				"Component_0.btn15_btn_eventonshow": {
+					"joinId": 147,
+					"smartObjectId": 1
+				},
+				"Component_0.custom_hidepulse": {
+					"joinId": 148,
+					"smartObjectId": 1
+				},
+				"Component_0.overlay_showPulse": {
+					"joinId": 149,
+					"smartObjectId": 1
+				},
+				"Component_0.overlay_sendEventsShow": {
+					"joinId": 150,
+					"smartObjectId": 1
+				},
+				"Component_0.slider_receiveStateEnable": {
+					"joinId": 151,
+					"smartObjectId": 1
+				},
+				"Component_0.slider_receiveStateShow": {
+					"joinId": 152,
+					"smartObjectId": 1
+				},
+				"Component_0.slider_pulse_show": {
+					"joinId": 153,
+					"smartObjectId": 1
+				},
+				"Component_0.slider_pulse_hide": {
+					"joinId": 154,
+					"smartObjectId": 1
+				},
+				"Component_0.slider_sendeventonshow": {
+					"joinId": 155,
+					"smartObjectId": 1
+				},
+				"Component_0.template_list": {
+					"joinId": 156,
+					"smartObjectId": 1
+				},
+				"Component_0.template_image_toggle": {
+					"joinId": 157,
+					"smartObjectId": 1
+				},
+				"Component_0.template_img_url": {
+					"joinId": 158,
+					"smartObjectId": 1
+				},
+				"Component_0.textinput_sendeventonfocus": {
+					"joinId": 159,
+					"smartObjectId": 1
+				},
+				"Component_0.template_spinner": {
+					"joinId": 160,
+					"smartObjectId": 1
+				},
+				"Component_0.template_select": {
+					"joinId": 161,
+					"smartObjectId": 1
+				},
+				"Component_0.template_triggerview": {
+					"joinId": 162,
+					"smartObjectId": 1
+				},
+				"Component_0.template_image": {
+					"joinId": 163,
+					"smartObjectId": 1
+				},
+				"Component_0.spinner_recieveLabel": {
+					"joinId": 164,
+					"smartObjectId": 1
+				},
+				"Component_0.triggerviewchild_1": {
+					"joinId": 165,
+					"smartObjectId": 1
+				},
+				"Component_0.triggerviewchild_2": {
+					"joinId": 166,
+					"smartObjectId": 1
+				},
+				"Component_0.triggerviewchild_3": {
+					"joinId": 167,
+					"smartObjectId": 1
+				},
+				"Component_0.video_url": {
+					"joinId": 168,
+					"smartObjectId": 1
+				},
+				"Component_0.video_play": {
+					"joinId": 169,
+					"smartObjectId": 1
+				},
+				"Component_0.spinner_oflow": {
+					"joinId": 170,
+					"smartObjectId": 1
+				},
+				"Component_0.spinner_uflow": {
+					"joinId": 171,
+					"smartObjectId": 1
+				},
+				"Component_0.select_0_select": {
+					"joinId": 172,
+					"smartObjectId": 1
+				},
+				"Component_0.select_1_select": {
+					"joinId": 173,
+					"smartObjectId": 1
+				},
+				"Component_0.select_2_select": {
+					"joinId": 174,
+					"smartObjectId": 1
+				},
+				"Component_0.select_index_0_click": {
+					"joinId": 175,
+					"smartObjectId": 1
+				},
+				"Component_0.select_index_1_click": {
+					"joinId": 176,
+					"smartObjectId": 1
+				},
+				"Component_0.select_index_2_click": {
+					"joinId": 177,
+					"smartObjectId": 1
+				},
+				"Component_0.select_index_3_click": {
+					"joinId": 178,
+					"smartObjectId": 1
+				},
+				"Component_0.template_img": {
+					"joinId": 179,
+					"smartObjectId": 1
+				}
+			},
+			"numeric": {
+				"Component_0.select_eventOnChange": {
+					"joinId": 1,
+					"smartObjectId": 1
+				},
+				"Component_0.slider_send": {
+					"joinId": 2,
+					"smartObjectId": 1
+				},
+				"Component_0.slider_sendHigh": {
+					"joinId": 3,
+					"smartObjectId": 1
+				},
+				"Component_0.spinner_change": {
+					"joinId": 4,
+					"smartObjectId": 1
+				},
+				"Component_0.spinner_underflow": {
+					"joinId": 5,
+					"smartObjectId": 1
+				},
+				"Component_0.spinner_overflow": {
+					"joinId": 6,
+					"smartObjectId": 1
+				},
+				"Component_0.triggerview_change": {
+					"joinId": 12,
+					"smartObjectId": 1
+				}
+			},
+			"string": {
+				"Component_0.textTransform_sendEventOnChange": {
+					"joinId": 101,
+					"smartObjectId": 1
+				},
+				"Component_0.textformat": {
+					"joinId": 119,
+					"smartObjectId": 1
+				},
+				"Component_0.subscribeStateScript_sr": {
+					"joinId": 120,
+					"smartObjectId": 1
+				},
+				"Component_0.UFunction_click1_sr": {
+					"joinId": 121,
+					"smartObjectId": 1
+				},
+				"Component_0.UFunction_click2_sr": {
+					"joinId": 122,
+					"smartObjectId": 1
+				},
+				"Component_0.UFunction_click3_sr": {
+					"joinId": 123,
+					"smartObjectId": 1
+				},
+				"Component_0.UFunction_click4_sr": {
+					"joinId": 124,
+					"smartObjectId": 1
+				},
+				"Component_0.UFunction_click5_sr": {
+					"joinId": 125,
+					"smartObjectId": 1
+				},
+				"Component_0.UFunction_click6_sr": {
+					"joinId": 126,
+					"smartObjectId": 1
+				},
+				"Component_0.UFunction_click7_sr": {
+					"joinId": 127,
+					"smartObjectId": 1
+				},
+				"Component_0.UFunction_click8_sr": {
+					"joinId": 128,
+					"smartObjectId": 1
+				},
+				"Component_0.image_senderror": {
+					"joinId": 152,
+					"smartObjectId": 1
+				}
+			}
+		}
+	}
+}

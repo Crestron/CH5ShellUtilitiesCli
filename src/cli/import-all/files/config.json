@@ -4,27 +4,39 @@
   "usage": "[options]",
   "options": [
     {
-      "keys": "-z, --zipFile",
-      "description": "Prefix for full location path of the zip file to be imported"
+      "key": "all",
+      "description": "Select this option to import all the files",
+      "type": "boolean",
+      "default": true,
+      "valueIfNotFound": false,
+      "alias": ["--all"]
     },
     {
-      "keys": "-l, --list",
-      "description": "Prefix for list of file names"
+      "key": "list",
+      "description": "Prefix for list of file names",
+      "type": "array",
+      "default": [],
+      "valueIfNotFound": [],
+      "alias": ["-l", "--list"]
     },
     {
-      "keys": "-f, --force",
-      "description": "Forces the component to be deleted without asking for a confirmation"
+      "key": "force",
+      "description": "Forces import without asking for a confirmation",
+      "type": "boolean",
+      "default": true,
+      "valueIfNotFound": false,
+      "alias": ["-f", "--force"]
     },
     {
-      "keys": "--all",
-      "description": "Select this option to import all the files"
+      "key": "zipFile",
+      "description": "Prefix for full location path of the zip file to be imported",
+      "type": "string",
+      "default": "",
+      "valueIfNotFound": "",
+      "alias": ["-z", "--zipFile"]
     }
   ],
   "additionalHelp": true,
-  "logger": {
-    "allowLogging": false,
-    "logLevel": 1
-  },
   "requiredFolderPath": "./app/project/",
   "zipFolderName": "imported-all",
   "exportedFolderName": "exported-all",

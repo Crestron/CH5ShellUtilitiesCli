@@ -13,56 +13,23 @@ const process = require("process");
 export class Ch5CliComponentsHelper {
 
   private readonly _cliLogger: Ch5CliLogger;
-
-  private readonly COMPLETE_PARAMETERS: any[] = [
+  private _configParams: any[] = [];
+  private readonly COMMON_INPUT_PARAMS: any[] = [
     {
-      "key": "all",
+      "key": "verbose",
+      "description": "",
       "type": "boolean",
       "default": true,
       "valueIfNotFound": false,
-      "alias": ['--all']
-    },
-    {
-      "key": "list",
-      "type": "array",
-      "default": [],
-      "valueIfNotFound": [],
-      "alias": ['-l', '--list']
-    },
-    {
-      "key": "force",
-      "type": "boolean",
-      "default": true,
-      "valueIfNotFound": false,
-      "alias": ['-f', '--force']
+      "alias": ["--verbose"]
     },
     {
       "key": "help",
+      "description": "",
       "type": "boolean",
       "default": true,
       "valueIfNotFound": false,
-      "alias": ['-h', '--help']
-    },
-    {
-      "key": "menu",
-      "type": "string",
-      "default": "",
-      "valueIfNotFound": "",
-      "alias": ['-m', '--menu']
-    },
-    {
-      "key": "name",
-      "type": "string",
-      "default": "",
-      "valueIfNotFound": "",
-      "alias": ['-n', '--name']
-    },
-    {
-      "key": "zipFile",
-      "type": "string",
-      "default": "",
-      "valueIfNotFound": "",
-      "alias": ['-z', '--zipFile']
+      "alias": ["-h", "--help"]
     }
   ];
 
@@ -70,6 +37,13 @@ export class Ch5CliComponentsHelper {
     this._cliLogger = new Ch5CliLogger();
   }
 
+  public set configParams(configInputParameters: any[]) {
+    this._configParams = configInputParameters;
+  }
+
+  public get configParams() {
+    return this._configParams;
+  }
   public async readFileContent(path: string) {
     const output: string = await this.readFile(path);
     return output;
@@ -96,6 +70,8 @@ export class Ch5CliComponentsHelper {
   }
 
   processArgsAnalyze(args: any): any {
+    const completeInputParams = [...this._configParams, ...this.COMMON_INPUT_PARAMS];
+
     const output: any = {};
     let arrayKey: any = null;
     let arrayParam: any = null;
@@ -108,7 +84,7 @@ export class Ch5CliComponentsHelper {
         } else if (String(val).indexOf('-') === 0) {
           optionName = val.replace('-', '');
         }
-        const paramObj = this.COMPLETE_PARAMETERS.find((tempObj) => tempObj.alias.map((v: string) => v.toLowerCase()).includes(val.trim().toLowerCase()));
+        const paramObj = completeInputParams.find((tempObj) => tempObj.alias.map((v: string) => v.toLowerCase()).includes(val.trim().toLowerCase()));
         if (paramObj) {
           arrayKey = paramObj.key;
           arrayParam = paramObj.type;
@@ -136,9 +112,9 @@ export class Ch5CliComponentsHelper {
       }
     });
     this._cliLogger.log("processArgs Before", output);
-    for (let i: number = 0; i < this.COMPLETE_PARAMETERS.length; i++) {
-      if (!output[this.COMPLETE_PARAMETERS[i]["key"]]) {
-        output[this.COMPLETE_PARAMETERS[i]["key"]] = this.COMPLETE_PARAMETERS[i]["valueIfNotFound"];
+    for (let i: number = 0; i < completeInputParams.length; i++) {
+      if (!output[completeInputParams[i]["key"]]) {
+        output[completeInputParams[i]["key"]] = completeInputParams[i]["valueIfNotFound"];
       }
     }
     this._cliLogger.log("processArgs After", output);

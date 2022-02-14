@@ -71,7 +71,6 @@ describe('Generate page >>>>>>>> ', () => {
             }
         });
         const initializeSpy = sinon.spy(generatePageComponent, <any>'initialize');
-        const checkPreValidationsSpy = sinon.spy(generatePageComponent, <any>'checkPrerequisiteValidations');
         const verifyInputSpy = sinon.spy(generatePageComponent, <any>'verifyInputParams');
         const checkPromptQuestionSpy = sinon.spy(generatePageComponent, <any>'checkPromptQuestions');
         const processRequestSpy = sinon.spy(generatePageComponent, <any>'processRequest');
@@ -81,7 +80,7 @@ describe('Generate page >>>>>>>> ', () => {
         const response = await generatePageComponent.run();
         expect(response).to.equal(true);
 
-        sinon.assert.callOrder(initializeSpy, checkPreValidationsSpy, verifyInputSpy, checkPromptQuestionSpy, processRequestSpy, cleanUpSpy);
+        sinon.assert.callOrder(initializeSpy, verifyInputSpy, checkPromptQuestionSpy, processRequestSpy, cleanUpSpy);
     });
 
     it(`Expect to trigger error if template files are missing`, async () => {
@@ -91,7 +90,6 @@ describe('Generate page >>>>>>>> ', () => {
             }
         });
         const initializeSpy = sinon.spy(generatePageComponent, <any>'initialize');
-        const checkPreValidationsSpy = sinon.spy(generatePageComponent, <any>'checkPrerequisiteValidations');
         const verifyInputSpy = sinon.spy(generatePageComponent, <any>'verifyInputParams');
         const checkPromptQuestionSpy = sinon.spy(generatePageComponent, <any>'checkPromptQuestions');
         const processRequestSpy = sinon.spy(generatePageComponent, <any>'processRequest');
@@ -100,7 +98,7 @@ describe('Generate page >>>>>>>> ', () => {
         const response = await generatePageComponent.run();
         expect(response).to.equal(false);
 
-        sinon.assert.callOrder(initializeSpy, checkPreValidationsSpy, verifyInputSpy, checkPromptQuestionSpy, processRequestSpy);
+        sinon.assert.callOrder(initializeSpy, verifyInputSpy, checkPromptQuestionSpy, processRequestSpy);
     });
 });
 

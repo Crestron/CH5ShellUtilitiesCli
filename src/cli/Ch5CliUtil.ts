@@ -6,7 +6,7 @@
 // under which you licensed this source code.
 
 import chalk from "chalk";
-import { DeviceType, OutputLevel } from "@crestron/ch5-utilities";
+import { OutputLevel } from "@crestron/ch5-utilities";
 
 const rimraf = require("rimraf");
 
@@ -171,12 +171,36 @@ export class Ch5CliUtil {
     }
   }
 
+  public toBoolean(input: any, isEmptyValueEqualToTrue = false): boolean {
+    if (this.isValidInput(input)) {
+      const str = String(input);
+      switch (str.toLowerCase().trim()) {
+        case "true": case "1": case "y": return true;
+        case "false": case "0": case "n": case null: return false;
+        case "":
+          if (isEmptyValueEqualToTrue === true) {
+            return true;
+          } else {
+            return false;
+          }
+        default:
+          return false;
+      }
+    } else {
+      if (isEmptyValueEqualToTrue === true) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
+
   /**
    *
    * @param {*} order
    * @param  {...any} property
    */
-  public dynamicsort(order: string, ...property: any) {
+  public dynamicSort(order: string, ...property: any) {
     let sort_order = 1;
     if (order === "desc") {
       sort_order = -1;

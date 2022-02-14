@@ -1,0 +1,210 @@
+{
+  "command": "update:project",
+  "name": "update:project",
+  "aliases": [
+    "upd:prj"
+  ],
+  "usage": "[options]",
+  "options": [
+    {
+      "key": "config",
+      "description": "Set the Name of the page to be created",
+      "type": "string",
+      "default": "",
+      "valueIfNotFound": "",
+      "alias": [
+        "-c",
+        "--config"
+      ],
+      "allowedValues": "",
+      "allowedAliases": "",
+      "question": "VALIDATIONS.CONFIG_FILE"
+    },
+    {
+      "key": "useWebXPanel",
+      "description": "Set the Name of the page to be created",
+      "type": "boolean",
+      "default": true,
+      "valueIfNotFound": true,
+      "alias": [
+        "-w",
+        "--useWebXPanel"
+      ],
+      "allowedValues": [
+        "true",
+        "false"
+      ],
+      "allowedAliases": [
+        "true",
+        "false",
+        "y",
+        "n"
+      ],
+      "question": "VALIDATIONS.USE_WEBXPANEL"
+    },
+    {
+      "key": "menuOrientation",
+      "description": "Set the Name of the page to be created",
+      "type": "enum",
+      "default": true,
+      "valueIfNotFound": true,
+      "alias": [
+        "-mo",
+        "--menuOrientation"
+      ],
+      "allowedValues": [
+        "horizontal",
+        "vertical",
+        "none"
+      ],
+      "allowedAliases": [
+        "horizontal",
+        "vertical",
+        "none"
+      ],
+      "question": "VALIDATIONS.SELECT_MENU_ORIENTATION"
+    },
+    {
+      "key": "displayHeader",
+      "description": "Set the Name of the page to be created",
+      "type": "boolean",
+      "default": true,
+      "valueIfNotFound": true,
+      "alias": [
+        "-dh",
+        "--displayHeader"
+      ],
+      "allowedValues": [
+        "true",
+        "false"
+      ],
+      "allowedAliases": [
+        "true",
+        "false",
+        "y",
+        "n"
+      ],
+      "question": "VALIDATIONS.DISPLAY_HEADER"
+    },
+    {
+      "key": "displayHeaderInfo",
+      "description": "Set the Name of the page to be created",
+      "type": "boolean",
+      "default": true,
+      "valueIfNotFound": true,
+      "alias": [
+        "-dhi",
+        "--displayHeaderInfo"
+      ],
+      "allowedValues": [
+        "true",
+        "false"
+      ],
+      "allowedAliases": [
+        "true",
+        "false",
+        "y",
+        "n"
+      ],
+      "question": "VALIDATIONS.DISPLAY_HEADER_INFO"
+    },
+    {
+      "key": "displayFooter",
+      "description": "Set the Name of the page to be created",
+      "type": "boolean",
+      "default": true,
+      "valueIfNotFound": true,
+      "alias": [
+        "-df",
+        "--displayFooter"
+      ],
+      "allowedValues": [
+        "true",
+        "false"
+      ],
+      "allowedAliases": [
+        "true",
+        "false",
+        "y",
+        "n"
+      ],
+      "question": "VALIDATIONS.DISPLAY_FOOTER"
+    },
+    {
+      "key": "headerComponent",
+      "description": "Set the Name of the page to be created",
+      "type": "enum",
+      "default": "",
+      "valueIfNotFound": "",
+      "alias": [
+        "-hc",
+        "--headerComponent"
+      ],
+      "allowedValues": "",
+      "allowedAliases": "",
+      "question": "VALIDATIONS.HEADER_COMPONENT_NAME"
+    },
+    {
+      "key": "footerComponent",
+      "description": "Set the Name of the page to be created",
+      "type": "enum",
+      "default": "",
+      "valueIfNotFound": "",
+      "alias": [
+        "-fc",
+        "--footerComponent"
+      ],
+      "allowedValues": "",
+      "allowedAliases": "",
+      "question": "VALIDATIONS.FOOTER_COMPONENT_NAME"
+    },
+    {
+      "key": "defaultView",
+      "description": "Set the Name of the page to be created",
+      "type": "enum",
+      "default": "",
+      "valueIfNotFound": "",
+      "alias": [
+        "-dv",
+        "--defaultView"
+      ],
+      "allowedValues": "",
+      "allowedAliases": "",
+      "question": "VALIDATIONS.DEFAULT_VIEW"
+    },
+    {
+      "key": "selectedTheme",
+      "description": "Set the Name of the page to be created",
+      "type": "enum",
+      "default": "",
+      "valueIfNotFound": "",
+      "alias": [
+        "-st",
+        "--selectedTheme"
+      ],
+      "allowedValues": "",
+      "allowedAliases": "",
+      "question": "VALIDATIONS.SELECTED_THEME"
+    },
+    {
+      "key": "force",
+      "description": "",
+      "type": "boolean",
+      "default": true,
+      "valueIfNotFound": false,
+      "alias": [
+        "-f",
+        "--force"
+      ],
+      "allowedValues": "",
+      "allowedAliases": "",
+      "question": "VALIDATIONS.FORCE"
+    }
+  ],
+  "backupFolder": "./dist/",
+  "additionalHelp": true,
+  "automatedTests": {
+    "enable": true,
+    "enableComponentDeleteAfterTest": true
+  }
+}

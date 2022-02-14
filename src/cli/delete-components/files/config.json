@@ -7,17 +7,21 @@
   "usage": "[options]",
   "options": [
     {
-      "keys": "-l, --list",
-      "description": "Prefix for list of component names to be deleted"
+      "key": "list",
+      "description": "Prefix for list of component names to be deleted",
+      "type": "array",
+      "default": [],
+      "valueIfNotFound": [],
+      "alias": ["-l", "--list"]
     },
     {
-      "keys": "-f, --force",
-      "description": "Forces the component to be deleted without asking for a confirmation"
+      "key": "force",
+      "description": "Prefix for list of component names to be deleted",
+      "type": "boolean",
+      "default": true,
+      "valueIfNotFound": false,
+      "alias": ["-f", "--force"]
     }
   ],
-  "additionalHelp": true,
-  "logger": {
-    "allowLogging": false,
-    "logLevel": 1
-  }
+  "additionalHelp": true
 }

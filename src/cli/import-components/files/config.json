@@ -7,27 +7,39 @@
   "usage": "[options]",
   "options": [
     {
-      "keys": "-z, --zipFile",
-      "description": "Prefix for full location path of the zip file to be imported"
-    },
-{
-      "keys": "-l, --list",
-      "description": "Prefix for list of file names"
-    },
-    {
-      "keys": "-f, --force",
-      "description": "Force the program to overwrite the target files with the source files and avoid any confirmation"
+      "key": "all",
+      "description": "Select this option to import all the components",
+      "type": "boolean",
+      "default": true,
+      "valueIfNotFound": false,
+      "alias": ["--all"]
     },
     {
-      "keys": "--all",
-      "description": "Select this option to import all the files"
+      "key": "list",
+      "description": "Prefix for list of component names",
+      "type": "array",
+      "default": [],
+      "valueIfNotFound": [],
+      "alias": ["-l", "--list"]
+    },
+    {
+      "key": "force",
+      "description": "Forces import without asking for a confirmation",
+      "type": "boolean",
+      "default": true,
+      "valueIfNotFound": false,
+      "alias": ["-f", "--force"]
+    },
+    {
+      "key": "zipFile",
+      "description": "Prefix for full location path of the zip file to be imported",
+      "type": "string",
+      "default": "",
+      "valueIfNotFound": "",
+      "alias": ["-z", "--zipFile"]
     }
   ],
   "additionalHelp": true,
-  "logger": {
-    "allowLogging": false,
-    "logLevel": 1
-  },
   "basePathForPages": "./app/project/components/pages/",
   "requiredFolderPath": "./app/project/components/",
   "zipFolderName": "imported-components",

@@ -4,19 +4,23 @@
   "usage": "[options]",
   "options": [
     {
-      "keys": "-l, --list",
-      "description": "Prefix for list of file names"
+      "key": "all",
+      "description": "Select this option to export all the files",
+      "type": "boolean",
+      "default": true,
+      "valueIfNotFound": false,
+      "alias": ["--all"]
     },
     {
-      "keys": "--all",
-      "description": "Select this option to export all the files"
+      "key": "list",
+      "description": "Prefix for list of file names",
+      "type": "array",
+      "default": [],
+      "valueIfNotFound": [],
+      "alias": ["-l", "--list"]
     }
   ],
   "additionalHelp": true,
-  "logger": {
-    "allowLogging": false,
-    "logLevel": 1
-  },
   "requiredFolderPath": "./app/project/",
   "zipFolderName": "exported-all",
   "outputFileName": "exported-all.zip",

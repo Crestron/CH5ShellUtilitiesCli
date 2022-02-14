@@ -31,8 +31,8 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
   async run() {
     this.logger.printLog(this.getText("PROCESSING_MESSAGE"));
 
-    this.projectConfigJson = JSON.parse(this.componentHelper.readFileContentSync("./app/project-config.json"));
-    this.projectConfigJsonSchema = JSON.parse(this.componentHelper.readFileContentSync("./.vscode/project-config-schema.json"));
+    this.projectConfigJson = JSON.parse(this.componentHelper.readFileContentSync(this.getConfigNode("projectConfigJSONFile")));
+    this.projectConfigJsonSchema = JSON.parse(this.componentHelper.readFileContentSync(this.getConfigNode("projectConfigJSONSchemaFile")));
 
     this.clearErrors();
     this.clearWarnings();

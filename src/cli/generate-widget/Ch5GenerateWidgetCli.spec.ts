@@ -71,7 +71,6 @@ describe('Generate widget >>>>>>>> ', () => {
             }
         });
         const initializeSpy = sinon.spy(generateWidgetComponent, <any>'initialize');
-        const checkPreValidationsSpy = sinon.spy(generateWidgetComponent, <any>'checkPrerequisiteValidations');
         const verifyInputSpy = sinon.spy(generateWidgetComponent, <any>'verifyInputParams');
         const checkPromptQuestionSpy = sinon.spy(generateWidgetComponent, <any>'checkPromptQuestions');
         const processRequestSpy = sinon.spy(generateWidgetComponent, <any>'processRequest');
@@ -81,7 +80,7 @@ describe('Generate widget >>>>>>>> ', () => {
         const response = await generateWidgetComponent.run();
         expect(response).to.equal(true);
 
-        sinon.assert.callOrder(initializeSpy, checkPreValidationsSpy, verifyInputSpy, checkPromptQuestionSpy, processRequestSpy, cleanUpSpy);
+        sinon.assert.callOrder(initializeSpy, verifyInputSpy, checkPromptQuestionSpy, processRequestSpy, cleanUpSpy);
     });
 
     it(`Expect to trigger error if template files are missing`, async () => {
@@ -91,7 +90,6 @@ describe('Generate widget >>>>>>>> ', () => {
             }
         });
         const initializeSpy = sinon.spy(generateWidgetComponent, <any>'initialize');
-        const checkPreValidationsSpy = sinon.spy(generateWidgetComponent, <any>'checkPrerequisiteValidations');
         const verifyInputSpy = sinon.spy(generateWidgetComponent, <any>'verifyInputParams');
         const checkPromptQuestionSpy = sinon.spy(generateWidgetComponent, <any>'checkPromptQuestions');
         const processRequestSpy = sinon.spy(generateWidgetComponent, <any>'processRequest');
@@ -100,7 +98,7 @@ describe('Generate widget >>>>>>>> ', () => {
         const response = await generateWidgetComponent.run();
         expect(response).to.equal(false);
 
-        sinon.assert.callOrder(initializeSpy, checkPreValidationsSpy, verifyInputSpy, checkPromptQuestionSpy, processRequestSpy);
+        sinon.assert.callOrder(initializeSpy, verifyInputSpy, checkPromptQuestionSpy, processRequestSpy);
     });
 });
 

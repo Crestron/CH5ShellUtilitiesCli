@@ -7,10 +7,6 @@
   "usage": "",
   "options": [],
   "additionalHelp": true,
-  "logger": {
-    "allowLogging": false,
-    "logLevel": 1
-  },
   "temporaryFilePath": "./../dist/",
   "zipFileDestinationPath": "./dist/",
   "ignoreFilesFolders": [
@@ -27,7 +23,6 @@
     "yarn-error.log",
     "testem.log",
     ".DS_Store",
-    "yarn.lock",
     "Thumbs.db"
   ]
 }
