@@ -142,7 +142,7 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForCli implements ICh5Cli {
             "value": null
           };
 
-          const validationResponse: any = this.validateCLIInputArgument(projectConfigJSONKey, this.inputArguments[projectConfigJSONKey]);
+          const validationResponse: any = this.validateCLIInputArgument(this.inputsToValidate[i], projectConfigJSONKey, this.inputArguments[projectConfigJSONKey], this.getText("ERRORS.INVALID_INPUT"));
           this.logger.log("validationResponse", validationResponse);
           if (validationResponse.error === "") {
             inputUpdate.value = validationResponse.value;
@@ -227,37 +227,6 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForCli implements ICh5Cli {
     } else {
       return false;
     }
-  }
-
-  private validateCLIInputArgument(key: string, value: string) {
-    this.logger.log(key + ": ", value);
-    value = String(value).trim().toLowerCase();
-    const inputObj: any = this.inputsToValidate.find((inpObj: any) => key === inpObj.key);
-    if (inputObj) {
-      if ((inputObj.allowedAliases.includes(value))) {
-        if (inputObj.type === "boolean") {
-          const val: boolean = this.utils.toBoolean(value);
-          return {
-            value: val,
-            error: ""
-          };
-        } else if (inputObj.type === "enum") {
-          return {
-            value: value,
-            error: ""
-          };
-        } else if (inputObj.type === "string") {
-          return {
-            value: value,
-            error: ""
-          };
-        }
-      }
-    }
-    return {
-      value: "",
-      error: this.getText("ERRORS.INVALID_INPUT")
-    };
   }
 
   /**

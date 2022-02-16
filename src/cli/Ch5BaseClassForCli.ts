@@ -14,7 +14,6 @@ import { Ch5CliComponentsHelper } from "./Ch5CliComponentsHelper";
 import { Ch5CliProjectConfig } from "./Ch5CliProjectConfig";
 
 const path = require('path');
-
 export class Ch5BaseClassForCli {
   private readonly _cliUtil: Ch5CliUtil;
   private readonly _cliLogger: Ch5CliLogger;
@@ -76,6 +75,63 @@ export class Ch5BaseClassForCli {
     this.CONFIG_FILE[attrs[attrs.length - 1]] = value;
   }
 
+  protected validateCLIInputArgument(inputObj: any, key: string, value: string, errorMessage: string) {
+    this.logger.log(key + ": ", value);
+    value = String(value).trim().toLowerCase();
+    if (inputObj) {
+      if (inputObj.allowedAliases.length > 0 && inputObj.allowedAliases.includes(value)) {
+        if (inputObj.type === "boolean") {
+          const val: boolean = this.utils.toBoolean(value);
+          return {
+            value: val,
+            error: ""
+          };
+        } else if (inputObj.type === "enum") {
+          return {
+            value: value,
+            error: ""
+          };
+        }
+      } else {
+        if (inputObj.type === "string") {
+          if (inputObj.validation !== "") {
+            if (inputObj.validation === "validatePackageName") {
+              const valOutput: any = this.validatePackage(value);
+              if (valOutput.isValid === false) {
+                return {
+                  value: null,
+                  error: valOutput.error
+                };
+              } else {
+                return {
+                  value: value,
+                  error: ""
+                };
+              }
+            }
+            return {
+              value: value,
+              error: ""
+            };
+          } else {
+            return {
+              value: value,
+              error: ""
+            };
+          }
+        }
+      }
+      return {
+        value: value,
+        error: ""
+      };
+    }
+    return {
+      value: "",
+      error: errorMessage
+    };
+  }
+
   /**
    *
    * @param program
@@ -131,6 +187,43 @@ export class Ch5BaseClassForCli {
 
   protected getConfigNode(nodeName: string) {
     return this.CONFIG_FILE[nodeName];
+  }
+
+  private validatePackage(packageName: string) {
+    /*
+      - package name length should be greater than zero
+      - all the characters in the package name must be lowercase i.e., no uppercase or mixed case names are allowed
+      - package name can consist of hyphens
+      - package name must not contain any non-url-safe characters (since name ends up being part of a URL)
+      - package name should not start with . or _
+      - package name should not contain any leading or trailing spaces
+      - package name should not contain any of the following characters: ~)('!*
+      - package name length cannot exceed 214      
+    */
+    if (packageName && packageName.trim().length > 0) {
+      packageName = packageName.trim().toLowerCase();
+      packageName = packageName.substring(0, 213);
+      const packageNameValidity = new RegExp(/^[a-z][a-z0-9-_ $]*$/).test(packageName);
+      if (packageNameValidity === false) {
+        return {
+          value: null,
+          isValid: false,
+          error: "Package name should not start with number or hyphen or underscore"
+        };
+      } else {
+        return {
+          value: packageName,
+          isValid: true,
+          error: ""
+        };
+      }
+    } else {
+      return {
+        value: "",
+        isValid: false,
+        error: "Empty Package Name"
+      };
+    }
   }
 
   /**

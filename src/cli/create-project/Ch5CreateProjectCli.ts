@@ -28,7 +28,7 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForCli implements ICh5Cli {
    * Constructor
    */
   public constructor() {
-    super("update-project");
+    super("create-project");
   }
 
   public get getEnquirer() {
@@ -53,8 +53,8 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForCli implements ICh5Cli {
       // Ask details to developer based on input parameter validation
       await this.checkPromptQuestions();
 
-      // Update project-config first (so that if this fails, we don't worry about file deletion). Next Delete Files
-      await this.processRequest();
+      // // Update project-config first (so that if this fails, we don't worry about file deletion). Next Delete Files
+      // await this.processRequest();
 
     } catch (e: any) {
       this.outputResponse.errorMessage = this.logError(e);
@@ -107,6 +107,7 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForCli implements ICh5Cli {
       }
     } else {
       this.logger.log("Blank project creation without json file");
+      this.inputsToValidate = this.componentHelper.configParams;
 
       for (let i: number = 0; i < this.inputsToValidate.length; i++) {
         const projectConfigJSONKey: string = this.inputsToValidate[i].key;
@@ -117,7 +118,7 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForCli implements ICh5Cli {
             "value": null
           };
 
-          const validationResponse: any = this.validateCLIInputArgument(projectConfigJSONKey, this.inputArguments[projectConfigJSONKey]);
+          const validationResponse: any = this.validateCLIInputArgument(this.inputsToValidate[i], projectConfigJSONKey, this.inputArguments[projectConfigJSONKey], this.getText("ERRORS.INVALID_INPUT"));
           this.logger.log("validationResponse", validationResponse);
           if (validationResponse.error === "") {
             inputUpdate.value = validationResponse.value;
@@ -140,10 +141,6 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForCli implements ICh5Cli {
         this.logger.printWarning(this.getText("ERRORS.MESSAGE_TITLE", warningMessage));
       }
 
-      // To Check if atleast 1 input is provided
-      if (this.outputResponse.data.updateInputs.length === 0) {
-        throw new Error(this.getText("ERRORS.MISSING_ATlEAST_ONE_DATA"));
-      }
     }
   }
 
@@ -204,37 +201,6 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForCli implements ICh5Cli {
     }
   }
 
-  private validateCLIInputArgument(key: string, value: string) {
-    this.logger.log(key + ": ", value);
-    value = String(value).trim().toLowerCase();
-    const inputObj: any = this.inputsToValidate.find((inpObj: any) => key === inpObj.key);
-    if (inputObj) {
-      if ((inputObj.allowedAliases.includes(value))) {
-        if (inputObj.type === "boolean") {
-          const val: boolean = this.utils.toBoolean(value);
-          return {
-            value: val,
-            error: ""
-          };
-        } else if (inputObj.type === "enum") {
-          return {
-            value: value,
-            error: ""
-          };
-        } else if (inputObj.type === "string") {
-          return {
-            value: value,
-            error: ""
-          };
-        }
-      }
-    }
-    return {
-      value: "",
-      error: this.getText("ERRORS.INVALID_INPUT")
-    };
-  }
-
   /**
    * Check if there are questions to be prompted to the developer
    */
@@ -254,28 +220,15 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForCli implements ICh5Cli {
       // const newCheck = new CompareJSON();
       // console.log(newCheck.map(oldProjectConfigJSON, newProjectConfigJSON));
 
-
-      let allowChange: boolean = false;
-      if (this.inputArguments["force"] === true) {
-        allowChange = true;
-      } else {
-        const questionsArray = {
-          name: this.getText("VALIDATIONS.CONFIRMATION.TITLE"),
-          message: this.getText("VALIDATIONS.ARE_YOU_SURE_TO_CHANGE"),
-          initial: true
-        };
-        allowChange = await new Confirm(questionsArray).run().then((response: boolean) => {
-          return response;
-        }).catch((err: any) => {
-          throw new Error(this.getText("ERRORS.DO_NOT_UPDATE_PROJECT"));
-        });
-      }
-      this.outputResponse.data.allowChange = this.utils.toBoolean(allowChange);
-
     } else {
       for (let i: number = 0; i < this.outputResponse.data.updateInputs.length; i++) {
-        if (!this.utils.isValidInput(this.outputResponse.data.updateInputs[i].value)) {
-          if (this.outputResponse.data.updateInputs[i].type === "enum") {
+        console.log("this.outputResponse.data.updateInputs[i].type", this.outputResponse.data.updateInputs[i].type);
+        console.log("this.outputResponse.data.updateInputs[i].value", this.outputResponse.data.updateInputs[i].value);
+        console.log("Check", this.utils.isValidInput(this.outputResponse.data.updateInputs[i].value));
+      if (!this.utils.isValidInput(this.outputResponse.data.updateInputs[i].value)) {
+          console.log("1. this.outputResponse.data.updateInputs[i].type", this.outputResponse.data.updateInputs[i].type);
+          console.log("2. this.outputResponse.data.updateInputs[i].value", this.outputResponse.data.updateInputs[i].value);
+            if (this.outputResponse.data.updateInputs[i].type === "enum") {
             const choicesList = this.outputResponse.data.updateInputs[i].allowedValues;
             const componentsQuery = new this.getSelect({
               name: 'value',
@@ -285,13 +238,30 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForCli implements ICh5Cli {
 
             this.outputResponse.data.updateInputs[i].value = await componentsQuery.run()
               .then((selectedMenu: any) => { return selectedMenu; })
-              .catch((error: any) => { throw new Error(this.getText("ERRORS.DO_NOT_UPDATE_PROJECT")); });
+              .catch((error: any) => { throw new Error(this.getText("ERRORS.DO_NOT_CREATE_PROJECT")); });
+            this.logger.log(this.outputResponse.data.updateInputs[i].key + ": ", this.outputResponse.data.updateInputs[i].value);
+          } else if (this.outputResponse.data.updateInputs[i].type === "string") {
+            const questionsArray = [
+              {
+                type: "text",
+                name: "pageName",
+                initial: "shell-template",
+                hint: "",
+                message: this.getText("VALIDATIONS.GET_PAGE_NAME"),
+                validate: (compName: string) => {
+                  return this.validateCLIInputArgument(this.outputResponse.data.updateInputs[i], this.outputResponse.data.updateInputs[i]["key"], compName, "ERROR");
+                }
+              }];
+            const response = await this.getEnquirer.prompt(questionsArray);
+            if (!this.utils.isValidInput(response.pageName)) {
+              throw new Error(this.getText("ERRORS.DO_NOT_CREATE_PROJECT"));
+            }
+
+            this.outputResponse.data.updateInputs[i].value = response.pageName;
             this.logger.log(this.outputResponse.data.updateInputs[i].key + ": ", this.outputResponse.data.updateInputs[i].value);
           }
         }
       }
-
-      this.outputResponse.data.allowChange = true;
     }
   }
 
@@ -429,7 +399,7 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForCli implements ICh5Cli {
 
       // Step 5: Save Project-config
       this.projectConfig.addPagesToJSON(projectConfigJSON.content.pages[0]);
-      
+
       // Step 6: Run validate:project-config
 
 

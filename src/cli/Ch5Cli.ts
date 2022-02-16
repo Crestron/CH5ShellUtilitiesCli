@@ -21,11 +21,13 @@ import { Ch5ImportComponentsCli } from "./import-components/Ch5ImportComponentsC
 import { Ch5ImportAllCli } from "./import-all/Ch5ImportAllCli";
 import { Ch5ValidateProjectConfigCli } from "./validate-project-config/Ch5ValidateProjectConfigJsonCli";
 import { Ch5UpdateProjectCli } from "./update-project/Ch5UpdateProjectCli";
+import { Ch5CreateProjectCli } from "./create-project/Ch5CreateProjectCli";
 
 const packageJson = require('../../package.json');
 const buildVersion = packageJson.version || 'VERSION_NOT_READ';
 
 export class Ch5ShellCli {
+  private readonly createProject: Ch5CreateProjectCli;
   private readonly deleteComponents: Ch5DeleteComponentsCli;
   private readonly exportAll: Ch5ExportAllCli;
   private readonly exportAssets: Ch5ExportAssetsCli;
@@ -42,6 +44,7 @@ export class Ch5ShellCli {
   private readonly validateProjectConfig: Ch5ValidateProjectConfigCli;
 
   public constructor() {
+    this.createProject = new Ch5CreateProjectCli();
     this.deleteComponents = new Ch5DeleteComponentsCli();
     this.exportAll = new Ch5ExportAllCli();
     this.exportAssets = new Ch5ExportAssetsCli();
@@ -71,6 +74,7 @@ export class Ch5ShellCli {
     //   )
     // );
 
+    await this.createProject.setupCommand(program);
     await this.deleteComponents.setupCommand(program);
     await this.exportAll.setupCommand(program);
     await this.exportAssets.setupCommand(program);
