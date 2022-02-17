@@ -95,4 +95,4 @@ const <%widgetName%>Module = (() => {
 
     // END::CHANGEAREA   
 
-}());
+})();
