@@ -320,7 +320,7 @@ export class Ch5GeneratePageCli extends Ch5BaseClassForCli implements ICh5Cli {
       "pageName": this.outputResponse.data.pageName,
       "fullPath": this.outputResponse.data.folderPath,
       "fileName": this.outputResponse.data.fileName + '.html',
-      "cachedPage": true,
+      "cachePage": true,
       "preloadPage": false,      
       "standAloneView": !allowNavigation,
       "pageProperties": {
