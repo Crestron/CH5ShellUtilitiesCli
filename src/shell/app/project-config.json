@@ -90,32 +90,12 @@
     "$component": ""
   },
   "content": {
-    "$defaultView": "page1",
+    "$defaultView": "",
     "triggerViewProperties": {
       "gestureable": false,
       "disableAnimation": true
     },
-    "pages": [
-      {
-        "pageName": "page1",
-        "fullPath": "./app/project/components/pages/page1/",
-        "fileName": "page1.html",
-        "standAloneView": false,
-        "cachePage": false,
-        "preloadPage": false,
-        "pageProperties": {
-          "sendEventOnShow": ""
-        },
-        "navigation": {
-          "sequence": 1,
-          "label": "menu.page1",
-          "isI18nLabel": true,
-          "iconClass": "fas fa-file-alt",
-          "iconUrl": "",
-          "iconPosition": "bottom"
-        }
-      }
-    ],
+    "pages": [],
     "widgets": []
   }
 }

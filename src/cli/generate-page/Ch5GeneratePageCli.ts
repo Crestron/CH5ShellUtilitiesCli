@@ -62,7 +62,7 @@ export class Ch5GeneratePageCli extends Ch5BaseClassForCli implements ICh5Cli {
 
       // Update project-config first (so that if this fails, we don't worry about file deletion). Next Delete Files
       await this.processRequest();
-
+      
     } catch (e: any) {
       if (e && this.utils.isValidInput(e.message)) {
         if (e.message.trim().toLowerCase() === 'error') {

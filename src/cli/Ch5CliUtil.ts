@@ -9,8 +9,27 @@ import chalk from "chalk";
 import { OutputLevel } from "@crestron/ch5-utilities";
 
 const rimraf = require("rimraf");
+const fs = require("fs");
+const process = require("process");
 
 export class Ch5CliUtil {
+
+  /**
+   * 
+   * @param path 
+   * @returns 
+   */
+  readdirAsync(path: string): Promise<any> {
+    return new Promise(function (resolve, reject) {
+      fs.readdir(path, function (error: any, result: any) {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result);
+        }
+      });
+    });
+  }
 
   /**
  * Delete directory by path
@@ -40,6 +59,26 @@ export class Ch5CliUtil {
     console.log(chalk.red(`${error.name}: ${error.message}`));
   }
 
+  public async readFileContent(path: string) {
+    const output: string = await this.readFile(path);
+    return output;
+  }
+
+  public readFileContentSync(path: string) {
+    return fs.readFileSync(path, 'utf8');
+  }
+
+  async readFile(path: string): Promise<string> {
+    return new Promise<string>((resolve, reject) => {
+      fs.readFile(path, 'utf8', function (err: any, data: any) {
+        if (err) {
+          reject(err);
+        }
+        resolve(data);
+      });
+    });
+  }
+
   public getOutputLevel(options: any): OutputLevel {
     if (options.quiet) {
       return OutputLevel.Quiet;
@@ -53,7 +92,7 @@ export class Ch5CliUtil {
   }
 
   /**
-   * Check if input is valid. Invalid are "", 0, {}, [], null, undefined.
+   * Check if input is valid. Invalid are "", {}, [], null, undefined.
    * @param {*} input
    */
   public isValidInput(input: any) {

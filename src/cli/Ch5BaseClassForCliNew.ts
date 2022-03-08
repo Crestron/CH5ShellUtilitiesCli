@@ -11,42 +11,53 @@ import { Ch5CliUtil } from "./Ch5CliUtil";
 import { Ch5CliLogger } from "./Ch5CliLogger";
 import { Ch5CliNamingHelper } from "./Ch5CliNamingHelper";
 import { Ch5CliProjectConfig } from "./Ch5CliProjectConfig";
+import { Ch5ValidateProjectConfigCli } from "./validate-project-config/Ch5ValidateProjectConfigJsonCli";
 import { Ch5CliConfigFileReader } from "./Ch5CliConfigFileReader";
+import { ICh5CliConfigFile, ICh5CliConfigFileParamOptions } from "./ICh5CliConfigFile";
 
+const { Select, Confirm } = require('enquirer');
+const Enquirer = require('enquirer');
+const enquirer = new Enquirer();
 const path = require('path');
-export class Ch5BaseClassForCli {
+const fs = require("fs");
+const fsExtra = require("fs-extra");
+const jsonSchema = require('jsonschema');
+
+export abstract class Ch5BaseClassForCliNew {
   private readonly _cliUtil: Ch5CliUtil;
   private readonly _cliLogger: Ch5CliLogger;
+  private readonly _cliConfigFileReader: Ch5CliConfigFileReader;
   private readonly _cliNamingHelper: Ch5CliNamingHelper;
   private readonly _cliProjectConfig: Ch5CliProjectConfig;
-  private readonly _cliConfigFileReader: Ch5CliConfigFileReader;
 
   private _folderPath: string = "";
-  private CONFIG_FILE: any;
+  private CONFIG_FILE: ICh5CliConfigFile;
   private TRANSLATION_FILE: any;
-  private _inputArguments: any = {};
+  private _inputArgs: any = {};
 
-  private readonly COMMON_INPUT_PARAMS: any[] = [
-    {
-      "key": "verbose",
-      "description": "",
-      "type": "boolean",
-      "default": true,
-      "valueIfNotFound": false,
-      "alias": ["--verbose"]
-    },
-    {
-      "key": "help",
-      "description": "",
-      "type": "boolean",
-      "default": true,
-      "valueIfNotFound": false,
-      "alias": ["-h", "--help"]
-    }
-  ];
+  protected outputResponse: any = {
+    result: false,
+    errorMessage: "",
+    warningMessage: "",
+    askConfirmation: false,
+    errorsFound: [],
+    data: {}
+  };
 
-  protected get inputArguments(): any {
-    return this._inputArguments;
+  public get getEnquirer() {
+    return enquirer;
+  }
+
+  public get getSelect() {
+    return Select;
+  }
+
+  public get getConfirm() {
+    return Confirm;
+  }
+
+  protected get inputArgs(): any {
+    return this._inputArgs;
   }
 
   protected get utils() {
@@ -55,6 +66,18 @@ export class Ch5BaseClassForCli {
 
   protected get logger() {
     return this._cliLogger;
+  }
+
+  protected get configFileReader() {
+    return this._cliConfigFileReader;
+  }
+
+  protected get configFile() {
+    return this._cliConfigFileReader.configFile;
+  }
+
+  protected get configFileArgs() {
+    return this._cliConfigFileReader;
   }
 
   protected get namingHelper() {
@@ -71,14 +94,28 @@ export class Ch5BaseClassForCli {
     this._cliNamingHelper = new Ch5CliNamingHelper();
     this._cliProjectConfig = new Ch5CliProjectConfig();
     this._cliConfigFileReader = new Ch5CliConfigFileReader(path.join(__dirname, this._folderPath, "files", "config.json"));
-    this.CONFIG_FILE = JSON.parse(this.utils.readFileContentSync(path.join(__dirname, this._folderPath, "files", "config.json")));
-    this._inputArguments = this.processArgs();
-    this._cliLogger = new Ch5CliLogger(this._inputArguments["verbose"]);
-    this.TRANSLATION_FILE = JSON.parse(this.utils.readFileContentSync(path.join(__dirname, this._folderPath, "i18n", "en.json")));
+    this.CONFIG_FILE = this._cliConfigFileReader.configFile;
+    this.processArgs();
+    // console.log('this._inputArgs["verbose"]', this._inputArgs["verbose"]);
+    this._cliLogger = new Ch5CliLogger(this._inputArgs["verbose"].argsValue);
+    this.TRANSLATION_FILE = JSON.parse(this._cliUtil.readFileContentSync(path.join(__dirname, this._folderPath, "i18n", "en.json")));
+  }
+
+  protected initialize() {
+    this.outputResponse = {
+      result: false,
+      errorMessage: "",
+      askConfirmation: false,
+      warningMessage: "",
+      errorsFound: [],
+      data: {
+
+      }
+    };
   }
 
   public setInputArgsForTesting(args: any) {
-    this._inputArguments = this.processArgsAnalyze(args);
+    this.processArgsAnalyze(args);
   }
 
   processArgs() {
@@ -88,27 +125,25 @@ export class Ch5BaseClassForCli {
 
   processArgsAnalyze(args: any): any {
     const completeInputParams = this._cliConfigFileReader.configParamOptions();
-
     const output: any = {};
     let arrayKey: any = null;
     let arrayParam: any = null;
     let continueProcess = false;
     args.forEach((val: any, index: any, array: any) => {
       if (String(val).indexOf('--') === 0 || String(val).indexOf('-') === 0) {
-        let optionName = null;
-        if (String(val).indexOf('--') === 0) {
-          optionName = val.replace('--', '');
-        } else if (String(val).indexOf('-') === 0) {
-          optionName = val.replace('-', '');
-        }
         const paramObj = completeInputParams.find((tempObj) => tempObj.alias.map((v: string) => v.toLowerCase()).includes(val.trim().toLowerCase()));
         if (paramObj) {
+          const outputVal: any = JSON.parse(JSON.stringify(paramObj));
           arrayKey = paramObj.key;
           arrayParam = paramObj.type;
           if (arrayParam === "array") {
-            output[arrayKey] = [];
-          } else if (arrayParam === "boolean" || arrayParam === "string") {
-            output[arrayKey] = paramObj.default;
+            outputVal["argsValue"] = [];
+            outputVal["inputReceived"] = true;
+            output[arrayKey] = outputVal;
+          } else if (arrayParam === "boolean" || arrayParam === "string" || arrayParam === "number") {
+            outputVal["argsValue"] = paramObj.default;
+            outputVal["inputReceived"] = true;
+            output[arrayKey] = outputVal;
           }
           continueProcess = true;
         } else {
@@ -118,38 +153,32 @@ export class Ch5BaseClassForCli {
       } else {
         if (arrayKey != null) {
           if (arrayParam === "array") {
-            output[arrayKey].push(val);
-          } else if (arrayParam === "boolean" || arrayParam === "string") {
+            output[arrayKey]["argsValue"].push(val);
+          } else if (arrayParam === "boolean" || arrayParam === "string" || arrayParam === "number") {
             if (continueProcess === true) {
-              output[arrayKey] = val;
+              output[arrayKey]["argsValue"] = val;
               continueProcess = false;
             }
           }
         }
       }
     });
+
     for (let i: number = 0; i < completeInputParams.length; i++) {
       if (!output[completeInputParams[i]["key"]]) {
-        output[completeInputParams[i]["key"]] = completeInputParams[i]["valueIfNotFound"];
+        output[completeInputParams[i]["key"]] = completeInputParams[i];
+        output[completeInputParams[i]["key"]]["inputReceived"] = false;
+        output[completeInputParams[i]["key"]]["argsValue"] = completeInputParams[i]["valueIfNotFound"];
       }
     }
-
+    this._inputArgs = JSON.parse(JSON.stringify(output));
     return output;
   }
 
-  public changeConfigParam(key: string, value: any) {
-    const attrs = key.split('.');
-    for (let i = 0; i < attrs.length - 1; i++) {
-      this.CONFIG_FILE = this.CONFIG_FILE[attrs[i]];
-    }
-    this.CONFIG_FILE[attrs[attrs.length - 1]] = value;
-  }
-
   protected validateCLIInputArgument(inputObj: any, key: string, value: string, errorMessage: string) {
-    this.logger.log(key + ": ", value);
     value = String(value).trim().toLowerCase();
     if (inputObj) {
-      if (inputObj.allowedAliases.length > 0 && inputObj.allowedAliases.includes(value)) {
+      if (inputObj.allowedAliases && inputObj.allowedAliases.length > 0 && inputObj.allowedAliases.includes(value)) {
         if (inputObj.type === "boolean") {
           const val: boolean = this.utils.toBoolean(value);
           return {
@@ -309,8 +338,98 @@ export class Ch5BaseClassForCli {
     if (e && this.utils.isValidInput(e.message)) {
       return e.message;
     } else {
+      console.log(e);
       return this.getText("ERRORS.SOMETHING_WENT_WRONG");
     }
+  }
+
+  /**
+   * Adds error message to the array
+   * @param {string} heading
+   * @param {string} message
+   * @param {string} resolution
+   */
+  protected addError(heading: string, message: string, resolution: string) {
+    let valueExists = false;
+    if (this.outputResponse.errorsFound.length > 0) {
+      for (let item of this.outputResponse.errorsFound) {
+        if (message === item.message) {
+          valueExists = true;
+          break;
+        }
+      }
+    }
+    if (!valueExists) {
+      this.outputResponse.errorsFound.push({
+        heading: heading,
+        message: message,
+        resolution: resolution
+      });
+    }
+  }
+
+  protected isConfigFileValid(filePath: string, schemaFilePath: string, runProjectConfigValidation: boolean = true) {
+    const Validator = jsonSchema.Validator;
+    const v = new Validator();
+    const projectConfigJson = JSON.parse(this.utils.readFileContentSync(filePath));
+    const projectConfigJsonSchema = JSON.parse(this.utils.readFileContentSync(schemaFilePath));
+    const errors = v.validate(projectConfigJson, projectConfigJsonSchema).errors;
+    const errorOrWarningType = this.getText("VALIDATIONS.SCHEMA.HEADER");
+    for (let i: number = 0; i < errors.length; i++) {
+      this.logger.log("errors[i]", errors[i]);
+      this.addError(errorOrWarningType, errors[i].stack.toString().replace("instance.", ""), errors[i].schema.description);
+    }
+
+    if (runProjectConfigValidation === true) {
+      // run validate Project config
+      const valProjConfig = new Ch5ValidateProjectConfigCli();
+      valProjConfig.changeConfigParam("projectConfigJSONFile", filePath);
+      valProjConfig.changeConfigParam("projectConfigJSONSchemaFile", schemaFilePath);
+      valProjConfig.run();
+    }
+    // console.log("Schema Validation Errors: ", errors.length)
+    //TODO - why is logger log not working
+    this.logger.log("Schema Validation Errors: ", errors.length);
+    return (errors.length === 0);
+  }
+
+  protected isConfigFileExist(fileName: string) {
+    if (fs.existsSync(fileName)) {
+      const checkFileOrFolder = fs.statSync(fileName);
+      if (checkFileOrFolder && checkFileOrFolder.isFile()) {
+        if (path.extname(fileName).trim().toLowerCase() === ".json") {
+          return true;
+        } else {
+          return false;
+        }
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
+
+  /**
+   * Composes the output message for errors
+   * @param {array} dataArray
+   * @param {string} type
+   */
+  protected composeOutput(dataArray: any[], type: string) {
+    let outputMessage = this.getText("OUTPUT_ERROR_HEADER", type, String(dataArray.length)) + "\n";
+    let tab: string = "    ";
+    let numbering = 1;
+    let previousOutputHeading = "";
+    for (let i: number = 0; i < dataArray.length; i++) {
+      if (previousOutputHeading !== dataArray[i].heading) {
+        outputMessage += tab + String(numbering) + ". " + dataArray[i].heading + ": " + dataArray[i].message + "\n";
+        numbering += 1;
+      }
+      if (dataArray[i].resolution && dataArray[i].resolution.trim() !== "") {
+        outputMessage += tab + " (" + dataArray[i].resolution + ").\n";
+      }
+    }
+    return outputMessage;
   }
 
 }

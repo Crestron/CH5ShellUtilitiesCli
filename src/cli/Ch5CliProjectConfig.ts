@@ -318,7 +318,6 @@ export class Ch5CliProjectConfig {
   }
 
   changeNodeValues(nodeName: string, nodeValue: string) {
-    console.log("nodeName", nodeName, "nodeValue", nodeValue);
     this.file.set(nodeName, nodeValue);
     this.file.save();
   }

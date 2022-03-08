@@ -86,5 +86,17 @@
   "PROCESSING_MESSAGE": "Validating project-config.json......",
   "OUTPUT_ERROR_HEADER": "{0} Found ({1}):",
   "TYPE_ERROR": "Errors",
-  "TYPE_WARNING": "Warnings"
+  "TYPE_WARNING": "Warnings",
+  "INITIALIZE": {
+
+  },
+  "VERIFY_INPUT_PARAMS": {
+    
+  },
+  "PROMPT_QUESTIONS": {
+    
+  },
+  "PROCESS_REQUEST": {
+    
+  }
 }

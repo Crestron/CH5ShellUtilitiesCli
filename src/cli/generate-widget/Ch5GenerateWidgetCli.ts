@@ -42,7 +42,7 @@ export class Ch5GenerateWidgetCli extends Ch5BaseClassForCli implements ICh5Cli 
     };
 
     if (this.readableInputs.length === 0) {
-      this.readableInputs = this.componentHelper.processArgs();
+      this.readableInputs = this.processArgs();
     }
   }
 

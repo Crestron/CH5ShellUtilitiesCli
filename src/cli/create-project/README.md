@@ -1,6 +1,6 @@
-# Shell Template - Project Config
+# Shell Template - Create Project
 
-To validate the project-config.json file, go to the command-prompt or terminal of the Shell Template Project, and then execute `ch5-shell-cli validate:projectconfig`.
+To create a project, go to the command-prompt or terminal where you want to create the project, and then execute run the command `ch5-shell-cli create:project`.
 
 ## How to Use
 
@@ -46,14 +46,8 @@ The project-config.json is validated for the following cases:
 This validation will review the settings in project configuration file and inform the developer of any invalid configuration before running the browser or running on the touch screen. During the 'start' / 'build' process, this script will be executed and if there are errors (not warning), the script will not continue to the next step.
 ```
 
-### Copyright
+### How to test
 
-Copyright (C) 2021 to the present, Crestron Electronics, Inc.
+npm pack / yarn pack
 
-All rights reserved.
 
-No part of this software may be reproduced in any form, machine
-or natural, without the express written consent of Crestron Electronics.
-
-Use of this source code is subject to the terms of the Crestron Software License Agreement
-under which you licensed this source code.

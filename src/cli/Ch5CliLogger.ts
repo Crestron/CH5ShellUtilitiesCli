@@ -81,6 +81,18 @@ export class Ch5CliLogger {
     }
   }
 
+  public start(...input: any) {
+    if (this.allowLogging === true && this.logLevel <= LOG_LEVELS.DEBUG) {
+      console.group(this.FOREGROUND_COLORS.Blue, ...input, this.FORMATTING.Reset);
+    }
+  }
+
+  public end() {
+    if (this.allowLogging === true && this.logLevel <= LOG_LEVELS.DEBUG) {
+      console.groupEnd();
+    }
+  }
+
   /**
    *
    * @param  {...any} input

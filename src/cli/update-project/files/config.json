@@ -1,9 +1,7 @@
 {
   "command": "update:project",
   "name": "update:project",
-  "aliases": [
-    "upd:prj"
-  ],
+  "aliases": [],
   "usage": "[options]",
   "options": [
     {
@@ -18,14 +16,16 @@
       ],
       "allowedValues": "",
       "allowedAliases": "",
-      "question": "VALIDATIONS.CONFIG_FILE"
+      "validation": "",
+      "question": "VALIDATIONS.CONFIG_FILE",
+      "optionalArgument": false
     },
     {
       "key": "useWebXPanel",
       "description": "Set the Name of the page to be created",
       "type": "boolean",
       "default": true,
-      "valueIfNotFound": true,
+      "valueIfNotFound": false,
       "alias": [
         "-w",
         "--useWebXPanel"
@@ -40,14 +40,15 @@
         "y",
         "n"
       ],
-      "question": "VALIDATIONS.USE_WEBXPANEL"
+      "question": "VALIDATIONS.USE_WEBXPANEL",
+      "optionalArgument": false
     },
     {
       "key": "menuOrientation",
       "description": "Set the Name of the page to be created",
       "type": "enum",
-      "default": true,
-      "valueIfNotFound": true,
+      "default": "horizontal",
+      "valueIfNotFound": "",
       "alias": [
         "-mo",
         "--menuOrientation"
@@ -62,14 +63,15 @@
         "vertical",
         "none"
       ],
-      "question": "VALIDATIONS.SELECT_MENU_ORIENTATION"
+      "question": "VALIDATIONS.SELECT_MENU_ORIENTATION",
+      "optionalArgument": false
     },
     {
       "key": "displayHeader",
       "description": "Set the Name of the page to be created",
       "type": "boolean",
       "default": true,
-      "valueIfNotFound": true,
+      "valueIfNotFound": false,
       "alias": [
         "-dh",
         "--displayHeader"
@@ -84,14 +86,15 @@
         "y",
         "n"
       ],
-      "question": "VALIDATIONS.DISPLAY_HEADER"
+      "question": "VALIDATIONS.DISPLAY_HEADER",
+      "optionalArgument": false
     },
     {
       "key": "displayHeaderInfo",
       "description": "Set the Name of the page to be created",
       "type": "boolean",
       "default": true,
-      "valueIfNotFound": true,
+      "valueIfNotFound": false,
       "alias": [
         "-dhi",
         "--displayHeaderInfo"
@@ -106,14 +109,15 @@
         "y",
         "n"
       ],
-      "question": "VALIDATIONS.DISPLAY_HEADER_INFO"
+      "question": "VALIDATIONS.DISPLAY_HEADER_INFO",
+      "optionalArgument": false
     },
     {
       "key": "displayFooter",
       "description": "Set the Name of the page to be created",
       "type": "boolean",
       "default": true,
-      "valueIfNotFound": true,
+      "valueIfNotFound": false,
       "alias": [
         "-df",
         "--displayFooter"
@@ -128,7 +132,8 @@
         "y",
         "n"
       ],
-      "question": "VALIDATIONS.DISPLAY_FOOTER"
+      "question": "VALIDATIONS.DISPLAY_FOOTER",
+      "optionalArgument": false
     },
     {
       "key": "headerComponent",
@@ -142,7 +147,8 @@
       ],
       "allowedValues": "",
       "allowedAliases": "",
-      "question": "VALIDATIONS.HEADER_COMPONENT_NAME"
+      "question": "VALIDATIONS.HEADER_COMPONENT_NAME",
+      "optionalArgument": false
     },
     {
       "key": "footerComponent",
@@ -156,7 +162,8 @@
       ],
       "allowedValues": "",
       "allowedAliases": "",
-      "question": "VALIDATIONS.FOOTER_COMPONENT_NAME"
+      "question": "VALIDATIONS.FOOTER_COMPONENT_NAME",
+      "optionalArgument": false
     },
     {
       "key": "defaultView",
@@ -170,7 +177,8 @@
       ],
       "allowedValues": "",
       "allowedAliases": "",
-      "question": "VALIDATIONS.DEFAULT_VIEW"
+      "question": "VALIDATIONS.DEFAULT_VIEW",
+      "optionalArgument": false
     },
     {
       "key": "selectedTheme",
@@ -184,7 +192,8 @@
       ],
       "allowedValues": "",
       "allowedAliases": "",
-      "question": "VALIDATIONS.SELECTED_THEME"
+      "question": "VALIDATIONS.SELECTED_THEME",
+      "optionalArgument": false
     },
     {
       "key": "force",
@@ -198,7 +207,8 @@
       ],
       "allowedValues": "",
       "allowedAliases": "",
-      "question": "VALIDATIONS.FORCE"
+      "question": "VALIDATIONS.FORCE",
+      "optionalArgument": true
     }
   ],
   "backupFolder": "./dist/",

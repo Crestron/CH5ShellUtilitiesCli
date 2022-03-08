@@ -62,6 +62,9 @@ The deploy command will prompt you for the SFTP user and password,
 > ch5-cli deploy output-test/angular-demo-app.ch5z --deviceHost 192.168.2.44 --deviceDirectory display --deviceType touchscreen
 ```
 
+## Developer
+
+### How to use config.json
 ## License
 
 Copyright (C) 2021 to the present, Crestron Electronics, Inc.
