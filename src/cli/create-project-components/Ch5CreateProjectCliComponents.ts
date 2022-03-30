@@ -253,10 +253,13 @@ export class Ch5CreateProjectCliCustom extends Ch5BaseClassForCliNew implements 
           Object.entries(pagesToBeCreated[i].pageContent).forEach(([key, value]: any) => {
             const fileContent: string = fsExtra.readFileSync(path.join(__dirname, "templates", key + ".template"));
             for (let j: number = 0; j < value.length; j++) {
+              let counterForIndex: number = 0;
               for (let k: number = 0; k < value[j].count; k++) {
                 let fileContentForEachItem = "";
                 Object.entries(value[j].attributes).forEach(([keySecond, valueSecond]: any) => {
                   // TODO - escape quotes
+                  valueSecond = this.utils.replaceAll(valueSecond, "{{idx}}", String(counterForIndex));
+                  counterForIndex++;
                   fileContentForEachItem += " " + keySecond + "='" + valueSecond + "'";
                 });
                 newContent += this.utils.replaceAll(fileContent, "<%attributes%>", fileContentForEachItem);
@@ -304,7 +307,6 @@ export class Ch5CreateProjectCliCustom extends Ch5BaseClassForCliNew implements 
         throw new Error(this.getText("PROCESS_REQUEST.FOLDER_CONTAINS_FILES", pathToCreateProject));
       }
 
-      // TODO --blank
       if (!fs.existsSync(pathToCreateProject)) {
         fs.mkdirSync(pathToCreateProject, { recursive: true });
       }
