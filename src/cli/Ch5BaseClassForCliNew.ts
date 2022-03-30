@@ -15,7 +15,7 @@ import { Ch5ValidateProjectConfigCli } from "./validate-project-config/Ch5Valida
 import { Ch5CliConfigFileReader } from "./Ch5CliConfigFileReader";
 import { ICh5CliConfigFile, ICh5CliConfigFileParamOptions } from "./ICh5CliConfigFile";
 
-const { Select, Confirm } = require('enquirer');
+const { Select, Confirm, prompt } = require('enquirer');
 const Enquirer = require('enquirer');
 const enquirer = new Enquirer();
 const path = require('path');
@@ -36,11 +36,11 @@ export abstract class Ch5BaseClassForCliNew {
   private _inputArgs: any = {};
 
   protected outputResponse: any = {
+    askConfirmation: false,
     result: false,
     errorMessage: "",
     warningMessage: "",
-    askConfirmation: false,
-    errorsFound: [],
+    successMessage: "",
     data: {}
   };
 
@@ -48,6 +48,9 @@ export abstract class Ch5BaseClassForCliNew {
     return enquirer;
   }
 
+  public get getPrompt() {
+    return prompt;
+  }
   public get getSelect() {
     return Select;
   }
@@ -96,26 +99,19 @@ export abstract class Ch5BaseClassForCliNew {
     this._cliConfigFileReader = new Ch5CliConfigFileReader(path.join(__dirname, this._folderPath, "files", "config.json"));
     this.CONFIG_FILE = this._cliConfigFileReader.configFile;
     this.processArgs();
-    // console.log('this._inputArgs["verbose"]', this._inputArgs["verbose"]);
     this._cliLogger = new Ch5CliLogger(this._inputArgs["verbose"].argsValue);
-    this.TRANSLATION_FILE = JSON.parse(this._cliUtil.readFileContentSync(path.join(__dirname, this._folderPath, "i18n", "en.json")));
+    this.TRANSLATION_FILE = this.mergeJSON(JSON.parse(this._cliUtil.readFileContentSync(path.join(__dirname, this._folderPath, "i18n", "en.json"))), JSON.parse(this._cliUtil.readFileContentSync(path.join(__dirname, "files", "en.json"))));
   }
 
-  protected initialize() {
+  protected initBase() {
     this.outputResponse = {
+      askConfirmation: false,
       result: false,
       errorMessage: "",
-      askConfirmation: false,
       warningMessage: "",
-      errorsFound: [],
-      data: {
-
-      }
+      successMessage: "",
+      data: {}
     };
-  }
-
-  public setInputArgsForTesting(args: any) {
-    this.processArgsAnalyze(args);
   }
 
   processArgs() {
@@ -136,12 +132,16 @@ export abstract class Ch5BaseClassForCliNew {
           const outputVal: any = JSON.parse(JSON.stringify(paramObj));
           arrayKey = paramObj.key;
           arrayParam = paramObj.type;
-          if (arrayParam === "array") {
-            outputVal["argsValue"] = [];
+          if (arrayParam === "enum") {
+            outputVal["argsValue"] = paramObj.valueIfNotFound;
             outputVal["inputReceived"] = true;
             output[arrayKey] = outputVal;
           } else if (arrayParam === "boolean" || arrayParam === "string" || arrayParam === "number") {
-            outputVal["argsValue"] = paramObj.default;
+            if (outputVal["isSpecialArgument"] === true) {
+              outputVal["argsValue"] = paramObj.default;
+            } else {
+              outputVal["argsValue"] = paramObj.valueIfNotFound;
+            }
             outputVal["inputReceived"] = true;
             output[arrayKey] = outputVal;
           }
@@ -152,7 +152,10 @@ export abstract class Ch5BaseClassForCliNew {
         }
       } else {
         if (arrayKey != null) {
-          if (arrayParam === "array") {
+          if (arrayParam === "enum") {
+            if (!output[arrayKey]["argsValue"]) {
+              output[arrayKey]["argsValue"] = [];
+            }
             output[arrayKey]["argsValue"].push(val);
           } else if (arrayParam === "boolean" || arrayParam === "string" || arrayParam === "number") {
             if (continueProcess === true) {
@@ -175,47 +178,82 @@ export abstract class Ch5BaseClassForCliNew {
     return output;
   }
 
+  public mergeJSON(...args: any) {
+    let target = {};
+    // Merge the object into the target object
+
+    //Loop through each object and conduct a merge
+    for (let i = 0; i < args.length; i++) {
+      target = this.merger(target, args[i]);
+    }
+    return target;
+  }
+
+  private merger(target: any, obj: any) {
+    for (let prop in obj) {
+      // eslint-disable-next-line no-prototype-builtins
+      if (obj.hasOwnProperty(prop)) {
+        if (Object.prototype.toString.call(obj[prop]) === '[object Object]') {
+          // If we're doing a deep merge and the property is an object
+          target[prop] = this.mergeJSON(target[prop], obj[prop]);
+          // target = merger(target, obj[prop]);
+        } else {
+          // Otherwise, do a regular merge
+          target[prop] = obj[prop];
+        }
+      }
+    }
+    return target;
+  }
+
   protected validateCLIInputArgument(inputObj: any, key: string, value: string, errorMessage: string) {
     value = String(value).trim().toLowerCase();
     if (inputObj) {
       if (inputObj.allowedAliases && inputObj.allowedAliases.length > 0 && inputObj.allowedAliases.includes(value)) {
         if (inputObj.type === "boolean") {
-          const val: boolean = this.utils.toBoolean(value);
-          return {
-            value: val,
-            error: ""
-          };
+          if (value) {
+            const val: boolean = this.utils.toBoolean(value);
+            return {
+              value: val,
+              warning: ""
+            };
+          } else {
+            return {
+              value: value,
+              warning: ""
+            };
+          }
         } else if (inputObj.type === "enum") {
           return {
             value: value,
-            error: ""
+            warning: ""
           };
         }
       } else {
         if (inputObj.type === "string") {
           if (inputObj.validation !== "") {
-            if (inputObj.validation === "validatePackageName") {
-              const valOutput: any = this.validatePackage(value);
+            if (inputObj.validation === "validatePackageJsonProjectName") {
+              const valOutput: any = this.validatePackageJsonProjectName(value);
               if (valOutput.isValid === false) {
                 return {
                   value: null,
-                  error: valOutput.error
+                  warning: valOutput.error
                 };
               } else {
                 return {
                   value: value,
-                  error: ""
+                  warning: ""
                 };
               }
             }
             return {
               value: value,
-              error: ""
+              warning: ""
             };
           } else {
             return {
               value: value,
-              error: ""
+              warning: ""
             };
           }
         }
@@ -265,6 +303,35 @@ export abstract class Ch5BaseClassForCliNew {
     return programObject;
   }
 
+  public async run() {
+    this.logger.start("Program Starts");
+    try {
+      this.initBase();
+
+      // Initialize
+      await this.initialize();
+
+      // Verify input params
+      await this.verifyInputParams();
+
+      // Ask details to developer based on input parameter validation
+      await this.checkPromptQuestions();
+
+      // Update project-config first (so that if this fails, we don't worry about file deletion). Next Delete Files
+      await this.processRequest();
+
+    } catch (e: any) {
+      this.outputResponse.errorMessage = this.logError(e);
+    } finally {
+      // Clean up
+      this.cleanUp();
+    }
+
+    // Show output response
+    this.logOutput();
+    this.logger.end();
+    return this.outputResponse.result; // The return is required to validate in automation test case
+  }
   private convertArrayToCommaSeparatedString(input: string[]) {
     let output: string = "";
     for (let i: number = 0; i < input.length; i++) {
@@ -281,23 +348,34 @@ export abstract class Ch5BaseClassForCliNew {
   /**
    * DO NOT DELETE
    */
-  async run(): Promise<void | boolean> {
+  async initialize() { }
+  async verifyInputParams() { }
+  async checkPromptQuestions() { }
+  async processRequest() { }
+  async cleanUp() { }
+
+  private logOutput() {
+    if (this.outputResponse.result === false) {
+      this.logger.printError(this.outputResponse.errorMessage);
+    } else {
+      this.logger.printSuccess(this.outputResponse.successMessage);
+    }
   }
 
   protected getConfigNode(nodeName: string) {
     return this.CONFIG_FILE[nodeName];
   }
 
-  private validatePackage(packageName: string) {
+  private validatePackageJsonProjectName(packageName: string) {
     /*
-      - package name length should be greater than zero
-      - all the characters in the package name must be lowercase i.e., no uppercase or mixed case names are allowed
-      - package name can consist of hyphens
-      - package name must not contain any non-url-safe characters (since name ends up being part of a URL)
-      - package name should not start with . or _
-      - package name should not contain any leading or trailing spaces
-      - package name should not contain any of the following characters: ~)('!*
-      - package name length cannot exceed 214      
+      - project name length should be greater than zero
+      - all the characters in the project name must be lowercase i.e., no uppercase or mixed case names are allowed
+      - project name can consist of hyphens
+      - project name must not contain any non-url-safe characters (since name ends up being part of a URL)
+      - project name should not start with . or _
+      - project name should not contain any leading or trailing spaces
+      - project name should not contain any of the following characters: ~)('!*
+      - project name length cannot exceed 214      
     */
     if (packageName && packageName.trim().length > 0) {
       packageName = packageName.trim().toLowerCase();
@@ -307,7 +385,7 @@ export abstract class Ch5BaseClassForCliNew {
         return {
           value: null,
           isValid: false,
-          error: "Package name should not start with number or hyphen or underscore"
+          error: this.getText("COMMON.VALIDATIONS.PROJECT_NAME")
         };
       } else {
         return {
@@ -320,7 +398,7 @@ export abstract class Ch5BaseClassForCliNew {
       return {
         value: "",
         isValid: false,
-        error: "Empty Package Name"
+        error: this.getText("COMMON.VALIDATIONS.PROJECT_NAME")
       };
     }
   }
@@ -339,7 +417,7 @@ export abstract class Ch5BaseClassForCliNew {
       return e.message;
     } else {
       console.log(e);
-      return this.getText("ERRORS.SOMETHING_WENT_WRONG");
+      return this.getText("COMMON.SOMETHING_WENT_WRONG");
     }
   }
 
@@ -375,19 +453,19 @@ export abstract class Ch5BaseClassForCliNew {
     const projectConfigJsonSchema = JSON.parse(this.utils.readFileContentSync(schemaFilePath));
     const errors = v.validate(projectConfigJson, projectConfigJsonSchema).errors;
     const errorOrWarningType = this.getText("VALIDATIONS.SCHEMA.HEADER");
+    const errorsFOund = [];
     for (let i: number = 0; i < errors.length; i++) {
       this.logger.log("errors[i]", errors[i]);
-      this.addError(errorOrWarningType, errors[i].stack.toString().replace("instance.", ""), errors[i].schema.description);
+      errorsFOund.push(errorOrWarningType, errors[i].stack.toString().replace("instance.", ""), errors[i].schema.description);
     }
 
     if (runProjectConfigValidation === true) {
       // run validate Project config
-      const valProjConfig = new Ch5ValidateProjectConfigCli();
+      const valProjConfig = new Ch5ValidateProjectConfigCli(false);
       valProjConfig.changeConfigParam("projectConfigJSONFile", filePath);
       valProjConfig.changeConfigParam("projectConfigJSONSchemaFile", schemaFilePath);
       valProjConfig.run();
     }
-    // console.log("Schema Validation Errors: ", errors.length)
     //TODO - why is logger log not working
     this.logger.log("Schema Validation Errors: ", errors.length);
     return (errors.length === 0);

@@ -8,7 +8,7 @@
   "options": [
     {
       "key": "menu",
-      "description": "Set the Name of the page to be created",
+      "description": "Allow the page navigation to be added to Menu (valid input values are 'Y', 'y', 'N', 'n'",
       "type": "string",
       "default": "",
       "valueIfNotFound": "",
@@ -16,7 +16,7 @@
     },
     {
       "key": "name",
-      "description": "Allow the page navigation to be added to Menu (valid input values are 'Y', 'y', 'N', 'n'",
+      "description": "Set the Name of the page to be created",
       "type": "string",
       "default": "",
       "valueIfNotFound": "",

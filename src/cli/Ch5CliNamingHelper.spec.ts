@@ -3,86 +3,207 @@ import { Ch5CliNamingHelper } from "./Ch5CliNamingHelper";
 
 const ch5namingHelper = new Ch5CliNamingHelper();
 
+const itMessage = (input: any, output: any) => {
+  return `Input: '${input}' should return Output: '${output}'`;
+}
+
 describe('Ch5 CLI Naming helper >>>>>>>> ', () => {
-  it(`decamelize`, () => {
-    expect(ch5namingHelper.decamelize('innerHTML')).equals('inner_html');
-    expect(ch5namingHelper.decamelize('action_name')).equals('action_name');
-    expect(ch5namingHelper.decamelize('css-class-name')).equals('css-class-name');
-    expect(ch5namingHelper.decamelize('my favorite items')).equals('my favorite items');
+
+  describe('decamelize', () => {
+
+    const successInputOutput = [
+      { input: "innerHTML", output: "inner_html" },
+      { input: "action_name", output: "action_name" },
+      { input: "css-class-name", output: "css-class-name" },
+      { input: "my favorite items", output: "my favorite items" }
+    ];
+
+    for (let i: number = 0; i < successInputOutput.length; i++) {
+      it(itMessage(successInputOutput[i].input, successInputOutput[i].output), () => {
+        expect(ch5namingHelper.decamelize(successInputOutput[i].input)).equals(successInputOutput[i].output);
+      });
+    }
+
   });
 
-  it('remove all spaces', () => {
-    expect(ch5namingHelper.removeAllSpaces('innerHTML')).equals('innerHTML');
-    expect(ch5namingHelper.removeAllSpaces('action_name')).equals('action_name');
-    expect(ch5namingHelper.removeAllSpaces('css-class-name')).equals('css-class-name');
-    expect(ch5namingHelper.removeAllSpaces('my       favorite items')).equals('myfavoriteitems');
+  describe('remove all spaces: removeAllSpaces', () => {
+
+    const successInputOutput = [
+      { input: "innerHTML", output: "innerHTML" },
+      { input: "action_name", output: "action_name" },
+      { input: "css-class-name", output: "css-class-name" },
+      { input: "my       favorite items", output: "myfavoriteitems" }
+    ];
+
+    for (let i: number = 0; i < successInputOutput.length; i++) {
+      it(itMessage(successInputOutput[i].input, successInputOutput[i].output), () => {
+        expect(ch5namingHelper.removeAllSpaces(successInputOutput[i].input)).equals(successInputOutput[i].output);
+      });
+    }
+
   });
 
-  it('dasherize', () => {
-    expect(ch5namingHelper.dasherize('innerHTML')).equals('inner-html');
-    expect(ch5namingHelper.dasherize('action_name')).equals('action-name');
-    expect(ch5namingHelper.dasherize('css-class-name')).equals('css-class-name');
-    expect(ch5namingHelper.dasherize('my favorite items')).equals('my-favorite-items');
+  describe('dasherize', () => {
+
+    const successInputOutput = [
+      { input: "innerHTML", output: "inner-html" },
+      { input: "action_name", output: "action-name" },
+      { input: "css-class-name", output: "css-class-name" },
+      { input: "my favorite items", output: "my-favorite-items" }
+    ];
+
+    for (let i: number = 0; i < successInputOutput.length; i++) {
+      it(itMessage(successInputOutput[i].input, successInputOutput[i].output), () => {
+        expect(ch5namingHelper.dasherize(successInputOutput[i].input)).equals(successInputOutput[i].output);
+      });
+    }
+
   });
 
-  it('dashNunderscorize', () => {
-    expect(ch5namingHelper.dashNunderscorize('innerHTML')).equals('inner_html');
-    expect(ch5namingHelper.dashNunderscorize('action_name')).equals('action_name');
-    expect(ch5namingHelper.dashNunderscorize('css-class-name')).equals('css-class-name');
-    expect(ch5namingHelper.dashNunderscorize('my favorite items')).equals('my-favorite-items');
+  describe('dashNunderscorize', () => {
+
+    const successInputOutput = [
+      { input: "innerHTML", output: "inner_html" },
+      { input: "action_name", output: "action_name" },
+      { input: "css-class-name", output: "css-class-name" },
+      { input: "my favorite items", output: "my-favorite-items" }
+    ];
+
+    for (let i: number = 0; i < successInputOutput.length; i++) {
+      it(itMessage(successInputOutput[i].input, successInputOutput[i].output), () => {
+        expect(ch5namingHelper.dashNunderscorize(successInputOutput[i].input)).equals(successInputOutput[i].output);
+      });
+    }
+
   });
 
-  it('camelize', () => {
-    expect(ch5namingHelper.camelize('innerHTML')).equals('innerHTML');
-    expect(ch5namingHelper.camelize('action_name')).equals('actionName');
-    expect(ch5namingHelper.camelize('css-class-name')).equals('cssClassName');
-    expect(ch5namingHelper.camelize('my favorite items')).equals('myFavoriteItems');
-    expect(ch5namingHelper.camelize('My favorite items')).equals('myFavoriteItems');
+  describe('camelize', () => {
+
+    const successInputOutput = [
+      { input: "innerHTML", output: "innerHTML" },
+      { input: "action_name", output: "actionName" },
+      { input: "css-class-name", output: "cssClassName" },
+      { input: "my favorite items", output: "myFavoriteItems" },
+      { input: "My favorite items", output: "myFavoriteItems" }
+    ];
+
+    for (let i: number = 0; i < successInputOutput.length; i++) {
+      it(itMessage(successInputOutput[i].input, successInputOutput[i].output), () => {
+        expect(ch5namingHelper.camelize(successInputOutput[i].input)).equals(successInputOutput[i].output);
+      });
+    }
+
   });
 
-  it('classify', () => {
-    expect(ch5namingHelper.classify('innerHTML')).equals('InnerHTML');
-    expect(ch5namingHelper.classify('action_name')).equals('ActionName');
-    expect(ch5namingHelper.classify('css-class-name')).equals('CssClassName');
-    expect(ch5namingHelper.classify('my favorite items')).equals('MyFavoriteItems');
-    expect(ch5namingHelper.classify('My favorite items')).equals('MyFavoriteItems');
+  describe('classify', () => {
+
+    const successInputOutput = [
+      { input: "innerHTML", output: "InnerHTML" },
+      { input: "action_name", output: "ActionName" },
+      { input: "css-class-name", output: "CssClassName" },
+      { input: "my favorite items", output: "MyFavoriteItems" },
+      { input: "My favorite items", output: "MyFavoriteItems" }
+    ];
+
+    for (let i: number = 0; i < successInputOutput.length; i++) {
+      it(itMessage(successInputOutput[i].input, successInputOutput[i].output), () => {
+        expect(ch5namingHelper.classify(successInputOutput[i].input)).equals(successInputOutput[i].output);
+      });
+    }
+
   });
 
-  it('underscore', () => {
+  describe('underscore', () => {
+
+    const successInputOutput = [
+      { input: "innerHTML", output: "inner_html" },
+      { input: "action_name", output: "action_name" },
+      { input: "css-class-name", output: "css_class_name" },
+      { input: "my favorite items", output: "my_favorite_items" },
+      { input: "My favorite items", output: "my_favorite_items" }
+    ];
     expect(ch5namingHelper.underscore('innerHTML')).equals('inner_html');
     expect(ch5namingHelper.underscore('action_name')).equals('action_name');
     expect(ch5namingHelper.underscore('css-class-name')).equals('css_class_name');
     expect(ch5namingHelper.underscore('my favorite items')).equals('my_favorite_items');
     expect(ch5namingHelper.underscore('My favorite items')).equals('my_favorite_items');
+
+    for (let i: number = 0; i < successInputOutput.length; i++) {
+      it(itMessage(successInputOutput[i].input, successInputOutput[i].output), () => {
+        expect(ch5namingHelper.underscore(successInputOutput[i].input)).equals(successInputOutput[i].output);
+      });
+    }
+
   });
 
-  it('convert multiple spaces to single', () => {
-    expect(ch5namingHelper.convertMultipleSpacesToSingleSpace('my favorite items')).equals('my favorite items');
-    expect(ch5namingHelper.convertMultipleSpacesToSingleSpace('my    favorite items')).equals('my favorite items');
-    expect(ch5namingHelper.convertMultipleSpacesToSingleSpace('my      favorite items')).equals('my favorite items');
+  describe('convert multiple spaces to single: convertMultipleSpacesToSingleSpace', () => {
+
+    const successInputOutput = [
+      { input: "my favorite items", output: "my favorite items" },
+      { input: "my    favorite items", output: "my favorite items" },
+      { input: "my      favorite       items", output: "my favorite items" }
+    ];
+
+    for (let i: number = 0; i < successInputOutput.length; i++) {
+      it(itMessage(successInputOutput[i].input, successInputOutput[i].output), () => {
+        expect(ch5namingHelper.convertMultipleSpacesToSingleSpace(successInputOutput[i].input)).equals(successInputOutput[i].output);
+      });
+    }
+
   });
 
-  it('capitalize', () => {
-    expect(ch5namingHelper.capitalize('innerHTML')).equals('InnerHTML');
-    expect(ch5namingHelper.capitalize('action_name')).equals('Action_name');
-    expect(ch5namingHelper.capitalize('css-class-name')).equals('Css-class-name');
-    expect(ch5namingHelper.capitalize('my favorite items')).equals('My favorite items');
-    expect(ch5namingHelper.capitalize('My favorite items')).equals('My favorite items');
+  describe('capitalize', () => {
+
+    const successInputOutput = [
+      { input: "innerHTML", output: "InnerHTML" },
+      { input: "action_name", output: "Action_name" },
+      { input: "css-class-name", output: "Css-class-name" },
+      { input: "my favorite items", output: "My favorite items" },
+      { input: "My favorite items", output: "My favorite items" }
+    ];
+
+    for (let i: number = 0; i < successInputOutput.length; i++) {
+      it(itMessage(successInputOutput[i].input, successInputOutput[i].output), () => {
+        expect(ch5namingHelper.capitalize(successInputOutput[i].input)).equals(successInputOutput[i].output);
+      });
+    }
+
   });
 
-  it('capitalize each word', () => {
-    expect(ch5namingHelper.capitalizeEachWord('innerHTML')).equals('InnerHTML');
-    expect(ch5namingHelper.capitalizeEachWord('action_name')).equals('ActionName');
-    expect(ch5namingHelper.capitalizeEachWord('css-class-name')).equals('CssClassName');
-    expect(ch5namingHelper.capitalizeEachWord('my favorite items')).equals('My Favorite Items');
-    expect(ch5namingHelper.capitalizeEachWord('My favorite items')).equals('My Favorite Items');
+  describe('capitalize each word: capitalizeEachWord', () => {
+
+    const successInputOutput = [
+      { input: "innerHTML", output: "InnerHTML" },
+      { input: "action_name", output: "ActionName" },
+      { input: "css-class-name", output: "CssClassName" },
+      { input: "my favorite items", output: "My Favorite Items" },
+      { input: "My favorite items", output: "My Favorite Items" }
+    ];
+
+    for (let i: number = 0; i < successInputOutput.length; i++) {
+      it(itMessage(successInputOutput[i].input, successInputOutput[i].output), () => {
+        expect(ch5namingHelper.capitalizeEachWord(successInputOutput[i].input)).equals(successInputOutput[i].output);
+      });
+    }
+
   });
 
-  it('capitalize each word with spaces', () => {
-    expect(ch5namingHelper.capitalizeEachWordWithSpaces('innerHTML')).equals('Inner Html');
-    expect(ch5namingHelper.capitalizeEachWordWithSpaces('action_name')).equals('Action Name');
-    expect(ch5namingHelper.capitalizeEachWordWithSpaces('css-class-name')).equals('Css Class Name');
-    expect(ch5namingHelper.capitalizeEachWordWithSpaces('my favorite items')).equals('My Favorite Items');
-    expect(ch5namingHelper.capitalizeEachWordWithSpaces('My favorite items')).equals('My Favorite Items');
+  describe('capitalize each word with spaces: capitalizeEachWordWithSpaces', () => {
+
+    const successInputOutput = [
+      { input: "innerHTML", output: "Inner Html" },
+      { input: "action_name", output: "Action Name" },
+      { input: "css-class-name", output: "Css Class Name" },
+      { input: "my favorite items", output: "My Favorite Items" },
+      { input: "My favorite items", output: "My Favorite Items" }
+    ];
+
+    for (let i: number = 0; i < successInputOutput.length; i++) {
+      it(itMessage(successInputOutput[i].input, successInputOutput[i].output), () => {
+        expect(ch5namingHelper.capitalizeEachWordWithSpaces(successInputOutput[i].input)).equals(successInputOutput[i].output);
+      });
+    }
+
   });
+
 });

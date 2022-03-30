@@ -1,22 +1,20 @@
 /*jslint es6 */
-/*global CrComLib, projectConfigModule, featureModule, translateModule, serviceModule, utilsModule, navigationModule */
+/*global CrComLib, webXPanelModule, projectConfigModule, featureModule, translateModule, serviceModule, utilsModule, navigationModule */
 
 const templatePageModule = (() => {
 	'use strict';
 
 	let triggerview = null;
 	let horizontalMenuSwiperThumb = null;
-	let previousActiveIndex = -1;
 	let selectedPage = { name: "" };
 	let _isPageLoaded = false;
-	let activeIndex = -1;
 
 	/**
 	 * This is public method for bottom navigation to navigate to next page
 	 * @param {number} idx is selected index for navigate to appropriate page
 	 */
 	function navigateTriggerViewByPageName(pageName) {
-		// If the previous and selected index are same then exit
+		// If the previous and selected page are same then exit
 		if (pageName !== selectedPage.pageName) {
 			const pageObject = projectConfigModule.getNavigationPages().find(page => page.pageName === pageName);
 			const oldPage = JSON.parse(JSON.stringify(selectedPage));
@@ -26,17 +24,7 @@ const templatePageModule = (() => {
 			if (triggerview !== null) {
 				const activeIndex = projectConfigModule.getNavigationPages().findIndex(data => data.pageName === pageName);
 				try {
-					// 	// TODO: Subscribe and unsubscribe to avoid unwanted scrolls
-					// 	// if (response.menuOrientation === 'horizontal') { // || response.menuOrientation === 'vertical') {
-					// CrComLib.subscribeInViewPortChange(document.getElementById('menu-list-id-' + activeIndex), (element, isInViewPort) => {
-					// 	if (!isInViewPort) {
-					// 		console.log("Publishing now", activeIndex);
-					// 		CrComLib.publishEvent("n", "scrollToMenu", activeIndex);
-					// 	}
-					// 	// setTimeout(() => {
-					// 	CrComLib.unSubscribeInViewPortChange(document.getElementById('menu-list-id-' + activeIndex));
-					// 	// });
-					// });
+					// menuMoveInViewPort();
 
 					if (projectConfigModule.getMenuOrientation() === "horizontal" || projectConfigModule.getMenuOrientation() === "vertical") {
 						let intersectionOptions = {
@@ -54,12 +42,7 @@ const templatePageModule = (() => {
 						intersectionObserver.observe(document.getElementById('menu-list-id-' + activeIndex));
 						// intersectionObserver.unobserve(document.getElementById('menu-list-id-' + activeIndex));
 					}
-
-					// setTimeout(() => {
 					triggerview.setActiveView(activeIndex);
-
-					// }, 2000);
-					// }
 				} catch (e) {
 					console.error(e);
 				}
@@ -68,6 +51,19 @@ const templatePageModule = (() => {
 		}
 	}
 
+	function menuMoveInViewPort() {
+		// 	// TODO: Subscribe and unsubscribe to avoid unwanted scrolls
+		// 	// if (response.menuOrientation === 'horizontal') { // || response.menuOrientation === 'vertical') {
+		// CrComLib.subscribeInViewPortChange(document.getElementById('menu-list-id-' + activeIndex), (element, isInViewPort) => {
+		// 	if (!isInViewPort) {
+		// 		console.log("Publishing now", activeIndex);
+		// 		CrComLib.publishEvent("n", "scrollToMenu", activeIndex);
+		// 	}
+		// 	// setTimeout(() => {
+		// 	CrComLib.unSubscribeInViewPortChange(document.getElementById('menu-list-id-' + activeIndex));
+		// 	// });
+		// });
+	}
 	function setMenuActive() {
 		// if (triggerview !== null) {
 		// 	if (response.menuOrientation === 'horizontal') { // || response.menuOrientation === 'vertical') {
@@ -84,9 +80,9 @@ const templatePageModule = (() => {
 			console.log("entry: ", entry);
 
 			if (entry.isIntersecting === true) {
-				// this.playVideo();
+			//
 			} else {
-				// this.pauseVideo();
+				// 
 			}
 		}
 	}
@@ -174,13 +170,15 @@ const templatePageModule = (() => {
 					* https://sdkcon78221.crestron.com/sdk/Crestron_HTML5UI/Content/Topics/UI-Remote-Logger.htm
 					*/
 					// featureModule.initializeLogger(serverIPAddress, serverPortNumber);
-					// templatePageModule.pageInit(projectConfigResponse);
 					serviceModule.initialize(projectConfigResponse);
 					navigationModule.goToPage(projectConfigResponse.content.$defaultView);
 
 					// Changes for index.html - Start
 					document.getElementById("favicon").setAttribute("href", projectConfigResponse.faviconPath);
-					document.getElementById("selectedThemeCss").setAttribute("href", "./assets/css/" + projectConfigResponse.selectedTheme + ".css");
+					const getSelectedTheme = projectConfigResponse.themes.find(themeName => themeName.name === projectConfigResponse.selectedTheme);
+					if (getSelectedTheme) {
+						document.getElementById("selectedThemeCss").setAttribute("href", "./assets/css/" + getSelectedTheme.extends + ".css");
+					}
 
 					const widgetsAndStandalonePages = document.getElementById("widgets-and-standalone-pages");
 					const widgets = projectConfigResponse.content.widgets;
@@ -195,6 +193,7 @@ const templatePageModule = (() => {
 					const standAlonePages = projectConfigModule.getAllStandAloneViewPages();
 					for (let i = 0; i < standAlonePages.length; i++) {
 						const htmlImportSnippet = document.createElement("ch5-import-htmlsnippet");
+						// console.log("*** Standalone", widgets[i].widgetName);
 						htmlImportSnippet.setAttribute("id", standAlonePages[i].pageName + "-import-page");
 						htmlImportSnippet.setAttribute("url", standAlonePages[i].fullPath + standAlonePages[i].fileName);
 						htmlImportSnippet.setAttribute("show", "false");
@@ -217,7 +216,7 @@ const templatePageModule = (() => {
 						});
 						app.innerHTML = utilsModule.replacePlaceHolders(dataHeader, mergedJsonContentHeader);
 
-						let	sidebarToggle = document.getElementById("sidebarToggle");
+						let sidebarToggle = document.getElementById("sidebarToggle");
 						if (projectConfigResponse.menuOrientation === "vertical") {
 							if (sidebarToggle) {
 								sidebarToggle.classList.remove("display-none");
@@ -408,6 +407,7 @@ const templatePageModule = (() => {
 						let loadListCh5 = CrComLib.subscribeState('o', 'ch5-list', (value) => {
 							if (value['loaded'] && (value['id'] === "horizontal-menu-swiper-thumb")) {
 								loadCh5ListForMenu(projectConfigResponse, responseArrayForNavPages);
+								connectToWebXPanel(projectConfigResponse);
 								navigateToFirstPage(projectConfigResponse, responseArrayForNavPages);
 								setTimeout(() => {
 									CrComLib.unsubscribeState('o', 'ch5-list', loadListCh5);
@@ -419,6 +419,7 @@ const templatePageModule = (() => {
 						let loadListCh5 = CrComLib.subscribeState('o', 'ch5-list', (value) => {
 							if (value['loaded'] && (value['id'] === "vertical-menu-swiper-thumb")) {
 								loadCh5ListForMenu(projectConfigResponse, responseArrayForNavPages);
+								connectToWebXPanel(projectConfigResponse);
 								navigateToFirstPage(projectConfigResponse, responseArrayForNavPages);
 								setTimeout(() => {
 									CrComLib.unsubscribeState('o', 'ch5-list', loadListCh5);
@@ -427,6 +428,7 @@ const templatePageModule = (() => {
 							}
 						});
 					} else {
+						connectToWebXPanel(projectConfigResponse);
 						navigateToFirstPage(projectConfigResponse, responseArrayForNavPages);
 					}
 				});
@@ -439,6 +441,19 @@ const templatePageModule = (() => {
 		}
 	});
 
+	function connectToWebXPanel(projectConfigResponse) {
+		if (projectConfigResponse.useWebXPanel) {
+			let loadListCh5 = CrComLib.subscribeState('o', 'ch5-import-htmlsnippet:template-version-info-import-page', (value) => {
+				if (value['loaded']) {
+					webXPanelModule.connect(projectConfigResponse);
+					setTimeout(() => {
+						CrComLib.unsubscribeState('o', 'ch5-import-htmlsnippet:template-version-info-import-page', loadListCh5);
+						loadListCh5 = null;
+					});
+				}
+			});
+		}
+	}
 	function loadCh5ListForMenu(projectConfigResponse, responseArrayForNavPages) {
 		for (let i = 0; i < responseArrayForNavPages.length; i++) {
 			const menu = document.getElementById("menu-list-id-" + i);
@@ -542,7 +557,8 @@ const templatePageModule = (() => {
 		isPageLoaded,
 		openThumbNav,
 		toggleSidebar,
-		hideLoading
+		hideLoading,
+		navigateTriggerViewByIndex
 	};
 
 })();

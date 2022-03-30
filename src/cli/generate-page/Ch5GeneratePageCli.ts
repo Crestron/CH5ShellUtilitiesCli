@@ -21,7 +21,7 @@ export class Ch5GeneratePageCli extends Ch5BaseClassForCli implements ICh5Cli {
 
   private outputResponse: any = {};
 
-  public constructor() {
+  public constructor(public showOutputMessages: boolean = true) {
     super("generate-page");
   }
 
@@ -62,7 +62,7 @@ export class Ch5GeneratePageCli extends Ch5BaseClassForCli implements ICh5Cli {
 
       // Update project-config first (so that if this fails, we don't worry about file deletion). Next Delete Files
       await this.processRequest();
-      
+
     } catch (e: any) {
       if (e && this.utils.isValidInput(e.message)) {
         if (e.message.trim().toLowerCase() === 'error') {
@@ -109,7 +109,9 @@ export class Ch5GeneratePageCli extends Ch5BaseClassForCli implements ICh5Cli {
     }
 
     if (this.utils.isValidInput(this.outputResponse.warningMessage)) {
-      this.logger.printWarning(this.getText("ERRORS.MESSAGE_TITLE", this.outputResponse.warningMessage));
+      if (this.showOutputMessages === true) {
+        this.logger.printWarning(this.getText("ERRORS.MESSAGE_TITLE", this.outputResponse.warningMessage));
+      }
     }
   }
 
@@ -221,14 +223,16 @@ export class Ch5GeneratePageCli extends Ch5BaseClassForCli implements ICh5Cli {
    * Log Final Response Message
    */
   private logOutput() {
-    if (this.outputResponse.result === false) {
-      this.logger.printError(this.outputResponse.errorMessage);
-    } else {
-      this.logger.printSuccess(this.getText("SUCCESS_MESSAGE", this.outputResponse.data.pageName, this.outputResponse.data.folderPath));
-      if (this.outputResponse.data.menuOption === "Y") {
-        this.logger.printSuccess(this.getText("SUCCESS_MESSAGE_NAVIGATION_ADDED"));
+    if (this.showOutputMessages === true) {
+      if (this.outputResponse.result === false) {
+        this.logger.printError(this.outputResponse.errorMessage);
+      } else {
+        this.logger.printSuccess(this.getText("SUCCESS_MESSAGE", this.outputResponse.data.pageName, this.outputResponse.data.folderPath));
+        if (this.outputResponse.data.menuOption === "Y") {
+          this.logger.printSuccess(this.getText("SUCCESS_MESSAGE_NAVIGATION_ADDED"));
+        }
+        this.logger.printSuccess(this.getText("SUCCESS_MESSAGE_CONCLUSION"));
       }
-      this.logger.printSuccess(this.getText("SUCCESS_MESSAGE_CONCLUSION"));
     }
   }
 
@@ -321,7 +325,7 @@ export class Ch5GeneratePageCli extends Ch5BaseClassForCli implements ICh5Cli {
       "fullPath": this.outputResponse.data.folderPath,
       "fileName": this.outputResponse.data.fileName + '.html',
       "cachePage": true,
-      "preloadPage": false,      
+      "preloadPage": false,
       "standAloneView": !allowNavigation,
       "pageProperties": {
         "sendEventOnShow": ""

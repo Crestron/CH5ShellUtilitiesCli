@@ -6,28 +6,26 @@
   "options": [
     {
       "key": "config",
-      "description": "Set the Name of the page to be created",
+      "description": "Config file required to create project",
       "type": "string",
       "default": "",
       "valueIfNotFound": "",
       "alias": [
-        "-c",
         "--config"
       ],
-      "allowedValues": "",
-      "allowedAliases": "",
-      "validation": "",
-      "question": "VALIDATIONS.CONFIG_FILE",
-      "optionalArgument": false
+      "allowedValues": [],
+      "allowedAliases": [],
+      "validation": "fileAvailableAtLocation",
+      "question": "CHECK_PROMPT_QUESTIONS.QUESTIONS.CONFIG_FILE",
+      "isSpecialArgument": true
     },
     {
       "key": "useWebXPanel",
-      "description": "Set the Name of the page to be created",
+      "description": "Use WebXPanel",
       "type": "boolean",
       "default": true,
-      "valueIfNotFound": false,
+      "valueIfNotFound": null,
       "alias": [
-        "-w",
         "--useWebXPanel"
       ],
       "allowedValues": [
@@ -40,17 +38,16 @@
         "y",
         "n"
       ],
-      "question": "VALIDATIONS.USE_WEBXPANEL",
-      "optionalArgument": false
+      "question": "CHECK_PROMPT_QUESTIONS.QUESTIONS.SELECT",
+      "isSpecialArgument": false
     },
     {
       "key": "menuOrientation",
-      "description": "Set the Name of the page to be created",
+      "description": "Set the menu orientation for the project level triggerview",
       "type": "enum",
       "default": "horizontal",
-      "valueIfNotFound": "",
+      "valueIfNotFound": null,
       "alias": [
-        "-mo",
         "--menuOrientation"
       ],
       "allowedValues": [
@@ -63,17 +60,16 @@
         "vertical",
         "none"
       ],
-      "question": "VALIDATIONS.SELECT_MENU_ORIENTATION",
-      "optionalArgument": false
+      "question": "CHECK_PROMPT_QUESTIONS.QUESTIONS.SELECT",
+      "isSpecialArgument": false
     },
     {
       "key": "displayHeader",
-      "description": "Set the Name of the page to be created",
+      "description": "Sets if the header component in the page has to be shown / hidden",
       "type": "boolean",
       "default": true,
-      "valueIfNotFound": false,
+      "valueIfNotFound": null,
       "alias": [
-        "-dh",
         "--displayHeader"
       ],
       "allowedValues": [
@@ -86,17 +82,16 @@
         "y",
         "n"
       ],
-      "question": "VALIDATIONS.DISPLAY_HEADER",
-      "optionalArgument": false
+      "question": "CHECK_PROMPT_QUESTIONS.QUESTIONS.SELECT",
+      "isSpecialArgument": false
     },
     {
       "key": "displayHeaderInfo",
-      "description": "Set the Name of the page to be created",
+      "description": "Sets if the header component info icon in the page has to be shown / hidden",
       "type": "boolean",
       "default": true,
-      "valueIfNotFound": false,
+      "valueIfNotFound": null,
       "alias": [
-        "-dhi",
         "--displayHeaderInfo"
       ],
       "allowedValues": [
@@ -109,17 +104,16 @@
         "y",
         "n"
       ],
-      "question": "VALIDATIONS.DISPLAY_HEADER_INFO",
-      "optionalArgument": false
+      "question": "CHECK_PROMPT_QUESTIONS.QUESTIONS.SELECT",
+      "isSpecialArgument": false
     },
     {
       "key": "displayFooter",
-      "description": "Set the Name of the page to be created",
+      "description": "Sets if the footer component in the page has to be shown / hidden",
       "type": "boolean",
       "default": true,
-      "valueIfNotFound": false,
+      "valueIfNotFound": null,
       "alias": [
-        "-df",
         "--displayFooter"
       ],
       "allowedValues": [
@@ -132,68 +126,79 @@
         "y",
         "n"
       ],
-      "question": "VALIDATIONS.DISPLAY_FOOTER",
-      "optionalArgument": false
+      "question":"CHECK_PROMPT_QUESTIONS.QUESTIONS.SELECT",
+      "isSpecialArgument": false
     },
     {
       "key": "headerComponent",
-      "description": "Set the Name of the page to be created",
+      "description": "Set the name of the header component in the project",
       "type": "enum",
       "default": "",
       "valueIfNotFound": "",
       "alias": [
-        "-hc",
         "--headerComponent"
       ],
-      "allowedValues": "",
-      "allowedAliases": "",
-      "question": "VALIDATIONS.HEADER_COMPONENT_NAME",
-      "optionalArgument": false
+      "allowedValues": [],
+      "allowedAliases": [],
+      "question": "CHECK_PROMPT_QUESTIONS.QUESTIONS.SELECT",
+      "isSpecialArgument": false
     },
     {
       "key": "footerComponent",
-      "description": "Set the Name of the page to be created",
+      "description": "Set the name of the footer component in the project",
       "type": "enum",
       "default": "",
       "valueIfNotFound": "",
       "alias": [
-        "-fc",
         "--footerComponent"
       ],
-      "allowedValues": "",
-      "allowedAliases": "",
-      "question": "VALIDATIONS.FOOTER_COMPONENT_NAME",
-      "optionalArgument": false
+      "allowedValues": [],
+      "allowedAliases": [],
+      "question": "CHECK_PROMPT_QUESTIONS.QUESTIONS.SELECT",
+      "isSpecialArgument": false
     },
     {
       "key": "defaultView",
-      "description": "Set the Name of the page to be created",
+      "description": "Set the name of the default page for the project",
       "type": "enum",
       "default": "",
       "valueIfNotFound": "",
       "alias": [
-        "-dv",
         "--defaultView"
       ],
-      "allowedValues": "",
-      "allowedAliases": "",
-      "question": "VALIDATIONS.DEFAULT_VIEW",
-      "optionalArgument": false
+      "allowedValues": [],
+      "allowedAliases": [],
+      "question": "CHECK_PROMPT_QUESTIONS.QUESTIONS.SELECT",
+      "isSpecialArgument": false
+    },
+    {
+      "key": "projectName",
+      "description": "Set the name of the Project in package.json and project-config.json",
+      "type": "string",
+      "default": "",
+      "valueIfNotFound": "",
+      "alias": [
+        "--projectName"
+      ],
+      "allowedValues": [],
+      "allowedAliases": [],
+      "validation": "validatePackageJsonProjectName",
+      "question": "CHECK_PROMPT_QUESTIONS.QUESTIONS.PROJECT_NAME",
+      "isSpecialArgument": false
     },
     {
       "key": "selectedTheme",
-      "description": "Set the Name of the page to be created",
+      "description": "Set the name of the selected theme",
       "type": "enum",
       "default": "",
       "valueIfNotFound": "",
       "alias": [
-        "-st",
         "--selectedTheme"
       ],
-      "allowedValues": "",
-      "allowedAliases": "",
-      "question": "VALIDATIONS.SELECTED_THEME",
-      "optionalArgument": false
+      "allowedValues": [],
+      "allowedAliases": [],
+      "question": "CHECK_PROMPT_QUESTIONS.QUESTIONS.SELECT",
+      "isSpecialArgument": false
     },
     {
       "key": "force",
@@ -205,10 +210,10 @@
         "-f",
         "--force"
       ],
-      "allowedValues": "",
-      "allowedAliases": "",
+      "allowedValues": [],
+      "allowedAliases": [],
       "question": "VALIDATIONS.FORCE",
-      "optionalArgument": true
+      "isSpecialArgument": true
     }
   ],
   "backupFolder": "./dist/",

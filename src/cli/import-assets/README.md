@@ -1,4 +1,4 @@
-# Shell Template - Import Assets
+# Import Assets
 
 The 'Import Assets' function imports assets to the './app/project/assets/' folder using command line statements.
 
@@ -91,7 +91,7 @@ Parameters for "import:assets" are as follows:
 
 ### Copyright
 
-Copyright (C) 2021 to the present, Crestron Electronics, Inc.
+Copyright (C) 2022 to the present, Crestron Electronics, Inc.
 
 All rights reserved.
 

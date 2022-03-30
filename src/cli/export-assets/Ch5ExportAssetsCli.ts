@@ -19,7 +19,7 @@ export class Ch5ExportAssetsCli extends Ch5BaseClassForCli implements ICh5Cli {
   private outputResponse: any = {};
   private finalOutputZipFile: string = "";
 
-  public constructor() {
+  public constructor(public showOutputMessages: boolean = true) {
     super("export-assets");
   }
 
@@ -62,21 +62,23 @@ export class Ch5ExportAssetsCli extends Ch5BaseClassForCli implements ICh5Cli {
    * Log Final Response Message
    */
   logFinalResponses() {
-    if (this.utils.isValidInput(this.outputResponse['errorMessage'])) {
-      this.logger.printError(this.outputResponse['errorMessage']);
-    } else {
-      if (this.outputResponse['result'] === true) {
-        if (this.outputResponse['copyAll'] === true) {
-          this.logger.printSuccess(this.getText("SUCCESS_MESSAGE_ALL", this.finalOutputZipFile));
-        } else {
-          if (this.outputResponse['invalidInputs'].length > 0) {
-            this.logger.printSuccess(this.getText("SUCCESS_MESSAGE_SPECIFIC_WITH_ERROR", this.finalOutputZipFile, this.utils.convertArrayToString(this.outputResponse['validInputs'], ", "), this.utils.convertArrayToString(this.outputResponse['invalidInputs'], ", ")));
-          } else {
-            this.logger.printSuccess(this.getText("SUCCESS_MESSAGE_SPECIFIC", this.finalOutputZipFile, this.utils.convertArrayToString(this.outputResponse['validInputs'], ", ")));
-          }
-        }
-      } else {
+    if (this.showOutputMessages === true) {
+      if (this.utils.isValidInput(this.outputResponse['errorMessage'])) {
         this.logger.printError(this.outputResponse['errorMessage']);
+      } else {
+        if (this.outputResponse['result'] === true) {
+          if (this.outputResponse['copyAll'] === true) {
+            this.logger.printSuccess(this.getText("SUCCESS_MESSAGE_ALL", this.finalOutputZipFile));
+          } else {
+            if (this.outputResponse['invalidInputs'].length > 0) {
+              this.logger.printSuccess(this.getText("SUCCESS_MESSAGE_SPECIFIC_WITH_ERROR", this.finalOutputZipFile, this.utils.convertArrayToString(this.outputResponse['validInputs'], ", "), this.utils.convertArrayToString(this.outputResponse['invalidInputs'], ", ")));
+            } else {
+              this.logger.printSuccess(this.getText("SUCCESS_MESSAGE_SPECIFIC", this.finalOutputZipFile, this.utils.convertArrayToString(this.outputResponse['validInputs'], ", ")));
+            }
+          }
+        } else {
+          this.logger.printError(this.outputResponse['errorMessage']);
+        }
       }
     }
   }

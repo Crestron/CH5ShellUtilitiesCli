@@ -21,7 +21,7 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
   private projectConfigJson: any = {};
   private projectConfigJsonSchema: any = {};
 
-  public constructor() {
+  public constructor(public showOutputMessages: boolean = true) {
     super("validate-project-config");
   }
 
@@ -29,7 +29,7 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
    * Method for validating projectconfig.json file
    */
   async run() {
-    this.logger.printLog(this.getText("PROCESSING_MESSAGE"));
+    this.logger.log(this.getText("PROCESSING_MESSAGE"));
 
     this.projectConfigJson = JSON.parse(this.utils.readFileContentSync(this.getConfigNode("projectConfigJSONFile")));
     this.projectConfigJsonSchema = JSON.parse(this.utils.readFileContentSync(this.getConfigNode("projectConfigJSONSchemaFile")));
@@ -94,19 +94,24 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
 
     // Check if the header and footer components have navigation
     this.checkIfFooterComponentsHaveNavigation(projectConfigObject, pagesArray, projectConfigObject.footer.display, projectConfigObject.menuOrientation);
-    if (this.getErrors().length > 0) {
-      this.logger.printError(this.composeOutput(this.getErrors(), this.getText("TYPE_ERROR")));
+    if (this.showOutputMessages === true) {
+      if (this.getErrors().length > 0) {
+        this.logger.printError(this.composeOutput(this.getErrors(), this.getText("TYPE_ERROR")));
+      }
+      if (this.getWarnings().length > 0) {
+        this.logger.printWarning(this.composeOutput(this.getWarnings(), this.getText("TYPE_WARNING")));
+      }
     }
-    if (this.getWarnings().length > 0) {
-      this.logger.printWarning(this.composeOutput(this.getWarnings(), this.getText("TYPE_WARNING")));
-    }
+
     if (this.getErrors().length > 0) {
       // Exit after printing both errors and warnings
       process.exit(1);
       return false;
     }
 
-    this.logger.printSuccess(this.getText("SUCCESS_MESSAGE"));
+    if (this.showOutputMessages === true) {
+      this.logger.printSuccess(this.getText("SUCCESS_MESSAGE"));
+    }
     return true;
   }
 

@@ -6,35 +6,33 @@
   "options": [
     {
       "key": "config",
-      "description": "Set the Name of the page to be created",
+      "description": "Config file required to create project",
       "type": "string",
       "default": "",
       "valueIfNotFound": "",
       "alias": [
-        "-c",
         "--config"
       ],
-      "allowedValues": "",
-      "allowedAliases": "",
+      "allowedValues": [],
+      "allowedAliases": [],
       "validation": "fileAvailableAtLocation",
-      "question": "VALIDATIONS.CONFIG_FILE",
-      "optionalArgument": true
+      "question": "CHECK_PROMPT_QUESTIONS.QUESTIONS.CONFIG_FILE",
+      "isSpecialArgument": true
     },
     {
       "key": "projectName",
-      "description": "Set the name of the Project to be created",
+      "description": "Set the name of the Project in package.json and project-config.json",
       "type": "string",
       "default": "",
       "valueIfNotFound": "",
       "alias": [
-        "-project",
         "--projectName"
       ],
       "allowedValues": [],
       "allowedAliases": [],
-      "validation": "validatePackageName",
-      "question": "VALIDATIONS.SELECT_MENU_ORIENTATION",
-      "optionalArgument": false
+      "validation": "validatePackageJsonProjectName",
+      "question": "CHECK_PROMPT_QUESTIONS.QUESTIONS.PROJECT_NAME",
+      "isSpecialArgument": false
     }
   ],
   "backupFolder": "./dist/",

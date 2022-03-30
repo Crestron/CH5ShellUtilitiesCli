@@ -1,4 +1,4 @@
-# Shell Template - Export All
+# Export All
 
 'Export All' exports assets, libraries, and components from the './app/project/' folder (removing the excluded files) using command-line statements.
 
@@ -82,7 +82,7 @@ Parameters for "export:all" are
 
 ### Copyright
 
-Copyright (C) 2021 to the present, Crestron Electronics, Inc.
+Copyright (C) 2022 to the present, Crestron Electronics, Inc.
 
 All rights reserved.
 

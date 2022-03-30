@@ -1,4 +1,4 @@
-# Shell Template - Export Components
+# Export Components
 
 'Export Components' exports components from the './app/project/components/' folder (removing the excluded files) using command-line statements.
 
@@ -28,8 +28,8 @@ You could use shortcut script `exp:c` with yarn and npm commands as the followin
 
 Options:
     -h, --help,         Help for Exporting components from the './app/project/components/' folder
-    -l, --list,         Prefix for list of file names
-    --all               Select this option to export all the files
+    -l, --list,         Prefix for list of component file names
+    --all               Select this option to export all the components
 
 Export the complete components directory from './app/project/components/' folder. To achieve this, use the below commands:
     ch5-shell-cli export:components --all
@@ -96,7 +96,7 @@ Parameters for "export:components" are
 
 ### Copyright
 
-Copyright (C) 2021 to the present, Crestron Electronics, Inc.
+Copyright (C) 2022 to the present, Crestron Electronics, Inc.
 
 All rights reserved.
 

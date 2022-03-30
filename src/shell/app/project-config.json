@@ -1,5 +1,5 @@
 {
-  "projectName": "Shell-Template",
+  "projectName": "shell-template",
   "version": "0.0.1",
   "faviconPath": "favicon.ico",
   "menuOrientation": "horizontal",
@@ -17,7 +17,8 @@
       "backgroundProperties": {
         "url": [
           "./app/template/assets/img/ch5-stone-light-bg.jpg"
-        ]
+        ],
+        "repeat": "repeat"
       }
     },
     {
@@ -31,7 +32,8 @@
       "backgroundProperties": {
         "url": [
           "./app/template/assets/img/ch5-stone-dark-bg.jpg"
-        ]
+        ],
+        "repeat": "repeat"
       }
     },
     {
@@ -45,7 +47,8 @@
       "backgroundProperties": {
         "url": [
           "./app/template/assets/img/ch5-stone-light-bg.jpg"
-        ]
+        ],
+        "repeat": "repeat"
       }
     },
     {
@@ -59,7 +62,8 @@
       "backgroundProperties": {
         "url": [
           "./app/template/assets/img/ch5-stone-dark-bg.jpg"
-        ]
+        ],
+        "repeat": "repeat"
       }
     },
     {
@@ -73,16 +77,25 @@
       "backgroundProperties": {
         "url": [
           "./app/template/assets/img/ch5-stone-light-bg.jpg"
-        ]
+        ],
+        "repeat": "repeat"
       }
     }
   ],
   "config": {
-    "controlSystem": {}
+    "controlSystem": {
+    }
   },
   "header": {
     "display": true,
     "displayInfo": true,
+    "diagnostics": {
+      "logs": {
+        "logAfterProjectLoad": true,
+        "receiveStateLogDiagnostics": "",
+        "logDiagnostics": "none"
+      }
+    },
     "$component": ""
   },
   "footer": {

@@ -20,9 +20,8 @@ export class Ch5GenerateWidgetCli extends Ch5BaseClassForCli implements ICh5Cli 
   private readonly MAX_LENGTH_OF_WIDGET_NAME: number = 31;
 
   private outputResponse: any = {};
-  private readableInputs: any = [];
 
-  public constructor() {
+  public constructor(public showOutputMessages: boolean = true) {
     super("generate-widget");
   }
 
@@ -40,10 +39,6 @@ export class Ch5GenerateWidgetCli extends Ch5BaseClassForCli implements ICh5Cli 
         folderPath: ""
       }
     };
-
-    if (this.readableInputs.length === 0) {
-      this.readableInputs = this.processArgs();
-    }
   }
 
   public get getEnquirer() {
@@ -94,17 +89,19 @@ export class Ch5GenerateWidgetCli extends Ch5BaseClassForCli implements ICh5Cli 
    */
   private verifyInputParams() {
     const tabDisplayText = this.getText("ERRORS.TAB_DELIMITER");
-    if (this.utils.isValidInput(this.readableInputs["name"])) {
-      const validationResponse = this.validateWidgetName(this.readableInputs["name"]);
+    if (this.utils.isValidInput(this.inputArguments["name"])) {
+      const validationResponse = this.validateWidgetName(this.inputArguments["name"]);
       if (validationResponse === "") {
-        this.outputResponse.data.widgetName = this.readableInputs["name"];
+        this.outputResponse.data.widgetName = this.inputArguments["name"];
       } else {
         this.outputResponse.warningMessage += tabDisplayText + this.getText("ERRORS.WIDGET_NAME_INVALID_ENTRY", validationResponse);
       }
     }
 
     if (this.utils.isValidInput(this.outputResponse.warningMessage)) {
-      this.logger.printWarning(this.getText("ERRORS.MESSAGE_TITLE", this.outputResponse.warningMessage));
+      if (this.showOutputMessages === true) {
+        this.logger.printWarning(this.getText("ERRORS.MESSAGE_TITLE", this.outputResponse.warningMessage));
+      }
     }
   }
 
@@ -166,11 +163,13 @@ export class Ch5GenerateWidgetCli extends Ch5BaseClassForCli implements ICh5Cli 
    * Log Final Response Message
    */
   private logOutput() {
-    if (this.outputResponse.result === false) {
-      this.logger.printError(this.outputResponse.errorMessage);
-    } else {
-      this.logger.printSuccess(this.getText("SUCCESS_MESSAGE", this.outputResponse.data.widgetName, this.outputResponse.data.folderPath));
-      this.logger.printSuccess(this.getText("SUCCESS_MESSAGE_CONCLUSION"));
+    if (this.showOutputMessages === true) {
+      if (this.outputResponse.result === false) {
+        this.logger.printError(this.outputResponse.errorMessage);
+      } else {
+        this.logger.printSuccess(this.getText("SUCCESS_MESSAGE", this.outputResponse.data.widgetName, this.outputResponse.data.folderPath));
+        this.logger.printSuccess(this.getText("SUCCESS_MESSAGE_CONCLUSION"));
+      }
     }
   }
 

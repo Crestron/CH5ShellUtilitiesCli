@@ -19,7 +19,7 @@ export class Ch5CliLogger {
   private allowLogging = true;
   private logLevel: any = LOG_LEVELS.TRACE;
 
-  private readonly FORMATTING: any = {
+  public readonly FORMATTING: any = {
     Reset: "\x1b[0m",
     Bright: "\x1b[1m",
     Dim: "\x1b[2m",
@@ -30,7 +30,7 @@ export class Ch5CliLogger {
     SpaceChar: "%s"
   };
 
-  private readonly FOREGROUND_COLORS: any = {
+  public readonly FOREGROUND_COLORS: any = {
     Black: "\x1b[30m",
     Red: "\x1b[31m",
     Green: "\x1b[32m",
@@ -41,7 +41,7 @@ export class Ch5CliLogger {
     White: "\x1b[37m"
   };
 
-  private readonly BACKGROUND_COLORS: any = {
+  public readonly BACKGROUND_COLORS: any = {
     Black: "\x1b[40m",
     Red: "\x1b[41m",
     Green: "\x1b[42m",
@@ -138,7 +138,7 @@ export class Ch5CliLogger {
    * @param  {...any} input
    */
   public printSuccess(...input: any) {
-    console.info(this.FOREGROUND_COLORS.Green, ...input, this.FORMATTING.Reset);
+    console.log(this.FOREGROUND_COLORS.Green, ...input, this.FORMATTING.Reset);
   }
 
   /**
@@ -146,7 +146,7 @@ export class Ch5CliLogger {
    * @param  {...any} input
    */
   public printWarning(...input: any) {
-    console.info(this.FOREGROUND_COLORS.Yellow, ...input, this.FORMATTING.Reset);
+    console.log(this.FOREGROUND_COLORS.Yellow, ...input, this.FORMATTING.Reset);
   }
 
   /**
@@ -154,7 +154,7 @@ export class Ch5CliLogger {
    * @param  {...any} input
    */
   public printError(...input: any) {
-    console.error(this.FOREGROUND_COLORS.Red, ...input, this.FORMATTING.Reset);
+    console.log(this.FOREGROUND_COLORS.Red, ...input, this.FORMATTING.Reset);
   }
 
   /**
@@ -162,7 +162,7 @@ export class Ch5CliLogger {
    * @param  {...any} input
    */
   public printLog(...input: any) {
-    console.error(...input);
+    console.log(this.FOREGROUND_COLORS.Blue, ...input, this.FORMATTING.Reset);
   }
 
   /**

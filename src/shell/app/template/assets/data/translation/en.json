@@ -51,6 +51,54 @@
       "nav": {
 
       }
+    },
+    "info": {
+      "tab": {
+        "version": "Version",
+        "webxpanel": "WebXPanel",
+        "diagnostics": "Diagnostics"
+      },
+      "version": {
+        "header": {
+          "package": "Package",
+          "version": "Version",
+          "date": "Date"
+        }
+      },
+      "webxpanel": {
+        "connection": "Connection",
+        "status": "Status:",
+        "cs": "CS:",
+        "ipid": "IPID:",
+        "roomid": "Room ID:",
+        "license": "License"
+      },
+      "diagnostics": {
+        "logs": "Add Log",
+        "memory": {
+          "title": "+ MEMORY INFO",
+          "status": "Memory Status:",
+          "totalcomponents": "Total Ch5 Components:",
+          "totalnodes": "Total DOM Nodes:",
+          "pagecount": "Page Count:",
+          "currentcomp": "Current CH5 Components:",
+          "startduration": "Start Duration:"
+        },
+        "subs": {
+          "title": "+ SUBSCRIPTIONS INFO",
+          "subs": "Subscriptions:",
+          "subscribers": "Subscribers:"
+        },
+        "pages": {
+          "header": {
+            "name": "Name",
+            "ch5count": "Ch5 Count",
+            "cached": "Cached",
+            "nodes": "Nodes",
+            "time": "Time (ms)"
+          }
+        }
+      }
     }
   },
   "footer": {

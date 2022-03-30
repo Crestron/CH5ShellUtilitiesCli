@@ -1,4 +1,4 @@
-# Shell Template - Generate Widget
+# Generate Widget
 
 The 'generate widget' function creates new widgets using command-line statements.
 
@@ -143,14 +143,9 @@ Widget Names that are not allowed are
 - Widgets starting with 'template'
 - Names of Widgets / Pages / Modules used in ./app/template folder like 'service', 'translate', and so forth.
 
-Parameters for "logger" are
-
-- "allowLogging": false - Applicable values are true / false. This can be used for developer debugging.
-- "logLevel": 1 - Indicates the logging levels for developer debugging. Applicable values can be found in logger.js file.
-
 ### Copyright
 
-Copyright (C) 2021 to the present, Crestron Electronics, Inc.
+Copyright (C) 2022 to the present, Crestron Electronics, Inc.
 
 All rights reserved.
 

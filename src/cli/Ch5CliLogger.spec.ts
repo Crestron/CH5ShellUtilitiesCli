@@ -3,159 +3,165 @@ import { expect } from 'chai';
 import * as sinon from "sinon";
 import { SinonStub } from "sinon";
 
-const ch5CliLogger = new Ch5CliLogger(true, LOG_LEVELS.TRACE);
-const ch5CliLoggerDisabled = new Ch5CliLogger(false, LOG_LEVELS.TRACE);
+export const shouldCheckLoggerByLevelAndEnable = (logLevel: any, enabled: boolean) => {
 
-describe('Ch5 CLI Logger enabled >>>>>>>> ', () => {
+  let ch5CliLoggerObject: Ch5CliLogger;
+
   let consoleLogStub: SinonStub;
   let consoleWarnStub: SinonStub;
   let consoleErrorStub: SinonStub;
   let consoleInfoStub: SinonStub;
   let consoleTraceStub: SinonStub;
+  let consoleGroupStartStub: SinonStub;
+  let consoleGroupEndStub: SinonStub;
 
-  before(() => {
+  beforeEach(() => {
     consoleLogStub = sinon.stub(console, 'log');
     consoleWarnStub = sinon.stub(console, 'warn');
     consoleErrorStub = sinon.stub(console, 'error');
     consoleInfoStub = sinon.stub(console, 'info');
     consoleTraceStub = sinon.stub(console, 'trace');
+    consoleGroupStartStub = sinon.stub(console, 'group');
+    consoleGroupEndStub = sinon.stub(console, 'groupEnd');
   });
 
-  after(() => {
+  afterEach(() => {
     sinon.restore();
   });
-
-  it(`linebreak`, () => {
-    ch5CliLogger.linebreak(2);
-    expect(consoleLogStub.calledWith('\n\n')).equals(true);
-  });
-
-  it('log', () => {
-    ch5CliLogger.log('test ');
-    expect(consoleLogStub.called).equals(true);
-  });
-
-  it('warn', () => {
-    ch5CliLogger.warn(' test ');
-    expect(consoleWarnStub.called).equals(true);
-  });
-
-  it('error', () => {
-    ch5CliLogger.error(' test ');
-    expect(consoleErrorStub.called).equals(true);
-  });
-
-  it('info', () => {
-    ch5CliLogger.info(' test ');
-    expect(consoleInfoStub.called).equals(true);
-  });
-
-  it('trace', () => {
-    ch5CliLogger.trace(' test ');
-    expect(consoleTraceStub.called).equals(true);
-  });
-
-  it('print success', () => {
-    ch5CliLogger.printSuccess('');
-    expect(consoleInfoStub.called).equals(true);
-  });
-
-  it('print warning', () => {
-    ch5CliLogger.printWarning('');
-    expect(consoleInfoStub.called).equals(true);
-  });
-
-  it('print error', () => {
-    ch5CliLogger.printError('');
-    expect(consoleInfoStub.called).equals(true);
-  });
-
-  it('print log', () => {
-    ch5CliLogger.printLog('');
-    expect(consoleInfoStub.called).equals(true);
-  });
-
-  it('on error', () => {
-    try {
-      ch5CliLogger.onErr(new Error(''));
-    } catch (err) { }
-    expect(consoleErrorStub.called).equals(true);
-  })
-});
-
-describe('Ch5 CLI Logger disabled >>>>>>>> ', () => {
-  let consoleLogStub: SinonStub;
-  let consoleWarnStub: SinonStub;
-  let consoleErrorStub: SinonStub;
-  let consoleInfoStub: SinonStub;
-  let consoleTraceStub: SinonStub;
 
   before(() => {
-    consoleLogStub = sinon.stub(console, 'log');
-    consoleWarnStub = sinon.stub(console, 'warn');
-    consoleErrorStub = sinon.stub(console, 'error');
-    consoleInfoStub = sinon.stub(console, 'info');
-    consoleTraceStub = sinon.stub(console, 'trace');
+    ch5CliLoggerObject = new Ch5CliLogger(enabled, logLevel);
   });
 
   after(() => {
-    sinon.restore();
+
   });
 
   it(`linebreak`, () => {
-    ch5CliLoggerDisabled.linebreak(2);
+    ch5CliLoggerObject.linebreak(2);
     expect(consoleLogStub.calledWith('\n\n')).equals(true);
   });
 
   it('log', () => {
-    ch5CliLoggerDisabled.log('test ');
-    expect(consoleLogStub.called).equals(true);
+    ch5CliLoggerObject.log('test');
+    expect(consoleLogStub.calledWith(ch5CliLoggerObject.FOREGROUND_COLORS.Blue, 'test', ch5CliLoggerObject.FORMATTING.Reset)).equals(logLevel <= LOG_LEVELS.DEBUG ? enabled : false);
   });
 
   it('warn', () => {
-    ch5CliLoggerDisabled.warn(' test ');
-    expect(consoleWarnStub.called).equals(false);
+    ch5CliLoggerObject.warn('test');
+    expect(consoleWarnStub.calledWith(ch5CliLoggerObject.FOREGROUND_COLORS.Yellow, 'test', ch5CliLoggerObject.FORMATTING.Reset)).equals(logLevel <= LOG_LEVELS.WARN ? enabled : false);
   });
 
   it('error', () => {
-    ch5CliLoggerDisabled.error(' test ');
-    expect(consoleErrorStub.called).equals(false);
+    ch5CliLoggerObject.error('test');
+    expect(consoleErrorStub.calledWith(ch5CliLoggerObject.FOREGROUND_COLORS.Red, 'test', ch5CliLoggerObject.FORMATTING.Reset)).equals(logLevel <= LOG_LEVELS.ERROR ? enabled : false);
   });
 
   it('info', () => {
-    ch5CliLoggerDisabled.info(' test ');
-    expect(consoleInfoStub.called).equals(false);
+    ch5CliLoggerObject.info('test');
+    expect(consoleInfoStub.calledWith(ch5CliLoggerObject.FOREGROUND_COLORS.Magenta, 'test', ch5CliLoggerObject.FORMATTING.Reset)).equals(logLevel <= LOG_LEVELS.INFO ? enabled : false);
   });
 
   it('trace', () => {
-    ch5CliLoggerDisabled.trace(' test ');
-    expect(consoleTraceStub.called).equals(false);
+    ch5CliLoggerObject.trace('test');
+    expect(consoleTraceStub.calledWith(ch5CliLoggerObject.FOREGROUND_COLORS.Cyan, 'test', ch5CliLoggerObject.FORMATTING.Reset)).equals(logLevel <= LOG_LEVELS.TRACE ? enabled : false);
   });
 
   it('print success', () => {
-    ch5CliLoggerDisabled.printSuccess('');
-    expect(consoleInfoStub.called).equals(true);
+    ch5CliLoggerObject.printSuccess('test');
+    expect(consoleLogStub.calledWith(ch5CliLoggerObject.FOREGROUND_COLORS.Green, 'test', ch5CliLoggerObject.FORMATTING.Reset)).equals(true);
   });
 
   it('print warning', () => {
-    ch5CliLoggerDisabled.printWarning('');
-    expect(consoleInfoStub.called).equals(true);
+    ch5CliLoggerObject.printWarning('test');
+    expect(consoleLogStub.calledWith(ch5CliLoggerObject.FOREGROUND_COLORS.Yellow, 'test', ch5CliLoggerObject.FORMATTING.Reset)).equals(true);
   });
 
   it('print error', () => {
-    ch5CliLoggerDisabled.printError('');
-    expect(consoleInfoStub.called).equals(true);
+    ch5CliLoggerObject.printError('test');
+    expect(consoleLogStub.calledWith(ch5CliLoggerObject.FOREGROUND_COLORS.Red, 'test', ch5CliLoggerObject.FORMATTING.Reset)).equals(true);
   });
 
   it('print log', () => {
-    ch5CliLoggerDisabled.printLog('');
-    expect(consoleInfoStub.called).equals(true);
+    ch5CliLoggerObject.printLog('test');
+    expect(consoleLogStub.calledWith(ch5CliLoggerObject.FOREGROUND_COLORS.Blue, 'test', ch5CliLoggerObject.FORMATTING.Reset)).equals(true);
+  });
+
+  it('group start', () => {
+    ch5CliLoggerObject.start('test');
+    expect(consoleGroupStartStub.calledWith(ch5CliLoggerObject.FOREGROUND_COLORS.Blue, 'test', ch5CliLoggerObject.FORMATTING.Reset)).equals(logLevel <= LOG_LEVELS.DEBUG ? enabled : false);
+  });
+
+  it('group end', () => {
+    ch5CliLoggerObject.end();
+    expect(consoleGroupEndStub.called).equals(logLevel <= LOG_LEVELS.DEBUG ? enabled : false);
   });
 
   it('on error', () => {
     try {
-      ch5CliLogger.onErr(new Error(''));
+      ch5CliLoggerObject.onErr(new Error(''));
     } catch (err) { }
-    expect(consoleErrorStub.called).equals(true);
+    expect(consoleErrorStub.called).equals(logLevel <= LOG_LEVELS.ERROR ? enabled : false);
   });
+
+};
+
+describe('Ch5 CLI Logger >>>>>>>> ', () => {
+
+  describe('LOG_LEVELS.TRACE and enabled true', () => {
+    shouldCheckLoggerByLevelAndEnable(LOG_LEVELS.TRACE, true);
+  });
+
+  describe('LOG_LEVELS.TRACE and enabled false', () => {
+    shouldCheckLoggerByLevelAndEnable(LOG_LEVELS.TRACE, false);
+  });
+
+  describe('LOG_LEVELS.DEBUG and enabled true', () => {
+    shouldCheckLoggerByLevelAndEnable(LOG_LEVELS.DEBUG, true);
+  });
+
+  describe('LOG_LEVELS.DEBUG and enabled false', () => {
+    shouldCheckLoggerByLevelAndEnable(LOG_LEVELS.DEBUG, false);
+  });
+
+  describe('LOG_LEVELS.INFO and enabled true', () => {
+    shouldCheckLoggerByLevelAndEnable(LOG_LEVELS.INFO, true);
+  });
+
+  describe('LOG_LEVELS.INFO and enabled false', () => {
+    shouldCheckLoggerByLevelAndEnable(LOG_LEVELS.INFO, false);
+  });
+
+  describe('LOG_LEVELS.WARN and enabled true', () => {
+    shouldCheckLoggerByLevelAndEnable(LOG_LEVELS.WARN, true);
+  });
+
+  describe('LOG_LEVELS.WARN and enabled false', () => {
+    shouldCheckLoggerByLevelAndEnable(LOG_LEVELS.WARN, false);
+  });
+
+  describe('LOG_LEVELS.ERROR and enabled true', () => {
+    shouldCheckLoggerByLevelAndEnable(LOG_LEVELS.ERROR, true);
+  });
+
+  describe('LOG_LEVELS.ERROR and enabled false', () => {
+    shouldCheckLoggerByLevelAndEnable(LOG_LEVELS.ERROR, false);
+  });
+
+  describe('LOG_LEVELS.FATAL and enabled true', () => {
+    shouldCheckLoggerByLevelAndEnable(LOG_LEVELS.FATAL, true);
+  });
+
+  describe('LOG_LEVELS.FATAL and enabled false', () => {
+    shouldCheckLoggerByLevelAndEnable(LOG_LEVELS.FATAL, false);
+  });
+
+  describe('LOG_LEVELS.OFF and enabled true', () => {
+    shouldCheckLoggerByLevelAndEnable(LOG_LEVELS.OFF, true);
+  });
+
+  describe('LOG_LEVELS.OFF and enabled false', () => {
+    shouldCheckLoggerByLevelAndEnable(LOG_LEVELS.OFF, false);
+  });
+
 });

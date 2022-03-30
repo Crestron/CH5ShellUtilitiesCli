@@ -1,4 +1,4 @@
-# Shell Template - Export Library
+# Export Library
 
 'Export Library' exports libraries from the './app/project/libraries' folder (removing the excluded files) using command-line statements.
 
@@ -28,8 +28,8 @@ You could use shortcut script `exp:l` with yarn and npm commands as the followin
 
 Options:
     -h, --help,         Help for Exporting components from the './app/project/library/' folder
-    -l, --list,         Prefix for list of file names
-    --all               Select this option to export all the files
+    -l, --list,         Prefix for list of library file names
+    --all               Select this option to export all the library files
 
 Export the complete components directory from './app/project/library/' folder. To achieve this, use the below commands:
     ch5-shell-cli export:library --all
@@ -94,7 +94,7 @@ Parameters for "export:library" are
 
 ### Copyright
 
-Copyright (C) 2021 to the present, Crestron Electronics, Inc.
+Copyright (C) 2022 to the present, Crestron Electronics, Inc.
 
 All rights reserved.
 

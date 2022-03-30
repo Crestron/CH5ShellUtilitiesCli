@@ -1,4 +1,4 @@
-// Copyright (C) 2021 to the present, Crestron Electronics, Inc.
+// Copyright (C) 2022 to the present, Crestron Electronics, Inc.
 // All rights reserved.
 // No part of this software may be reproduced in any form, machine
 // or natural, without the express written consent of Crestron Electronics.
@@ -6,10 +6,9 @@
 // under which you licensed this source code.
 
 import { Ch5BaseClassForCliNew } from "../Ch5BaseClassForCliNew";
-import { Ch5CliProjectConfig } from "../Ch5CliProjectConfig";
 import { Ch5GeneratePageCli } from "../generate-page/Ch5GeneratePageCli";
 import { Ch5GenerateWidgetCli } from "../generate-widget/Ch5GenerateWidgetCli";
-import { ICh5Cli } from "../ICh5Cli";
+import { ICh5CliNew } from "../ICh5Cli";
 
 const path = require('path');
 const fs = require("fs");
@@ -17,102 +16,79 @@ const fsExtra = require("fs-extra");
 const process = require('process');
 const editJsonFile = require("edit-json-file");
 
-export class Ch5CreateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cli {
+export class Ch5CreateProjectCli extends Ch5BaseClassForCliNew implements ICh5CliNew {
 
   private readonly SHELL_FOLDER: string = path.normalize(path.join(__dirname, "../../", "shell"));
+  private readonly PROJECT_CONFIG_JSON_PATH: string = path.normalize("/app/project-config.json");
 
   /**
    * Constructor
    */
-  public constructor() {
+  public constructor(public showOutputMessages: boolean = true) {
     super("create-project");
-  }
-
-  /**
-   * Method for creating project
-   */
-  async run() {
-    this.logger.start("run");
-    try {
-      // Initialize
-      this.initialize();
-
-      // Verify input params
-      this.verifyInputParams();
-
-      // Ask details to developer based on input parameter validation
-      await this.checkPromptQuestions();
-
-      // Update project-config first (so that if this fails, we don't worry about file deletion). Next Delete Files
-      await this.processRequest();
-
-    } catch (e: any) {
-      this.outputResponse.errorMessage = this.logError(e);
-    } finally {
-      // Clean up
-      this.cleanUp();
-    }
-
-    // Show output response
-    this.logOutput();
-    this.logger.end();
-    return this.outputResponse.result; // The return is required to validate in automation test case
   }
 
   /**
    * Initialize process
    */
-  initialize() {
+  async initialize() {
     this.logger.start("initialize");
-    super.initialize();
     this.outputResponse.data.updateInputs = [];
-    this.outputResponse.askConfirmation = true; // We do not need confirmation for Create Project
+    this.outputResponse.data.projectName = "";
+    this.outputResponse.data.projectFolderPath = "";
     this.logger.end();
   }
 
   /**
    * Verify input parameters
    */
-  verifyInputParams() {
+  async verifyInputParams() {
     this.logger.start("verifyInputParams");
     if (this.inputArgs["config"].argsValue !== "") {
-      // Step 1: Check file extension for json
+      // Step 1: Check file extension for json, valid input for 'config' argument, and config file existence
       if (!(this.utils.isValidInput(this.inputArgs["config"].argsValue) && this.isConfigFileExist(this.inputArgs["config"].argsValue))) {
-        throw new Error(this.getText("FAILURE_MESSAGE_INPUT_PARAM_CONFIG_FILE_MISSING"));
+        throw new Error(this.getText("VERIFY_INPUT_PARAMS.INVALID_CONFIG_INPUT"));
       }
       // Step 2: Check if json is as per its schema (.vscode is hidden folder)
       if (!(this.isConfigFileValid(this.inputArgs["config"].argsValue, path.join(this.SHELL_FOLDER, ".vscode", "project-config-schema.json"), false))) {
-        // this.logger.printError(this.composeOutput(this.errorsFound, this.getText("TYPE_ERROR"))); // TODO
-        throw new Error(this.getText("FAILURE_MESSAGE_INPUT_PARAM_CONFIG_FILE_INVALID"));
+        throw new Error(this.getText("VERIFY_INPUT_PARAMS.INVALID_CONFIG_FILE"));
       }
     } else {
       this.logger.log("Blank project creation without json file");
 
       Object.entries(this.inputArgs).forEach(([key, value]: any) => {
-        const inputUpdate = {
-          ...value,
-          "warning": "",
-          "value": null
-        };
-        if (value.inputReceived === true && (this.utils.isValidInput(value.argsValue) || value.optionalArgument === false)) {
-          // console.log("value.optionalArgument", value.optionalArgument);
-          if (this.utils.isValidInput(value.argsValue)) {
-            const validationResponse: any = this.validateCLIInputArgument(value, value.key, value.argsValue, this.getText("ERRORS.INVALID_INPUT"));
-            this.logger.log("validationResponse", validationResponse);
-            if (validationResponse.error === "") {
-              inputUpdate.value = validationResponse.value;
-            } else {
-              inputUpdate.warning = this.getText("ERRORS.INVALID_ENTRY", validationResponse.error);
+        if (value.isSpecialArgument === false) {
+          const inputUpdate = {
+            ...value,
+            "warning": ""
+          };
+          if (value.inputReceived === true) {
+            if (this.utils.isValidInput(value.argsValue)) {
+              const validationResponse: any = this.validateCLIInputArgument(value, value.key, value.argsValue, this.getText("VERIFY_INPUT_PARAMS.INVALID_INPUT", value.key));
+              this.logger.log("validationResponse", validationResponse);
+              if (validationResponse.warning === "") {
+                inputUpdate.argsValue = validationResponse.value;
+              } else {
+                inputUpdate.warning = validationResponse.warning;
+              }
             }
+            this.outputResponse.data.updateInputs.push(inputUpdate);
           }
-          this.outputResponse.data.updateInputs.push(inputUpdate);
-        } else if (value.optionalArgument === false) {
-          this.outputResponse.data.updateInputs.push(inputUpdate);
         }
       });
+      if (this.outputResponse.data.updateInputs.length === 0) {
+        const value = this.inputArgs["projectName"];
+        const inputUpdate = {
+          ...value,
+          "warning": ""
+        };
+
+        inputUpdate.inputReceived = true
+        this.outputResponse.data.updateInputs.push(inputUpdate);
+      }
       this.logger.log("this.outputResponse.data.updateInputs: ", this.outputResponse.data.updateInputs);
 
-      const tabDisplayText = this.getText("ERRORS.TAB_DELIMITER");
+      const tabDisplayText = this.getText("COMMON.HYPHEN_DELIMITER");
       let warningMessage: string = "";
       for (let i: number = 0; i < this.outputResponse.data.updateInputs.length; i++) {
         if (this.utils.isValidInput(this.outputResponse.data.updateInputs[i].warning)) {
@@ -120,23 +96,25 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
         }
       }
       if (warningMessage !== "") {
-        this.logger.printWarning(this.getText("ERRORS.MESSAGE_TITLE", warningMessage));
+        if (this.showOutputMessages === true) {
+          this.logger.printWarning(this.getText("VERIFY_INPUT_PARAMS.INPUT_WARNING_TITLE", warningMessage));
+        }
       }
     }
     this.logger.end();
   }
 
   /**
-   * Check if there are questions to be prompted to the developer
+   * Check if there are questions to be prompted to the integrator
    */
   async checkPromptQuestions() {
     this.logger.start("checkPromptQuestions");
     if (this.inputArgs["config"].argsValue !== "") {
-      // 
+      // Do Nothing
     } else {
       this.logger.log("this.outputResponse.data.updateInputs", this.outputResponse.data.updateInputs);
       for (let i: number = 0; i < this.outputResponse.data.updateInputs.length; i++) {
-        if (!this.utils.isValidInput(this.outputResponse.data.updateInputs[i].value)) {
+        if (!this.utils.isValidInput(this.outputResponse.data.updateInputs[i].argsValue)) {
           if (this.outputResponse.data.updateInputs[i].type === "enum") {
             const choicesList = this.outputResponse.data.updateInputs[i].allowedValues;
             const componentsQuery = new this.getSelect({
@@ -145,33 +123,34 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
               choices: choicesList
             });
 
-            this.outputResponse.data.updateInputs[i].value = await componentsQuery.run()
+            this.outputResponse.data.updateInputs[i].argsValue = await componentsQuery.run()
               .then((selectedMenu: any) => { return selectedMenu; })
-              .catch((error: any) => { throw new Error(this.getText("ERRORS.DO_NOT_CREATE_PROJECT")); });
-            this.logger.log(this.outputResponse.data.updateInputs[i].key + ": ", this.outputResponse.data.updateInputs[i].value);
+              .catch((error: any) => { throw new Error(this.getText("COMMON.SOMETHING_WENT_WRONG")); });
+            this.logger.log(this.outputResponse.data.updateInputs[i].key + ": ", this.outputResponse.data.updateInputs[i].argsValue);
           } else if (this.outputResponse.data.updateInputs[i].type === "string") {
             const questionsArray = [
               {
                 type: "text",
-                name: "projectName",
+                name: this.outputResponse.data.updateInputs[i].key,
                 initial: "shell-template",
                 hint: "",
-                message: "Project Name", //this.getText("VALIDATIONS.GET_PAGE_NAME"),
-                validate: (compName: string) => {
-                  const valResponse: any = this.validateCLIInputArgument(this.outputResponse.data.updateInputs[i], this.outputResponse.data.updateInputs[i]["key"], compName, "ERROR");
-                  if (valResponse.error && valResponse.error !== "") {
-                    return false;
+                message: this.getText(this.outputResponse.data.updateInputs[i].question),
+                validate: (inputValue: string) => {
+                  const valResponse: any = this.validateCLIInputArgument(this.outputResponse.data.updateInputs[i], this.outputResponse.data.updateInputs[i]["key"], inputValue, this.getText("VERIFY_INPUT_PARAMS.INVALID_INPUT", this.outputResponse.data.updateInputs[i]["key"]));
+                  if (valResponse.warning && valResponse.warning !== "") {
+                    return valResponse.warning; // String output is considered as false for validate method.
                   } else {
                     return true;
                   }
                 }
               }];
             const response = await this.getEnquirer.prompt(questionsArray);
+            // Note that the prompt will keep asking inputs till it validates the correct value
             if (!this.utils.isValidInput(response.projectName)) {
-              throw new Error(this.getText("ERRORS.DO_NOT_CREATE_PROJECT"));
+              throw new Error(this.getText("COMMON.SOMETHING_WENT_WRONG"));
             }
-            this.outputResponse.data.updateInputs[i].value = response.projectName;
-            this.logger.log(this.outputResponse.data.updateInputs[i].key + ": ", this.outputResponse.data.updateInputs[i].value);
+            this.outputResponse.data.updateInputs[i].argsValue = response.projectName;
+            this.logger.log(this.outputResponse.data.updateInputs[i].key + ": ", this.outputResponse.data.updateInputs[i].argsValue);
           }
         }
       }
@@ -188,13 +167,12 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
 
       // Step 4: Make changes to project-config.json stepwise
       const newProjectConfigJSON: any = JSON.parse(this.utils.readFileContentSync(this.inputArgs["config"].argsValue));
-      const oldProjectConfigJSON: any = JSON.parse(this.utils.readFileContentSync(path.join(this.SHELL_FOLDER, "/app/project-config.json")));
+      const oldProjectConfigJSON: any = JSON.parse(this.utils.readFileContentSync(path.join(this.SHELL_FOLDER, this.PROJECT_CONFIG_JSON_PATH)));
 
       // 1. Project Data
       for (const k in newProjectConfigJSON) {
         if (!(typeof newProjectConfigJSON[k] === 'object' && newProjectConfigJSON[k] !== null)) {
           if (oldProjectConfigJSON[k] && oldProjectConfigJSON[k] !== newProjectConfigJSON[k]) {
-            // changesToBeDone.push({ "key": k, "oldValue": oldProjectConfigJSON[k], "newValue": newProjectConfigJSON[k] });
             oldProjectConfigJSON[k] = newProjectConfigJSON[k];
           }
         }
@@ -213,15 +191,6 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
       oldProjectConfigJSON["footer"] = newProjectConfigJSON["footer"];
 
       // 6. Content
-      // for (const k in newProjectConfigJSON["content"]) {
-      //   if (!(typeof newProjectConfigJSON["content"][k] === 'object' && newProjectConfigJSON["content"][k] !== null)) {
-      //     if (oldProjectConfigJSON["content"][k] && oldProjectConfigJSON["content"][k] !== newProjectConfigJSON["content"][k]) {
-      //       changesToBeDone.push({ "key": k, "oldValue": oldProjectConfigJSON["content"][k], "newValue": newProjectConfigJSON["content"][k] });
-      //       oldProjectConfigJSON["content"][k] = newProjectConfigJSON["content"][k];
-      //     }
-      //   }
-      // }
-
       oldProjectConfigJSON["content"]["triggerViewProperties"] = newProjectConfigJSON["content"]["triggerViewProperties"];
 
       const pagesToBeCreated: any[] = [];
@@ -231,7 +200,6 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
         if (!pageInOldSet) {
           // Exists in New set but not in old - so create page
           pagesToBeCreated.push(pageObj);
-          //   changesToBeDone.push({ "key": k, "oldValue": oldProjectConfigJSON["content"][k], "newValue": newProjectConfigJSON["content"][k] });
         }
       }
 
@@ -242,21 +210,28 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
         if (!pageInOldSet) {
           // Exists in New set but not in old - so create page
           widgetsToBeCreated.push(pageObj);
-          //   changesToBeDone.push({ "key": k, "oldValue": oldProjectConfigJSON["content"][k], "newValue": newProjectConfigJSON["content"][k] });
         }
       }
 
-      // TODO - check and update default page
       oldProjectConfigJSON["content"]["$defaultView"] = newProjectConfigJSON["content"]["$defaultView"];
 
       const pathToCreateProject: string = path.resolve(path.join("./", oldProjectConfigJSON.projectName));
       if (!fs.existsSync(pathToCreateProject)) {
         fs.mkdirSync(pathToCreateProject, { recursive: true });
       }
-      fsExtra.copySync(this.SHELL_FOLDER, pathToCreateProject, { recursive: true });
-      // console.log("oldProjectConfigJSON", oldProjectConfigJSON);
 
-      fs.writeFileSync(path.join(pathToCreateProject, "/app/project-config.json"), JSON.stringify(oldProjectConfigJSON));
+      try {
+        const isFolder = await this.utils.readdirAsync(pathToCreateProject);
+        if ((isFolder && isFolder.length > 0)) {
+          throw new Error(this.getText("PROCESS_REQUEST.FOLDER_CONTAINS_FILES", pathToCreateProject));
+        }
+      } catch (e) {
+        throw new Error(this.getText("PROCESS_REQUEST.FOLDER_CONTAINS_FILES", pathToCreateProject));
+      }
+
+      fsExtra.copySync(this.SHELL_FOLDER, pathToCreateProject, { recursive: true });
+
+      fs.writeFileSync(path.join(pathToCreateProject, this.PROJECT_CONFIG_JSON_PATH), JSON.stringify(oldProjectConfigJSON));
 
       process.chdir(pathToCreateProject);
 
@@ -264,84 +239,58 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
       packageJsonFile.set("name", oldProjectConfigJSON.projectName);
       packageJsonFile.save();
 
+      this.outputResponse.data.projectName = oldProjectConfigJSON.projectName;
+      this.outputResponse.data.projectFolderPath = path.resolve(path.join("./"));
+
       // Step 5: Save Project-config
-      // console.log("pagesToBeCreated", pagesToBeCreated);
-      // const projectConfigObject = new Ch5CliProjectConfig();
-      // projectConfigObject.addPagesToJSON(pagesToBeCreated);
-      // projectConfigObject.addWidgetsToJSON(widgetsToBeCreated);
-      // this.projectConfig.save(newProjectConfigJSON);
       for (let i: number = 0; i < pagesToBeCreated.length; i++) {
-        const genPage: Ch5GeneratePageCli = new Ch5GeneratePageCli();
+        const genPage: Ch5GeneratePageCli = new Ch5GeneratePageCli(false);
         genPage.setInputArgsForTesting(["-n", pagesToBeCreated[i].pageName, "-m", pagesToBeCreated[i].navigation ? "Y" : "N"]);
         await genPage.run();
       }
 
       for (let i: number = 0; i < widgetsToBeCreated.length; i++) {
-        const genWidget: Ch5GenerateWidgetCli = new Ch5GenerateWidgetCli();
+        const genWidget: Ch5GenerateWidgetCli = new Ch5GenerateWidgetCli(false);
         genWidget.setInputArgsForTesting(["-n", widgetsToBeCreated[i].widgetName]);
         await genWidget.run();
       }
 
-      // console.log("widgetsToBeCreated", widgetsToBeCreated);
       // Step 6: Run validate:project-config
-      if (!(this.isConfigFileValid(path.join(pathToCreateProject, "/app/project-config.json"), path.join(pathToCreateProject, ".vscode", "project-config-schema.json")))) {
-        // this.logger.printError(this.composeOutput(this.errorsFound, this.getText("TYPE_ERROR"))); // TODO
-        throw new Error(this.getText("FAILURE_MESSAGE_INPUT_PARAM_CONFIG_FILE_INVALID"));
+      if (!(this.isConfigFileValid(path.join(pathToCreateProject, this.PROJECT_CONFIG_JSON_PATH), path.join(pathToCreateProject, ".vscode", "project-config-schema.json")))) {
+        throw new Error(this.getText("PROCESS_REQUEST.PROJECT_CONFIG_VALIDATION_FAILED"));
       }
 
       // Step 8: Show proper messages  
       this.outputResponse.result = true;
+      this.outputResponse.successMessage = this.getText("LOG_OUTPUT.SUCCESS_MESSAGE", this.outputResponse.data.projectName, this.outputResponse.data.projectFolderPath);
     } else {
       // Step 4: Make changes to project-config.json stepwise
-      const projectConfigJSON: any = JSON.parse(this.utils.readFileContentSync(path.resolve(path.join(this.SHELL_FOLDER, "/app/project-config.json"))));
+      const projectConfigJSON: any = JSON.parse(this.utils.readFileContentSync(path.resolve(path.join(this.SHELL_FOLDER, this.PROJECT_CONFIG_JSON_PATH))));
       // this.projectConfigJsonSchema = JSON.parse(this.utils.readFileContentSync("./.vscode/project-config-schema.json"));
 
       // 1. Project Data
-      projectConfigJSON.projectName = this.outputResponse.data.updateInputs.find((objValue: any) => objValue.key === "projectName").value;
+      projectConfigJSON.projectName = this.outputResponse.data.updateInputs.find((objValue: any) => objValue.key === "projectName").argsValue;
 
-      // projectConfigJSON.projectName = this.outputResponse.data.updateInputs.find((objValue: any) => objValue.key === "projectName").value;
+      // projectConfigJSON.projectName = this.outputResponse.data.updateInputs.find((objValue: any) => objValue.key === "projectName").argsValue;
       const pathToCreateProject: string = path.resolve(path.join("./", projectConfigJSON.projectName));
 
       // Check if current folder is empty.
-
       try {
         const isFolder = await this.utils.readdirAsync(pathToCreateProject);
-        if (!(isFolder && isFolder.length > 0)) {
-        } else {
-          //  throw new Error(this.getText("FAILURE_MESSAGE_INPUT_PARAM_CONFIG_FILE_MISSING"));
+        if ((isFolder && isFolder.length > 0)) {
+          throw new Error(this.getText("PROCESS_REQUEST.FOLDER_CONTAINS_FILES", pathToCreateProject));
         }
       } catch (e) {
-        //  throw new Error(this.getText("FAILURE_MESSAGE_INPUT_PARAM_CONFIG_FILE_MISSING"));
-
+        throw new Error(this.getText("PROCESS_REQUEST.FOLDER_CONTAINS_FILES", pathToCreateProject));
       }
 
-      // 2. Themes
-
-
-      // 3. Config
-
-
-      // 4. Header
-
-
-      // 5. Footer
-
-
-      // 6. Content
-      // const defaultPage = new Ch5GeneratePageCli();
-      // defaultPage.setInputArgsForTesting(["--name", "page1", "--menu", "Y"]);
-      // defaultPage.run();
-
-      // Step 5: Save Project-config
-      // this.projectConfig.addPagesToJSON(projectConfigJSON.content.pages[0]);
-
-      // TODO - check and update default page
+      // TODO --blank
       if (!fs.existsSync(pathToCreateProject)) {
         fs.mkdirSync(pathToCreateProject, { recursive: true });
       }
       fsExtra.copySync(this.SHELL_FOLDER, pathToCreateProject, { recursive: true });
-      projectConfigJSON["content"]["$defaultView"] = "page1"; //newProjectConfigJSON["content"]["$defaultView"];
-      fs.writeFileSync(path.join(pathToCreateProject, "/app/project-config.json"), JSON.stringify(projectConfigJSON));
+      projectConfigJSON["content"]["$defaultView"] = "page1";
+      fs.writeFileSync(path.join(pathToCreateProject, this.PROJECT_CONFIG_JSON_PATH), JSON.stringify(projectConfigJSON));
 
       process.chdir(pathToCreateProject);
 
@@ -349,38 +298,22 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
       packageJsonFile.set("name", projectConfigJSON.projectName);
       packageJsonFile.save();
 
-      const genPage: Ch5GeneratePageCli = new Ch5GeneratePageCli();
+      this.outputResponse.data.projectName = projectConfigJSON.projectName;
+      this.outputResponse.data.projectFolderPath = path.resolve(path.join("./"));
+
+      const genPage: Ch5GeneratePageCli = new Ch5GeneratePageCli(false);
       genPage.setInputArgsForTesting(["-n", "page1", "-m", "Y"]);
       await genPage.run();
 
       // Step 6: Run validate:project-config
-      if (!(this.isConfigFileValid(path.join(pathToCreateProject, "/app/project-config.json"), path.join(__dirname, "files", "project-config-schema.json")))) {
-        // this.logger.printError(this.composeOutput(this.errorsFound, this.getText("TYPE_ERROR"))); // TODO
-        throw new Error(this.getText("FAILURE_MESSAGE_INPUT_PARAM_CONFIG_FILE_INVALID"));
+      if (!(this.isConfigFileValid(path.join(pathToCreateProject, this.PROJECT_CONFIG_JSON_PATH), path.join(pathToCreateProject, ".vscode", "project-config-schema.json")))) {
+        throw new Error(this.getText("PROCESS_REQUEST.PROJECT_CONFIG_VALIDATION_FAILED"));
       }
 
-      // Step 8: Show proper messages  
       this.outputResponse.result = true;
+      this.outputResponse.successMessage = this.getText("LOG_OUTPUT.SUCCESS_MESSAGE", this.outputResponse.data.projectName, this.outputResponse.data.projectFolderPath);
     }
     this.logger.end();
-  }
-
-  /**
-   * Clean up
-   */
-  cleanUp() {
-    //
-  }
-
-  /**
-   * Log Final Response Message
-   */
-  logOutput() {
-    if (this.outputResponse.result === false) {
-      this.logger.printError(this.outputResponse.errorMessage);
-    } else {
-      this.logger.printSuccess(this.getText("SUCCESS_MESSAGE", this.utils.convertArrayToString(this.outputResponse['validInputsForComponentNames'], ", ")) + "\n");
-    }
   }
 
 }

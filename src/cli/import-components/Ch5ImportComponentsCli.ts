@@ -20,7 +20,7 @@ export class Ch5ImportComponentsCli extends Ch5BaseClassForCli implements ICh5Cl
   private outputResponse: any = {};
   private folderPaths: any = {};
 
-  public constructor() {
+  public constructor(public showOutputMessages: boolean = true) {
     super("import-components");
   }
 
@@ -388,56 +388,58 @@ export class Ch5ImportComponentsCli extends Ch5BaseClassForCli implements ICh5Cl
    * Log Final Response Message
    */
   logOutput() {
-    this.logger.log("this.outputResponse", JSON.stringify(this.outputResponse));
-    if (this.utils.isValidInput(this.outputResponse.errorMessage)) {
-      this.logger.printError(this.outputResponse.errorMessage);
-    } else {
-      if (this.outputResponse.result === true) {
-        /*
-        If inputArguments("all") is false
-          If overwrite = true
-            If invalid files is zero
-              Message listing valid files
+    if (this.showOutputMessages === true) {
+      this.logger.log("this.outputResponse", JSON.stringify(this.outputResponse));
+      if (this.utils.isValidInput(this.outputResponse.errorMessage)) {
+        this.logger.printError(this.outputResponse.errorMessage);
+      } else {
+        if (this.outputResponse.result === true) {
+          /*
+          If inputArguments("all") is false
+            If overwrite = true
+              If invalid files is zero
+                Message listing valid files
+              Else
+                Message showing valid and invalid files
             Else
-              Message showing valid and invalid files
+              If invalid files is zero
+                Message listing valid files
+              Else
+                Message showing valid and invalid files
           Else
-            If invalid files is zero
-              Message listing valid files
+            If overwrite = true
+              Generic Message
             Else
-              Message showing valid and invalid files
-        Else
-          If overwrite = true
-            Generic Message
-          Else
-            Identify the copied files
-        */
-        if (this.inputArguments["all"] === true) {
-          if (this.outputResponse.data.overwriteFiles === true) {
-            this.logger.printSuccess(this.getText("SUCCESS_MESSAGE_ALL"));
-          } else {
-            if (this.outputResponse.data.listOfFilesWithOverrideFalse.length === 0) {
-              this.logger.printError(this.getText("FAILURE_MESSAGE_NO_VALID_OVERWRITE_FILES"));
+              Identify the copied files
+          */
+          if (this.inputArguments["all"] === true) {
+            if (this.outputResponse.data.overwriteFiles === true) {
+              this.logger.printSuccess(this.getText("SUCCESS_MESSAGE_ALL"));
             } else {
-              this.logger.printSuccess(this.getText("SUCCESS_MESSAGE_SPECIFIC", this.utils.convertArrayToString(this.outputResponse.data.listOfFilesWithOverrideFalse, "\n")));
-            }
-          }
-        } else {
-          if (this.outputResponse.data.overwriteFiles === true) {
-            this.logger.printSuccess(this.getText("SUCCESS_MESSAGE_SPECIFIC", this.utils.convertArrayToString(this.outputResponse.data.inputFileExistsInSourceFolder, "\n")));
-          } else {
-            if (this.outputResponse.data.listOfFilesWithOverrideFalse.length === 0) {
-              this.logger.printError(this.getText("FAILURE_MESSAGE_NO_VALID_OVERWRITE_FILES"));
-            } else {
-              if (this.outputResponse.data.invalidInputFiles.length > 0) {
-                this.logger.printSuccess(this.getText("SUCCESS_MESSAGE_SPECIFIC_WITH_ERROR", this.utils.convertArrayToString(this.outputResponse.data.listOfFilesWithOverrideFalse, "\n"), this.utils.convertArrayToString(this.outputResponse.data.sourceFilesInTargetFolder, "\n"), this.utils.convertArrayToString(this.outputResponse.data.invalidInputFiles, "\n")));
+              if (this.outputResponse.data.listOfFilesWithOverrideFalse.length === 0) {
+                this.logger.printError(this.getText("FAILURE_MESSAGE_NO_VALID_OVERWRITE_FILES"));
               } else {
                 this.logger.printSuccess(this.getText("SUCCESS_MESSAGE_SPECIFIC", this.utils.convertArrayToString(this.outputResponse.data.listOfFilesWithOverrideFalse, "\n")));
               }
             }
+          } else {
+            if (this.outputResponse.data.overwriteFiles === true) {
+              this.logger.printSuccess(this.getText("SUCCESS_MESSAGE_SPECIFIC", this.utils.convertArrayToString(this.outputResponse.data.inputFileExistsInSourceFolder, "\n")));
+            } else {
+              if (this.outputResponse.data.listOfFilesWithOverrideFalse.length === 0) {
+                this.logger.printError(this.getText("FAILURE_MESSAGE_NO_VALID_OVERWRITE_FILES"));
+              } else {
+                if (this.outputResponse.data.invalidInputFiles.length > 0) {
+                  this.logger.printSuccess(this.getText("SUCCESS_MESSAGE_SPECIFIC_WITH_ERROR", this.utils.convertArrayToString(this.outputResponse.data.listOfFilesWithOverrideFalse, "\n"), this.utils.convertArrayToString(this.outputResponse.data.sourceFilesInTargetFolder, "\n"), this.utils.convertArrayToString(this.outputResponse.data.invalidInputFiles, "\n")));
+                } else {
+                  this.logger.printSuccess(this.getText("SUCCESS_MESSAGE_SPECIFIC", this.utils.convertArrayToString(this.outputResponse.data.listOfFilesWithOverrideFalse, "\n")));
+                }
+              }
+            }
           }
+        } else {
+          this.logger.printError(this.outputResponse.errorMessage);
         }
-      } else {
-        this.logger.printError(this.outputResponse.errorMessage);
       }
     }
   }

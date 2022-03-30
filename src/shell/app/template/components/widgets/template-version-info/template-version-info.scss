@@ -15,6 +15,27 @@
 
   margin-left: 1rem;
 
+  #infobtn.warn {
+    position: relative;
+
+    &:after {
+      content: "!";
+      position: absolute;
+      background: #dc3545;
+      color: white;
+      border-radius: 50%;
+      height: 13px;
+      border: 1px solid #711c24;
+      width: 13px;
+      line-height: 12px;
+      text-align: center;
+      top: -2px;
+      right: -2px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+  }
+
   .ch5-button {
     background-color: transparent;
     border: none;
@@ -35,75 +56,144 @@
     }
   }
 
-  #versionDetails {
-    height: 175px;
-    width: 200px;
-    #versionInfo,
-    #licenseInfo {
-      display: none;
-    }
-
-    input[type="radio"] {
-      position: absolute;
-      height: 0;
-      width: 0;
-      opacity: 0;
-    }
-
-    #tabBar {
-      display: flex;
-      margin-top: 10px;
-      .tab {
-        flex: 1;
-        font-size: 1.2rem;
-        color: $color-greyishblue;
-        background: $color-offwhite;
-        padding: 0 5px;
-        box-sizing: border-box;
-        cursor: pointer;
-
-        &[for="version"] {
-          border-right: 2px solid $color-white;
-        }
-      }
-    }
-
-    input#version[type="radio"]:checked {
-      & ~ #versionInfo {
-        display: block;
-      }
-
-      & ~ #tabBar {
-        label[for="version"] {
-          /*this is selected*/
-          border-bottom: 3px solid $color-lightestgrey;
-        }
-      }
-    }
-
-    input#license[type="radio"]:checked {
-      & ~ #licenseInfo {
-        display: block;
-      }
-
-      & ~ #tabBar {
-        label[for="license"] {
-          /*this is selected*/
-          border-bottom: 3px solid $color-lightestgrey;
-        }
-      }
-    }
-  }
-
-  div.ch5-modal-dialog {
+  div.ch5-modal-dialog.project-info-dialog {
+    width: 55vw;
+    max-height: 70vh;
+    max-width: 600px;
     border: $version-modal-dialog-border-width $border-type $black;
+    min-height: 430px;
+
+    .ch5-modal-dialog-header {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .spacer {
+      border: 1px solid gray;
+      margin: 0 0 10px 0;
+    }
+
+    #version-tab-content, #webxpanel-tab-content, #diagnostics-tab-content {
+      max-height: calc(70vh - 120px);
+      padding-bottom: 5px;
+      overflow: auto;
+    }
+
+    #tab-wrapper {
+      margin-top: 10px;
+      display: flex;
+      max-width: 65%;
+      button {
+        background-color: rgba(169,169,169, 0.5);
+        flex-grow: 1;
+        border: 1px solid darkgray;
+        &:first-child {
+          border-right: none;
+          border-top-left-radius: 3px;
+        }
+        &:last-child {
+          border-left: none;
+          border-top-right-radius: 3px;
+        }
+        &.selected {
+          background-color: rgba(211,211,211, 0.5);
+        }
+      }
+    }
+
+    table {
+      width: 100%;
+      th, td {
+        border: 1px solid darkgray;
+        padding: 5px;
+      }
+
+      tr:first-child {
+        background-color: lightgrey;
+      }
+
+      tr:nth-child(even) {
+        background-color: rgba(200,200,200, 0.4);
+      }
+    }
+
+    #webxpanel-tab-content {
+      .connection {
+        margin-bottom: 10px;
+        display: flex;
+        flex-direction: column;
+        .info-row {
+          margin-left: 10px;
+        }
+      }
+    }
+
+    #diagnostics-tab-content {
+      #diagnostics-info {
+        button#subscribe-log {
+          border: 1px solid darkgray;
+          border-radius: 5px;
+          margin-bottom: 10px;
+          width: 100%;
+          &:hover {
+            background:rgba(200,200,200, 0.5);
+          }
+          &:active {
+            background:rgba(180,180,180, 0.5);
+          }
+        }
+        #memory-collabsable-handler, #subscribe-collabsable-handler {
+          font-weight: bold;
+          &:hover {
+            cursor: pointer;
+          }
+        }
+        #memory-collabsable-container, #subscribe-collabsable-container {
+          overflow: hidden;
+          height: 0;
+          transition: 0.5s;
+          margin: 0 0 10px 14px;
+          display: flex;
+          flex-direction: column;
+          & > span {
+            height: 36px;
+            display: inline-flex;
+            align-items: center;
+          }
+        }
+        .memory-container {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          ch5-button {
+            flex-grow: 1;
+            text-align: end;
+          }
+          #memory-bar {
+            margin-left: 10px;
+            height: 20px;
+            width: 30%;
+            background: white;
+            border: 1px solid gray;
+            position: relative;
+            #memory-used {
+              height: 100%;
+              background: gray;
+            }
+            #memory-span {
+              color: white;
+              position: absolute;
+              left: 50%;
+              top: 50%;
+              transform: translate(-50%,-50%);
+            }
+          }
+        }
+      }
+    }
 
     .ch5-modal-dialog-contents {
       padding: 0;
-
-      & > p:last-child {
-        margin-bottom: 0;
-      }
     }
 
     .ch5-modal-dialog-close-icon-btn {
@@ -125,15 +215,68 @@
       }
     }
 
-    p.version-error {
-      color: $red;
-    }
+    // p.version-error {
+    //   color: $red;
+    // }
 
     h4 {
       color: $black;
       font-size: rem-calc(24px);
     }
+
+    @media only screen and (max-width: 800px) {
+      width: 85vw;
+      
+      .spacer {
+        visibility: hidden;
+      }
+
+      #tab-wrapper {
+        flex-direction: column;
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        button {
+          flex-grow: 1;
+          border: 1px solid darkgray;
+          &:first-child {
+            border-right: 1px solid darkgray; // reset above rule
+            border-bottom: none;
+            border-top-right-radius: 3px;
+            border-bottom-left-radius: 0;
+          }
+          &:last-child {
+            border-left: 1px solid darkgray; // reset above rule
+            border-top: none;
+            border-top-right-radius: 0;
+            border-bottom-left-radius: 3px;
+            border-bottom-right-radius: 3px;
+          }
+        }
+      }
+
+      #version-tab-content, #webxpanel-tab-content, #diagnostics-tab-content {
+        max-height: calc(70vh - 175px);
+      }
+
+      #diagnostics-tab-content {
+        #diagnostics-info {
+          #memory-collabsable-handler, #subscribe-collabsable-handler {
+            display: none;
+          }
+          #memory-collabsable-container, #subscribe-collabsable-container {
+            height: auto;
+            margin-left: 0;
+          }
+          #memory-collabsable-container {
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
   }
+
+
 }
 
 .dark-theme {
@@ -164,34 +307,6 @@
       .cb-btn {
         @include size(100%);
         padding: 0;
-      }
-    }
-
-    #versionDetails #tabBar {
-      .tab {
-        color: $color-white;
-        background-color: $color-darkgrey;
-        &[for="version"] {
-          border-right: 2px solid $color-lightgrey;
-        }
-      }
-
-      input#version[type="radio"]:checked {
-        & ~ #tabBar {
-          label[for="version"] {
-            /*this is selected*/
-            border-bottom: 3px solid $color-lightgrey;
-          }
-        }
-      }
-
-      input#license[type="radio"]:checked {
-        & ~ #tabBar {
-          label[for="license"] {
-            /*this is selected*/
-            border-bottom: 3px solid $color-lightgrey;
-          }
-        }
       }
     }
   }

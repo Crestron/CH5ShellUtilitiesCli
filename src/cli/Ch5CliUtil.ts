@@ -6,16 +6,14 @@
 // under which you licensed this source code.
 
 import chalk from "chalk";
-import { OutputLevel } from "@crestron/ch5-utilities";
 
 const rimraf = require("rimraf");
 const fs = require("fs");
-const process = require("process");
 
 export class Ch5CliUtil {
 
   /**
-   * 
+   * Read directory async
    * @param path 
    * @returns 
    */
@@ -23,7 +21,7 @@ export class Ch5CliUtil {
     return new Promise(function (resolve, reject) {
       fs.readdir(path, function (error: any, result: any) {
         if (error) {
-          reject(error);
+          resolve(error);
         } else {
           resolve(result);
         }
@@ -32,9 +30,9 @@ export class Ch5CliUtil {
   }
 
   /**
- * Delete directory by path
- * @param {string} directoryName
- */
+   * Delete directory by path
+   * @param {string} directoryName
+   */
   public deleteFolder(directoryName: string) {
     try {
       return rimraf.sync(directoryName);
@@ -55,19 +53,38 @@ export class Ch5CliUtil {
     }
   }
 
+  /**
+   * Write Error
+   * @param error 
+   */
   public writeError(error: Error): void {
     console.log(chalk.red(`${error.name}: ${error.message}`));
   }
 
+  /**
+   * Read File Content
+   * @param path 
+   * @returns 
+   */
   public async readFileContent(path: string) {
     const output: string = await this.readFile(path);
     return output;
   }
 
+  /**
+   * Read File Content Sync
+   * @param path 
+   * @returns 
+   */
   public readFileContentSync(path: string) {
     return fs.readFileSync(path, 'utf8');
   }
 
+  /**
+   * Read File
+   * @param path 
+   * @returns 
+   */
   async readFile(path: string): Promise<string> {
     return new Promise<string>((resolve, reject) => {
       fs.readFile(path, 'utf8', function (err: any, data: any) {
@@ -77,18 +94,6 @@ export class Ch5CliUtil {
         resolve(data);
       });
     });
-  }
-
-  public getOutputLevel(options: any): OutputLevel {
-    if (options.quiet) {
-      return OutputLevel.Quiet;
-    }
-
-    if (options.verbose) {
-      return OutputLevel.Verbose;
-    }
-
-    return OutputLevel.Normal;
   }
 
   /**
@@ -124,12 +129,6 @@ export class Ch5CliUtil {
    * @param {*} input
    */
   public isValidObject(input: any) {
-    // // Polyfill is array check
-    // if (!Array.isArray) {
-    //   Array.isArray = function (arg) {
-    //     return Object.prototype.toString.call(arg) === '[object Array]';
-    //   };
-    // }
     if (!input || !this.isValidInput(input)) {
       return false;
     } else if (typeof (input) === "object" && !Array.isArray(input)) {
@@ -210,6 +209,12 @@ export class Ch5CliUtil {
     }
   }
 
+  /**
+   * 
+   * @param input 
+   * @param isEmptyValueEqualToTrue 
+   * @returns 
+   */
   public toBoolean(input: any, isEmptyValueEqualToTrue = false): boolean {
     if (this.isValidInput(input)) {
       const str = String(input);
@@ -275,17 +280,6 @@ export class Ch5CliUtil {
         }
       }
     }
-  }
-
-  /**
-   *
-   * @param {*} input
-   */
-  public deepCopy(input: object) {
-    if (this.isValidInput(input) && typeof (input) === 'object')
-      return JSON.parse(JSON.stringify(input));
-    else
-      return {};
   }
 
   /**

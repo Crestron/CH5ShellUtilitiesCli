@@ -36,6 +36,7 @@
 #content-index-page {
   flex: 1;
   overflow-y: auto;
+  overflow-x: hidden;
   &div {
     height: 100%;
   }

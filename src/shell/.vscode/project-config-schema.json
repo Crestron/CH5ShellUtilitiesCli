@@ -496,6 +496,49 @@
           "description": "Shows or hides the information icon on the header bar. The displayInfo is only applicable when the display is set to true.\nNOTE: Not applicable for custom template.",
           "title": "displayInfo Property"
         },
+        "diagnostics": {
+          "$id": "#/properties/header/properties/diagnostics",
+          "type": "object",
+          "properties": {
+            "logs": {
+              "type": "object",
+              "properties": {
+                "logAfterProjectLoad": {
+                  "type": "boolean",
+                  "default": true,
+                  "description": "Log diagnostic information after project loads. This diagnostic information will be helpful to analyze the project load time and performance.",
+                  "title": "Log on Project load"
+                },
+                "receiveStateLogDiagnostics": {
+                  "type": "string",
+                  "default": "",
+                  "description": "Accepts join or contract name to log diagnostics when the event is received",
+                  "title": "Log on Project load"                                    
+                },
+                "logDiagnostics": {
+                  "type": "string",
+                  "default": "none",
+                  "description": "Select a frequency to log the diagnostics ",
+                  "title": "Log frequency",
+                  "enum": [
+                    "hourly",
+                    "daily",
+                    "weekly",
+                    "none"
+                  ]
+                }
+              },
+              "required": [
+                "logAfterProjectLoad",
+                "receiveStateLogDiagnostics",
+                "logDiagnostics"
+              ]
+            }
+          },
+          "required": [
+            "logs"
+          ]
+        },        
         "$component": {
           "$id": "#/properties/header/properties/$component",
           "default": "",

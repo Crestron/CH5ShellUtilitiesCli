@@ -1,4 +1,4 @@
-# Shell Template - Delete Components
+# Delete Components
 
 The 'Delete Components' function is used to remove one or more PAGE or WIDGET - type components. This script will only remove components from the /app/project/components directory.
 
@@ -67,14 +67,9 @@ Parameters for "deleteComponents" are as follows:
 `-- list` | `-l`: parameter to receive a list of components to be deleted.
 `--force` | `-f`: parameter to execute the command for the component to be deleted without asking for a confirmation.
 
-Parameters for "logger" are as follows:
-
-- "allowLogging": false - Applicable values are true / false. This can be used for developer debugging.
-- "logLevel": 1 - Indicates the logging levels for developer debugging. Applicable values can be found in logger.js file.
-
 ### Copyright
 
-Copyright (C) 2021 to the present, Crestron Electronics, Inc.
+Copyright (C) 2022 to the present, Crestron Electronics, Inc.
 
 All rights reserved.
 

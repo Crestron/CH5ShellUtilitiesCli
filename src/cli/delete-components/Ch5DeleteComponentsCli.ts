@@ -20,7 +20,7 @@ export class Ch5DeleteComponentsCli extends Ch5BaseClassForCli implements ICh5Cl
   /**
    * Constructor
    */
-  public constructor() {
+  public constructor(public showOutputMessages: boolean = true) {
     super("delete-components");
   }
 
@@ -91,7 +91,7 @@ export class Ch5DeleteComponentsCli extends Ch5BaseClassForCli implements ICh5Cl
     if (this.pagesAndWidgets.length === 0) {
       throw new Error(this.getText("ERRORS.NO_PAGES_WIDGETS_AVAILABLE_IN_PROJECT"));
     }
-    
+
     const listOfInputComponents = this.inputArguments["list"];
     if (listOfInputComponents && listOfInputComponents.length > 0) {
       for (let i: number = 0; i < listOfInputComponents.length; i++) {
@@ -119,7 +119,9 @@ export class Ch5DeleteComponentsCli extends Ch5BaseClassForCli implements ICh5Cl
     }
 
     if (this.utils.isValidInput(this.outputResponse.warningMessage)) {
-      this.logger.printWarning(this.getText("ERRORS.MESSAGE_TITLE", this.outputResponse.warningMessage));
+      if (this.showOutputMessages === true) {
+        this.logger.printWarning(this.getText("ERRORS.MESSAGE_TITLE", this.outputResponse.warningMessage));
+      }
     }
   }
 
@@ -215,14 +217,16 @@ export class Ch5DeleteComponentsCli extends Ch5BaseClassForCli implements ICh5Cl
    * Log Final Response Message
    */
   logOutput() {
-    if (this.outputResponse.result === false) {
-      this.logger.printError(this.outputResponse.errorMessage);
-    } else {
-      this.logger.printSuccess(this.getText("SUCCESS_MESSAGE", this.utils.convertArrayToString(this.outputResponse['validInputsForComponentNames'], ", ")) + "\n");
-      if (this.outputResponse['invalidInputsForComponentNames'].length > 0) {
-        this.logger.printSuccess(this.getText("SUCCESS_MESSAGE_WITH_EXCEPTION", this.utils.convertArrayToString(this.outputResponse['invalidInputsForComponentNames'], ", ")) + "\n");
+    if (this.showOutputMessages === true) {
+      if (this.outputResponse.result === false) {
+        this.logger.printError(this.outputResponse.errorMessage);
+      } else {
+        this.logger.printSuccess(this.getText("SUCCESS_MESSAGE", this.utils.convertArrayToString(this.outputResponse['validInputsForComponentNames'], ", ")) + "\n");
+        if (this.outputResponse['invalidInputsForComponentNames'].length > 0) {
+          this.logger.printSuccess(this.getText("SUCCESS_MESSAGE_WITH_EXCEPTION", this.utils.convertArrayToString(this.outputResponse['invalidInputsForComponentNames'], ", ")) + "\n");
+        }
+        this.logger.printSuccess(this.getText("SUCCESS_MESSAGE_CONCLUSION", this.utils.convertArrayToString(this.outputResponse['validInputsForComponentNames'], ", ")) + "\n");
       }
-      this.logger.printSuccess(this.getText("SUCCESS_MESSAGE_CONCLUSION", this.utils.convertArrayToString(this.outputResponse['validInputsForComponentNames'], ", ")) + "\n");
     }
   }
 

@@ -29,11 +29,11 @@ var webXPanelModule = (function () {
 
   var WARN_DAYS_BEFORE = 0;
   var status;
-  var header, appVer, params;
   var pcConfig = config;
   var urlConfig = config;
   var isDisplayHeader = false;
   var isDisplayInfo = false;
+  var connectParams = config;
 
   /**
    * Function to set status bar current state - hidden being default
@@ -147,16 +147,13 @@ var webXPanelModule = (function () {
         setStatus(RENDER_STATUS.hide);
       }, 10000);
       updateInfoStatus("app.webxpanel.status.CONNECT_CIP");
-      let connectInfo = `<span>CS: ${msg.detail.url}</span>`
-        + `<span>IPID: ${Number(msg.detail.ipId).toString(16)}</span>`;
-
-      // Show roomId in info when it is not empty
-      if (msg.detail.roomId !== "") {
-        connectInfo += `<span>Room Id: ${msg.detail.roomId}</span>`;
-      }
 
       if (isDisplayInfo) {
-        document.getElementById("webXPnlParams").innerHTML = connectInfo;
+        document.querySelector('#webxpanel-tab-content .connection .cs').textContent = `CS: wss://${connectParams.host}:${connectParams.port}`;
+        document.querySelector('#webxpanel-tab-content .connection .ipid').textContent = `IPID: ${Number(msg.detail.ipId).toString(16)}`;
+        if (msg.detail.roomId !== "") {
+          document.querySelector('#webxpanel-tab-content .connection .roomid').textContent = `Room Id: ${msg.detail.roomId}`;
+        }
       }
     });
 
@@ -208,7 +205,7 @@ var webXPanelModule = (function () {
       }
 
       if (isDisplayInfo) {
-        const licenseText = document.getElementById("webXPnlLicense");
+        const licenseText = document.getElementById("lic");
         licenseText.textContent = licenseMessage;
       }
     }
@@ -303,29 +300,18 @@ var webXPanelModule = (function () {
     }, 30000);
   }
 
+
   /**
    * Connect to the control system through websocket connection.
    * Show the status in the header bar using CSS animation.
    * @param {object} projectConfig
    */
   function connectWebXPanel(projectConfig) {
-    let connectParams = config;
-    let ver = WebXPanel.getVersion();
-    let bdate = WebXPanel.getBuildDate();
-    isDisplayHeader = projectConfig.header.display;
+    connectParams = config;
+
     isDisplayInfo = projectConfig.header.displayInfo;
 
-    const versionDetailsElement = document.getElementById("versionDetails");
-
-    console.log(versionDetailsElement);
-
-    if (isDisplayInfo && versionDetailsElement) {
-      versionDetailsElement.style.display = 'block'; // Show the style
-      header = document.getElementById("webXPnlHdr").innerHTML = `WebXPanel Version: ${ver}<span>Build date: ${bdate}</span>`;
-      appVer = document.getElementById("webXPnlVer");
-      status = document.getElementById("webXPnlStatus");
-      params = document.getElementById("webXPnlParams");
-    }
+    status = document.querySelector('#webxpanel-tab-content .connection .status');
 
     webXPanelConnectionStatus();
 
@@ -339,22 +325,17 @@ var webXPanelModule = (function () {
     WebXPanel.default.initialize(connectParams);
 
     updateInfoStatus("app.webxpanel.status.CONNECT_WS");
-    let connectInfo = '<span>CS:</span>';
-    if (connectParams.host !== "") {
-      connectInfo = `<span>CS: wss://${connectParams.host}:${connectParams.port}/</span>`;
-    }
-
-    if (connectParams.ipId !== "") {
-      connectInfo += `<span>IPID: ${Number(connectParams.ipId).toString(16)}</span>`;
-    }
-
-    // Show roomId in info when it is not empty
-    if (connectParams.roomId !== "") {
-      connectInfo += `<span>Room Id: ${connectParams.roomId}</span>`;
-    }
 
     if (isDisplayInfo) {
-      document.getElementById("webXPnlParams").innerHTML = connectInfo;
+      if (connectParams.host !== "") {
+        document.querySelector('#webxpanel-tab-content .connection .cs').textContent = `CS: wss://${connectParams.host}:${connectParams.port}`;
+      }
+      if (connectParams.ipId !== "") {
+        document.querySelector('#webxpanel-tab-content .connection .ipid').textContent = `IPID: ${Number(connectParams.ipId).toString(16)}`;
+      }
+      if (connectParams.roomId !== "") {
+        document.querySelector('#webxpanel-tab-content .connection .roomid').textContent = `Room Id: ${connectParams.roomId}`;
+      }
     }
 
     // WebXPanel listeners are called in the below method
@@ -366,10 +347,10 @@ var webXPanelModule = (function () {
    */
   function connect(projectConfig) {
     // Connect only in browser environment
-    if (!WebXPanel.isActive) {
-      return;
-    } else {
+    if (typeof WebXPanel !== "undefined" && WebXPanel.isActive) {
       connectWebXPanel(projectConfig);
+    } else {
+      return;
     }
   }
 

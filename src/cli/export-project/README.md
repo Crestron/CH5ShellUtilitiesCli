@@ -1,4 +1,4 @@
-# Shell Template - Export Project
+# Export Project
 
 'Export Project' exports the project code (removing the excluded files) using command-line statements.
 
@@ -43,7 +43,7 @@ Included files are picked up from 'Shell Template' package.json file (the node i
 
 ### Copyright
 
-Copyright (C) 2021 to the present, Crestron Electronics, Inc.
+Copyright (C) 2022 to the present, Crestron Electronics, Inc.
 
 All rights reserved.
 

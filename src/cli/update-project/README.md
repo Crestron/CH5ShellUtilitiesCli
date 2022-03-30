@@ -1,8 +1,99 @@
-# Shell Template - Project Config
+# Create Project
 
-To validate the project-config.json file, go to the command-prompt or terminal of the Shell Template Project, and then execute `ch5-shell-cli validate:projectconfig`.
+To create a project, go to the command-prompt or terminal where you want to create the project, and then execute run the command `ch5-shell-cli create:project`.
 
 ## How to Use
+
+
+Write a CLI command to create project. There are two ways to create a project using CLI. 
+
+a.
+
+ ch5-shell-cli create:project --config ./a/b/c.json
+Provide a json file that will be used to create the project (details of the json file can be similar to project-config.json). The user will not be prompted for any further information, and all details will be picked from the json file. The details are as mentioned in the point b.
+
+ 
+
+ch5-shell-cli create:project --default
+This will create a project with 6 pages which is the default.
+
+ 
+
+ch5-shell-cli create:project --blank
+This will create a project with one blank page
+
+ 
+
+b. 
+
+ch5-shell-cli create:project
+Since the json file is not provided, user will be asked queries for additional information to create the project. The information includes:
+
+Project Name
+
+menuOrientation
+
+selectedTheme
+
+useWebXPanel
+
+No. of pages to be created
+
+Though the user might need more data in project-config.json, asking too many questions to the user might be a cumbersome process from a user experience perspective.
+
+
+Write a CLI command to update project.
+
+ch5-shell-cli update:project --defaultView “page1”
+
+Write a CLI command to update project. There are two ways to update a project using CLI.
+
+a. ch5-shell-cli update:project --config ./a/b/c.json
+
+Provide a json file that will be used to update the project (details of the json file can be similar to project-config.json). The user will not be prompted for any further information, and all details will be picked from the json file. 
+
+If this json file has newer pages, then they will be added.
+
+If this json file does not have existing pages, they will be removed from the project.
+
+Json file attributes will override the project json.
+
+if a json file is provided, a confirmation will be requested by the script for updating the project. You can pass --force to override the confirmation.
+
+b. ch5-shell-cli update:project
+
+Since the json file is not provided, user will need to specify individual updates for each section. The details for each section are available as subtasks. A minimum of 1 parameter has to be provided for each update. 
+
+Write a CLI command to update project. 
+
+ch5-shell-cli update:project --menuOrientation vertical
+
+Write a CLI command to update project.
+
+ch5-shell-cli update:project --selectedTheme "light-theme"
+
+Themes list can be.updated (and new themes added) only from JSON file (https://crestroneng.atlassian.net/browse/CH5C-2070)
+
+Write a CLI command to update project.
+
+ch5-shell-cli update:project --webXPanel false
+
+Write a CLI command to update project.
+
+ch5-shell-cli update:project --displayHeader false
+
+ch5-shell-cli update:project --displayHeaderInfo false
+
+ch5-shell-cli update:project --headerComponent “page1”
+
+ch5-shell-cli update:project --footerComponent “page1”
+
+ch5-shell-cli update:project --displayFooter false
+
+
+
+
+
 
 To validate projectconfig, go to the command-prompt or terminal of the Shell Template project, and execute `ch5-shell-cli validate:projectconfig`.
 The package.json has scripts to handle this execution - for yarn, use `yarn validate:projectconfig` command or npm  `npm run validate:projectconfig` command. The short hand for it is `yarn val:pc` or `npm run val:pc` within scripts of package.json.
@@ -46,9 +137,13 @@ The project-config.json is validated for the following cases:
 This validation will review the settings in project configuration file and inform the developer of any invalid configuration before running the browser or running on the touch screen. During the 'start' / 'build' process, this script will be executed and if there are errors (not warning), the script will not continue to the next step.
 ```
 
+### How to test
+
+npm pack / yarn pack
+
 ### Copyright
 
-Copyright (C) 2021 to the present, Crestron Electronics, Inc.
+Copyright (C) 2022 to the present, Crestron Electronics, Inc.
 
 All rights reserved.
 

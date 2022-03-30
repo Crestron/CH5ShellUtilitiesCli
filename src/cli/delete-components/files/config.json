@@ -16,7 +16,7 @@
     },
     {
       "key": "force",
-      "description": "Prefix for list of component names to be deleted",
+      "description": "Forces the script to delete the component without asking for a confirmation",
       "type": "boolean",
       "default": true,
       "valueIfNotFound": false,

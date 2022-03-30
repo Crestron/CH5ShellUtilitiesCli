@@ -1,4 +1,4 @@
-# Shell Template - Import All
+# Import All
 
 The 'Import All' function imports assets, libraries, components to the './app/project/' folder using command line statements.
 
@@ -81,7 +81,7 @@ Parameters for "import:all" are as follows:
 
 ### Copyright
 
-Copyright (C) 2021 to the present, Crestron Electronics, Inc.
+Copyright (C) 2022 to the present, Crestron Electronics, Inc.
 
 All rights reserved.
 

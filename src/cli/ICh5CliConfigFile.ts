@@ -9,7 +9,7 @@ export interface ICh5CliConfigFileParamOptions {
   allowedAliases?: string;
   validation?: string;
   question?: string;
-  optionalArgument: boolean;
+  isSpecialArgument: boolean;
 }
 
 export interface ICh5CliConfigFile {

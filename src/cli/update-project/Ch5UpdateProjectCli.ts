@@ -6,61 +6,37 @@
 // under which you licensed this source code.
 
 import { Ch5BaseClassForCliNew } from "../Ch5BaseClassForCliNew";
+import { Ch5DeleteComponentsCli } from "../delete-components/Ch5DeleteComponentsCli";
+import { Ch5ExportProjectCli } from "../export-project/Ch5ExportProjectCli";
 import { Ch5GeneratePageCli } from "../generate-page/Ch5GeneratePageCli";
-import { ICh5Cli } from "../ICh5Cli";
+import { Ch5GenerateWidgetCli } from "../generate-widget/Ch5GenerateWidgetCli";
+import { ICh5CliNew } from "../ICh5Cli";
 
 const path = require('path');
 const fs = require("fs");
 const fsExtra = require("fs-extra");
+const process = require('process');
+const editJsonFile = require("edit-json-file");
 
-export class Ch5UpdateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cli {
+export class Ch5UpdateProjectCli extends Ch5BaseClassForCliNew implements ICh5CliNew {
+
+  private readonly SHELL_FOLDER: string = path.normalize(path.join(__dirname, "../../", "shell"));
+  private readonly PROJECT_CONFIG_JSON_PATH: string = path.normalize("/app/project-config.json");
 
   /**
    * Constructor
    */
-  public constructor() {
+  public constructor(public showOutputMessages: boolean = true) {
     super("update-project");
-  }
-
-  /**
-   * Method for updating project
-   */
-  async run() {
-    this.logger.start("run");
-    try {
-      // Initialize
-      this.initialize();
-
-      // Verify input params
-      this.verifyInputParams();
-
-      // Ask details to developer based on input parameter validation
-      await this.checkPromptQuestions();
-
-      // // Update project-config first (so that if this fails, we don't worry about file deletion). Next Delete Files
-      await this.processRequest();
-
-    } catch (e: any) {
-      this.outputResponse.errorMessage = this.logError(e);
-    } finally {
-      // Clean up
-      this.cleanUp();
-    }
-
-    // Show output response
-    this.logOutput();
-    this.logger.end();
-    return this.outputResponse.result; // The return is required to validate in automation test case
   }
 
   /**
    * Initialize process
    */
-  initialize() {
+  async initialize() {
     this.logger.start("initialize");
-    super.initialize();
     this.outputResponse.data.updateInputs = [];
-
+    this.outputResponse.data.projectName = "";
     if (this.inputArgs["config"] !== "") {
       // Do nothing
     } else {
@@ -98,45 +74,43 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
   /**
    * Verify input parameters
    */
-  verifyInputParams() {
+  async verifyInputParams() {
     this.logger.start("verifyInputParams");
     if (this.inputArgs["config"].argsValue !== "") {
-      // Step 1: Check file extension for json
+      // Step 1: Check file extension for json, valid input for 'config' argument, and config file existence
       if (!(this.utils.isValidInput(this.inputArgs["config"].argsValue) && this.isConfigFileExist(this.inputArgs["config"].argsValue))) {
-        throw new Error(this.getText("FAILURE_MESSAGE_INPUT_PARAM_CONFIG_FILE_MISSING"));
+        throw new Error(this.getText("VERIFY_INPUT_PARAMS.INVALID_CONFIG_INPUT"));
       }
       // Step 2: Check if json is as per its schema (.vscode is hidden folder)
-      if (!(this.isConfigFileValid(this.inputArgs["config"].argsValue, path.join(__dirname, "files/shell/.vscode", "project-config-schema.json")))) {
-        // this.logger.printError(this.composeOutput(this.errorsFound, this.getText("TYPE_ERROR"))); // TODO
-        throw new Error(this.getText("FAILURE_MESSAGE_INPUT_PARAM_CONFIG_FILE_INVALID"));
+      if (!(this.isConfigFileValid(this.inputArgs["config"].argsValue, path.join(this.SHELL_FOLDER, ".vscode", "project-config-schema.json"), false))) {
+        throw new Error(this.getText("VERIFY_INPUT_PARAMS.INVALID_CONFIG_FILE"));
       }
     } else {
-      
+
       Object.entries(this.inputArgs).forEach(([key, value]: any) => {
-        const inputUpdate = {
-          ...value,
-          "warning": "",
-          "value": null
-        };
-        if (value.inputReceived === true && (this.utils.isValidInput(value.argsValue) || value.optionalArgument === false)) {
-          console.log("value.optionalArgument", value.optionalArgument);
-          if (this.utils.isValidInput(value.argsValue)) {
-            const validationResponse: any = this.validateCLIInputArgument(value, value.key, value.argsValue, this.getText("ERRORS.INVALID_INPUT"));
-            this.logger.log("validationResponse", validationResponse);
-            if (validationResponse.error === "") {
-              inputUpdate.value = validationResponse.value;
-            } else {
-              inputUpdate.warning = this.getText("ERRORS.INVALID_ENTRY", validationResponse.error);
+        if (value.isSpecialArgument === false) {
+          const inputUpdate = {
+            ...value,
+            "warning": ""
+          };
+          if (value.inputReceived === true) {
+            // TODO - how to check validity of data
+            if (this.utils.isValidInput(value.argsValue)) {
+              const validationResponse: any = this.validateCLIInputArgument(value, value.key, value.argsValue, this.getText("VERIFY_INPUT_PARAMS.INVALID_INPUT", value.key));
+              this.logger.log("validationResponse", validationResponse);
+              if (validationResponse.warning === "") {
+                inputUpdate.argsValue = validationResponse.value;
+              } else {
+                inputUpdate.warning = validationResponse.warning;
+              }
             }
+            this.outputResponse.data.updateInputs.push(inputUpdate);
           }
-          this.outputResponse.data.updateInputs.push(inputUpdate);
-        } else if (value.optionalArgument === false) {
-          this.outputResponse.data.updateInputs.push(inputUpdate);
         }
       });
       this.logger.log("this.outputResponse.data.updateInputs: ", this.outputResponse.data.updateInputs);
 
-      const tabDisplayText = this.getText("ERRORS.TAB_DELIMITER");
+      const tabDisplayText = this.getText("COMMON.HYPHEN_DELIMITER");
       let warningMessage: string = "";
       for (let i: number = 0; i < this.outputResponse.data.updateInputs.length; i++) {
         if (this.utils.isValidInput(this.outputResponse.data.updateInputs[i].warning)) {
@@ -144,29 +118,31 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
         }
       }
       if (warningMessage !== "") {
-        this.logger.printWarning(this.getText("ERRORS.MESSAGE_TITLE", warningMessage));
+        if (this.showOutputMessages === true) {
+          this.logger.printWarning(this.getText("VERIFY_INPUT_PARAMS.INPUT_WARNING_TITLE", warningMessage));
+        }
       }
 
       // To Check if atleast 1 input is provided
       if (this.outputResponse.data.updateInputs.length === 0) {
-        throw new Error(this.getText("ERRORS.MISSING_ATlEAST_ONE_DATA"));
+        throw new Error(this.getText("VERIFY_INPUT_PARAMS.MISSING_INPUTS_NEED_ATlEAST_ONE_DATA"));
       }
     }
     this.logger.end();
   }
 
   /**
-   * Check if there are questions to be prompted to the developer
+   * Check if there are questions to be prompted to the integrator
    */
   async checkPromptQuestions() {
     this.logger.start("checkPromptQuestions");
     if (this.inputArgs["config"].argsValue !== "") {
       // Step 3: Take back up of existing json and project
-      // fsExtra.copySync(this.inputArguments["config"], path.join(this.getConfigNode("backupFolder"), this.getFolderName(), "project-config.json"));
+      fsExtra.copySync(this.inputArgs["config"].argsValue, path.join(this.getConfigNode("backupFolder"), this.getFolderName(), "project-config.json"));
 
-      // const exportProject = new Ch5ExportProjectCli();
-      // exportProject.changeConfigParam("zipFileDestinationPath", path.join(this.getConfigNode("backupFolder"), this.getFolderName()));
-      // exportProject.run();
+      const exportProject = new Ch5ExportProjectCli(false);
+      exportProject.changeConfigParam("zipFileDestinationPath", path.join(this.getConfigNode("backupFolder"), this.getFolderName()));
+      exportProject.run();
 
       // const newCheck = new CompareJSON();
       // console.log(newCheck.map(oldProjectConfigJSON, newProjectConfigJSON));
@@ -191,25 +167,38 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
       this.outputResponse.askConfirmation = this.utils.toBoolean(askConfirmation);
     } else {
       for (let i: number = 0; i < this.outputResponse.data.updateInputs.length; i++) {
-        if (!this.utils.isValidInput(this.outputResponse.data.updateInputs[i].value)) {
-          if (this.outputResponse.data.updateInputs[i].type === "enum") {
+        if (this.outputResponse.data.updateInputs[i].inputReceived === true && !this.utils.isValidInput(this.outputResponse.data.updateInputs[i].argsValue)) {
+          if (this.outputResponse.data.updateInputs[i].type === "enum" || this.outputResponse.data.updateInputs[i].type === "boolean") {
             const choicesList = this.outputResponse.data.updateInputs[i].allowedValues;
             const componentsQuery = new this.getSelect({
-              name: 'value',
-              message: this.getText(this.outputResponse.data.updateInputs[i].question),
+              name: this.outputResponse.data.updateInputs[i].key,
+              message: this.getText(this.outputResponse.data.updateInputs[i].question, this.outputResponse.data.updateInputs[i].key),
               choices: choicesList
             });
 
-            this.outputResponse.data.updateInputs[i].value = await componentsQuery.run()
+            this.outputResponse.data.updateInputs[i].argsValue = await componentsQuery.run()
               .then((selectedMenu: any) => { return selectedMenu; })
               .catch((error: any) => { throw new Error(this.getText("ERRORS.DO_NOT_UPDATE_PROJECT")); });
-            this.logger.log(this.outputResponse.data.updateInputs[i].key + ": ", this.outputResponse.data.updateInputs[i].value);
+            this.logger.log(this.outputResponse.data.updateInputs[i].key + ": ", this.outputResponse.data.updateInputs[i].argsValue);
+          } else if (this.outputResponse.data.updateInputs[i].type === "string") {
+            const question = {
+              name: this.outputResponse.data.updateInputs[i].key,
+              message: this.getText(this.outputResponse.data.updateInputs[i].question, this.outputResponse.data.updateInputs[i].key),
+              type: 'input'
+            };
+            // TODO - validate method
+            this.outputResponse.data.updateInputs[i].argsValue = await this.getPrompt(question)
+              .then((answer: any) => { return answer[this.outputResponse.data.updateInputs[i].key]; })
+              .catch((error: any) => { throw new Error(this.getText("ERRORS.DO_NOT_UPDATE_PROJECT")); });
+
+            this.logger.log(this.outputResponse.data.updateInputs[i].key + ": ", this.outputResponse.data.updateInputs[i].argsValue);
           }
         }
       }
 
       this.outputResponse.askConfirmation = true;
     }
+    this.logger.end();
   }
 
   /**
@@ -305,26 +294,50 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
         }
 
         // Step 5: Save Project-config
-        this.projectConfig.addPagesToJSON(pagesToBeCreated);
-        this.projectConfig.removePagesFromJSON(pagesToBeDeleted);
-        this.projectConfig.addWidgetsToJSON(widgetsToBeCreated);
-        this.projectConfig.removeWidgetsFromJSON(widgetsToBeDeleted);
-        // this.projectConfig.save(newProjectConfigJSON);
+        fs.writeFileSync("./" + this.PROJECT_CONFIG_JSON_PATH, JSON.stringify(oldProjectConfigJSON));
+
+
+        for (let i: number = 0; i < widgetsToBeDeleted.length; i++) {
+          const delWidget: Ch5DeleteComponentsCli = new Ch5DeleteComponentsCli(false);
+          delWidget.setInputArgsForTesting(["--list", widgetsToBeDeleted[i].widgetName, "--force"]);
+          await delWidget.run();
+        }
+
+        for (let i: number = 0; i < pagesToBeDeleted.length; i++) {
+          const delPage: Ch5DeleteComponentsCli = new Ch5DeleteComponentsCli(false);
+          delPage.setInputArgsForTesting(["--list", pagesToBeDeleted[i].pageName, "--force"]);
+          await delPage.run();
+        }
+
+        for (let i: number = 0; i < pagesToBeCreated.length; i++) {
+          const genPage: Ch5GeneratePageCli = new Ch5GeneratePageCli(false);
+          genPage.setInputArgsForTesting(["-n", pagesToBeCreated[i].pageName, "-m", pagesToBeCreated[i].navigation ? "Y" : "N"]);
+          await genPage.run();
+        }
+
+        for (let i: number = 0; i < widgetsToBeCreated.length; i++) {
+          const genWidget: Ch5GenerateWidgetCli = new Ch5GenerateWidgetCli(false);
+          genWidget.setInputArgsForTesting(["-n", widgetsToBeCreated[i].widgetName]);
+          await genWidget.run();
+        }
 
         // Step 6: Run validate:project-config
-        if (!(this.isConfigFileValid("./app/project-config.json", path.join(__dirname, "files", "project-config-schema.json")))) {
-          // this.logger.printError(this.composeOutput(this.errorsFound, this.getText("TYPE_ERROR"))); // TODO
+        if (!(this.isConfigFileValid("./app/project-config.json", path.join(this.SHELL_FOLDER, ".vscode", "project-config-schema.json")))) {
           throw new Error(this.getText("FAILURE_MESSAGE_INPUT_PARAM_CONFIG_FILE_INVALID"));
         }
 
         // Step 7: Show proper messages  
         this.outputResponse.result = true;
+        this.outputResponse.successMessage = this.getText("LOG_OUTPUT.SUCCESS_MESSAGE", this.outputResponse.data.projectName, this.outputResponse.data.projectFolderPath);
+
       } else {
         // Change project config
         for (let i: number = 0; i < this.outputResponse.data.updateInputs.length; i++) {
-          this.projectConfig.changeNodeValues(this.outputResponse.data.updateInputs[i].key, this.outputResponse.data.updateInputs[i].value);
+          this.logger.log("Changed Values", this.outputResponse.data.updateInputs[i].key, this.outputResponse.data.updateInputs[i].argsValue)
+          this.projectConfig.changeNodeValues(this.outputResponse.data.updateInputs[i].key, this.outputResponse.data.updateInputs[i].argsValue);
         }
         this.outputResponse.result = true;
+        this.outputResponse.successMessage = this.getText("LOG_OUTPUT.SUCCESS_MESSAGE", this.outputResponse.data.projectName, this.outputResponse.data.projectFolderPath);
       }
     } else if (this.outputResponse.askConfirmation === false) {
       throw new Error(this.getText("ERRORS.DO_NOT_UPDATE_PROJECT"));
@@ -341,21 +354,11 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
   /**
    * Clean up
    */
-  cleanUp() {
+  async cleanUp() {
     if (this.inputArgs["config"].argsValue !== "") {
       // Step 7: Clean up
     }
   }
 
-  /**
-   * Log Final Response Message
-   */
-  logOutput() {
-    if (this.outputResponse.result === false) {
-      this.logger.printError(this.outputResponse.errorMessage);
-    } else {
-      this.logger.printSuccess(this.getText("SUCCESS_MESSAGE", this.utils.convertArrayToString(this.outputResponse['validInputsForComponentNames'], ", ")) + "\n");
-    }
-  }
 
 }

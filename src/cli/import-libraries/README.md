@@ -1,4 +1,4 @@
-# Shell Template - Import Libraries
+# Import Libraries
 
 The 'Import Libraries' function imports libraries to the './app/project/libraries/' folder using command line statements.
 
@@ -21,7 +21,7 @@ You could use `ch5-shell-cli` to import the complete contents of the zip file to
     ch5-shell-cli import:library -z {path} --all
 
 Options:
-    -h, --help,         Help for Importing libraries from the './app/project/libraries/' folder
+    -h, --help,         Help for importing libraries from the './app/project/libraries/' folder
     -z, --zipFile,      Prefix for full location path of the zip file to be imported
     -l, --list,         Prefix for list of file names
     -f, --force         Force the program to overwrite the target files with the source files and avoid any confirmation
@@ -92,7 +92,7 @@ Parameters for "import:library" are as follows:
 
 ### Copyright
 
-Copyright (C) 2021 to the present, Crestron Electronics, Inc.
+Copyright (C) 2022 to the present, Crestron Electronics, Inc.
 
 All rights reserved.
 

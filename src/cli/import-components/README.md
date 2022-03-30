@@ -1,4 +1,4 @@
-# Shell Template - Import Components
+# Import Components
 
 The 'Import Components' function imports components to the './app/project/components/' folder using command line statements.
 
@@ -92,7 +92,7 @@ Parameters for "import:components" are as follows:
 
 ### Copyright
 
-Copyright (C) 2021 to the present, Crestron Electronics, Inc.
+Copyright (C) 2022 to the present, Crestron Electronics, Inc.
 
 All rights reserved.
 

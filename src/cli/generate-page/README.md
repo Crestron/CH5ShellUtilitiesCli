@@ -1,4 +1,4 @@
-# Shell Template - Generate Page
+# Generate Page
 
 The 'generate page' function creates new pages using command-line statements.
 
@@ -172,14 +172,9 @@ Page Names that are not allowed are
 - Pages starting with 'template'
 - Names of Pages / Widgets / Modules used in ./app/template folder like 'service', 'translate' and so forth.
 
-Parameters for "logger" are
-
-- "allowLogging": false - Applicable values are true / false. This can be used for developer debugging.
-- "logLevel": 1 - Indicates the logging levels for developer debugging. Applicable values can be found in logger.js file.
-
 ### Copyright
 
-Copyright (C) 2020 to the present, Crestron Electronics, Inc.
+Copyright (C) 2022 to the present, Crestron Electronics, Inc.
 
 All rights reserved.
 

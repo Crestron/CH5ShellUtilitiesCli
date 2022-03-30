@@ -1,21 +1,30 @@
 /*jslint es6 */
-/*global CrComLib, projectConfigModule, templatePageModule, translateModule, serviceModule, utilsModule, templateAppLoaderModule */
+/*global CrComLib, projectConfigModule, templatePageModule, translateModule, serviceModule, utilsModule, templateAppLoaderModule, templateVersionInfoModule */
 
 const navigationModule = (() => {
 	'use strict';
+
+	let currentPageName = '';
+
+	let displayInfo;
 
 	function goToPage(pageName) {
 		const navigationPages = projectConfigModule.getAllPages();
 		const pageObject = navigationPages.find(page => page.pageName === pageName);
 		templateAppLoaderModule.showLoading(pageObject.pageName + "-import-page");
+		// Remove the elements that were removed from the diagnostics tab
+		if (currentPageName) {
+			templateVersionInfoModule.handleUnloadedPageCount(navigationPages.find(page => page.pageName === currentPageName));
+		}
+		currentPageName = pageName;
 		setTimeout(() => {
 			const url = pageObject.fullPath + pageObject.fileName;
 			// TODO - Handle using promises
 			// Load child 
-			const routeId = pageObject.pageName + "-import-page";
+			// const routeId = pageObject.pageName + "-import-page";
 			// CrComLib.publishEvent('b', routeId + '-show', true);
 			// checkIfExists(url, pageObject);
-			showPage(pageObject.pageName + "-import-page", url);
+			showPage(pageObject, url);
 		});
 	}
 
@@ -48,7 +57,8 @@ const navigationModule = (() => {
 		}
 	}
 
-	function showPage(routeId, url) {
+	function showPage(pageObject, url) {
+		const routeId = pageObject.pageName + "-import-page";
 		templateAppLoaderModule.showLoading(routeId);
 		const listOfPages = projectConfigModule.getNavigationPages();
 		for (let i = 0; i < listOfPages.length; i++) {
@@ -81,6 +91,21 @@ const navigationModule = (() => {
 			templatePageModule.hideLoading(); // TODO - check - fix with mutations called in callbakcforhideloading
 			// document.getElementById(routeId).classList.remove("ch5-hide-dis");
 		}, 50);
+
+		// Allow components and pages to be transitioned
+		setTimeout(() => {
+			if (displayInfo === undefined) {
+				projectConfigModule.projectConfigData().then(projectConfigResponse => {
+					displayInfo = projectConfigResponse.header.displayInfo;
+					if (projectConfigResponse.displayInfo) {
+						templateVersionInfoModule.updateDiagnosticsOnPageChange(routeId, pageObject);
+					}
+				})
+			} else if (displayInfo) {
+				templateVersionInfoModule.updateDiagnosticsOnPageChange(routeId, pageObject);
+			}
+
+		}, 100);
 	}
 
 	return {

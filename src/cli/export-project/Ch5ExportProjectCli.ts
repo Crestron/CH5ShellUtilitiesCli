@@ -15,7 +15,7 @@ const path = require('path');
 
 export class Ch5ExportProjectCli extends Ch5BaseClassForCli implements ICh5Cli {
 
-  public constructor() {
+  public constructor(public showOutputMessages: boolean = true) {
     super("export-project");
   }
 
@@ -107,7 +107,9 @@ export class Ch5ExportProjectCli extends Ch5BaseClassForCli implements ICh5Cli {
         }
         this.utils.deleteFolder(cleanupPath);
         this.logger.info("Clean up Done for the path: " + cleanupPath);
-        this.logger.printSuccess(this.getText("SUCCESS_MESSAGE", completeFileName));
+        if (this.showOutputMessages === true) {
+          this.logger.printSuccess(this.getText("SUCCESS_MESSAGE", completeFileName));
+        }
         return true;
       } catch (e) {
         this.logger.log(e);

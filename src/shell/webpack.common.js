@@ -1,4 +1,5 @@
 const path = require("path");
+const fs = require("fs");
 const glob = require("glob");
 
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
@@ -216,6 +217,11 @@ module.exports = (env) => {
         path: './',
         fileName: 'copyright.txt',
         content: copyright()
+      }),
+      new CreateFileWebpack({
+        path: `${appConfigDistPath[env]}/assets/data`,
+        fileName: 'version.json',
+        content: getVersionForPackages()
       })
     ],
     performance: {
@@ -224,6 +230,33 @@ module.exports = (env) => {
     }
   }
 };
+
+function getVersionForPackages() {
+  const crestronDependencies = [];
+  const crestronNodeModulesPath = './node_modules/@crestron/'
+  const fileNames = fs.readdirSync(crestronNodeModulesPath)
+  for (const fileName of fileNames) {
+    const folderStat = fs.statSync(crestronNodeModulesPath + fileName);
+    const packageJsonFile = fs.readFileSync(crestronNodeModulesPath + fileName + '/package.json', 'utf-8');
+    crestronDependencies.push(getDependencyEntry(fileName, packageJsonFile, folderStat))
+  }
+
+  
+  // Include the shell template as well
+  const shellProjectStat = fs.statSync(__dirname);
+  const packageJsonFile = fs.readFileSync('./package.json', 'utf-8');
+  crestronDependencies.push(getDependencyEntry('ch5-shell', packageJsonFile, shellProjectStat));
+  
+  return JSON.stringify(crestronDependencies);
+}
+
+function getDependencyEntry(name, package, folderStat) {
+  return {
+    name,
+    version: JSON.parse(package).version,
+    lastModifiedDate: folderStat.ctime.getDate() + '-' + folderStat.ctime.toLocaleDateString('en-US', {month: 'short'}) + '-' + folderStat.ctime.getFullYear()
+  }
+}
 
 function copyright() {
   return "Copyright (C) " + ((new Date()).getFullYear()) + " to the present, Crestron Electronics, Inc.\n" +

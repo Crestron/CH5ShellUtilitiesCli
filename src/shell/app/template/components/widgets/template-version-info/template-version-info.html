@@ -11,29 +11,98 @@
         sendEventOnClick="infoBtn.clicked" role="button" aria-label="Open Version Information" aria-pressed="false">
     </ch5-button>
     <ch5-modal-dialog receiveStateShowPulse="infoBtn.clicked" closable closeIcon="fa fa-window-close"
-        hideOkButton="true" hideCancelButton="true">
-        <h4 data-ch5-i18n="-+versionInfo.title+-">Version Info</h4>
-        <p id="versionDescription"></p>
-        <p id="appVersion"></p>
-        <div id="versionDetails" style="display:none">
-            <p id="webXPnlHdr" style="margin-bottom: 5px;"></p>
-            <INPUT TYPE="radio" name="toggler" id="version" checked />
-            <INPUT TYPE="radio" name="toggler" id="license" />
-            <div id="tabBar">
-                <label class="tab" for="version">Connection</label>
-                <label class="tab" for="license">License</label>
+        hideOkButton="true" hideCancelButton="true" title="PROJECT INFO" customclass="project-info-dialog">
+        <div id="tab-wrapper">
+            <button id="version-tab" class="selected" data-ch5-i18n="-+header.info.tab.version+-">Version</button>
+            <button id="webxpanel-tab" data-ch5-i18n="-+header.info.tab.webxpanel+-">WebXPanel</button>
+            <button id="diagnostics-tab" data-ch5-i18n="-+header.info.tab.diagnostics+-">Diagnostics</button>
+        </div>
+        <div class="spacer"></div>
+
+        <div id="version-tab-content">
+            <table>
+                <tr>
+                    <th data-ch5-i18n="-+header.info.version.header.package+-">Package</th>
+                    <th data-ch5-i18n="-+header.info.version.header.version+-">Version</th>
+                    <th data-ch5-i18n="-+header.info.version.header.date+-">Date</th>
+                </tr>
+            </table>
+        </div>
+
+        <div id="webxpanel-tab-content" style="display: none">
+            <div class="connection">
+                <h4 data-ch5-i18n="-+header.info.webxpanel.connection+-">Connection</h4>
+                <span class="info-row status" data-ch5-i18n="-+header.info.webxpanel.status+-">Status:</span>
+                <span class="info-row cs" data-ch5-i18n="-+header.info.webxpanel.cs+-">CS:</span>
+                <span class="info-row ipid" data-ch5-i18n="-+header.info.webxpanel.ipid+-">IPID:</span>
+                <span class="info-row roomid" data-ch5-i18n="-+header.info.webxpanel.roomid+-">Room ID:</span>
             </div>
-            <div id="versionInfo">
-                <p style="margin-bottom:0px">
-                    <span id="webXPnlStatus"></span>
-                </p>
-                <p id="webXPnlParams"></p>
+            <div class="license">
+                <h4 data-ch5-i18n="-+header.info.webxpanel.license+-">License</h4>
+                <span class="info-row lic" id="lic"></span>
             </div>
-            <div id="licenseInfo">
-                <p>
-                    <span id="webXPnlLicense"></span>
-                </p>
+        </div>
+
+        <div id="diagnostics-tab-content" style="display: none">
+            <div id="diagnostics-info">
+                <span id="memory-collabsable-handler" data-ch5-i18n="-+header.info.diagnostics.memory.title+-">+ MEMORY INFO</span>
+                <div id="memory-collabsable-container">
+                    <div class="memory-container">
+                        <span id="memory-usage" data-ch5-i18n="-+header.info.diagnostics.memory.status+-">Memory Status:</span>
+                        <div id="memory-bar">
+                            <span id="memory-span"></span>
+                            <div id="memory-used"></div>
+                        </div>
+                        <ch5-button id="memory-info" shape="circle" size="x-small" iconClass="material-icons md-info"
+                            sendEventOnClick="infoMemory.clicked" role="button" aria-label="Open Version Information" aria-pressed="false">
+                        </ch5-button>
+    
+                        <ch5-modal-dialog receiveStateShowPulse="infoMemory.clicked" closable closeIcon="fa fa-window-close"
+                            hideOkButton="true" hideCancelButton="true" title="Memory Usage info" customclass="memory-usage-dialog">
+                            <!-- TODO -->
+                        </ch5-modal-dialog>
+                    </div>
+                    <div class="memory-container">
+                        <span id="total-components" data-ch5-i18n="-+header.info.diagnostics.memory.totalcomponents+-">Total Ch5 Components:</span>
+                        <ch5-button id="components-info" shape="circle" size="x-small" iconClass="material-icons md-info"
+                            sendEventOnClick="ch5components.clicked" role="button" aria-label="Open Version Information" aria-pressed="false">
+                        </ch5-button>
+                        <ch5-modal-dialog receiveStateShowPulse="ch5components.clicked" closable closeIcon="fa fa-window-close"
+                            hideOkButton="true" hideCancelButton="true" title="Total Ch5 Components" customclass="ch5-components-dialog">
+                            <!-- TODO -->
+                        </ch5-modal-dialog>
+                    </div>
+                    <span id="total-dom" data-ch5-i18n="-+header.info.diagnostics.memory.totalnodes+-">Total DOM Nodes:</span>
+    
+                    <div class="memory-container">
+                        <span id="page-count" data-ch5-i18n="-+header.info.diagnostics.memory.pagecount+-">Page Count:</span>
+                        <ch5-button id="count-info" shape="circle" size="x-small" iconClass="material-icons md-info"
+                            sendEventOnClick="pageCount.clicked" role="button" aria-label="Open Version Information" aria-pressed="false">
+                        </ch5-button>
+                        <ch5-modal-dialog receiveStateShowPulse="pageCount.clicked" closable closeIcon="fa fa-window-close"
+                            hideOkButton="true" hideCancelButton="true" title="Page Count" customclass="page-count-dialog">
+                            <!-- TODO -->
+                        </ch5-modal-dialog>
+                    </div>
+                    <span id="current-components" data-ch5-i18n="-+header.info.diagnostics.memory.currentcomp+-">Current CH5 Components:</span>
+                    <span id="start-duration" data-ch5-i18n="-+header.info.diagnostics.memory.startduration+-">Start Duration:</span>
+                </div>
+                <span id="subscribe-collabsable-handler" data-ch5-i18n="-+header.info.diagnostics.subs.title+-">+ SUBSCRIPTIONS INFO</span>
+                <div id="subscribe-collabsable-container">
+                    <span id="total-subscriptions" data-ch5-i18n="-+header.info.diagnostics.subs.subs+-">Subscriptions:</span>
+                    <span id="total-subscribers" data-ch5-i18n="-+header.info.diagnostics.subs.subscribers+-">Subscribers:</span>
+                </div>
+                <button id="subscribe-log" data-ch5-i18n="-+header.info.diagnostics.logs+-">Add Log</button>
             </div>
+            <table>
+                <tr>
+                    <th data-ch5-i18n="-+header.info.diagnostics.pages.header.name+-">Name</th>
+                    <th data-ch5-i18n="-+header.info.diagnostics.pages.header.ch5count+-">Ch5 Count</th>
+                    <th data-ch5-i18n="-+header.info.diagnostics.pages.header.cached+-">Cached</th>
+                    <th data-ch5-i18n="-+header.info.diagnostics.pages.header.nodes+-">Nodes</th>
+                    <th data-ch5-i18n="-+header.info.diagnostics.pages.header.time+-">Time (ms)</th>
+                </tr>
+            </table>
         </div>
     </ch5-modal-dialog>
 </section>

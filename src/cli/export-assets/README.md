@@ -1,4 +1,4 @@
-# Shell Template - Export Assets
+# Export Assets
 
 'Export Assets' exports assets from the './app/project/assets/' folder (removing the excluded files) using command-line statements.
 
@@ -94,7 +94,7 @@ Parameters for "export:assets" are
 
 ### Copyright
 
-Copyright (C) 2021 to the present, Crestron Electronics, Inc.
+Copyright (C) 2022 to the present, Crestron Electronics, Inc.
 
 All rights reserved.
 

@@ -22,7 +22,7 @@ export class Ch5CliConfigFileReader {
       "default": true,
       "valueIfNotFound": false,
       "alias": ["--verbose"],
-      "optionalArgument": false
+      "isSpecialArgument": true
     },
     {
       "key": "help",
@@ -31,7 +31,7 @@ export class Ch5CliConfigFileReader {
       "default": true,
       "valueIfNotFound": false,
       "alias": ["-h", "--help"],
-      "optionalArgument": false
+      "isSpecialArgument": true
     }
   ];
 
