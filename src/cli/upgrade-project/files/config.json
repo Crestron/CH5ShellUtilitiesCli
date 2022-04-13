@@ -1,0 +1,7 @@
+{
+  "command": "upgrade:project",
+  "name": "upgrade:project",
+  "usage": "",
+  "options": [],
+  "additionalHelp": true
+}

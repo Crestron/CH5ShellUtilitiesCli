@@ -65,6 +65,11 @@ export class Ch5CliProjectConfig {
     return themeNames;
   }
 
+  getAllThemes() {
+    const projectConfigObject = this.getJson();
+    return projectConfigObject.themes;
+  }
+
   getAllStandalonePages() {
     const pages = this.getAllPages();
     let navigations = pages.filter((pageObj: { navigation: any; }) => {
@@ -124,6 +129,16 @@ export class Ch5CliProjectConfig {
       pagesList.push(pageObject);
       this._cliLogger.log("pageObject", pageObject);
       this.file.set("content.pages", pagesList);
+      this.file.save();
+    } catch (e) {
+      this._cliLogger.log("error", e);
+      throw e;
+    }
+  }
+
+  saveOverrideAttributeToJSON(attributeName: string, attributeData: any) {
+    try {
+      this.file.set(attributeName, attributeData);
       this.file.save();
     } catch (e) {
       this._cliLogger.log("error", e);

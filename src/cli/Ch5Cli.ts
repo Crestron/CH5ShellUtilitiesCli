@@ -23,6 +23,7 @@ import { Ch5ValidateProjectConfigCli } from "./validate-project-config/Ch5Valida
 import { Ch5UpdateProjectCli } from "./update-project/Ch5UpdateProjectCli";
 import { Ch5CreateProjectCli } from "./create-project/Ch5CreateProjectCli";
 import { Ch5CreateProjectCliCustom } from "./create-project-components/Ch5CreateProjectCliComponents";
+import { Ch5UpgradeProjectCli } from "./upgrade-project/Ch5UpgradeProjectCli";
 
 const packageJson = require('../../package.json');
 const buildVersion = packageJson.version || 'VERSION_NOT_READ';
@@ -43,6 +44,7 @@ export class Ch5ShellCli {
   private readonly importComponents: Ch5ImportComponentsCli;
   private readonly importLibraries: Ch5ImportLibrariesCli;
   private readonly updateProject: Ch5UpdateProjectCli;
+  private readonly upgradeProject: Ch5UpgradeProjectCli;
   private readonly validateProjectConfig: Ch5ValidateProjectConfigCli;
 
   public constructor() {
@@ -61,6 +63,7 @@ export class Ch5ShellCli {
     this.importComponents = new Ch5ImportComponentsCli();
     this.importLibraries = new Ch5ImportLibrariesCli();
     this.updateProject = new Ch5UpdateProjectCli();
+    this.upgradeProject = new Ch5UpgradeProjectCli();
     this.validateProjectConfig = new Ch5ValidateProjectConfigCli();
   }
 
@@ -92,6 +95,7 @@ export class Ch5ShellCli {
     await this.importComponents.setupCommand(program);
     await this.importLibraries.setupCommand(program);
     await this.updateProject.setupCommand(program);
+    await this.upgradeProject.setupCommand(program);
     await this.validateProjectConfig.setupCommand(program);
 
     // error on unknown command
