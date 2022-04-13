@@ -32,6 +32,9 @@ export class Ch5UpgradeProjectCli extends Ch5BaseClassForCliNew implements ICh5C
   private readonly assetsPath = './app/project/assets'
   private readonly contractPath = './config/contract.cse2j'
   private readonly vscodePath = './.vscode'
+  private readonly licensePath = './LICENSE.txt'
+  private readonly copyrightPath = './copyright.txt'
+  private readonly packagePath = './package.json'
 
   /**
    * Constructor
@@ -48,11 +51,11 @@ export class Ch5UpgradeProjectCli extends Ch5BaseClassForCliNew implements ICh5C
     this.logger.start("processRequest");
 
     // STEP 1: Update new project-config.json
-    // this.processThemesDifferences();
+    this.processThemesDifferences();
 
-    // this.processHeaderDifferences();
+    this.processHeaderDifferences();
 
-    // this.processPagesDifferences();
+    this.processPagesDifferences();
     // STEP 2: update directories
     
     await this.processDirectories();
@@ -89,6 +92,18 @@ export class Ch5UpgradeProjectCli extends Ch5BaseClassForCliNew implements ICh5C
             fsExtra.copySync(`${this.temporaryPath}/v2/${this.contractPath}`, this.contractPath);
             // copy new vscode
             fsExtra.copySync(`${this.temporaryPath}/v2/${this.vscodePath}`, this.vscodePath);
+            // copy license
+            fsExtra.copySync(`${this.temporaryPath}/v2/${this.licensePath}`, this.licensePath);
+            // copy copyright
+            fsExtra.copySync(`${this.temporaryPath}/v2/${this.copyrightPath}`, this.copyrightPath);
+
+            // copy package.json and keep old name from v1
+            const oldPackageName = (fsExtra.readJSONSync(this.packagePath)).name;
+            fsExtra.copySync(`${this.temporaryPath}/v2/${this.packagePath}`, this.packagePath);
+            const packageFile = editJsonFile(this.packagePath);
+            packageFile.set('name', oldPackageName);
+            packageFile.save();
+
             resolve(true);
           }, (err: any) => {
             reject(err);
