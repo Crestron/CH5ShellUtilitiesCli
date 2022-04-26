@@ -50,15 +50,24 @@ export class Ch5UpgradeProjectCli extends Ch5BaseClassForCliNew implements ICh5C
   async processRequest() {
     this.logger.start("processRequest");
 
-    // STEP 1: Update new project-config.json
-    this.processThemesDifferences();
+    try {
+      // STEP 1: Update new project-config.json
+      this.processThemesDifferences();
 
-    this.processHeaderDifferences();
+      this.processHeaderDifferences();
 
-    this.processPagesDifferences();
-    // STEP 2: update directories
-    
-    await this.processDirectories();
+      this.processPagesDifferences();
+      // STEP 2: update directories
+      
+      await this.processDirectories();
+      this.logger.printSuccess(this.getText('SUCCESS_MESSAGE'));
+    } catch (err: any) {
+      if (err.message.toLowerCase().includes('no such file')) {
+        this.logger.printWarning(this.getText("INVALID_STRUCTURE.MISSING_FILE"));
+      } else if (err.message.toLowerCase().includes('operation not permitted')) {
+        this.logger.printWarning(this.getText("INVALID_STRUCTURE.INVALID_PERMISSIONS"));
+      }
+    }
 
     this.logger.end();
   }
@@ -76,35 +85,39 @@ export class Ch5UpgradeProjectCli extends Ch5BaseClassForCliNew implements ICh5C
           filePath.close();
           // extract v2.zip to v2
           zl.extract(`${this.temporaryPath}/v2.zip`, `${this.temporaryPath}/v2`).then(async () => {
-            // delete old template from v1
-            this.utils.deleteFolder(this.templatePath);
-            // delete old assets folder from project
-            this.utils.deleteFolder(this.assetsPath);
-            // delete old contract
-            this.utils.deleteFile(this.contractPath);
-            // delete old vscode path
-            this.utils.deleteFolder(this.vscodePath);
-            // copy new template from v2
-            fsExtra.copySync(`${this.temporaryPath}/v2/${this.templatePath}`, this.templatePath);
-            // copy assets from v2 to v1
-            fsExtra.copySync(`${this.temporaryPath}/v2/${this.assetsPath}`, this.assetsPath);
-            // copy new contract
-            fsExtra.copySync(`${this.temporaryPath}/v2/${this.contractPath}`, this.contractPath);
-            // copy new vscode
-            fsExtra.copySync(`${this.temporaryPath}/v2/${this.vscodePath}`, this.vscodePath);
-            // copy license
-            fsExtra.copySync(`${this.temporaryPath}/v2/${this.licensePath}`, this.licensePath);
-            // copy copyright
-            fsExtra.copySync(`${this.temporaryPath}/v2/${this.copyrightPath}`, this.copyrightPath);
+            try {
+              // delete old template from v1
+              this.utils.deleteFolder(this.templatePath);
+              // delete old assets folder from project
+              this.utils.deleteFolder(this.assetsPath);
+              // delete old contract
+              this.utils.deleteFile(this.contractPath);
+              // delete old vscode path
+              this.utils.deleteFolder(this.vscodePath);
+              // copy new template from v2
+              fsExtra.copySync(`${this.temporaryPath}/v2/${this.templatePath}`, this.templatePath);
+              // copy assets from v2 to v1
+              fsExtra.copySync(`${this.temporaryPath}/v2/${this.assetsPath}`, this.assetsPath);
+              // copy new contract
+              fsExtra.copySync(`${this.temporaryPath}/v2/${this.contractPath}`, this.contractPath);
+              // copy new vscode
+              fsExtra.copySync(`${this.temporaryPath}/v2/${this.vscodePath}`, this.vscodePath);
+              // copy license
+              fsExtra.copySync(`${this.temporaryPath}/v2/${this.licensePath}`, this.licensePath);
+              // copy copyright
+              fsExtra.copySync(`${this.temporaryPath}/v2/${this.copyrightPath}`, this.copyrightPath);
 
-            // copy package.json and keep old name from v1
-            const oldPackageName = (fsExtra.readJSONSync(this.packagePath)).name;
-            fsExtra.copySync(`${this.temporaryPath}/v2/${this.packagePath}`, this.packagePath);
-            const packageFile = editJsonFile(this.packagePath);
-            packageFile.set('name', oldPackageName);
-            packageFile.save();
+              // copy package.json and keep old name from v1
+              const oldPackageName = (fsExtra.readJSONSync(this.packagePath)).name;
+              fsExtra.copySync(`${this.temporaryPath}/v2/${this.packagePath}`, this.packagePath);
+              const packageFile = editJsonFile(this.packagePath);
+              packageFile.set('name', oldPackageName);
+              packageFile.save();
 
-            resolve(true);
+              resolve(true);
+            } catch (err) {
+              reject(err);
+            }
           }, (err: any) => {
             reject(err);
           });
