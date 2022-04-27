@@ -22,13 +22,17 @@
     "resolveJsonModule": true,
     "newLine": "LF"
   },
-  "exclude": [
-    "node_modules",
-    "test"
-  ],
   "include": [
-    "src"
-  ]
+    "src/**/*",
+    "shell/**/*"
+  ],
+  "exclude": [
+    "src/cli/**/*.ts",
+    "node_modules",
+    "test",
+    "src/cli/aaa1/**"
+  ],
+  "hooks": [ "copy-files" ]
   // "exclude": [
   //   // "test"
   // ]
