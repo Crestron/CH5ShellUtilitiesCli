@@ -36,7 +36,6 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
     this.logger.start("initialize");
     this.outputResponse.data.updateInputs = [];
     this.outputResponse.data.projectName = "";
-    this.outputResponse.data.projectFolderPath = "";
     this.logger.end();
   }
 
@@ -78,6 +77,8 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
           }
         }
       });
+      this.logger.log("this.outputResponse.data.updateInputs: ", this.outputResponse.data.updateInputs);
+      
       if (this.outputResponse.data.updateInputs.length === 0) {
         const value = this.inputArgs["projectName"];
         const inputUpdate = {
@@ -165,6 +166,8 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
    */
   async processRequest() {
     this.logger.start("processRequest");
+    const projectFolderPath = path.resolve(path.join("./"));
+
     if (this.inputArgs["config"].argsValue !== "") {
 
       // Step 4: Make changes to project-config.json stepwise
@@ -242,7 +245,6 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
       packageJsonFile.save();
 
       this.outputResponse.data.projectName = oldProjectConfigJSON.projectName;
-      this.outputResponse.data.projectFolderPath = path.resolve(path.join("./"));
 
       // Step 5: Save Project-config
       for (let i: number = 0; i < pagesToBeCreated.length; i++) {
@@ -264,7 +266,7 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
 
       // Step 8: Show proper messages  
       this.outputResponse.result = true;
-      this.outputResponse.successMessage = this.getText("LOG_OUTPUT.SUCCESS_MESSAGE", this.outputResponse.data.projectName, this.outputResponse.data.projectFolderPath);
+      this.outputResponse.successMessage = this.getText("LOG_OUTPUT.SUCCESS_MESSAGE", this.outputResponse.data.projectName, projectFolderPath);
     } else {
       // Step 4: Make changes to project-config.json stepwise
       const projectConfigJSON: any = JSON.parse(this.utils.readFileContentSync(path.resolve(path.join(this.SHELL_FOLDER, this.PROJECT_CONFIG_JSON_PATH))));
@@ -300,8 +302,7 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
       packageJsonFile.save();
 
       this.outputResponse.data.projectName = projectConfigJSON.projectName;
-      this.outputResponse.data.projectFolderPath = path.resolve(path.join("./"));
-
+      
       const genPage: Ch5GeneratePageCli = new Ch5GeneratePageCli(false);
       genPage.setInputArgsForTesting(["-n", "page1", "-m", "Y"]);
       await genPage.run();
@@ -312,7 +313,7 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
       }
 
       this.outputResponse.result = true;
-      this.outputResponse.successMessage = this.getText("LOG_OUTPUT.SUCCESS_MESSAGE", this.outputResponse.data.projectName, this.outputResponse.data.projectFolderPath);
+      this.outputResponse.successMessage = this.getText("LOG_OUTPUT.SUCCESS_MESSAGE", this.outputResponse.data.projectName, projectFolderPath);
     }
     this.logger.end();
   }

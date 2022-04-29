@@ -20,25 +20,48 @@
       "isSpecialArgument": true
     },
     {
-      "key": "useWebXPanel",
-      "description": "Use WebXPanel",
-      "type": "boolean",
-      "default": true,
-      "valueIfNotFound": null,
+      "key": "projectName",
+      "description": "Set the project name in package.json and project-config.json",
+      "type": "string",
+      "default": "",
+      "valueIfNotFound": "",
       "alias": [
-        "--useWebXPanel"
+        "--projectName"
       ],
-      "allowedValues": [
-        "true",
-        "false"
+      "allowedValues": [],
+      "allowedAliases": [],
+      "validation": "validatePackageJsonProjectName",
+      "question": "CHECK_PROMPT_QUESTIONS.QUESTIONS.PROJECT_NAME",
+      "isSpecialArgument": false
+    },
+    {
+      "key": "version",
+      "description": "Set the version in project-config.json",
+      "type": "string",
+      "default": "",
+      "valueIfNotFound": "",
+      "alias": [
+        "--projectVersion"
       ],
-      "allowedAliases": [
-        "true",
-        "false",
-        "y",
-        "n"
+      "allowedValues": [],
+      "allowedAliases": [],
+      "validation": "",
+      "question": "CHECK_PROMPT_QUESTIONS.QUESTIONS.PROJECT_VERSION",
+      "isSpecialArgument": false
+    },
+    {
+      "key": "faviconPath",
+      "description": "Set the favicon name in project-config.json",
+      "type": "string",
+      "default": "",
+      "valueIfNotFound": "",
+      "alias": [
+        "--faviconPath"
       ],
-      "question": "CHECK_PROMPT_QUESTIONS.QUESTIONS.SELECT",
+      "allowedValues": [],
+      "allowedAliases": [],
+      "validation": "",
+      "question": "CHECK_PROMPT_QUESTIONS.QUESTIONS.FAVICON",
       "isSpecialArgument": false
     },
     {
@@ -64,129 +87,6 @@
       "isSpecialArgument": false
     },
     {
-      "key": "displayHeader",
-      "description": "Sets if the header component in the page has to be shown / hidden",
-      "type": "boolean",
-      "default": true,
-      "valueIfNotFound": null,
-      "alias": [
-        "--displayHeader"
-      ],
-      "allowedValues": [
-        "true",
-        "false"
-      ],
-      "allowedAliases": [
-        "true",
-        "false",
-        "y",
-        "n"
-      ],
-      "question": "CHECK_PROMPT_QUESTIONS.QUESTIONS.SELECT",
-      "isSpecialArgument": false
-    },
-    {
-      "key": "displayHeaderInfo",
-      "description": "Sets if the header component info icon in the page has to be shown / hidden",
-      "type": "boolean",
-      "default": true,
-      "valueIfNotFound": null,
-      "alias": [
-        "--displayHeaderInfo"
-      ],
-      "allowedValues": [
-        "true",
-        "false"
-      ],
-      "allowedAliases": [
-        "true",
-        "false",
-        "y",
-        "n"
-      ],
-      "question": "CHECK_PROMPT_QUESTIONS.QUESTIONS.SELECT",
-      "isSpecialArgument": false
-    },
-    {
-      "key": "displayFooter",
-      "description": "Sets if the footer component in the page has to be shown / hidden",
-      "type": "boolean",
-      "default": true,
-      "valueIfNotFound": null,
-      "alias": [
-        "--displayFooter"
-      ],
-      "allowedValues": [
-        "true",
-        "false"
-      ],
-      "allowedAliases": [
-        "true",
-        "false",
-        "y",
-        "n"
-      ],
-      "question":"CHECK_PROMPT_QUESTIONS.QUESTIONS.SELECT",
-      "isSpecialArgument": false
-    },
-    {
-      "key": "headerComponent",
-      "description": "Set the name of the header component in the project",
-      "type": "enum",
-      "default": "",
-      "valueIfNotFound": "",
-      "alias": [
-        "--headerComponent"
-      ],
-      "allowedValues": [],
-      "allowedAliases": [],
-      "question": "CHECK_PROMPT_QUESTIONS.QUESTIONS.SELECT",
-      "isSpecialArgument": false
-    },
-    {
-      "key": "footerComponent",
-      "description": "Set the name of the footer component in the project",
-      "type": "enum",
-      "default": "",
-      "valueIfNotFound": "",
-      "alias": [
-        "--footerComponent"
-      ],
-      "allowedValues": [],
-      "allowedAliases": [],
-      "question": "CHECK_PROMPT_QUESTIONS.QUESTIONS.SELECT",
-      "isSpecialArgument": false
-    },
-    {
-      "key": "defaultView",
-      "description": "Set the name of the default page for the project",
-      "type": "enum",
-      "default": "",
-      "valueIfNotFound": "",
-      "alias": [
-        "--defaultView"
-      ],
-      "allowedValues": [],
-      "allowedAliases": [],
-      "question": "CHECK_PROMPT_QUESTIONS.QUESTIONS.SELECT",
-      "isSpecialArgument": false
-    },
-    {
-      "key": "projectName",
-      "description": "Set the name of the Project in package.json and project-config.json",
-      "type": "string",
-      "default": "",
-      "valueIfNotFound": "",
-      "alias": [
-        "--projectName"
-      ],
-      "allowedValues": [],
-      "allowedAliases": [],
-      "validation": "validatePackageJsonProjectName",
-      "question": "CHECK_PROMPT_QUESTIONS.QUESTIONS.PROJECT_NAME",
-      "isSpecialArgument": false
-    },
-    {
       "key": "selectedTheme",
       "description": "Set the name of the selected theme",
       "type": "enum",
@@ -197,6 +97,28 @@
       ],
       "allowedValues": [],
       "allowedAliases": [],
+      "question": "CHECK_PROMPT_QUESTIONS.QUESTIONS.SELECT",
+      "isSpecialArgument": false
+    },
+    {
+      "key": "useWebXPanel",
+      "description": "Use WebXPanel",
+      "type": "boolean",
+      "default": true,
+      "valueIfNotFound": null,
+      "alias": [
+        "--useWebXPanel"
+      ],
+      "allowedValues": [
+        "true",
+        "false"
+      ],
+      "allowedAliases": [
+        "true",
+        "false",
+        "y",
+        "n"
+      ],
       "question": "CHECK_PROMPT_QUESTIONS.QUESTIONS.SELECT",
       "isSpecialArgument": false
     },

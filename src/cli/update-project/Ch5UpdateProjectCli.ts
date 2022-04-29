@@ -85,6 +85,7 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
         throw new Error(this.getText("VERIFY_INPUT_PARAMS.INVALID_CONFIG_FILE"));
       }
     } else {
+      this.logger.log("Update project without json file");
 
       Object.entries(this.inputArgs).forEach(([key, value]: any) => {
         if (value.isSpecialArgument === false) {
@@ -109,6 +110,11 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
         }
       });
       this.logger.log("this.outputResponse.data.updateInputs: ", this.outputResponse.data.updateInputs);
+      
+      // To Check if atleast 1 input is provided
+      if (this.outputResponse.data.updateInputs.length === 0) {
+        throw new Error(this.getText("VERIFY_INPUT_PARAMS.MISSING_INPUTS_NEED_ATlEAST_ONE_DATA"));
+      }
 
       const tabDisplayText = this.getText("COMMON.HYPHEN_DELIMITER");
       let warningMessage: string = "";
@@ -121,11 +127,6 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
         if (this.showOutputMessages === true) {
           this.logger.printWarning(this.getText("VERIFY_INPUT_PARAMS.INPUT_WARNING_TITLE", warningMessage));
         }
-      }
-
-      // To Check if atleast 1 input is provided
-      if (this.outputResponse.data.updateInputs.length === 0) {
-        throw new Error(this.getText("VERIFY_INPUT_PARAMS.MISSING_INPUTS_NEED_ATlEAST_ONE_DATA"));
       }
     }
     this.logger.end();
