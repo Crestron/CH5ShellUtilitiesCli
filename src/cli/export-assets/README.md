@@ -27,7 +27,7 @@ You could use shortcut script `exp:a` with yarn and npm commands as the followin
     npm run exp:a [options]
 
 Options:
-    -h, --help,         Help for Exporting assets from the './app/project/assets/' folder
+    -h, --help,         Display help for command
     -l, --list,         Prefix for list of file names
     --all               Select this option to export all the files
 
@@ -79,18 +79,6 @@ Mac OS X also includes the Bash shell, so tab completion works just like it does
 
 Any other operating system that uses the Bash shell will work the same. Tab completion features should also work similarly on many other shells on Unix-like systems.
 
-### Change Configuration Parameters
-
-All configuration parameters are available in the config.json file located at `./ch5-shell-utilities-cli/src/cli/export-assets/files/config.json`.
-
-Parameters for "export:assets" are
-
-- "requiredFolderPath": "./app/project/assets/" - This indicates the folder path of the project asset files.
-- "outputFileName": "exported-assets.zip" - This indicates the output zip file name.
-- "outputTempFolderName": "Exported-Assets-Code-Folder-Temp" - This indicates the temporary path created for copying output files.
-- "zipFolderName": "exported-assets", - This is the name of the folder inside outputTempFolderName where the zip file will be created.
-- "zipFileDestinationPath": "./dist/", - This is the path where the zip file will be created. Ensure that it starts with './' and ends with '/'.
-- "ignoreFilesFolders": Indicates all the files / folders that must not be included in the zip file.
 
 ### Copyright
 

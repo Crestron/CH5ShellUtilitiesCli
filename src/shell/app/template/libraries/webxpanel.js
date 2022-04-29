@@ -55,12 +55,12 @@ var webXPanelModule = (function () {
    */
   function getWebXPanelConfiguration(projectConfig) {
     if (projectConfig.config && projectConfig.config.controlSystem) {
-      pcConfig.host = projectConfig.config.controlSystem.host || "";
-      pcConfig.port = projectConfig.config.controlSystem.port || "";
-      pcConfig.roomId = projectConfig.config.controlSystem.roomId || "";
-      pcConfig.ipId = projectConfig.config.controlSystem.ipId || "";
-      pcConfig.tokenSource = projectConfig.config.controlSystem.tokenSource || "";
-      pcConfig.tokenUrl = projectConfig.config.controlSystem.tokenUrl || "";
+      pcConfig.host = projectConfig.config.controlSystem.host || config.host;
+      pcConfig.port = projectConfig.config.controlSystem.port || config.port;
+      pcConfig.roomId = projectConfig.config.controlSystem.roomId || config.roomId;
+      pcConfig.ipId = projectConfig.config.controlSystem.ipId || config.ipId;
+      pcConfig.tokenSource = projectConfig.config.controlSystem.tokenSource || config.tokenSource;
+      pcConfig.tokenUrl = projectConfig.config.controlSystem.tokenUrl || config.tokenUrl;
 
       // if undefined, assign 60 days as default
       WARN_DAYS_BEFORE = projectConfig.config.controlSystem.licenseExpirationWarning || 60;
@@ -309,9 +309,19 @@ var webXPanelModule = (function () {
   function connectWebXPanel(projectConfig) {
     connectParams = config;
 
-    isDisplayInfo = projectConfig.header.displayInfo;
+    isDisplayHeader = projectConfig.header.display;
+    /**
+     * if the header is false then displayInfo needs to be false
+     * even if it is set as true in project-config.json
+     */
+    if (isDisplayHeader) {
+      isDisplayInfo = projectConfig.header.displayInfo;
+    }
 
-    status = document.querySelector('#webxpanel-tab-content .connection .status');
+    // Show the connection bar when true
+    if (isDisplayInfo) {
+      status = document.querySelector('#webxpanel-tab-content .connection .status');
+    }
 
     webXPanelConnectionStatus();
 

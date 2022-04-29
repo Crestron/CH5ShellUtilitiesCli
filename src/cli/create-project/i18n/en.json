@@ -18,6 +18,6 @@
   },
   "CLEAN_UP": {},
   "LOG_OUTPUT": {
-    "SUCCESS_MESSAGE": "Project '{0}' Successfully created at '{1}'"
+    "SUCCESS_MESSAGE": "Project '{0}' successfully created at '{1}'.\n\nExecute the command npm install, and then npm start within the project directory to see your project in the browser."
   }
 }

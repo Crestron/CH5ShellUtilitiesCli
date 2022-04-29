@@ -293,7 +293,7 @@ export abstract class Ch5BaseClassForCliNew {
       programObject = programObject.addHelpText('after', contentForHelp);
     }
 
-    programObject.action(async (options) => {
+    programObject.allowUnknownOption().action(async (options) => {
       try {
         await this.run();
       } catch (e: any) {

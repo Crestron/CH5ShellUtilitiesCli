@@ -16,6 +16,13 @@ const enquirer = new Enquirer();
 
 export class Ch5GeneratePageCli extends Ch5BaseClassForCli implements ICh5Cli {
 
+  /*
+    - "basePathForPages": "./app/project/components/pages/" - This indicates the path where the page will be generated.
+    - "templatesPath": "./ch5-shell-utilities-cli/src/cli/generate-page/templates/" - This indicates the path where the templates can be found
+    - "minLengthOfPageName": 2 - The minimum length for page name
+    - "maxLengthOfPageName": 31 - The maximum length for page name
+  */
+ 
   private readonly MIN_LENGTH_OF_PAGE_NAME: number = 2;
   private readonly MAX_LENGTH_OF_PAGE_NAME: number = 31;
 

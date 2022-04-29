@@ -61,7 +61,7 @@
     max-height: 70vh;
     max-width: 600px;
     border: $version-modal-dialog-border-width $border-type $black;
-    min-height: 430px;
+    min-height: min(430px, 70vh);
 
     .ch5-modal-dialog-header {
       font-size: 20px;

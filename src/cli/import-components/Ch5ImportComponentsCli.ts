@@ -17,6 +17,15 @@ const enquirer = new Enquirer();
 
 export class Ch5ImportComponentsCli extends Ch5BaseClassForCli implements ICh5Cli {
 
+  /*
+    - "requiredFolderPath": "./app/project/components/" - This indicates the folder path of the project asset files.
+    - "outputFileName": "imported-components.zip" - This indicates the output zip file name.
+    - "outputTempFolderName": "Imported-Components-Code-Folder-Temp" - This indicates the temporary path created for copying output files.
+    - "zipFolderName": "imported-components", - This is the name of the folder inside outputTempFolderName where the zip file will be created.
+    - "zipFileDestinationPath": "./dist/", - This is the path where the zip file will be created. Ensure that it starts with './' and ends with '/'.
+    - "exportedFolderName": Indicates the name of the folder that was used for exporting the zip file during export:components process.
+  */
+
   private outputResponse: any = {};
   private folderPaths: any = {};
 

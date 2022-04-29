@@ -56,7 +56,6 @@ const translateModule = (() => {
           output = utilsModule.mergeJSON(output, responseTemplate);
           loadJSON("./app/project/assets/data/translation/", defaultLng).then((responseProject) => {
             output = utilsModule.mergeJSON(output, responseProject);
-            console.log("output", output);
             langData[defaultLng] = {
               translation: output,
             };

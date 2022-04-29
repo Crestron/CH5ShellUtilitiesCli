@@ -15,10 +15,9 @@
         "receiveStateUrl": ""
       },
       "backgroundProperties": {
-        "url": [
-          "./app/template/assets/img/ch5-stone-light-bg.jpg"
-        ],
-        "repeat": "repeat"
+        "backgroundColor": [
+          "#f8f8f8"
+        ]
       }
     },
     {
@@ -30,10 +29,9 @@
         "receiveStateUrl": ""
       },
       "backgroundProperties": {
-        "url": [
-          "./app/template/assets/img/ch5-stone-dark-bg.jpg"
-        ],
-        "repeat": "repeat"
+        "backgroundColor": [
+          "#1a1a1a"
+        ]
       }
     },
     {
@@ -45,10 +43,9 @@
         "receiveStateUrl": ""
       },
       "backgroundProperties": {
-        "url": [
-          "./app/template/assets/img/ch5-stone-light-bg.jpg"
-        ],
-        "repeat": "repeat"
+        "backgroundColor": [
+          "#f8f8f8"
+        ]
       }
     },
     {
@@ -60,10 +57,9 @@
         "receiveStateUrl": ""
       },
       "backgroundProperties": {
-        "url": [
-          "./app/template/assets/img/ch5-stone-dark-bg.jpg"
-        ],
-        "repeat": "repeat"
+        "backgroundColor": [
+          "#1a1a1a"
+        ]
       }
     },
     {
@@ -75,16 +71,14 @@
         "receiveStateUrl": ""
       },
       "backgroundProperties": {
-        "url": [
-          "./app/template/assets/img/ch5-stone-light-bg.jpg"
-        ],
-        "repeat": "repeat"
+        "backgroundColor": [
+          "#f8f8f8"
+        ]
       }
     }
   ],
   "config": {
-    "controlSystem": {
-    }
+    "controlSystem": {}
   },
   "header": {
     "display": true,

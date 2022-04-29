@@ -41,11 +41,10 @@
     "imp:l": "ch5-shell-cli imp:l",
     "validate:projectconfig": "ch5-shell-cli validate:project-config",
     "val:pc": "ch5-shell-cli val:pc",
-    "update:project": "ch5-shell-cli update:project"
+    "update:project": "ch5-shell-cli update:project",
+    "upgrade:project": "ch5-shell-cli upgrade:project"
   },
   "devDependencies": {
-    "@crestron/ch5-shell-utilities-cli": "https://siproducts.blob.core.windows.net/ch5-test/021722/CH5ShellUtilitiesCli-2.0.7-alpha.7.tgz",
-    "@crestron/ch5-utilities-cli": "https://siproducts.blob.core.windows.net/ch5-test/021722/CH5UtilitiesCli-2.0.1-alpha.1.tgz",
     "browser-sync": "^2.27.5",
     "browser-sync-webpack-plugin": "^2.2.2",
     "copy-webpack-plugin": "^5.0.4",
@@ -71,9 +70,9 @@
     "write-json-webpack-plugin": "^1.1.0"
   },
   "dependencies": {
-    "@crestron/ch5-crcomlib": "https://siproducts.blob.core.windows.net/ch5-test/03032022/CH5CrComLib-2.0.14-alpha.14.tgz",
-    "@crestron/ch5-theme": "https://siproducts.blob.core.windows.net/ch5-test/03032022/CH5Themes-2.0.12-alpha.12.tgz",
-    "@crestron/ch5-webxpanel": "https://siproducts.blob.core.windows.net/ch5-test/03032022/CH5VirtualScreen-2.0.7-alpha.7.tgz",
+    "@crestron/ch5-crcomlib": "https://siproducts.blob.core.windows.net/ch5-test/04182022/CH5CrComLib-2.0.24-alpha.24.tgz",
+    "@crestron/ch5-theme": "https://siproducts.blob.core.windows.net/ch5-test/04182022/CH5Themes-2.0.18-alpha.18.tgz",
+    "@crestron/ch5-webxpanel": "https://siproducts.blob.core.windows.net/ch5-test/04012022/CH5VirtualScreen-2.0.8-alpha.8.tgz",
     "@material-icons/font": "^1.0.25"
   },
   "files": [

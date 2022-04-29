@@ -20,6 +20,15 @@ export class Ch5ExportAllCli extends Ch5BaseClassForCli implements ICh5Cli {
   private outputResponse: any = {};
   private finalOutputZipFile: string = "";
 
+  /*
+    - "requiredFolderPath": "./app/project/" - This indicates the folder path of the project files.
+    - "outputFileName": "exported-all.zip" - This indicates the output zip file name.
+    - "outputTempFolderName": "Exported-All-Code-Folder-Temp" - This indicates the temporary path created for copying output files.
+    - "zipFolderName": "exported-all", - This is the name of the folder inside outputTempFolderName where the zip file will be created.
+    - "zipFileDestinationPath": "./dist/", - This is the path where the zip file will be created. Ensure that it starts with './' and ends with '/'.
+    - "ignoreFilesFolders": Indicates all the files / folders that must not be included in the zip file.
+  */
+
   /**
    * Constructor
    */

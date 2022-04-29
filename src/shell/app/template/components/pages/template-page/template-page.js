@@ -1,5 +1,5 @@
 /*jslint es6 */
-/*global CrComLib, webXPanelModule, projectConfigModule, featureModule, translateModule, serviceModule, utilsModule, navigationModule */
+/*global CrComLib, webXPanelModule, projectConfigModule, featureModule, templateAppLoaderModule, translateModule, serviceModule, utilsModule, navigationModule */
 
 const templatePageModule = (() => {
 	'use strict';
@@ -8,6 +8,26 @@ const templatePageModule = (() => {
 	let horizontalMenuSwiperThumb = null;
 	let selectedPage = { name: "" };
 	let _isPageLoaded = false;
+	let isWebXPanelInitialized = false; // avoid calling connection method multiple times
+
+	const effects = {
+		"fadeOutUpBig": ["animate__animated", "animate__fadeOutUpBig"],
+		"fadeInUpBig": ["animate__animated", "animate__fadeInUpBig"],
+		"fadeOutDownBig": ["animate__animated", "animate__fadeOutDownBig"],
+		"fadeInDownBig": ["animate__animated", "animate__fadeInDownBig"],
+		"fadeOutUpBigFast": ["animate__animated", "animate__fadeOutUpBig", "animate__fast"],
+		"fadeInUpBigFast": ["animate__animated", "animate__fadeInUpBig", "animate__fast"],
+		"fadeOutDownBigFast": ["animate__animated", "animate__fadeOutDownBig", "animate__fast"],
+		"fadeInDownBigFast": ["animate__animated", "animate__fadeInDownBig", "animate__fast"],
+		"fadeOut": ["animate__animated", "animate__fadeOut"],
+		"fadeOutSlow": ["animate__animated", "animate__fadeOut", "animate__slow"],
+		"fadeIn": ["animate__animated", "animate__fadeIn"],
+		"fadeInSlow": ["animate__animated", "animate__fadeIn", "animate__slow"],
+		"fadeInFast": ["animate__animated", "animate__fadeIn", "animate__fast"],
+		"zoomIn": ["animate__animated", "animate__zoomIn"],
+		"zoomOut": ["animate__animated", "animate__zoomOut"],
+		"fadeOutFast": ["animate__animated", "animate__fadeOut", "animate__fast"]
+	};
 
 	/**
 	 * This is public method for bottom navigation to navigate to next page
@@ -64,27 +84,13 @@ const templatePageModule = (() => {
 		// 	// });
 		// });
 	}
+
 	function setMenuActive() {
 		// if (triggerview !== null) {
 		// 	if (response.menuOrientation === 'horizontal') { // || response.menuOrientation === 'vertical') {
 		// 		CrComLib.publishEvent("n", "scrollToMenu", activeIndex);
 		// 	}
 		// }
-	}
-
-	function onIntersection(entries, observer) {
-		//console.log(entries);
-		// console.log(observer);
-		for (let entry of entries) {
-			console.log("Is Visible: " + entry.isIntersecting);
-			console.log("entry: ", entry);
-
-			if (entry.isIntersecting === true) {
-			//
-			} else {
-				// 
-			}
-		}
 	}
 
 	function navigateTriggerViewByIndex(index) {
@@ -97,14 +103,6 @@ const templatePageModule = (() => {
 	function isPageLoaded() {
 		return _isPageLoaded;
 	}
-
-	// window.addEventListener("orientationchange", function () {
-	//   try {
-	//     // templatePageModule.setMenuActive();
-	//     // eslint-disable-next-line no-empty
-	//   } catch (e) {
-	//   }
-	// }, false);
 
 	/**
 	 * This is public method to show/hide bottom navigation in smaller screen
@@ -162,8 +160,8 @@ const templatePageModule = (() => {
 			horizontalMenuSwiperThumb = document.getElementById("horizontal-menu-swiper-thumb");
 
 			projectConfigModule.projectConfigData().then((projectConfigResponse) => {
-
 				translateModule.initializeDefaultLanguage().then(() => {
+					templateAppLoaderModule.initializePageDuration();
 					featureModule.changeTheme();
 					/* Note: You can uncomment below line to enable remote logger.
 					* Refer below documentation link to know more about remote logger.
@@ -193,7 +191,6 @@ const templatePageModule = (() => {
 					const standAlonePages = projectConfigModule.getAllStandAloneViewPages();
 					for (let i = 0; i < standAlonePages.length; i++) {
 						const htmlImportSnippet = document.createElement("ch5-import-htmlsnippet");
-						// console.log("*** Standalone", widgets[i].widgetName);
 						htmlImportSnippet.setAttribute("id", standAlonePages[i].pageName + "-import-page");
 						htmlImportSnippet.setAttribute("url", standAlonePages[i].fullPath + standAlonePages[i].fileName);
 						htmlImportSnippet.setAttribute("show", "false");
@@ -332,15 +329,13 @@ const templatePageModule = (() => {
 								});
 							}
 
+							/*
+							// LOADING INDICATOR - Uncomment the below lines along with code in navigation.js file to enable loading indicator
 							const htmlImportSnippetForLoader = document.createElement("ch5-import-htmlsnippet");
 							htmlImportSnippetForLoader.setAttribute("id", pagesList[i].pageName + "-import-page-app-loader");
 							htmlImportSnippetForLoader.setAttribute("receiveStateShow", pagesList[i].pageName + "-import-page-show-app-loader");
-							htmlImportSnippetForLoader.setAttribute("url", "./app/template/components/widgets/template-app-loader/template-app-loader.html");
-							if (pagesList[i].preloadPage === false) {
-								//
-							} else {
-								// push signal to set to true;
-							}
+							htmlImportSnippetForLoader.setAttribute("url", "./app/template/components/widgets/template-app-loader/template-app-loader.html");							
+							*/
 
 							const htmlImportSnippet = document.createElement("ch5-import-htmlsnippet");
 							const htmlImportSnippetProperties = projectConfigResponse.content.pageProperties;
@@ -360,7 +355,8 @@ const templatePageModule = (() => {
 								htmlImportSnippet.setAttribute("noShowType", "remove");
 							}
 
-							childNodeTriggerView.appendChild(htmlImportSnippetForLoader);
+							// LOADING INDICATOR - Uncomment the below line along with code in navigation.js file to enable loading indicator
+							// childNodeTriggerView.appendChild(htmlImportSnippetForLoader);
 							childNodeTriggerView.appendChild(htmlImportSnippet);
 							triggerviewInContent.appendChild(childNodeTriggerView);
 						}
@@ -389,13 +385,10 @@ const templatePageModule = (() => {
 
 					if (triggerview) {
 						triggerview.addEventListener("select", (event) => {
-							// setTimeout(() => {
 							const listOfPages = projectConfigModule.getNavigationPages();
 							if (listOfPages.length > 0 && listOfPages[event.detail].pageName !== selectedPage.pageName) {
 								navigateTriggerViewByIndex(event.detail);
 							}
-							// navActiveState(event.detail);
-							// });
 						});
 					}
 
@@ -441,19 +434,33 @@ const templatePageModule = (() => {
 		}
 	});
 
-	function connectToWebXPanel(projectConfigResponse) {
-		if (projectConfigResponse.useWebXPanel) {
-			let loadListCh5 = CrComLib.subscribeState('o', 'ch5-import-htmlsnippet:template-version-info-import-page', (value) => {
-				if (value['loaded']) {
-					webXPanelModule.connect(projectConfigResponse);
-					setTimeout(() => {
-						CrComLib.unsubscribeState('o', 'ch5-import-htmlsnippet:template-version-info-import-page', loadListCh5);
-						loadListCh5 = null;
-					});
-				}
-			});
+	function setTransition(app) {
+		const selectedEffect = effects.fadeIn;
+		for (let i = 0; i < selectedEffect.length; i++) {
+			app.classList.add(selectedEffect[i]);
 		}
 	}
+
+	function connectToWebXPanel(projectConfigResponse) {
+		if (projectConfigResponse.useWebXPanel && !isWebXPanelInitialized) {
+			if (projectConfigResponse.header.display && projectConfigResponse.header.displayInfo) {
+				let loadListCh5 = CrComLib.subscribeState('o', 'ch5-import-htmlsnippet:template-version-info-import-page', (value) => {
+					if (value['loaded']) {
+						webXPanelModule.connect(projectConfigResponse);
+						isWebXPanelInitialized = true;
+						setTimeout(() => {
+							CrComLib.unsubscribeState('o', 'ch5-import-htmlsnippet:template-version-info-import-page', loadListCh5);
+							loadListCh5 = null;
+						});
+					}
+				});
+			} else {
+				webXPanelModule.connect(projectConfigResponse);
+				isWebXPanelInitialized = true;
+			}
+		}
+	}
+
 	function loadCh5ListForMenu(projectConfigResponse, responseArrayForNavPages) {
 		for (let i = 0; i < responseArrayForNavPages.length; i++) {
 			const menu = document.getElementById("menu-list-id-" + i);
@@ -500,36 +507,13 @@ const templatePageModule = (() => {
 		navigateTriggerViewByIndex(newIndex);
 		_isPageLoaded = true;
 	}
-	// /**
-	// * Load the emulator, theme, default language and listeners
-	// */
-	// function pageInit() {
-	// 	console.log("pageInit");
-	// 	projectConfigModule.projectConfigData().then(projectConfigResponse => {
-	// 		translateModule.initializeDefaultLanguage().then(() => {
-	// 			featureModule.changeTheme();
-	// 			/* Note: You can uncomment below line to enable remote logger.
-	// 			* Refer below documentation link to know more about remote logger.
-	// 			* https://sdkcon78221.crestron.com/sdk/Crestron_HTML5UI/Content/Topics/UI-Remote-Logger.htm
-	// 			*/
-	// 			// featureModule.initializeLogger(serverIPAddress, serverPortNumber);
-	// 			// templatePageModule.pageInit(projectConfigResponse);
-	// 			serviceModule.initialize(projectConfigResponse);
-	// 			navigationModule.goToPage(projectConfigResponse.content.$defaultView);
-	// 		});
-	// 	});
-	// }
-
-	// function onTemplateLoaded() {
-	// 	projectConfigModule.projectConfigData().then((projectConfigResponse) => {
-
-	// 	});
-	// }
 
 	/**
 	 * Loader method is for spinner
 	 */
-	function hideLoading() {
+	function hideLoading(pageObject) {
+		let endDuration = new Date().getTime();
+		templateAppLoaderModule.endPageLoad(pageObject, endDuration);
 		setTimeout(() => {
 			document.getElementById("loader").style.display = "none";
 		}, 100);
@@ -543,22 +527,17 @@ const templatePageModule = (() => {
 		}
 	}, false);
 
-	function showLoading() {
-		// setTimeout(() => {
-		document.getElementById("loader").style.display = "block";
-		// }, 100);
-	}
-
 	/**
-	* All public method and properties exporting here
-	*/
+	 * All public method and properties exporting here
+	 */
 	return {
 		navigateTriggerViewByPageName,
 		isPageLoaded,
 		openThumbNav,
 		toggleSidebar,
 		hideLoading,
-		navigateTriggerViewByIndex
+		navigateTriggerViewByIndex,
+		setTransition
 	};
 
 })();

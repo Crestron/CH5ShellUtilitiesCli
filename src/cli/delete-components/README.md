@@ -25,7 +25,7 @@ You could use shortcut script `del:c` with yarn and npm commands as the followin
     npm run del:c [options]
     
 Options:
-    -h, --help          Help for Generate Documentation
+    -h, --help          Display help for command
     -l, --list,         Prefix for list of component names to be deleted
     -f, --force         Forces the script to delete the component without asking for a confirmation
 
@@ -58,14 +58,6 @@ You could also use `yarn` or `npm run` to delete components. The following are t
     npm run del:c -- -l page6 -f
 
 ```
-
-### Change Configuration Parameters
-
-All configuration parameters are available in the config.json file located at `./ch5-shell-utilities-cli/src/cli/delete-components/files/config.json`.
-
-Parameters for "deleteComponents" are as follows:
-`-- list` | `-l`: parameter to receive a list of components to be deleted.
-`--force` | `-f`: parameter to execute the command for the component to be deleted without asking for a confirmation.
 
 ### Copyright
 

@@ -16,6 +16,13 @@ const enquirer = new Enquirer();
 
 export class Ch5GenerateWidgetCli extends Ch5BaseClassForCli implements ICh5Cli {
 
+  /*
+    - "basePathForWidgets": "./app/project/components/widgets/" - This indicates the path where the widget will be generated.
+    - "templatesPath": "./ch5-shell-utilities-cli/src/cli/generate-widget/templates/" - This indicates the path where the templates can be found.
+    - "minLengthOfWidgetName": 2 - The minimum length for widget name.
+    - "maxLengthOfWidgetName": 31 - The maximum length for widget name.
+  */
+
   private readonly MIN_LENGTH_OF_WIDGET_NAME: number = 2;
   private readonly MAX_LENGTH_OF_WIDGET_NAME: number = 31;
 

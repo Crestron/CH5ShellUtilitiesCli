@@ -15,6 +15,11 @@ const path = require('path');
 
 export class Ch5ExportProjectCli extends Ch5BaseClassForCli implements ICh5Cli {
 
+  /*
+    - "ignoreFilesFolders": Indicates all the files / folders that must not be included in the zip file.
+    - "zipFileDestinationPath": "./dist/", - This is the path where the zip file will be created. Ensure that it starts with './' and ends with '/'.
+  */
+
   public constructor(public showOutputMessages: boolean = true) {
     super("export-project");
   }

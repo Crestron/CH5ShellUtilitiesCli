@@ -20,6 +20,7 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
 
   private readonly SHELL_FOLDER: string = path.normalize(path.join(__dirname, "../../", "shell"));
   private readonly PROJECT_CONFIG_JSON_PATH: string = path.normalize("/app/project-config.json");
+  private readonly VSCODE_SCHEMA_JSON_PATH: string = path.normalize(path.join(".vscode", "project-config-schema.json"));
 
   /**
    * Constructor
@@ -50,7 +51,7 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
         throw new Error(this.getText("VERIFY_INPUT_PARAMS.INVALID_CONFIG_INPUT"));
       }
       // Step 2: Check if json is as per its schema (.vscode is hidden folder)
-      if (!(this.isConfigFileValid(this.inputArgs["config"].argsValue, path.join(this.SHELL_FOLDER, ".vscode", "project-config-schema.json"), false))) {
+      if (!(this.isConfigFileValid(this.inputArgs["config"].argsValue, path.join(this.SHELL_FOLDER, this.VSCODE_SCHEMA_JSON_PATH), false))) {
         throw new Error(this.getText("VERIFY_INPUT_PARAMS.INVALID_CONFIG_FILE"));
       }
     } else {
@@ -69,6 +70,7 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
               if (validationResponse.warning === "") {
                 inputUpdate.argsValue = validationResponse.value;
               } else {
+                inputUpdate.argsValue = null;
                 inputUpdate.warning = validationResponse.warning;
               }
             }
@@ -256,7 +258,7 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
       }
 
       // Step 6: Run validate:project-config
-      if (!(this.isConfigFileValid(path.join(pathToCreateProject, this.PROJECT_CONFIG_JSON_PATH), path.join(pathToCreateProject, ".vscode", "project-config-schema.json")))) {
+      if (!(this.isConfigFileValid(path.join(pathToCreateProject, this.PROJECT_CONFIG_JSON_PATH), path.join(pathToCreateProject, this.VSCODE_SCHEMA_JSON_PATH)))) {
         throw new Error(this.getText("PROCESS_REQUEST.PROJECT_CONFIG_VALIDATION_FAILED"));
       }
 
@@ -266,12 +268,10 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
     } else {
       // Step 4: Make changes to project-config.json stepwise
       const projectConfigJSON: any = JSON.parse(this.utils.readFileContentSync(path.resolve(path.join(this.SHELL_FOLDER, this.PROJECT_CONFIG_JSON_PATH))));
-      // this.projectConfigJsonSchema = JSON.parse(this.utils.readFileContentSync("./.vscode/project-config-schema.json"));
 
       // 1. Project Data
       projectConfigJSON.projectName = this.outputResponse.data.updateInputs.find((objValue: any) => objValue.key === "projectName").argsValue;
 
-      // projectConfigJSON.projectName = this.outputResponse.data.updateInputs.find((objValue: any) => objValue.key === "projectName").argsValue;
       const pathToCreateProject: string = path.resolve(path.join("./", projectConfigJSON.projectName));
 
       // Check if current folder is empty.
@@ -284,11 +284,12 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
         throw new Error(this.getText("PROCESS_REQUEST.FOLDER_CONTAINS_FILES", pathToCreateProject));
       }
 
-      // TODO --blank
       if (!fs.existsSync(pathToCreateProject)) {
         fs.mkdirSync(pathToCreateProject, { recursive: true });
       }
-      fsExtra.copySync(this.SHELL_FOLDER, pathToCreateProject, { recursive: true });
+
+      fsExtra.copySync(this.SHELL_FOLDER, pathToCreateProject);
+
       projectConfigJSON["content"]["$defaultView"] = "page1";
       fs.writeFileSync(path.join(pathToCreateProject, this.PROJECT_CONFIG_JSON_PATH), JSON.stringify(projectConfigJSON));
 
@@ -306,7 +307,7 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
       await genPage.run();
 
       // Step 6: Run validate:project-config
-      if (!(this.isConfigFileValid(path.join(pathToCreateProject, this.PROJECT_CONFIG_JSON_PATH), path.join(pathToCreateProject, ".vscode", "project-config-schema.json")))) {
+      if (!(this.isConfigFileValid(path.join(pathToCreateProject, this.PROJECT_CONFIG_JSON_PATH), path.join(pathToCreateProject, this.VSCODE_SCHEMA_JSON_PATH)))) {
         throw new Error(this.getText("PROCESS_REQUEST.PROJECT_CONFIG_VALIDATION_FAILED"));
       }
 
@@ -317,3 +318,4 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
   }
 
 }
+

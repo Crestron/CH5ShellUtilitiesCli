@@ -31,15 +31,9 @@ You could use shortcut script `exp:p` with yarn and npm commands as the followin
 
 ```
 
-### Change Configuration Parameters
+### Notes
 
-All configuration parameters are available in the config.json file located at `./ch5-shell-utilities-cli/src/cli/export-project/files/config.json`.
-
-Parameters for "export" are
-- "ignoreFilesFolders": Indicates all the files / folders that must not be included in the zip file.
-- "zipFileDestinationPath": "./dist/", - This is the path where the zip file will be created. Ensure that it starts with './' and ends with '/'.
-
-Included files are picked up from 'Shell Template' package.json file (the node is files: [ ]). If any files are missing in export, please add the file names to package.json -> files node.
+Included files for exporting the project are picked up from 'Shell Template' package.json file (the node is files: [ ]). If any files are missing in export, please add the file names to package.json -> files node.
 
 ### Copyright
 

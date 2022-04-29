@@ -1,4 +1,4 @@
-// Copyright (C) 2021 to the present, Crestron Electronics, Inc.
+// Copyright (C) 2022 to the present, Crestron Electronics, Inc.
 // All rights reserved.
 // No part of this software may be reproduced in any form, machine
 // or natural, without the express written consent of Crestron Electronics.
@@ -15,13 +15,12 @@ import { ICh5CliNew } from "../ICh5Cli";
 const path = require('path');
 const fs = require("fs");
 const fsExtra = require("fs-extra");
-const process = require('process');
-const editJsonFile = require("edit-json-file");
 
 export class Ch5UpdateProjectCli extends Ch5BaseClassForCliNew implements ICh5CliNew {
 
   private readonly SHELL_FOLDER: string = path.normalize(path.join(__dirname, "../../", "shell"));
   private readonly PROJECT_CONFIG_JSON_PATH: string = path.normalize("/app/project-config.json");
+  private readonly VSCODE_SCHEMA_JSON_PATH: string = path.normalize(path.join(".vscode", "project-config-schema.json"));
 
   /**
    * Constructor
@@ -82,7 +81,7 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
         throw new Error(this.getText("VERIFY_INPUT_PARAMS.INVALID_CONFIG_INPUT"));
       }
       // Step 2: Check if json is as per its schema (.vscode is hidden folder)
-      if (!(this.isConfigFileValid(this.inputArgs["config"].argsValue, path.join(this.SHELL_FOLDER, ".vscode", "project-config-schema.json"), false))) {
+      if (!(this.isConfigFileValid(this.inputArgs["config"].argsValue, path.join(this.SHELL_FOLDER, this.VSCODE_SCHEMA_JSON_PATH), false))) {
         throw new Error(this.getText("VERIFY_INPUT_PARAMS.INVALID_CONFIG_FILE"));
       }
     } else {
@@ -101,6 +100,7 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
               if (validationResponse.warning === "") {
                 inputUpdate.argsValue = validationResponse.value;
               } else {
+                inputUpdate.argsValue = null;
                 inputUpdate.warning = validationResponse.warning;
               }
             }
@@ -359,6 +359,5 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
       // Step 7: Clean up
     }
   }
-
 
 }

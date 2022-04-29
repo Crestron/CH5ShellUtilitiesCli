@@ -4,6 +4,9 @@
   display: flex;
   align-items: center;
 }
+.footer-page {
+  font-size: 14px;
+}
 
 #template-index-import-page,
 #template-index-import-page > div {
@@ -245,7 +248,6 @@ div#pageStatusIdentifier {
         min-width: 125px;
         padding: 10px 0 10px 10px;
         ch5-button {
-          display: block;
           > div {
             min-height: 100px;
           }
@@ -253,38 +255,32 @@ div#pageStatusIdentifier {
             opacity: 0.35;
             border: 0;
             border-radius: 0;
-            align-items: center;
-            text-align: center;
-            @include size(100%, 100px);
-            .cb-btn {
-              padding: 0;
-              width: 125px !important;
-              display: inline-block;
-              @include size(100%);
-            }
             &.ch5-button--selected {
               opacity: 1;
-            }
-            &:focus {
-              outline: none;
             }
           }
         }
         .ch5-button--label {
-          display: block;
-          font-size: rem-calc(24px);
+          font-size: rem-calc(20px);
           text-transform: uppercase;
           font-weight: 400;
-          line-height: 1;
-          padding: 2px 6px 6px;
+          padding-top: 5px;
           letter-spacing: 1px;
           margin: 0;
           @include text-truncate;
         }
         .ch5-button--img {
-          text-shadow: 1px 1px 1px #777;
           margin: 0 auto;
-          @include size(60px);
+          margin-top: 2px;
+          margin-bottom: 2px;
+          @include size(63px);
+        }
+        .material-icons.ch5-button--icon,
+        .material-icons-outline.ch5-button--icon,
+        .material-icons-round.ch5-button--icon,
+        .material-icons-sharp.ch5-button--icon,
+        .material-icons-twotone.ch5-button--icon {
+          font-size: 55px;
         }
       }
       &:last-child {
@@ -297,19 +293,16 @@ div#pageStatusIdentifier {
     @include media-breakpoint-down(sm) {
       .list-item {
         .horizontal-list-item {
-          min-height: 84px;
-          padding: 4px 0 4px 4px;
+          min-height: 100px;
           ch5-button {
-            display: block;
             > div {
               min-height: 100px;
             }
-            .ch5-button {
-              height: 72px;
-            }
           }
           .ch5-button--img {
-            @include size(48px);
+            margin-top: 2px;
+            margin-bottom: 2px;
+            @include size(63px);
           }
         }
         &:last-child {
@@ -423,14 +416,10 @@ div#pageStatusIdentifier {
             &.ch5-button--selected {
               opacity: 1;
             }
-            &:focus {
-              outline: none;
-            }
           }
         }
         .ch5-button--label {
-          display: block;
-          font-size: rem-calc(24px);
+          font-size: rem-calc(20px);
           text-transform: uppercase;
           font-weight: 400;
           line-height: 1;
@@ -439,9 +428,7 @@ div#pageStatusIdentifier {
           @include text-truncate;
         }
         .ch5-button--img {
-          display: block;
           text-shadow: 1px 1px 1px #777;
-          margin: 0;
           min-width: 36px;
           min-height: 36px;
           @include size(36px);

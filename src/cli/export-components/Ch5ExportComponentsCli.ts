@@ -16,6 +16,15 @@ const findRemoveSync = require('find-remove');
 
 export class Ch5ExportComponentsCli extends Ch5BaseClassForCli implements ICh5Cli {
 
+  /*
+    - "requiredFolderPath": "./app/project/components/" - This indicates the folder path of the project component files.
+    - "outputFileName": "exported-components.zip" - This indicates the output zip file name.
+    - "outputTempFolderName": "Exported-Components-Code-Folder-Temp" - This indicates the temporary path created for copying output files.
+    - "zipFolderName": "exported-components", - This is the name of the folder inside outputTempFolderName where the zip file will be created.
+    - "zipFileDestinationPath": "./dist/", - This is the path where the zip file will be created. Ensure that it starts with './' and ends with '/'.
+    - "ignoreFilesFolders": Indicates all the files / folders that must not be included in the zip file.
+  */
+
   private outputResponse: any = {};
   private finalOutputZipFile: string = "";
 

@@ -5,7 +5,7 @@
 // Use of this source code is subject to the terms of the Crestron Software License Agreement
 // under which you licensed this source code.
 
-/*global CrComLib, translateModule, serviceModule, utilsModule, templatePageModule, projectConfigModule, projectConfigModule */
+/*global CrComLib, translateModule, serviceModule, utilsModule, templateAppLoaderModule, templatePageModule, projectConfigModule, projectConfigModule */
 
 const templateVersionInfoModule = (() => {
 	'use strict';
@@ -30,8 +30,8 @@ const templateVersionInfoModule = (() => {
 		totalDom: 'total-dom',
 		currentComponents: 'current-components',
 		startDuration: 'start-duration',
-		memoryCollabsableHandler: 'memory-collabsable-handler',
 		memoryCollabsableContainer: 'memory-collabsable-container',
+		memoryCollabsableHandler: 'memory-collabsable-handler',
 		subscribeCollabsableHandler: 'subscribe-collabsable-handler',
 		subscribeCollabsableContainer: 'subscribe-collabsable-container',
 		subscribeLogButton: 'subscribe-log'
@@ -131,6 +131,7 @@ const templateVersionInfoModule = (() => {
 
 	function updateStartDuration() {
 		const startDurationElement = document.getElementById(HTML_IDS.startDuration);
+		const perfData = window.PerformanceNavigationTiming;
 		startDurationElement.textContent = `${translateModule.translateInstant('header.info.diagnostics.memory.startduration')} ${parseInt(performance.getEntriesByType('navigation')[0].duration).toFixed(2)} ms`;
 	}
 
@@ -172,7 +173,7 @@ const templateVersionInfoModule = (() => {
 			totalDomNodes: totalDomNodes.textContent
 		}
 		if ((signalValue !== undefined && signalValue === true) || signalValue === undefined) {
-			console.log({subscriptions, memory, components});
+			console.log({ subscriptions, memory, components });
 		}
 	}
 
@@ -214,48 +215,64 @@ const templateVersionInfoModule = (() => {
 		const pageImporterElement = document.getElementById(idComponent);
 
 		const pageUrl = pageImporterElement.getAttribute('url');
-		let performanceEntry = performance.getEntriesByType('resource').filter(entry => entry.name.includes(pageUrl.substring(1)))
+		let resources = performance.getEntriesByType('resource');
+		let isPeformanceEmpty = true;
+		let performanceEntry;
+
+		if (resources === undefined || resources.length <= 0) {
+			console.log("Calculate Load Times: there are NO `resource` performance records");
+		} else {
+			isPeformanceEmpty = false;
+			performanceEntry = resources.filter(entry => entry.name.includes(pageUrl.substring(1)));
+		}
+
 
 		// Wait for the page to load
 		const diagnosticsPageChangeInterval = setInterval(() => {
-			if (performanceEntry.length) {
-				clearInterval(diagnosticsPageChangeInterval);
+			// if (resources.length || templateAppLoaderModule.pageDurationList.size > 0) {
+			clearInterval(diagnosticsPageChangeInterval);
+			let obj = templateAppLoaderModule.pageDurationList.get(pageConfiguration.pageName);
 
-				const totalComponentsOnPage = CrComLib.countNumberOfCh5Components(pageImporterElement).total
-				if (processedPages.has(pageConfiguration.pageName) && !pageConfiguration.cachePage || !processedPages.has(pageConfiguration.pageName)) {
-					const currentCh5Components = document.getElementById(HTML_IDS.currentComponents);
+			const totalComponentsOnPage = CrComLib.countNumberOfCh5Components(pageImporterElement).total
+			if (processedPages.has(pageConfiguration.pageName) && !pageConfiguration.cachePage || !processedPages.has(pageConfiguration.pageName)) {
+				const currentCh5Components = document.getElementById(HTML_IDS.currentComponents);
 
-					currentCh5Components.textContent = `${translateModule.translateInstant('header.info.diagnostics.memory.currentcomp')} ${(parseInt(currentCh5Components.textContent.split(':')[1].trim()) || 0) + totalComponentsOnPage}`;
-				}
-
-				if (!processedPages.has(pageConfiguration.pageName)) {
-					const domNodesOnPage = pageImporterElement.getElementsByTagName('*').length;
-					const currentDomNodes = document.getElementById(HTML_IDS.totalDom);
-					const totalCh5Components = document.getElementById(HTML_IDS.totalComponents);
-
-					const pageTableEntry = document.getElementById(`diagnostics-table-${pageConfiguration.pageName}`);
-
-					const ch5ComponentsCountForCurrentPage = pageTableEntry.childNodes[1];
-					const domNodesForCurrentPage = pageTableEntry.childNodes[3];
-					const loadTime = pageTableEntry.childNodes[4];
-
-					loadTime.textContent = (performanceEntry[0].responseEnd - performanceEntry[0].requestStart).toFixed(2);
-
-					ch5ComponentsCountForCurrentPage.textContent = totalComponentsOnPage;
-					domNodesForCurrentPage.textContent = domNodesOnPage;
-
-					currentDomNodes.textContent = `${translateModule.translateInstant('header.info.diagnostics.memory.totalnodes')} ${(parseInt(currentDomNodes.textContent.split(':')[1].trim()) || 0) + domNodesOnPage}`;
-
-					totalCh5Components.textContent = `${translateModule.translateInstant('header.info.diagnostics.memory.totalcomponents')} ${(parseInt(totalCh5Components.textContent.split(':')[1].trim()) || 0) + totalComponentsOnPage}`;
-
-					processedPages.add(pageConfiguration.pageName);
-					updateSubscriptions();
-					diagnosticsPageChangeChanged = true;
-				}
-			} else {
-				performanceEntry = performance.getEntriesByType('resource').filter(entry => entry.name.includes(pageUrl.substring(1)))
+				currentCh5Components.textContent = `${translateModule.translateInstant('header.info.diagnostics.memory.currentcomp')} ${(parseInt(currentCh5Components.textContent.split(':')[1].trim()) || 0) + totalComponentsOnPage}`;
 			}
-		}, 100);
+
+			if (!processedPages.has(pageConfiguration.pageName)) {
+				const domNodesOnPage = pageImporterElement.getElementsByTagName('*').length;
+				const currentDomNodes = document.getElementById(HTML_IDS.totalDom);
+				const totalCh5Components = document.getElementById(HTML_IDS.totalComponents);
+
+				const pageTableEntry = document.getElementById(`diagnostics-table-${pageConfiguration.pageName}`);
+
+				const ch5ComponentsCountForCurrentPage = pageTableEntry.childNodes[1];
+				const domNodesForCurrentPage = pageTableEntry.childNodes[3];
+				const loadTime = pageTableEntry.childNodes[4];
+
+				loadTime.textContent = obj.loadDuration;
+
+				if(obj.loadDuration === 0) {
+					console.log("Duration is showing as zero");
+					console.log(obj);
+				}
+
+				ch5ComponentsCountForCurrentPage.textContent = totalComponentsOnPage;
+				domNodesForCurrentPage.textContent = domNodesOnPage;
+
+				currentDomNodes.textContent = `${translateModule.translateInstant('header.info.diagnostics.memory.totalnodes')} ${(parseInt(currentDomNodes.textContent.split(':')[1].trim()) || 0) + domNodesOnPage}`;
+
+				totalCh5Components.textContent = `${translateModule.translateInstant('header.info.diagnostics.memory.totalcomponents')} ${(parseInt(totalCh5Components.textContent.split(':')[1].trim()) || 0) + totalComponentsOnPage}`;
+
+				processedPages.add(pageConfiguration.pageName);
+				updateSubscriptions();
+				diagnosticsPageChangeChanged = true;
+			}
+			// } else {
+			// performanceEntry = performance.getEntriesByType('resource').filter(entry => entry.name.includes(pageUrl.substring(1)))
+			// }
+		}, 1000);
 	}
 
 	function handleUnloadedPageCount(oldPageObject) {

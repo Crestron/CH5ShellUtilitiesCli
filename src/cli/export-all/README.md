@@ -20,7 +20,7 @@ You could also use `yarn` or `npm run` to export assets, libraries, and componen
     npm run export:all [options]
 
 Options:
-    -h, --help,         Help for Exporting assets, libraries, and components from the './app/project/' folder
+    -h, --help,         Display help for command
     -l, --list,         Prefix for list of file names
     --all               Select this option to export all the files
 
@@ -67,18 +67,6 @@ Mac OS X also includes the Bash shell, so tab completion works just like it does
 
 Any other operating system that uses the Bash shell will work the same. Tab completion features should also work similarly on many other shells on Unix-like systems.
 
-### Change Configuration Parameters
-
-All configuration parameters are available in the config.json file located at `./ch5-shell-utilities-cli/src/cli/export-all/files/config.json`.
-
-Parameters for "export:all" are
-
-- "requiredFolderPath": "./app/project/" - This indicates the folder path of the project files.
-- "outputFileName": "exported-all.zip" - This indicates the output zip file name.
-- "outputTempFolderName": "Exported-All-Code-Folder-Temp" - This indicates the temporary path created for copying output files.
-- "zipFolderName": "exported-all", - This is the name of the folder inside outputTempFolderName where the zip file will be created.
-- "zipFileDestinationPath": "./dist/", - This is the path where the zip file will be created. Ensure that it starts with './' and ends with '/'.
-- "ignoreFilesFolders": Indicates all the files / folders that must not be included in the zip file.
 
 ### Copyright
 

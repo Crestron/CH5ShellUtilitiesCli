@@ -18,7 +18,7 @@ You could also use `yarn` or `npm run` to import all. The following are the comm
     npm run import:all [options]
 
 Options:
-    -h, --help,         Help for Importing assets, libraries, components from the './app/project/' folder
+    -h, --help,         Display help for command
     -z, --zipFile,      Prefix for full location path of the zip file to be imported
     -l, --list,         Prefix for list of file names
     -f, --force         Force the program to overwrite the target files with the source files and avoid any confirmation
@@ -66,18 +66,6 @@ Mac OS X also includes the bash shell, so tab completion works just like it does
 
 Any other operating system that uses the bash shell will work the same. Tab completion features should also work similarly on many other shells on Unix-like systems.
 
-### Change Configuration Parameters
-
-All configuration parameters are available in the config.json file located at `./ch5-shell-utilities-cli/src/cli/import-all/files/config.json`.
-
-Parameters for "import:all" are as follows:
-
-- "requiredFolderPath": "./app/project/" - This indicates the folder path of the project asset files.
-- "outputFileName": "imported-all.zip" - This indicates the output zip file name.
-- "outputTempFolderName": "Imported-All-Code-Folder-Temp" - This indicates the temporary path created for copying output files.
-- "zipFolderName": "imported-all", - This is the name of the folder inside outputTempFolderName where the zip file will be created.
-- "zipFileDestinationPath": "./dist/", - This is the path where the zip file will be created. Ensure that it starts with './' and ends with '/'.
-- "exportedFolderName": Indicates the name of the folder that was used for exporting the zip file during export:all process.
 
 ### Copyright
 

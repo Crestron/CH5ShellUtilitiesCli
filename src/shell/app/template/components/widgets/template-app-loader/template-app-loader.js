@@ -5,6 +5,7 @@ const templateAppLoaderModule = (() => {
 	'use strict';
 
 	let isPageLoadingInProgress = false;
+	let pageDurationList = new Map();
 
 	const debounce = (func, wait) => {
 		let timeout;
@@ -21,16 +22,56 @@ const templateAppLoaderModule = (() => {
 	};
 
 	const debounceSetButtonDisplay = debounce(() => {
-		// console.log("debounceSetButtonDisplay");
 		callBackForHideLoading();
 	}, 30);
+
+	/**
+	 * Set the page name in the page duration map
+	 */
+	function initializePageDuration() {
+		let listOfPages = projectConfigModule.getNavigationPages();
+
+		for (const page of listOfPages) {
+			const startDuration = 0;
+			const endDuration = 0;
+			const loadDuration = 0;
+			pageDurationList.set(page.pageName, { startDuration, endDuration, loadDuration });
+		}
+	}
+
+	/**
+	 * This sets the end duration for the page in milliseconds. This is set only once for the page.
+	 * @param {object} pageObject contains page information
+	 */
+	function beginPageLoad(pageObject) {
+		if (pageDurationList.has(pageObject.pageName)) {
+			let obj = pageDurationList.get(pageObject.pageName);
+			obj.startDuration = new Date().getTime();
+		}
+	}
+
+	/**
+	 * This sets the end duration for the page in milliseconds. The page name
+	 * should be present and the endDuration value should be zero.
+	 * @param {object} pageObject contains page information
+	 */
+	function endPageLoad(pageObject) {
+		let loadTime = 0;
+		if (pageDurationList.has(pageObject.pageName)) {
+			let obj = pageDurationList.get(pageObject.pageName);
+			if (obj.endDuration === 0) {
+				obj.endDuration = (new Date()).getTime();
+			}
+			loadTime = obj.endDuration - obj.startDuration;
+			obj.loadDuration = loadTime > 0 ? loadTime : 0; // avoid any negative values 
+		}
+	}
 
 	/**
 	 * Loader method is for spinner
 	 */
 	function hideLoading(id) {
 		isPageLoadingInProgress = false;
-		// console.log("hideLoading");
 		// Select the node that will be observed for mutations
 		const targetNode = document.getElementById(id);
 
@@ -40,57 +81,33 @@ const templateAppLoaderModule = (() => {
 		// Callback function to execute when mutations are observed
 		const callback = function (mutationsList, observer) {
 			// Use traditional 'for loops' for IE 11
-console.log("MUTATIONS CALLED");
-			let callHide = false;
 			for (const mutation of mutationsList) {
 				if (mutation.type === 'childList' || mutation.type === 'attributes') {
-					callHide = true;
 					debounceSetButtonDisplay();
 					break;
-
-					// console.log('A child node has been added or removed.');
 				}
-				// else if (mutation.type === 'attributes') {
-				// 	console.log('The ' + mutation.attributeName + ' attribute was modified.');
-				// }
-				// if (callHide === true) {
-				// }
 			}
 		};
 
 		// Create an observer instance linked to the callback function
-		const observer = new MutationObserver(callback);
+		const observerNew = new MutationObserver(callback);
 
 		// Start observing the target node for configured mutations
-		observer.observe(targetNode, config);
+		observerNew.observe(targetNode, config);
 
 		// Later, you can stop observing
-		// observer.disconnect();
+		// observerNew.disconnect();
 
 	}
 
 	function callBackForHideLoading() {
-		// console.log("callBackForHideLoading",);
 		isPageLoadingInProgress = false;
-		// if (isCached === false) {
 		setTimeout(() => {
-			const appLoader = document.getElementById("template-app-loader-import-page");// document.getElementById("app-loader");
+			const appLoader = document.getElementById("template-app-loader-import-page");
 			if (appLoader) {
-				// appLoader.classList.add("ch5-hide-dis");
-				// appLoader.style.display = "none";
 				document.getElementById("loader").style.display = "none";
 			}
 		}, 50);
-
-		// } else {
-		// 	const appLoader = document.getElementById("template-app-loader-import-page");// document.getElementById("app-loader");
-		// 	if (appLoader) {
-		// 		appLoader.classList.add("ch5-hide-dis");
-		// 		// appLoader.style.display = "none";
-		// 		document.getElementById("loader").style.display = "none";
-		// 	}
-
-		// }
 	}
 
 	function isCachePageLoaded(routeId) {
@@ -104,22 +121,13 @@ console.log("MUTATIONS CALLED");
 		}
 	}
 
-	function showLoading(routeId) {
+	function showLoading(pageObject) {
+		const routeId = pageObject.pageName + "-import-page";
+		templateAppLoaderModule.beginPageLoad(pageObject);
 		const isCached = isCachePageLoaded(routeId);
 		if (isCached === false) {
-			console.log("showLoading",  routeId + '-show-app-loader');
 			isPageLoadingInProgress = true;
 			CrComLib.publishEvent('b', routeId + '-show-app-loader', true);
-
-			// const appLoader = document.getElementById("template-app-loader-import-page");// document.getElementById("app-loader");
-			// if (appLoader) {
-			// 	// setTimeout(() => {
-			// 	appLoader.classList.remove("ch5-hide-dis");
-			// 	// appLoader.style.display = "block";
-			// 	// }, 100);
-			// } else {
-			// 	document.getElementById("loader").style.display = "block";
-			// }
 		}
 	}
 
@@ -128,7 +136,11 @@ console.log("MUTATIONS CALLED");
 	 */
 	return {
 		showLoading,
-		hideLoading
+		hideLoading,
+		beginPageLoad,
+		endPageLoad,
+		initializePageDuration,
+		pageDurationList
 	};
 
 })();

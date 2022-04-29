@@ -86,8 +86,6 @@ Each widget generated will contain the following files:
 
 ## Understanding the generated code
 
-All template files are available in the folder `./ch5-shell-utilities-cli/src/cli/generate-widget/templates`.
-
 ### {widget}.html
 
 This generated file consists of the following:
@@ -100,9 +98,7 @@ This generated file consists of the following:
 The generated file consists of the following:
 
 1. Widget Module - Based on the name of the widget as expressed in the table above.
-2. An onInit() method that gets called in the 'afterLoad' event listener.
-3. One public method getOutput()
-4. Returns public method.
+2. An onInit() method that gets called in the ch5-import-htmlsnippet load listener.
 
 ### {widget}.scss
 
@@ -127,16 +123,7 @@ A file named 'project-config.json' is located in the './app/' directory. This fi
 
 Refer to the project-config.json section for more details regarding the newly generated node.
 
-### Change Configuration Parameters
-
-All configuration parameters are available in the config.json file located at `./ch5-shell-utilities-cli/src/cli/generate-widget/files/config.json`.
-
-Parameters for "generateWidget" are
-
-- "basePathForWidgets": "./app/project/components/widgets/" - This indicates the path where the widget will be generated.
-- "templatesPath": "./ch5-shell-utilities-cli/src/cli/generate-widget/templates/" - This indicates the path where the templates can be found.
-- "minLengthOfWidgetName": 2 - The minimum length for widget name.
-- "maxLengthOfWidgetName": 31 - The maximum length for widget name.
+### Notes
 
 Widget Names that are not allowed are
 

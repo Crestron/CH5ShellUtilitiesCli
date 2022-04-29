@@ -17,6 +17,15 @@ const enquirer = new Enquirer();
 
 export class Ch5ImportAllCli extends Ch5BaseClassForCli implements ICh5Cli {
 
+  /*
+    - "requiredFolderPath": "./app/project/" - This indicates the folder path of the project asset files.
+    - "outputFileName": "imported-all.zip" - This indicates the output zip file name.
+    - "outputTempFolderName": "Imported-All-Code-Folder-Temp" - This indicates the temporary path created for copying output files.
+    - "zipFolderName": "imported-all", - This is the name of the folder inside outputTempFolderName where the zip file will be created.
+    - "zipFileDestinationPath": "./dist/", - This is the path where the zip file will be created. Ensure that it starts with './' and ends with '/'.
+    - "exportedFolderName": Indicates the name of the folder that was used for exporting the zip file during export:all process.
+  */
+
   private outputResponse: any = {};
   private folderPaths: any = {};
 

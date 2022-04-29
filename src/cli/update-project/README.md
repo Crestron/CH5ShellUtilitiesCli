@@ -4,7 +4,6 @@ To update a project, go to the command-prompt or terminal of the existing projec
 
 ## How to Use
 
-There are two ways to update a project using CLI. 
 ```bash
 Usage:
     ch5-shell-cli update:project [options]
@@ -13,7 +12,7 @@ Usage:
 
 The package.json in the shell template project has scripts to handle this execution - for yarn, use `yarn update:project` command or npm  `npm run update:project` command.
 
-There are two ways to create a project using CLI. 
+There are two ways to update a project using CLI. 
 
 a. Passing a configuration JSON file: This file is similar to project-config.json. The project can be updated with customized content like 'selectedTheme', newer pages and widgets, list of themes etc.. The user will not be prompted for any further information, and all details will be picked from the json file.
 

@@ -102,31 +102,24 @@ The page files will be created inside `./app/project/components/pages/{page}` fo
 
 ## Understanding the generated code
 
-All template files are available in the folder `./ch5-shell-utilities-cli/src/cli/generate-page/templates`
-
 ### {page}.html
 
 The generated file consists of the following:
 
-1. Section Id - Based on the name of the page as expressed in the table above.
-2. Title - Generated based on name of the page.
-3. *div* tag - Styled with reference to the styles in {page}.scss file.
+1. Section - Based on the name of the page as expressed in the table above.
 
 ### {page}.js
 
 The generated file consists of the following:
 
 1. Page Module - Based on the name of the page as expressed in the table above.
-2. An onInit() method that gets called in the 'afterLoad' event listener.
-3. One public method getOutput()
-4. Returns public method.
+2. An onInit() method that gets called once the html-importsnippet is loaded.
 
 ### {page}.scss
 
 The generated file consists of the following:
 
 1. Id - Based on the name of the page as expressed in the table above. This must not be removed, and all css must be added inside this id.
-2. css selector .message-text for the *div* tag created in the generated html.
 
 ### {page}-emulator.json
 
@@ -138,15 +131,19 @@ A file named 'project-config.json' is located in the './app/' directory. This fi
 
 ```bash
     {
-        "pageName": "page7",
-        "fullPath": "./app/project/components/pages/page7/",
-        "fileName": "page7.html",
+        "pageName": "page1",
+        "fullPath": "./app/project/components/pages/page1/",
+        "fileName": "page1.html",
+        "cachePage": false,
+        "preloadPage": false,
+        "standAloneView": false,
         "pageProperties": {
           "sendEventOnShow": ""
         },
         "navigation": {
-          "sequence": 7,
-          "label": "page7",
+          "sequence": 1,
+          "label": "menu.page1",
+          "isI18nLabel": true,
           "iconClass": "fas fa-file-alt",
           "iconUrl": "",
           "iconPosition": "bottom"
@@ -156,16 +153,7 @@ A file named 'project-config.json' is located in the './app/' directory. This fi
 
 Refer to the project-config.json section for more details regarding the newly generated node.
 
-### Change Configuration Parameters
-
-All configuration parameters are available in the config.json file located at `./ch5-shell-utilities-cli/src/cli/generate-page/files/config.json`.
-
-Parameters for "generatePage" are
-
-- "basePathForPages": "./app/project/components/pages/" - This indicates the path where the page will be generated.
-- "templatesPath": "./ch5-shell-utilities-cli/src/cli/generate-page/templates/" - This indicates the path where the templates can be found
-- "minLengthOfPageName": 2 - The minimum length for page name
-- "maxLengthOfPageName": 31 - The maximum length for page name
+### Notes
 
 Page Names that are not allowed are
 

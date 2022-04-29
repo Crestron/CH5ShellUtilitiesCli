@@ -24,7 +24,10 @@
   },
   "include": [
     "src/**/*",
-    "shell/**/*"
+    "src/shell/**/*",
+    "src/shell/.vscode/emulator-schema.json",
+    "src/shell/.vscode/project-config-schema.json",
+    "src/shell/.vscode/settings.json"
   ],
   "exclude": [
     "src/cli/**/*.ts",
@@ -32,8 +35,7 @@
     "test",
     "src/cli/aaa1/**"
   ],
-  "hooks": [ "copy-files" ]
-  // "exclude": [
-  //   // "test"
-  // ]
+  "hooks": [
+    "copy-files"
+  ]
 }
