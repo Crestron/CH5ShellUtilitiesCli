@@ -10,10 +10,16 @@
   "CHECK_PROMPT_QUESTIONS": {
     "QUESTIONS": {
       "CONFIG_FILE": "Please enter the location of the config file",
-      "PROJECT_NAME": "Please enter the name of the Project to be created"
+      "PROJECT_NAME": "Please enter the name of the project to be created",
+      "PROJECT_VERSION": "Please enter the project version",
+      "FAVICON": "Please enter the favicon name",
+      "MENU_ORIENTATION": "Please select the menuOrienatation",
+      "SELECTED_THEME": "Please pick the selectedTheme",
+      "USE_WEBXPANEL": "Please select the value for useWebXPanel"
     }
   },
   "PROCESS_REQUEST": {
+    "FAILURE_MESSAGE_INPUT_PARAM_CONFIG_FILE_INVALID": "The input config file is invalid.",
     "PROJECT_CONFIG_VALIDATION_FAILED": "The generated project-config.json file is not compatible with the expected Shell Template schema."
   },
   "CLEAN_UP": {},
@@ -21,6 +27,13 @@
     "SUCCESS_MESSAGE": "Project Successfully Updated."
   },
   "VALIDATIONS": {
-    "ARE_YOU_SURE_TO_CHANGE": "Do you want to update?"
+    "CONFIRMATION" : {
+      "TITLE": "Confirmation",
+      "ARE_YOU_SURE_TO_CHANGE": "Do you want to update the project?"
+    }
+  },
+  "ERRORS": {
+    "PROGRAM_STOPPED_OR_UNKNOWN_ERROR": "Either the program has been cancelled or an unknown error occurred. Please try again.",
+    "DO_NOT_UPDATE_PROJECT": "Project update cancelled."
   }
 }

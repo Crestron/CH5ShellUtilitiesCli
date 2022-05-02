@@ -1,10 +1,10 @@
- // Copyright (C) 2022 to the present, Crestron Electronics, Inc.
- // All rights reserved.
- // No part of this software may be reproduced in any form, machine
- // or natural, without the express written consent of Crestron Electronics.
- // Use of this source code is subject to the terms of the Crestron Software License Agreement 
- // under which you licensed this source code.
- /* Additions to default light-theme and dark-theme */
+// Copyright (C) 2022 to the present, Crestron Electronics, Inc.
+// All rights reserved.
+// No part of this software may be reproduced in any form, machine
+// or natural, without the express written consent of Crestron Electronics.
+// Use of this source code is subject to the terms of the Crestron Software License Agreement
+// under which you licensed this source code.
+/* Additions to default light-theme and dark-theme */
 
 .light-theme {
   .footer-page {
@@ -73,10 +73,6 @@
     .swiper-thumb {
       .list-item {
         ch5-button {
-          .fas,
-          .fa {
-            font-size: 55px;
-          }
           .ch5-button {
             color: $black;
           }
@@ -91,16 +87,8 @@
   .vertical-menu {
     .swiper-thumb {
       .list-item {
-        .vertical-list-item {
-          padding-left: 0;
-        }
         ch5-button {
-          .fas,
-          .fa {
-            font-size: 36px;
-          }
           .ch5-button {
-            padding-left: 7px;
             color: $black;
           }
         }
@@ -180,10 +168,6 @@
     .swiper-thumb {
       .list-item {
         ch5-button {
-          .fas,
-          .fa {
-            font-size: 55px;
-          }
           .ch5-button {
             color: $white;
           }
@@ -198,16 +182,8 @@
   .vertical-menu {
     .swiper-thumb {
       .list-item {
-        .vertical-list-item {
-          padding-left: 0;
-        }
         ch5-button {
-          .fas,
-          .fa {
-            font-size: 36px;
-          }
           .ch5-button {
-            padding-left: 7px;
             color: $white;
           }
         }

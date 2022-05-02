@@ -83,7 +83,7 @@
         "vertical",
         "none"
       ],
-      "question": "CHECK_PROMPT_QUESTIONS.QUESTIONS.SELECT",
+      "question": "CHECK_PROMPT_QUESTIONS.QUESTIONS.MENU_ORIENTATION",
       "isSpecialArgument": false
     },
     {
@@ -97,7 +97,7 @@
       ],
       "allowedValues": [],
       "allowedAliases": [],
-      "question": "CHECK_PROMPT_QUESTIONS.QUESTIONS.SELECT",
+      "question": "CHECK_PROMPT_QUESTIONS.QUESTIONS.SELECTED_THEME",
       "isSpecialArgument": false
     },
     {
@@ -119,7 +119,7 @@
         "y",
         "n"
       ],
-      "question": "CHECK_PROMPT_QUESTIONS.QUESTIONS.SELECT",
+      "question": "CHECK_PROMPT_QUESTIONS.QUESTIONS.USE_WEBXPANEL",
       "isSpecialArgument": false
     },
     {

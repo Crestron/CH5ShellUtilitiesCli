@@ -177,21 +177,6 @@ div#pageStatusIdentifier {
 // Content page
 .horizontal-menu {
   @include size(100%);
-  // thumbnail swiper
-  .swiper-thumb {
-    min-height: 120px;
-    .ch5-list-horizontal {
-      display: flex;
-      justify-content: space-between;
-      text-align: center;
-      @media (min-width: 410px) {
-        transform: translate3d(0px, 0px, 0px);
-      }
-    }
-  }
-  .thumb-action {
-    display: none;
-  }
   @include media-breakpoint-maxheight(460px) {
     .thumb-action {
       display: block;
@@ -279,7 +264,13 @@ div#pageStatusIdentifier {
         .material-icons-outline.ch5-button--icon,
         .material-icons-round.ch5-button--icon,
         .material-icons-sharp.ch5-button--icon,
-        .material-icons-twotone.ch5-button--icon {
+        .material-icons-twotone.ch5-button--icon,
+        .fa,
+        .fas,
+        .far,
+        .fal,
+        .fad,
+        .fab {
           font-size: 55px;
         }
       }
@@ -381,6 +372,7 @@ div#pageStatusIdentifier {
     height: 100%;
     background-color: #cacaca;
   }
+
   .swiper-thumb {
     @include list-unstyled();
     margin: 0;
@@ -398,17 +390,17 @@ div#pageStatusIdentifier {
       height: auto;
 
       .vertical-list-item {
-        padding-left: 4px;
+        padding-left: 2px;
         ch5-button {
           display: block;
           .ch5-button {
+            padding-left: 7px;
             opacity: 0.35;
             border: 0;
             border-radius: 0;
 
             @include size(100%, 54px);
             .cb-btn {
-              // padding: 0;
               text-align: left;
               justify-content: flex-start;
               @include size(100%);
@@ -432,6 +424,19 @@ div#pageStatusIdentifier {
           min-width: 36px;
           min-height: 36px;
           @include size(36px);
+        }
+        .material-icons.ch5-button--icon,
+        .material-icons-outline.ch5-button--icon,
+        .material-icons-round.ch5-button--icon,
+        .material-icons-sharp.ch5-button--icon,
+        .material-icons-twotone.ch5-button--icon,
+        .fa,
+        .fas,
+        .far,
+        .fal,
+        .fad,
+        .fab {
+          font-size: 36px;
         }
         .ch5-button--icon {
           font-size: 36px;

@@ -33,38 +33,15 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
    * Initialize process
    */
   async initialize() {
-    this.logger.start("initialize");
     this.outputResponse.data.updateInputs = [];
     this.outputResponse.data.projectName = "";
-    if (this.inputArgs["config"] !== "") {
+    if (this.inputArgs["config"].argsValue !== "") {
       // Do nothing
     } else {
-      const getAllStandalonePages = this.projectConfig.getAllStandalonePages();
-
-      const headerComponentObj: any = this.inputArgs.find((inpObj: any) => "headerComponent" === inpObj.key);
-      if (headerComponentObj) {
-        headerComponentObj.allowedValues = getAllStandalonePages;
-        headerComponentObj.allowedAliases = getAllStandalonePages;
-      }
-
-      const footerComponentObj: any = this.inputArgs.find((inpObj: any) => "footerComponent" === inpObj.key);
-      if (footerComponentObj) {
-        footerComponentObj.allowedValues = getAllStandalonePages;
-        footerComponentObj.allowedAliases = getAllStandalonePages;
-      }
-
-      const selectedThemeObj: any = this.inputArgs.find((inpObj: any) => "selectedTheme" === inpObj.key);
-      if (selectedThemeObj) {
-        const getAllThemeNames = this.projectConfig.getAllThemeNames();
-        selectedThemeObj.allowedValues = getAllThemeNames;
-        selectedThemeObj.allowedAliases = getAllThemeNames;
-      }
-
-      const defaultViewObj: any = this.inputArgs.find((inpObj: any) => "defaultView" === inpObj.key);
-      if (defaultViewObj) {
-        const getAllNavigationPages = this.projectConfig.getAllNavigations();
-        defaultViewObj.allowedValues = getAllNavigationPages;
-        defaultViewObj.allowedAliases = getAllNavigationPages;
+      const getAllThemeNames = this.projectConfig.getAllThemeNames();
+      if (this.inputArgs["selectedTheme"]) {
+        this.inputArgs["selectedTheme"].allowedValues = getAllThemeNames;
+        this.inputArgs["selectedTheme"].allowedAliases = getAllThemeNames;
       }
     }
     this.logger.end();
@@ -110,7 +87,7 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
         }
       });
       this.logger.log("this.outputResponse.data.updateInputs: ", this.outputResponse.data.updateInputs);
-      
+
       // To Check if atleast 1 input is provided
       if (this.outputResponse.data.updateInputs.length === 0) {
         throw new Error(this.getText("VERIFY_INPUT_PARAMS.MISSING_INPUTS_NEED_ATlEAST_ONE_DATA"));
@@ -156,7 +133,7 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
       } else {
         const questionsArray = {
           name: this.getText("VALIDATIONS.CONFIRMATION.TITLE"),
-          message: this.getText("VALIDATIONS.ARE_YOU_SURE_TO_CHANGE"),
+          message: this.getText("VALIDATIONS.CONFIRMATION.ARE_YOU_SURE_TO_CHANGE"),
           initial: true
         };
         askConfirmation = await new this.getConfirm(questionsArray).run().then((response: boolean) => {
@@ -324,7 +301,7 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
 
         // Step 6: Run validate:project-config
         if (!(this.isConfigFileValid("./app/project-config.json", path.join(this.SHELL_FOLDER, ".vscode", "project-config-schema.json")))) {
-          throw new Error(this.getText("FAILURE_MESSAGE_INPUT_PARAM_CONFIG_FILE_INVALID"));
+          throw new Error(this.getText("PROCESS_REQUEST.FAILURE_MESSAGE_INPUT_PARAM_CONFIG_FILE_INVALID"));
         }
 
         // Step 7: Show proper messages  
