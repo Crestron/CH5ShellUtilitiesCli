@@ -13,7 +13,8 @@
   "types": "build/@types/index.d.ts",
   "scripts": {
     "start": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts",
-    "build": "tsc -p tsconfig.json",
+    "build:dev": "tsc -p tsconfig.dev.json",
+    "build": "tsc -p tsconfig.prod.json",
     "ch5-utils": "./build/index.js",
     "clean": "rimraf build",
     "create": "yarn build && yarn test",
@@ -39,7 +40,6 @@
     "@crestron/ch5-utilities": "^0.1.21",
     "chalk": "^4.1.2",
     "commander": "^7.1.0",
-    "copyfiles": "^2.4.1",
     "edit-json-file": "^1.7.0",
     "enquirer": "^2.3.6",
     "find-remove": "^2.0.3",
