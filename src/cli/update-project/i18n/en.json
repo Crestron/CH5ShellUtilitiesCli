@@ -10,7 +10,7 @@
   "CHECK_PROMPT_QUESTIONS": {
     "QUESTIONS": {
       "CONFIG_FILE": "Please enter the location of the config file",
-      "PROJECT_NAME": "Please enter the name of the project to be created",
+      "PROJECT_NAME": "Please enter the new name for the project",
       "PROJECT_VERSION": "Please enter the project version",
       "FAVICON": "Please enter the favicon name",
       "MENU_ORIENTATION": "Please select the menuOrienatation",

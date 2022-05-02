@@ -13,8 +13,8 @@
     "start": "npm run val:pc && npm run clean:start && webpack --config webpack.dev.js",
     "build:prod": "npm run val:pc && npm run clean:prod && webpack --config webpack.prod.js && npm run cleanjs:prod",
     "build:archive": "npm run build:prod && ch5-cli archive -P samplesource=Shell -d dist/prod/Shell -o dist/prod -c config/contract.cse2j",
-    "build:deploy": "ch5-cli deploy -H 192.168.0.103 -t touchscreen dist/prod/shell-template.ch5z",
-    "build:deploywithpassword": "ch5-cli deploy -H 192.168.0.103 -t touchscreen dist/prod/shell-template.ch5z",
+    "build:deploy": "ch5-cli deploy -p -H 192.168.1.33 -t touchscreen dist/prod/shell-template.ch5z",
+    "build:deploywithpassword": "ch5-cli deploy-p -H 192.168.1.33 -t touchscreen dist/prod/shell-template.ch5z",
     "build:onestep": "npm run build:archive && npm run build:deploy",
     "build:onestepwithpassword": "npm run build:archive && npm run build:deploywithpassword",
     "delete:components": "ch5-shell-cli delete:components",
@@ -70,9 +70,9 @@
     "write-json-webpack-plugin": "^1.1.0"
   },
   "dependencies": {
-    "@crestron/ch5-crcomlib": "https://siproducts.blob.core.windows.net/ch5-test/04182022/CH5CrComLib-2.0.24-alpha.24.tgz",
-    "@crestron/ch5-theme": "https://siproducts.blob.core.windows.net/ch5-test/04182022/CH5Themes-2.0.18-alpha.18.tgz",
-    "@crestron/ch5-webxpanel": "https://siproducts.blob.core.windows.net/ch5-test/04012022/CH5VirtualScreen-2.0.8-alpha.8.tgz",
+    "@crestron/ch5-crcomlib": "https://siproducts.blob.core.windows.net/ch5-test/05022022/CH5CrComLib-2.0.26-alpha.26.tgz",
+    "@crestron/ch5-theme": "https://siproducts.blob.core.windows.net/ch5-test/05022022/CH5Themes-2.0.20-alpha.20.tgz",
+    "@crestron/ch5-webxpanel": "https://siproducts.blob.core.windows.net/ch5-test/05022022/CH5VirtualScreen-2.0.11-alpha.11.tgz",
     "@material-icons/font": "^1.0.25"
   },
   "files": [

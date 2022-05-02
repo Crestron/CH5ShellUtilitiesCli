@@ -78,7 +78,7 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
         }
       });
       this.logger.log("this.outputResponse.data.updateInputs: ", this.outputResponse.data.updateInputs);
-      
+
       if (this.outputResponse.data.updateInputs.length === 0) {
         const value = this.inputArgs["projectName"];
         const inputUpdate = {
@@ -170,60 +170,15 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
 
     if (this.inputArgs["config"].argsValue !== "") {
 
-      // Step 4: Make changes to project-config.json stepwise
       const newProjectConfigJSON: any = JSON.parse(this.utils.readFileContentSync(this.inputArgs["config"].argsValue));
-      const oldProjectConfigJSON: any = JSON.parse(this.utils.readFileContentSync(path.join(this.SHELL_FOLDER, this.PROJECT_CONFIG_JSON_PATH)));
 
-      // 1. Project Data
-      for (const k in newProjectConfigJSON) {
-        if (!(typeof newProjectConfigJSON[k] === 'object' && newProjectConfigJSON[k] !== null)) {
-          if (oldProjectConfigJSON[k] && oldProjectConfigJSON[k] !== newProjectConfigJSON[k]) {
-            oldProjectConfigJSON[k] = newProjectConfigJSON[k];
-          }
-        }
-      }
-
-      // 2. Themes
-      oldProjectConfigJSON["themes"] = newProjectConfigJSON["themes"];
-
-      // 3. Config
-      oldProjectConfigJSON["config"] = newProjectConfigJSON["config"];
-
-      // 4. Header
-      oldProjectConfigJSON["header"] = newProjectConfigJSON["header"];
-
-      // 5. Footer
-      oldProjectConfigJSON["footer"] = newProjectConfigJSON["footer"];
-
-      // 6. Content
-      oldProjectConfigJSON["content"]["triggerViewProperties"] = newProjectConfigJSON["content"]["triggerViewProperties"];
-
-      const pagesToBeCreated: any[] = [];
-      for (let i: number = 0; i < newProjectConfigJSON["content"]["pages"].length; i++) {
-        let pageObj = newProjectConfigJSON["content"]["pages"][i];
-        const pageInOldSet = oldProjectConfigJSON["content"]["pages"].find((pageName: any) => pageName === pageObj.pageName);
-        if (!pageInOldSet) {
-          // Exists in New set but not in old - so create page
-          pagesToBeCreated.push(pageObj);
-        }
-      }
-
-      const widgetsToBeCreated: any[] = [];
-      for (let i: number = 0; i < newProjectConfigJSON["content"]["widgets"].length; i++) {
-        let pageObj = newProjectConfigJSON["content"]["widgets"][i];
-        const pageInOldSet = oldProjectConfigJSON["content"]["widgets"].find((widgetName: any) => widgetName === pageObj.widgetName);
-        if (!pageInOldSet) {
-          // Exists in New set but not in old - so create page
-          widgetsToBeCreated.push(pageObj);
-        }
-      }
-
-      oldProjectConfigJSON["content"]["$defaultView"] = newProjectConfigJSON["content"]["$defaultView"];
-
-      const pathToCreateProject: string = path.resolve(path.join("./", oldProjectConfigJSON.projectName));
+      const pathToCreateProject: string = path.resolve(path.join("./", newProjectConfigJSON.projectName));
       if (!fs.existsSync(pathToCreateProject)) {
         fs.mkdirSync(pathToCreateProject, { recursive: true });
       }
+
+      this.logger.log("1. current working directory: " + process.cwd());
+      process.chdir(pathToCreateProject);
 
       try {
         const isFolder = await this.utils.readdirAsync(pathToCreateProject);
@@ -236,9 +191,65 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
 
       fsExtra.copySync(this.SHELL_FOLDER, pathToCreateProject, { recursive: true });
 
-      fs.writeFileSync(path.join(pathToCreateProject, this.PROJECT_CONFIG_JSON_PATH), JSON.stringify(oldProjectConfigJSON));
+      this.logger.log("2. current working directory: " + process.cwd());
 
-      process.chdir(pathToCreateProject);
+      // Step 4: Make changes to project-config.json stepwise
+      const oldProjectConfigJSON: any = JSON.parse(this.utils.readFileContentSync(path.join(this.SHELL_FOLDER, this.PROJECT_CONFIG_JSON_PATH)));
+
+      // 1. Project Data
+      for (const k in newProjectConfigJSON) {
+        if (!(typeof newProjectConfigJSON[k] === 'object' && newProjectConfigJSON[k] !== null)) {
+          if (oldProjectConfigJSON[k] && oldProjectConfigJSON[k] !== newProjectConfigJSON[k]) {
+            oldProjectConfigJSON[k] = newProjectConfigJSON[k];
+            this.projectConfig.changeNodeValues(k, oldProjectConfigJSON[k]);
+          }
+        }
+      }
+
+      // 2. Themes
+      oldProjectConfigJSON["themes"] = newProjectConfigJSON["themes"];
+      this.projectConfig.changeNodeValues("themes", oldProjectConfigJSON["themes"]);
+
+      // 3. Config
+      oldProjectConfigJSON["config"] = newProjectConfigJSON["config"];
+      this.projectConfig.changeNodeValues("config", oldProjectConfigJSON["config"]);
+
+      // 4. Header
+      oldProjectConfigJSON["header"] = newProjectConfigJSON["header"];
+      this.projectConfig.changeNodeValues("header", oldProjectConfigJSON["header"]);
+
+      // 5. Footer
+      oldProjectConfigJSON["footer"] = newProjectConfigJSON["footer"];
+      this.projectConfig.changeNodeValues("footer", oldProjectConfigJSON["footer"]);
+
+      // 6. Content
+      oldProjectConfigJSON["content"]["triggerViewProperties"] = newProjectConfigJSON["content"]["triggerViewProperties"];
+      this.projectConfig.changeNodeValues("content.triggerViewProperties", oldProjectConfigJSON["content"]["triggerViewProperties"]);
+
+      oldProjectConfigJSON["content"]["$defaultView"] = newProjectConfigJSON["content"]["$defaultView"];
+      this.projectConfig.changeNodeValues("content.$defaultView", oldProjectConfigJSON["content"]["$defaultView"]);
+
+      // fs.writeFileSync(path.join(pathToCreateProject, this.PROJECT_CONFIG_JSON_PATH), JSON.stringify(oldProjectConfigJSON));
+
+      const pagesToBeCreated: any[] = [];
+      for (let i: number = 0; i < newProjectConfigJSON["content"]["pages"].length; i++) {
+        const pageObj = newProjectConfigJSON["content"]["pages"][i];
+        const pageInOldSet = oldProjectConfigJSON["content"]["pages"].find((page: any) => page.pageName.toString().toLowerCase() === pageObj.pageName.toString().toLowerCase());
+        if (!pageInOldSet) {
+          // Exists in New set but not in old - so create page
+          pagesToBeCreated.push(pageObj);
+        }
+      }
+
+      const widgetsToBeCreated: any[] = [];
+      for (let i: number = 0; i < newProjectConfigJSON["content"]["widgets"].length; i++) {
+        const widgetObj = newProjectConfigJSON["content"]["widgets"][i];
+        const pageInOldSet = oldProjectConfigJSON["content"]["widgets"].find((widget: any) => widget.widgetName.toString().toLowerCase() === widgetObj.widgetName.toString().toLowerCase());
+        if (!pageInOldSet) {
+          // Exists in New set but not in old - so create page
+          widgetsToBeCreated.push(widgetObj);
+        }
+      }
 
       const packageJsonFile = editJsonFile("./package.json"); // Must be after directory change
       packageJsonFile.set("name", oldProjectConfigJSON.projectName);
@@ -251,12 +262,14 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
         const genPage: Ch5GeneratePageCli = new Ch5GeneratePageCli(false);
         genPage.setInputArgsForTesting(["-n", pagesToBeCreated[i].pageName, "-m", pagesToBeCreated[i].navigation ? "Y" : "N"]);
         await genPage.run();
+        this.projectConfig.replacePageNodeInJSON(pagesToBeCreated[i]);
       }
 
       for (let i: number = 0; i < widgetsToBeCreated.length; i++) {
         const genWidget: Ch5GenerateWidgetCli = new Ch5GenerateWidgetCli(false);
         genWidget.setInputArgsForTesting(["-n", widgetsToBeCreated[i].widgetName]);
         await genWidget.run();
+        this.projectConfig.removeWidgetFromJSON(widgetsToBeCreated[i]);
       }
 
       // Step 6: Run validate:project-config
@@ -302,7 +315,7 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
       packageJsonFile.save();
 
       this.outputResponse.data.projectName = projectConfigJSON.projectName;
-      
+
       const genPage: Ch5GeneratePageCli = new Ch5GeneratePageCli(false);
       genPage.setInputArgsForTesting(["-n", "page1", "-m", "Y"]);
       await genPage.run();

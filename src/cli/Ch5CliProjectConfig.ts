@@ -16,7 +16,7 @@ export class Ch5CliProjectConfig {
 
   private readonly _cliUtil: Ch5CliUtil;
   private readonly _cliLogger: Ch5CliLogger;
-  private file = editJsonFile("./app/project-config.json");
+  private readonly PROJECT_CONFIG_PATH = "./app/project-config.json";
 
   public constructor() {
     this._cliUtil = new Ch5CliUtil();
@@ -24,7 +24,7 @@ export class Ch5CliProjectConfig {
   }
 
   getJson() {
-    return fsExtra.readJSONSync("./app/project-config.json");
+    return fsExtra.readJSONSync(this.PROJECT_CONFIG_PATH);
   }
 
   getAllPages() {
@@ -98,8 +98,7 @@ export class Ch5CliProjectConfig {
         }
       }
       this._cliLogger.log("pageName", pageName);
-      this.file.set("content.pages", pageListNew);
-      this.file.save();
+      this.changeNodeValues("content.pages", pageListNew);
     } catch (e) {
       this._cliLogger.log("error", e);
       throw e;
@@ -116,8 +115,7 @@ export class Ch5CliProjectConfig {
         }
       }
       this._cliLogger.log("widgetName", widgetName);
-      this.file.set("content.widgets", widgetListNew);
-      this.file.save();
+      this.changeNodeValues("content.widgets", widgetListNew);
     } catch (e) {
       this._cliLogger.log("error", e);
       throw e;
@@ -128,8 +126,39 @@ export class Ch5CliProjectConfig {
       let pagesList = this.getAllPages();
       pagesList.push(pageObject);
       this._cliLogger.log("pageObject", pageObject);
-      this.file.set("content.pages", pagesList);
-      this.file.save();
+      this.changeNodeValues("content.pages", pagesList);
+    } catch (e) {
+      this._cliLogger.log("error", e);
+      throw e;
+    }
+  }
+
+  replacePageNodeInJSON(pageObject: any) {
+    try {
+      let pagesList = this.getAllPages();
+      console.log("pagesList", pagesList);
+      console.log("pageObject", pageObject);
+      const setPageIndex = pagesList.findIndex((page: any) => page.pageName.toString().toLowerCase() === pageObject.pageName.toString().toLowerCase());
+      if (setPageIndex >= 0) {
+        pagesList[setPageIndex] = pageObject;
+        this._cliLogger.log("pagesList", pagesList);
+        this.changeNodeValues("content.pages", pagesList);
+      }
+    } catch (e) {
+      this._cliLogger.log("error", e);
+      throw e;
+    }
+  }
+
+  replaceWidgetNodeInJSON(widgetObject: any) {
+    try {
+      let widgetsList = this.getAllWidgets();
+      const setWidgetIndex = widgetsList.findIndex((widget: any) => widget.pageName.toString().toLowerCase() === widgetObject.pageName.toString().toLowerCase());
+      if (setWidgetIndex >= 0) {
+        widgetsList[setWidgetIndex] = widgetObject;
+        this._cliLogger.log("widgetsList", widgetsList);
+        this.changeNodeValues("content.widgets", widgetsList);
+      }
     } catch (e) {
       this._cliLogger.log("error", e);
       throw e;
@@ -138,8 +167,7 @@ export class Ch5CliProjectConfig {
 
   saveOverrideAttributeToJSON(attributeName: string, attributeData: any) {
     try {
-      this.file.set(attributeName, attributeData);
-      this.file.save();
+      this.changeNodeValues(attributeName, attributeData);
     } catch (e) {
       this._cliLogger.log("error", e);
       throw e;
@@ -185,8 +213,7 @@ export class Ch5CliProjectConfig {
           }
         }
         this._cliLogger.log("newPageList", newPageList);
-        this.file.set("content.pages", newPageList);
-        this.file.save();
+        this.changeNodeValues("content.pages", newPageList);
       }
     } catch (e) {
       this._cliLogger.log("error", e);
@@ -215,8 +242,7 @@ export class Ch5CliProjectConfig {
           }
         }
         this._cliLogger.log("newWidgetsList", newWidgetsList);
-        this.file.set("content.widgets", newWidgetsList);
-        this.file.save();
+        this.changeNodeValues("content.widgets", newWidgetsList);
       }
     } catch (e) {
       this._cliLogger.log("error", e);
@@ -229,8 +255,7 @@ export class Ch5CliProjectConfig {
       let widgetsList = this.getAllWidgets();
       widgetsList.push(widgetObject);
       this._cliLogger.log("widgetObject", widgetObject);
-      this.file.set("content.widgets", widgetsList);
-      this.file.save();
+      this.changeNodeValues("content.widgets", widgetsList);
     } catch (e) {
       this._cliLogger.log("error", e);
       throw e;
@@ -256,8 +281,7 @@ export class Ch5CliProjectConfig {
         }
         this._cliLogger.log("newList", newList);
         if (newList.length != pagesList.length) {
-          this.file.set("content.pages", newList);
-          this.file.save();
+          this.changeNodeValues("content.pages", newList);
         }
       }
     } catch (e) {
@@ -285,8 +309,7 @@ export class Ch5CliProjectConfig {
         }
         this._cliLogger.log("newList", newList);
         if (newList.length != widgetList.length) {
-          this.file.set("content.widgets", newList);
-          this.file.save();
+          this.changeNodeValues("content.widgets", newList);
         }
       }
     } catch (e) {
@@ -332,9 +355,10 @@ export class Ch5CliProjectConfig {
     }
   }
 
-  changeNodeValues(nodeName: string, nodeValue: string) {
-    this.file.set(nodeName, nodeValue);
-    this.file.save();
+  changeNodeValues(nodeName: string, nodeValue: any) {
+    let file = editJsonFile(this.PROJECT_CONFIG_PATH);
+    file.set(nodeName, nodeValue);
+    file.save();
   }
 
 }

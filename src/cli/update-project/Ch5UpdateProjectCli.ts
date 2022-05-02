@@ -192,26 +192,33 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
         const newProjectConfigJSON: any = JSON.parse(this.utils.readFileContentSync(this.inputArgs["config"].argsValue));
         // this.projectConfigJsonSchema = JSON.parse(this.utils.readFileContentSync("./.vscode/project-config-schema.json"));
 
+        // this.logger.log("1. oldProjectConfigJSON", JSON.parse(JSON.stringify(oldProjectConfigJSON)));
+        // this.logger.log("1. newProjectConfigJSON", JSON.parse(JSON.stringify(newProjectConfigJSON)));
         // 1. Project Data
         for (const k in newProjectConfigJSON) {
           if (!(typeof newProjectConfigJSON[k] === 'object' && newProjectConfigJSON[k] !== null)) {
             if (oldProjectConfigJSON[k] && oldProjectConfigJSON[k] !== newProjectConfigJSON[k]) {
               oldProjectConfigJSON[k] = newProjectConfigJSON[k];
+              this.projectConfig.changeNodeValues(k, oldProjectConfigJSON[k]);
             }
           }
         }
 
         // 2. Themes
         oldProjectConfigJSON["themes"] = newProjectConfigJSON["themes"];
+        this.projectConfig.changeNodeValues("themes", oldProjectConfigJSON["themes"]);
 
         // 3. Config
         oldProjectConfigJSON["config"] = newProjectConfigJSON["config"];
+        this.projectConfig.changeNodeValues("config", oldProjectConfigJSON["config"]);
 
         // 4. Header
         oldProjectConfigJSON["header"] = newProjectConfigJSON["header"];
+        this.projectConfig.changeNodeValues("header", oldProjectConfigJSON["header"]);
 
         // 5. Footer
         oldProjectConfigJSON["footer"] = newProjectConfigJSON["footer"];
+        this.projectConfig.changeNodeValues("footer", oldProjectConfigJSON["footer"]);
 
         // 6. Content
         // for (const k in newProjectConfigJSON["content"]) {
@@ -223,15 +230,19 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
         //   }
         // }
         oldProjectConfigJSON["content"]["$defaultView"] = newProjectConfigJSON["content"]["$defaultView"];
+        this.projectConfig.changeNodeValues("content.$defaultView", oldProjectConfigJSON["content"]["$defaultView"]);
+
         oldProjectConfigJSON["content"]["triggerViewProperties"] = newProjectConfigJSON["content"]["triggerViewProperties"];
+        this.projectConfig.changeNodeValues("content.triggerViewProperties", oldProjectConfigJSON["content"]["triggerViewProperties"]);
 
         const pagesToBeCreated: any[] = [];
+        const pagesToBeUpdated: any[] = [];
         const pagesToBeDeleted: any[] = [];
         for (let i: number = 0; i < oldProjectConfigJSON["content"]["pages"].length; i++) {
           let pageObj = oldProjectConfigJSON["content"]["pages"][i];
-          const pageInNewSet = newProjectConfigJSON["content"]["pages"].find((pageName: any) => pageName === pageObj.pageName);
+          const pageInNewSet = newProjectConfigJSON["content"]["pages"].find((page: any) => page.pageName.toString().toLowerCase() === pageObj.pageName.toString().toLowerCase());
           if (pageInNewSet) {
-            pageObj = pageInNewSet;
+            pagesToBeUpdated.push(pageInNewSet);
           } else {
             // Exists in Old set but not in new - so create page
             pagesToBeDeleted.push(pageObj);
@@ -240,7 +251,7 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
         }
         for (let i: number = 0; i < newProjectConfigJSON["content"]["pages"].length; i++) {
           let pageObj = newProjectConfigJSON["content"]["pages"][i];
-          const pageInOldSet = oldProjectConfigJSON["content"]["pages"].find((pageName: any) => pageName === pageObj.pageName);
+          const pageInOldSet = oldProjectConfigJSON["content"]["pages"].find((page: any) => page.pageName.toString().toLowerCase() === pageObj.pageName.toString().toLowerCase());
           if (!pageInOldSet) {
             // Exists in New set but not in old - so create page
             pagesToBeCreated.push(pageObj);
@@ -250,35 +261,26 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
 
         const widgetsToBeCreated: any[] = [];
         const widgetsToBeDeleted: any[] = [];
+        const widgetsToBeUpdated: any[] = [];
         for (let i: number = 0; i < oldProjectConfigJSON["content"]["widgets"].length; i++) {
-          let pageObj = oldProjectConfigJSON["content"]["widgets"][i];
-          const pageInNewSet = newProjectConfigJSON["content"]["widgets"].find((widgetName: any) => widgetName === pageObj.widgetName);
+          const widgetObj = oldProjectConfigJSON["content"]["widgets"][i];
+          const pageInNewSet = newProjectConfigJSON["content"]["widgets"].find((widget: any) => widget.widgetName.toString().toLowerCase() === widgetObj.widgetName.toString().toLowerCase());
           if (pageInNewSet) {
-            pageObj = pageInNewSet;
+            widgetsToBeUpdated.push(pageInNewSet);
           } else {
             // Exists in Old set but not in new - so create page
-            widgetsToBeDeleted.push(pageObj);
+            widgetsToBeDeleted.push(widgetObj);
             //   changesToBeDone.push({ "key": k, "oldValue": oldProjectConfigJSON["content"][k], "newValue": newProjectConfigJSON["content"][k] });
           }
         }
         for (let i: number = 0; i < newProjectConfigJSON["content"]["widgets"].length; i++) {
-          let pageObj = newProjectConfigJSON["content"]["widgets"][i];
-          const pageInOldSet = oldProjectConfigJSON["content"]["widgets"].find((widgetName: any) => widgetName === pageObj.widgetName);
+          const widgetObj = newProjectConfigJSON["content"]["widgets"][i];
+          const pageInOldSet = oldProjectConfigJSON["content"]["widgets"].find((widget: any) => widget.widgetName.toString().toLowerCase() === widgetObj.widgetName.toString().toLowerCase());
           if (!pageInOldSet) {
             // Exists in New set but not in old - so create page
-            widgetsToBeCreated.push(pageObj);
+            widgetsToBeCreated.push(widgetObj);
             //   changesToBeDone.push({ "key": k, "oldValue": oldProjectConfigJSON["content"][k], "newValue": newProjectConfigJSON["content"][k] });
           }
-        }
-
-        // Step 5: Save Project-config
-        fs.writeFileSync("./" + this.PROJECT_CONFIG_JSON_PATH, JSON.stringify(oldProjectConfigJSON));
-
-
-        for (let i: number = 0; i < widgetsToBeDeleted.length; i++) {
-          const delWidget: Ch5DeleteComponentsCli = new Ch5DeleteComponentsCli(false);
-          delWidget.setInputArgsForTesting(["--list", widgetsToBeDeleted[i].widgetName, "--force"]);
-          await delWidget.run();
         }
 
         for (let i: number = 0; i < pagesToBeDeleted.length; i++) {
@@ -293,11 +295,30 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
           await genPage.run();
         }
 
+        for (let i: number = 0; i < pagesToBeUpdated.length; i++) {
+          // Update in project-config
+          this.projectConfig.replacePageNodeInJSON(pagesToBeUpdated[i]);
+        }
+
         for (let i: number = 0; i < widgetsToBeCreated.length; i++) {
           const genWidget: Ch5GenerateWidgetCli = new Ch5GenerateWidgetCli(false);
           genWidget.setInputArgsForTesting(["-n", widgetsToBeCreated[i].widgetName]);
           await genWidget.run();
         }
+
+        for (let i: number = 0; i < widgetsToBeDeleted.length; i++) {
+          const delWidget: Ch5DeleteComponentsCli = new Ch5DeleteComponentsCli(false);
+          delWidget.setInputArgsForTesting(["--list", widgetsToBeDeleted[i].widgetName, "--force"]);
+          await delWidget.run();
+        }
+
+        for (let i: number = 0; i < widgetsToBeUpdated.length; i++) {
+          // Update in project-config
+          this.projectConfig.replaceWidgetNodeInJSON(widgetsToBeUpdated[i]);
+        }
+
+        // Step 5: Save Project-config
+        fs.writeFileSync("./" + this.PROJECT_CONFIG_JSON_PATH, JSON.stringify(oldProjectConfigJSON));
 
         // Step 6: Run validate:project-config
         if (!(this.isConfigFileValid("./app/project-config.json", path.join(this.SHELL_FOLDER, ".vscode", "project-config-schema.json")))) {
@@ -307,6 +328,9 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
         // Step 7: Show proper messages  
         this.outputResponse.result = true;
         this.outputResponse.successMessage = this.getText("LOG_OUTPUT.SUCCESS_MESSAGE", this.outputResponse.data.projectName, this.outputResponse.data.projectFolderPath);
+
+        // this.logger.log("2. oldProjectConfigJSON", JSON.parse(JSON.stringify(oldProjectConfigJSON)));
+        // this.logger.log("2. newProjectConfigJSON", JSON.parse(JSON.stringify(newProjectConfigJSON)));
 
       } else {
         // Change project config
