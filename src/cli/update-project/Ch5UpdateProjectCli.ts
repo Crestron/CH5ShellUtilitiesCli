@@ -160,6 +160,10 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
             this.outputResponse.data.updateInputs[i].argsValue = await componentsQuery.run()
               .then((selectedMenu: any) => { return selectedMenu; })
               .catch((error: any) => { throw new Error(this.getText("ERRORS.DO_NOT_UPDATE_PROJECT")); });
+            if (this.outputResponse.data.updateInputs[i].type === "boolean") {
+              this.outputResponse.data.updateInputs[i].argsValue = Boolean(this.outputResponse.data.updateInputs[i].argsValue);
+            }
+
             this.logger.log(this.outputResponse.data.updateInputs[i].key + ": ", this.outputResponse.data.updateInputs[i].argsValue);
           } else if (this.outputResponse.data.updateInputs[i].type === "string") {
             const question = {
