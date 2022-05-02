@@ -161,7 +161,7 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
               .then((selectedMenu: any) => { return selectedMenu; })
               .catch((error: any) => { throw new Error(this.getText("ERRORS.DO_NOT_UPDATE_PROJECT")); });
             if (this.outputResponse.data.updateInputs[i].type === "boolean") {
-              this.outputResponse.data.updateInputs[i].argsValue = Boolean(this.outputResponse.data.updateInputs[i].argsValue);
+              this.outputResponse.data.updateInputs[i].argsValue = this.toBoolean(this.outputResponse.data.updateInputs[i].argsValue);
             }
 
             this.logger.log(this.outputResponse.data.updateInputs[i].key + ": ", this.outputResponse.data.updateInputs[i].argsValue);
@@ -355,6 +355,22 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
   async cleanUp() {
     if (this.inputArgs["config"].argsValue !== "") {
       // Step 7: Clean up
+    }
+  }
+
+  private toBoolean(val: any, isEmptyValueEqualToTrue = false): boolean {
+    const str = String(val);
+    switch (str.toLowerCase().trim()) {
+      case "true": case "1": return true;
+      case "false": case "0": return false;
+      case "": case null: case undefined:
+        if (isEmptyValueEqualToTrue === true) {
+          return true;
+        } else {
+          return false;
+        }
+      default:
+        return false;
     }
   }
 
