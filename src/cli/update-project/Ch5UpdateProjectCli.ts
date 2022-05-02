@@ -19,7 +19,7 @@ const fsExtra = require("fs-extra");
 export class Ch5UpdateProjectCli extends Ch5BaseClassForCliNew implements ICh5CliNew {
 
   private readonly SHELL_FOLDER: string = path.normalize(path.join(__dirname, "../../", "shell"));
-  private readonly PROJECT_CONFIG_JSON_PATH: string = path.normalize("/app/project-config.json");
+  private readonly PROJECT_CONFIG_JSON_PATH: string = path.normalize("./app/project-config.json");
   private readonly VSCODE_SCHEMA_JSON_PATH: string = path.normalize(path.join(".vscode", "project-config-schema.json"));
 
   /**
@@ -122,10 +122,9 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
       exportProject.changeConfigParam("zipFileDestinationPath", path.join(this.getConfigNode("backupFolder"), this.getFolderName()));
       exportProject.run();
 
+      // Identify changes
       // const newCheck = new CompareJSON();
       // console.log(newCheck.map(oldProjectConfigJSON, newProjectConfigJSON));
-
-      // Identify changes
 
       let askConfirmation: boolean = false;
       if (this.inputArgs["force"].argsValue === true) {
@@ -188,12 +187,9 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
       if (this.inputArgs["config"].argsValue !== "") {
 
         // Step 4: Make changes to project-config.json stepwise
-        const oldProjectConfigJSON: any = JSON.parse(this.utils.readFileContentSync("./app/project-config.json"));
+        const oldProjectConfigJSON: any = JSON.parse(this.utils.readFileContentSync(this.PROJECT_CONFIG_JSON_PATH));
         const newProjectConfigJSON: any = JSON.parse(this.utils.readFileContentSync(this.inputArgs["config"].argsValue));
-        // this.projectConfigJsonSchema = JSON.parse(this.utils.readFileContentSync("./.vscode/project-config-schema.json"));
 
-        // this.logger.log("1. oldProjectConfigJSON", JSON.parse(JSON.stringify(oldProjectConfigJSON)));
-        // this.logger.log("1. newProjectConfigJSON", JSON.parse(JSON.stringify(newProjectConfigJSON)));
         // 1. Project Data
         for (const k in newProjectConfigJSON) {
           if (!(typeof newProjectConfigJSON[k] === 'object' && newProjectConfigJSON[k] !== null)) {
@@ -221,14 +217,6 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
         this.projectConfig.changeNodeValues("footer", oldProjectConfigJSON["footer"]);
 
         // 6. Content
-        // for (const k in newProjectConfigJSON["content"]) {
-        //   if (!(typeof newProjectConfigJSON["content"][k] === 'object' && newProjectConfigJSON["content"][k] !== null)) {
-        //     if (oldProjectConfigJSON["content"][k] && oldProjectConfigJSON["content"][k] !== newProjectConfigJSON["content"][k]) {
-        //       changesToBeDone.push({ "key": k, "oldValue": oldProjectConfigJSON["content"][k], "newValue": newProjectConfigJSON["content"][k] });
-        //       oldProjectConfigJSON["content"][k] = newProjectConfigJSON["content"][k];
-        //     }
-        //   }
-        // }
         oldProjectConfigJSON["content"]["$defaultView"] = newProjectConfigJSON["content"]["$defaultView"];
         this.projectConfig.changeNodeValues("content.$defaultView", oldProjectConfigJSON["content"]["$defaultView"]);
 
@@ -246,7 +234,6 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
           } else {
             // Exists in Old set but not in new - so create page
             pagesToBeDeleted.push(pageObj);
-            //   changesToBeDone.push({ "key": k, "oldValue": oldProjectConfigJSON["content"][k], "newValue": newProjectConfigJSON["content"][k] });
           }
         }
         for (let i: number = 0; i < newProjectConfigJSON["content"]["pages"].length; i++) {
@@ -255,13 +242,13 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
           if (!pageInOldSet) {
             // Exists in New set but not in old - so create page
             pagesToBeCreated.push(pageObj);
-            //   changesToBeDone.push({ "key": k, "oldValue": oldProjectConfigJSON["content"][k], "newValue": newProjectConfigJSON["content"][k] });
           }
         }
 
         const widgetsToBeCreated: any[] = [];
         const widgetsToBeDeleted: any[] = [];
         const widgetsToBeUpdated: any[] = [];
+
         for (let i: number = 0; i < oldProjectConfigJSON["content"]["widgets"].length; i++) {
           const widgetObj = oldProjectConfigJSON["content"]["widgets"][i];
           const pageInNewSet = newProjectConfigJSON["content"]["widgets"].find((widget: any) => widget.widgetName.toString().toLowerCase() === widgetObj.widgetName.toString().toLowerCase());
@@ -270,16 +257,15 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
           } else {
             // Exists in Old set but not in new - so create page
             widgetsToBeDeleted.push(widgetObj);
-            //   changesToBeDone.push({ "key": k, "oldValue": oldProjectConfigJSON["content"][k], "newValue": newProjectConfigJSON["content"][k] });
           }
         }
+
         for (let i: number = 0; i < newProjectConfigJSON["content"]["widgets"].length; i++) {
           const widgetObj = newProjectConfigJSON["content"]["widgets"][i];
           const pageInOldSet = oldProjectConfigJSON["content"]["widgets"].find((widget: any) => widget.widgetName.toString().toLowerCase() === widgetObj.widgetName.toString().toLowerCase());
           if (!pageInOldSet) {
             // Exists in New set but not in old - so create page
             widgetsToBeCreated.push(widgetObj);
-            //   changesToBeDone.push({ "key": k, "oldValue": oldProjectConfigJSON["content"][k], "newValue": newProjectConfigJSON["content"][k] });
           }
         }
 
@@ -293,17 +279,12 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
           const genPage: Ch5GeneratePageCli = new Ch5GeneratePageCli(false);
           genPage.setInputArgsForTesting(["-n", pagesToBeCreated[i].pageName, "-m", pagesToBeCreated[i].navigation ? "Y" : "N"]);
           await genPage.run();
+          this.projectConfig.replacePageNodeInJSON(pagesToBeCreated[i]);
         }
 
         for (let i: number = 0; i < pagesToBeUpdated.length; i++) {
           // Update in project-config
           this.projectConfig.replacePageNodeInJSON(pagesToBeUpdated[i]);
-        }
-
-        for (let i: number = 0; i < widgetsToBeCreated.length; i++) {
-          const genWidget: Ch5GenerateWidgetCli = new Ch5GenerateWidgetCli(false);
-          genWidget.setInputArgsForTesting(["-n", widgetsToBeCreated[i].widgetName]);
-          await genWidget.run();
         }
 
         for (let i: number = 0; i < widgetsToBeDeleted.length; i++) {
@@ -312,25 +293,26 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
           await delWidget.run();
         }
 
+        for (let i: number = 0; i < widgetsToBeCreated.length; i++) {
+          const genWidget: Ch5GenerateWidgetCli = new Ch5GenerateWidgetCli(false);
+          genWidget.setInputArgsForTesting(["-n", widgetsToBeCreated[i].widgetName]);
+          await genWidget.run();
+          this.projectConfig.removeWidgetFromJSON(widgetsToBeCreated[i]);
+        }
+
         for (let i: number = 0; i < widgetsToBeUpdated.length; i++) {
           // Update in project-config
           this.projectConfig.replaceWidgetNodeInJSON(widgetsToBeUpdated[i]);
         }
 
-        // Step 5: Save Project-config
-        fs.writeFileSync("./" + this.PROJECT_CONFIG_JSON_PATH, JSON.stringify(oldProjectConfigJSON));
-
         // Step 6: Run validate:project-config
-        if (!(this.isConfigFileValid("./app/project-config.json", path.join(this.SHELL_FOLDER, ".vscode", "project-config-schema.json")))) {
+        if (!(this.isConfigFileValid(this.PROJECT_CONFIG_JSON_PATH, path.join(this.SHELL_FOLDER, this.VSCODE_SCHEMA_JSON_PATH)))) {
           throw new Error(this.getText("PROCESS_REQUEST.FAILURE_MESSAGE_INPUT_PARAM_CONFIG_FILE_INVALID"));
         }
 
         // Step 7: Show proper messages  
         this.outputResponse.result = true;
         this.outputResponse.successMessage = this.getText("LOG_OUTPUT.SUCCESS_MESSAGE", this.outputResponse.data.projectName, this.outputResponse.data.projectFolderPath);
-
-        // this.logger.log("2. oldProjectConfigJSON", JSON.parse(JSON.stringify(oldProjectConfigJSON)));
-        // this.logger.log("2. newProjectConfigJSON", JSON.parse(JSON.stringify(newProjectConfigJSON)));
 
       } else {
         // Change project config

@@ -93,7 +93,7 @@ export class Ch5CliProjectConfig {
       let pageList = this.getAllPages();
       let pageListNew = [];
       for (let i: number = 0; i < pageList.length; i++) {
-        if (pageList[i].widgetName.toLowerCase() !== pageName.toLowerCase()) {
+        if (pageList[i].pageName.toString().toLowerCase() !== pageName.toString().toLowerCase()) {
           pageListNew.push(pageList[i]);
         }
       }
@@ -110,7 +110,7 @@ export class Ch5CliProjectConfig {
       let widgetList = this.getAllWidgets();
       let widgetListNew = [];
       for (let i: number = 0; i < widgetList.length; i++) {
-        if (widgetList[i].widgetName.toLowerCase() !== widgetName.toLowerCase()) {
+        if (widgetList[i].widgetName.toString().toLowerCase() !== widgetName.toString().toLowerCase()) {
           widgetListNew.push(widgetList[i]);
         }
       }
@@ -136,8 +136,6 @@ export class Ch5CliProjectConfig {
   replacePageNodeInJSON(pageObject: any) {
     try {
       let pagesList = this.getAllPages();
-      console.log("pagesList", pagesList);
-      console.log("pageObject", pageObject);
       const setPageIndex = pagesList.findIndex((page: any) => page.pageName.toString().toLowerCase() === pageObject.pageName.toString().toLowerCase());
       if (setPageIndex >= 0) {
         pagesList[setPageIndex] = pageObject;
@@ -153,7 +151,7 @@ export class Ch5CliProjectConfig {
   replaceWidgetNodeInJSON(widgetObject: any) {
     try {
       let widgetsList = this.getAllWidgets();
-      const setWidgetIndex = widgetsList.findIndex((widget: any) => widget.pageName.toString().toLowerCase() === widgetObject.pageName.toString().toLowerCase());
+      const setWidgetIndex = widgetsList.findIndex((widget: any) => widget.widgetName.toString().toLowerCase() === widgetObject.widgetName.toString().toLowerCase());
       if (setWidgetIndex >= 0) {
         widgetsList[setWidgetIndex] = widgetObject;
         this._cliLogger.log("widgetsList", widgetsList);
