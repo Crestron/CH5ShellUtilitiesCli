@@ -13,14 +13,13 @@ import { Ch5CliNamingHelper } from "./Ch5CliNamingHelper";
 import { Ch5CliProjectConfig } from "./Ch5CliProjectConfig";
 import { Ch5ValidateProjectConfigCli } from "./validate-project-config/Ch5ValidateProjectConfigJsonCli";
 import { Ch5CliConfigFileReader } from "./Ch5CliConfigFileReader";
-import { ICh5CliConfigFile, ICh5CliConfigFileParamOptions } from "./ICh5CliConfigFile";
+import { ICh5CliConfigFile } from "./ICh5CliConfigFile";
 
 const { Select, Confirm, prompt } = require('enquirer');
 const Enquirer = require('enquirer');
 const enquirer = new Enquirer();
 const path = require('path');
 const fs = require("fs");
-const fsExtra = require("fs-extra");
 const jsonSchema = require('jsonschema');
 
 export abstract class Ch5BaseClassForCliNew {

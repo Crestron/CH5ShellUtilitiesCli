@@ -70,6 +70,7 @@ export class Ch5ShellCli {
   public async run(): Promise<void> {
     const program = new commander.Command();
     program
+      .name("ch5-shell-cli")
       .version(buildVersion)
       .description("CH5 Shell Utilities CLI");
 
