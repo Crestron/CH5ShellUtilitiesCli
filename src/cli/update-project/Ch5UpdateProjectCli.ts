@@ -35,6 +35,7 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
   async initialize() {
     this.outputResponse.data.updateInputs = [];
     this.outputResponse.data.projectName = "";
+    this.outputResponse.data.backupFolder = "";
     if (this.inputArgs["config"].argsValue !== "") {
       // Do nothing
     } else {
@@ -115,11 +116,14 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
   async checkPromptQuestions() {
     this.logger.start("checkPromptQuestions");
     if (this.inputArgs["config"].argsValue !== "") {
+
+      const folderNameForBackup: string = this.getFolderName();
+      this.outputResponse.data.backupFolder = path.normalize(path.join(this.getConfigNode("backupFolder"), folderNameForBackup));
       // Step 3: Take back up of existing json and project
-      fsExtra.copySync(this.inputArgs["config"].argsValue, path.join(this.getConfigNode("backupFolder"), this.getFolderName(), "project-config.json"));
+      fsExtra.copySync(this.inputArgs["config"].argsValue, path.join(this.getConfigNode("backupFolder"), folderNameForBackup, "project-config.json"));
 
       const exportProject = new Ch5ExportProjectCli(false);
-      exportProject.changeConfigParam("zipFileDestinationPath", path.join(this.getConfigNode("backupFolder"), this.getFolderName()));
+      exportProject.changeConfigParam("zipFileDestinationPath", path.join(this.getConfigNode("backupFolder"), folderNameForBackup));
       exportProject.run();
 
       // Identify changes
@@ -312,7 +316,7 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
 
         // Step 7: Show proper messages  
         this.outputResponse.result = true;
-        this.outputResponse.successMessage = this.getText("LOG_OUTPUT.SUCCESS_MESSAGE", this.outputResponse.data.projectName, this.outputResponse.data.projectFolderPath);
+        this.outputResponse.successMessage = this.getText("LOG_OUTPUT.SUCCESS_MESSAGE_WITH_BACKUP", this.outputResponse.data.backupFolder);
 
       } else {
         // Change project config
@@ -321,7 +325,7 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
           this.projectConfig.changeNodeValues(this.outputResponse.data.updateInputs[i].key, this.outputResponse.data.updateInputs[i].argsValue);
         }
         this.outputResponse.result = true;
-        this.outputResponse.successMessage = this.getText("LOG_OUTPUT.SUCCESS_MESSAGE", this.outputResponse.data.projectName, this.outputResponse.data.projectFolderPath);
+        this.outputResponse.successMessage = this.getText("LOG_OUTPUT.SUCCESS_MESSAGE");
       }
     } else if (this.outputResponse.askConfirmation === false) {
       throw new Error(this.getText("ERRORS.DO_NOT_UPDATE_PROJECT"));
@@ -332,9 +336,15 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
 
   getFolderName() {
     const currentDateTime = new Date();
-    return String(currentDateTime.getFullYear()) + String(currentDateTime.getMonth() + 1) + String(currentDateTime.getDate()) + String(currentDateTime.getHours()) + String(currentDateTime.getMinutes()) + String(currentDateTime.getSeconds());
+    return String(currentDateTime.getFullYear()) + "-" + this.doubleDigit(currentDateTime.getMonth() + 1) + "-" + this.doubleDigit(currentDateTime.getDate()) + "-" + this.doubleDigit(currentDateTime.getHours()) + "-" + this.doubleDigit(currentDateTime.getMinutes()) + "-" + this.doubleDigit(currentDateTime.getSeconds());
   }
 
+  private doubleDigit(input: number): string {
+    if (input < 10) {
+      return "0" + String(input);
+    }
+    return String(input);
+  }
   /**
    * Clean up
    */
