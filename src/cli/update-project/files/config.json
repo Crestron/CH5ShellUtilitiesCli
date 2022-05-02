@@ -138,7 +138,7 @@
       "isSpecialArgument": true
     }
   ],
-  "backupFolder": "./dist/",
+  "backupFolder": "./dist/backup/",
   "additionalHelp": true,
   "automatedTests": {
     "enable": true,
