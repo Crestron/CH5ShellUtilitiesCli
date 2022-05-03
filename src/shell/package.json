@@ -1,6 +1,6 @@
 {
   "name": "shell-template",
-  "version": "2.0.15-alpha.16",
+  "version": "2.0.25-alpha.26",
   "main": "index.js",
   "license": "SEE LICENSE IN LICENSE.txt",
   "scripts": {

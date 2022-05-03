@@ -74,7 +74,7 @@ export class Ch5UpgradeProjectCli extends Ch5BaseClassForCliNew implements ICh5C
 
   processDirectories() {
     return new Promise((resolve, reject) => {
-      const v2URL = 'https://siproducts.blob.core.windows.net/ch5-test/04072022/Ch5ShellTemplate-2.0.20-alpha.21.zip';
+      const v2URL = 'https://siproducts.blob.core.windows.net/ch5-test/05022022/Ch5ShellTemplate-2.0.25-alpha.26.zip';
       https.get(v2URL, (res: any) => {
         // create temporary folder
         fs.mkdirSync(`${this.temporaryPath}`);
