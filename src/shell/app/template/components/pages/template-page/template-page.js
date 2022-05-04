@@ -322,7 +322,7 @@ const templatePageModule = (() => {
 
 						for (let i = 0; i < pagesList.length; i++) {
 							const childNodeTriggerView = document.createElement("ch5-triggerview-child");
-							const tgViewChildProperties = projectConfigResponse.content.triggerViewChildProperties;
+							const tgViewChildProperties = projectConfigResponse.content.pages[i].triggerViewChildProperties;
 							if (tgViewChildProperties) {
 								Object.entries(tgViewChildProperties).forEach(([key, value]) => {
 									childNodeTriggerView.setAttribute(key, value);
@@ -346,7 +346,7 @@ const templatePageModule = (() => {
 							}
 							htmlImportSnippet.setAttribute("id", pagesList[i].pageName + "-import-page");
 							if (pagesList[i].preloadPage === true) {
-								// Why do this - becos there is a flicker when page loads and hides if url is set - specifically with sginal sent
+								// We need the below becos there is a flicker when page loads and hides if url is set - specifically with signal sent
 								htmlImportSnippet.setAttribute("url", pagesList[i].fullPath + pagesList[i].fileName);
 							} else {
 								htmlImportSnippet.setAttribute("receiveStateShow", pagesList[i].pageName + "-import-page-show");
