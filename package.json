@@ -1,10 +1,10 @@
 {
   "name": "@crestron/ch5-shell-utilities-cli",
   "version": "0.0.6",
-  "description": "CH5 Utilities CLI for archiving and distribution",
+  "description": "CH5 Shell Utilities CLI for command scripts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Crestron/CH5Utilities.git"
+    "url": "https://github.com/Crestron/CH5ShellUtilitiesCli.git"
   },
   "main": "./build/index.js",
   "bin": {
@@ -17,17 +17,17 @@
     "build": "tsc -p tsconfig.prod.json",
     "ch5-utils": "./build/index.js",
     "clean": "rimraf build",
-    "create": "yarn build && yarn test",
-    "publish:local": "yarn build && yarn unlink && yarn link",
-    "publish:local:watch": "nodemon --watch 'src/**/*.ts' --exec 'yarn publish:local'",
-    "setup:local": "yarn install && yarn link @crestron/ch5-shell-utilities-cli && yarn build && yarn link",
+    "create": "npm run build && npm run test",
+    "publish:local": "npm run build && npm unlink && npm link",
+    "publish:local:watch": "nodemon --watch 'src/**/*.ts' --exec 'npm run publish:local'",
+    "setup:local": "npm install && npm link @crestron/ch5-shell-utilities-cli && npm run build && npm link",
     "start:js": "node build/index.js",
     "start:watch": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts",
     "refresh": "rm -rf ./node_modules ./package-lock.json && npm install",
     "tsc": "tsc --declaration --declarationDir build/@types",
     "mtest": "mocha -r ts-node/register test/index.ts --timeout 15000 --reporter mochawesome",
     "test:mocha:report": "mocha --config=.mocharc.json --timeout 15000 --reporter mochawesome",
-    "test:mocha": "yarn build && nyc mocha --config=.mocharc.json"
+    "test:mocha": "npm run build && nyc mocha --config=.mocharc.json"
   },
   "keywords": [
     "ch5",
@@ -37,7 +37,6 @@
   "author": "Crestron",
   "license": "SEE LICENSE IN LICENSE.txt",
   "dependencies": {
-    "@crestron/ch5-utilities": "^0.1.21",
     "chalk": "^4.1.2",
     "commander": "^7.1.0",
     "edit-json-file": "^1.7.0",
