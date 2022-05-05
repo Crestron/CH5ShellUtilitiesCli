@@ -35,6 +35,13 @@ export class Ch5UpgradeProjectCli extends Ch5BaseClassForCliNew implements ICh5C
   private readonly licensePath = './LICENSE.txt'
   private readonly copyrightPath = './copyright.txt'
   private readonly packagePath = './package.json'
+  private readonly readmePath = './README.md'
+  private readonly packageLockPath = './package-lock.json'
+  private readonly appConfigPath = './app.config.js'
+  private readonly webpackCommonPath = './webpack.common.js'
+  private readonly webpackDevPath = './webpack.dev.js'
+  private readonly webpackProdPath = './webpack.prod.js'
+  private readonly indexHtmlPath = './app/index.html'
 
   /**
    * Constructor
@@ -106,6 +113,21 @@ export class Ch5UpgradeProjectCli extends Ch5BaseClassForCliNew implements ICh5C
               fsExtra.copySync(`${this.temporaryPath}/v2/${this.licensePath}`, this.licensePath);
               // copy copyright
               fsExtra.copySync(`${this.temporaryPath}/v2/${this.copyrightPath}`, this.copyrightPath);
+              // copy readme
+              fsExtra.copySync(`${this.temporaryPath}/v2/${this.readmePath}`, this.readmePath);
+              // copy package lock
+              fsExtra.copySync(`${this.temporaryPath}/v2/${this.packageLockPath}`, this.packageLockPath);
+              // copy appconfig
+              fsExtra.copySync(`${this.temporaryPath}/v2/${this.appConfigPath}`, this.appConfigPath);
+              // copy webpack common
+              fsExtra.copySync(`${this.temporaryPath}/v2/${this.webpackCommonPath}`, this.webpackCommonPath);
+              // copy webpack dev 
+              fsExtra.copySync(`${this.temporaryPath}/v2/${this.webpackDevPath}`, this.webpackDevPath);
+              // copywebpack prod
+              fsExtra.copySync(`${this.temporaryPath}/v2/${this.webpackProdPath}`, this.webpackProdPath);
+              // copy indexhtml
+              fsExtra.copySync(`${this.temporaryPath}/v2/${this.indexHtmlPath}`, this.indexHtmlPath);
+
 
               // copy package.json and keep old name from v1
               const oldPackageName = (fsExtra.readJSONSync(this.packagePath)).name;
