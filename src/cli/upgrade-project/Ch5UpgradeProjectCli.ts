@@ -42,6 +42,7 @@ export class Ch5UpgradeProjectCli extends Ch5BaseClassForCliNew implements ICh5C
   private readonly webpackDevPath = './webpack.dev.js'
   private readonly webpackProdPath = './webpack.prod.js'
   private readonly indexHtmlPath = './app/index.html'
+  private readonly oldShellUtilitiesPath = './shell-utilities'
 
   /**
    * Constructor
@@ -101,6 +102,8 @@ export class Ch5UpgradeProjectCli extends Ch5BaseClassForCliNew implements ICh5C
               this.utils.deleteFile(this.contractPath);
               // delete old vscode path
               this.utils.deleteFolder(this.vscodePath);
+              // delete old shell uitilies
+              this.utils.deleteFolder(this.oldShellUtilitiesPath);
               // copy new template from v2
               fsExtra.copySync(`${this.temporaryPath}/v2/${this.templatePath}`, this.templatePath);
               // copy assets from v2 to v1
