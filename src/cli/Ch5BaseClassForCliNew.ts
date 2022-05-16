@@ -14,6 +14,7 @@ import { Ch5CliProjectConfig } from "./Ch5CliProjectConfig";
 import { Ch5ValidateProjectConfigCli } from "./validate-project-config/Ch5ValidateProjectConfigJsonCli";
 import { Ch5CliConfigFileReader } from "./Ch5CliConfigFileReader";
 import { ICh5CliConfigFile } from "./ICh5CliConfigFile";
+import { Ch5CliError } from "./Ch5CliError";
 
 const { Select, Confirm, prompt } = require('enquirer');
 const Enquirer = require('enquirer');
@@ -21,6 +22,7 @@ const enquirer = new Enquirer();
 const path = require('path');
 const fs = require("fs");
 const jsonSchema = require('jsonschema');
+const child_process = require('child_process');
 
 export abstract class Ch5BaseClassForCliNew {
   private readonly _cliUtil: Ch5CliUtil;
@@ -95,7 +97,7 @@ export abstract class Ch5BaseClassForCliNew {
     this._cliUtil = new Ch5CliUtil();
     this._cliNamingHelper = new Ch5CliNamingHelper();
     this._cliProjectConfig = new Ch5CliProjectConfig();
-    this._cliConfigFileReader = new Ch5CliConfigFileReader(path.join(__dirname, this._folderPath, "files", "config.json"));
+    this._cliConfigFileReader = new Ch5CliConfigFileReader(path.join(__dirname, this._folderPath, "files", "config.json"), JSON.parse(this._cliUtil.readFileContentSync(path.join(__dirname, "files", "environment.json"))));
     this.CONFIG_FILE = this._cliConfigFileReader.configFile;
     this.processArgs();
     this._cliLogger = new Ch5CliLogger(this._inputArgs["verbose"].argsValue);
@@ -206,6 +208,7 @@ export abstract class Ch5BaseClassForCliNew {
   }
 
   protected validateCLIInputArgument(inputObj: any, key: string, value: string, errorMessage: string) {
+    this.logger.log(key + ": ", value);
     value = String(value).trim().toLowerCase();
     if (inputObj) {
       if (inputObj.allowedAliases && inputObj.allowedAliases.length > 0 && inputObj.allowedAliases.includes(value)) {
@@ -273,38 +276,137 @@ export abstract class Ch5BaseClassForCliNew {
    * @param program
    */
   public async setupCommand(program: commander.Command) {
-    let programObject = program
-      .command(this.CONFIG_FILE.command)
-      .name(this.CONFIG_FILE.name)
-      .usage(this.CONFIG_FILE.usage);
+    if (this.CONFIG_FILE.allowedEnvironments.indexOf(String(this.CONFIG_FILE.settings.environment)) >= 0) {
+      let programObject = program
+        .command(this.CONFIG_FILE.command)
+        .name(this.CONFIG_FILE.name)
+        .usage(this.CONFIG_FILE.usage)
+        .description(this.CONFIG_FILE.description);
 
-    for (let i: number = 0; i < this.CONFIG_FILE.options.length; i++) {
-      programObject = programObject.option(this.convertArrayToCommaSeparatedString(this.CONFIG_FILE.options[i].alias), this.CONFIG_FILE.options[i].description);
-    }
-    programObject = programObject.option("--verbose", "Get detailed output of the process. This is helpful incase any errors are found.");
-
-    if (this.CONFIG_FILE.aliases && this.CONFIG_FILE.aliases.length > 0) {
-      programObject = programObject.aliases(this.CONFIG_FILE.aliases);
-    }
-
-    if (this.CONFIG_FILE.additionalHelp === true) {
-      const contentForHelp: string = await this.utils.readFileContent(path.join(__dirname, this._folderPath, "files", "help.txt"));
-      programObject = programObject.addHelpText('after', contentForHelp);
-    }
-
-    programObject.allowUnknownOption().action(async (options) => {
-      try {
-        await this.run();
-      } catch (e: any) {
-        this.utils.writeError(e);
+      for (let i: number = 0; i < this.CONFIG_FILE.options.length; i++) {
+        programObject = programObject.option(this.convertArrayToCommaSeparatedString(this.CONFIG_FILE.options[i].alias), this.CONFIG_FILE.options[i].description);
       }
-    });
-    return programObject;
+      programObject = programObject.option("--verbose", "Get detailed output of the process. This is helpful incase any errors are found.");
+
+      if (this.CONFIG_FILE.aliases && this.CONFIG_FILE.aliases.length > 0) {
+        programObject = programObject.aliases(this.CONFIG_FILE.aliases);
+      }
+
+      if (this.CONFIG_FILE.additionalHelp === true) {
+        const contentForHelp: string = await this.utils.readFileContent(path.join(__dirname, this._folderPath, "files", "help.txt"));
+        programObject = programObject.addHelpText('after', contentForHelp);
+      }
+
+      programObject.allowUnknownOption().action(async (options) => {
+        try {
+          await this.run();
+        } catch (e: any) {
+          this.utils.writeError(e);
+        }
+      });
+      return programObject;
+    }
+  }
+
+  private compareVersions(cliVersionInput: string, userVersionInput: string) {
+    const cliVersion = cliVersionInput.split(".");
+    const userVersion = userVersionInput.split(".");
+
+    if (Number(userVersion[0]) > Number(cliVersion[0])) {
+      return { version: "MAJOR", isShellCliVersionGreater: false };
+    } else if (Number(userVersion[0]) < Number(cliVersion[0])) {
+      return { version: "MAJOR", isShellCliVersionGreater: true };
+    } else {
+      if (Number(userVersion[1]) > Number(cliVersion[1])) {
+        return { version: "MINOR", isShellCliVersionGreater: false };
+      } else if (Number(userVersion[1]) < Number(cliVersion[1])) {
+        return { version: "MINOR", isShellCliVersionGreater: true };
+      } else {
+        if (Number(userVersion[2]) > Number(cliVersion[2])) {
+          return { version: "BUILD", isShellCliVersionGreater: false };
+        } else if (Number(userVersion[2]) < Number(cliVersion[2])) {
+          return { version: "BUILD", isShellCliVersionGreater: true };
+        }
+      }
+    }
+    return { version: "", isShellCliVersionGreater: false };
+  }
+
+  protected checkVersionToExecute() {
+    let nodeVersionInstalled = "";
+    let npmVersionInstalled = "";
+    try {
+      nodeVersionInstalled = process.version;
+      nodeVersionInstalled = nodeVersionInstalled.replace(/(\r\n|\n|\r)/gm, "");
+      nodeVersionInstalled = nodeVersionInstalled.replace("v", "");
+      this.logger.log("node Version: ", nodeVersionInstalled);
+      const compareVersionOutputForNode = this.compareVersions(this.CONFIG_FILE.settings.minimumNodeVersion, nodeVersionInstalled);
+      this.logger.log("compareVersionOutputForNode: ", compareVersionOutputForNode);
+      if (compareVersionOutputForNode.version === "MAJOR") {
+        if (compareVersionOutputForNode.isShellCliVersionGreater === true) {
+          throw new Ch5CliError(this.getText("You seem to be using an older version of nodejs. Please upgrade to " + this.CONFIG_FILE.settings.minimumNodeVersion + " version of nodejs."));
+        } else {
+          this.logger.printWarning("Note: ch5-shell-cli has not been verified on your node version " + nodeVersionInstalled);
+        }
+      } else if (compareVersionOutputForNode.version === "MINOR") {
+        if (compareVersionOutputForNode.isShellCliVersionGreater === true) {
+          throw new Ch5CliError(this.getText("You seem to be using an older version of nodejs. Please upgrade to " + this.CONFIG_FILE.settings.minimumNodeVersion + " version of nodejs."));
+        } else {
+          // warning not required on minor and build versions
+        }
+      } else if (compareVersionOutputForNode.version === "BUILD") {
+        if (compareVersionOutputForNode.isShellCliVersionGreater === true) {
+          throw new Ch5CliError(this.getText("You seem to be using an older version of nodejs. Please upgrade to " + this.CONFIG_FILE.settings.minimumNodeVersion + " version of nodejs."));
+        } else {
+          // warning not required on minor and build versions
+        }
+      }
+
+      npmVersionInstalled = child_process.execSync('npm -v').toString();
+      npmVersionInstalled = npmVersionInstalled.replace(/(\r\n|\n|\r)/gm, "");
+      npmVersionInstalled = npmVersionInstalled.replace("v", "");
+      this.logger.log("npmVersionInstalled: ", npmVersionInstalled);
+      const compareVersionOutputForNPM = this.compareVersions(this.CONFIG_FILE.settings.minimumNPMVersion, npmVersionInstalled);
+      this.logger.log("compareVersionOutputForNPM: ", compareVersionOutputForNPM);
+      if (compareVersionOutputForNPM.version === "MAJOR") {
+        if (compareVersionOutputForNPM.isShellCliVersionGreater === true) {
+          throw new Ch5CliError(this.getText("You seem to be using an older version of npm. Please upgrade to " + this.CONFIG_FILE.settings.minimumNPMVersion + " version of npm."));
+        } else {
+          this.logger.printWarning("Note: ch5-shell-cli has not been verified on your npm version " + npmVersionInstalled);
+        }
+      } else if (compareVersionOutputForNPM.version === "MINOR") {
+        if (compareVersionOutputForNPM.isShellCliVersionGreater === true) {
+          throw new Ch5CliError(this.getText("You seem to be using an older version of npm. Please upgrade to " + this.CONFIG_FILE.settings.minimumNPMVersion + " version of npm."));
+        } else {
+          // warning not required on minor and build versions
+        }
+      } else if (compareVersionOutputForNPM.version === "BUILD") {
+        if (compareVersionOutputForNPM.isShellCliVersionGreater === true) {
+          throw new Ch5CliError(this.getText("You seem to be using an older version of npm. Please upgrade to " + this.CONFIG_FILE.settings.minimumNPMVersion + " version of npm."));
+        } else {
+          // warning not required on minor and build versions
+        }
+      }
+    } catch (e: any) {
+      if (e.name === "Ch5CliError") {
+        throw new Error(e.message);
+      } else {
+        if (nodeVersionInstalled === "") {
+          throw new Error(this.getText("You seem to be using an older version of nodejs. Please upgrade to version " + this.CONFIG_FILE.settings.minimumNodeVersion + " of nodejs."));
+        } else if (npmVersionInstalled === "") {
+          throw new Error(this.getText("You seem to be using an older version of npm. Please upgrade to version " + this.CONFIG_FILE.settings.minimumNPMVersion + " of npm."));
+        } else {
+          throw new Error(this.getText("To use ch5-shell-cli, please ensure that your nodejs version is " + this.CONFIG_FILE.settings.minimumNodeVersion + " and npm version is " + this.CONFIG_FILE.settings.minimumNPMVersion + ""));
+        }
+      }
+    }
   }
 
   public async run() {
     this.logger.start("Program Starts");
     try {
+      this.checkVersionToExecute();
+
       this.initBase();
 
       // Initialize
@@ -367,19 +469,16 @@ export abstract class Ch5BaseClassForCliNew {
 
   private validatePackageJsonProjectName(packageName: string) {
     /*
-      - project name length should be greater than zero
-      - all the characters in the project name must be lowercase i.e., no uppercase or mixed case names are allowed
-      - project name can consist of hyphens
+      - project name length should be greater than zero and cannot exceed 214
+      - project name characters must be lowercase i.e., no uppercase or mixed case names are allowed
+      - project name can consist of hyphens and numbers, and can only begin with alphabets
       - project name must not contain any non-url-safe characters (since name ends up being part of a URL)
-      - project name should not start with . or _
-      - project name should not contain any leading or trailing spaces
-      - project name should not contain any of the following characters: ~)('!*
-      - project name length cannot exceed 214      
+      - project name should not contain any spaces or any of the following characters: ~)('!*
     */
     if (packageName && packageName.trim().length > 0) {
       packageName = packageName.trim().toLowerCase();
       packageName = packageName.substring(0, 213);
-      const packageNameValidity = new RegExp(/^[a-z][a-z0-9-_ $]*$/).test(packageName);
+      const packageNameValidity = new RegExp(/^[a-z][a-z0-9-._$]*$/).test(packageName);
       if (packageNameValidity === false) {
         return {
           value: null,
@@ -445,29 +544,39 @@ export abstract class Ch5BaseClassForCliNew {
     }
   }
 
-  protected isConfigFileValid(filePath: string, schemaFilePath: string, runProjectConfigValidation: boolean = true) {
-    const Validator = jsonSchema.Validator;
-    const v = new Validator();
-    const projectConfigJson = JSON.parse(this.utils.readFileContentSync(filePath));
-    const projectConfigJsonSchema = JSON.parse(this.utils.readFileContentSync(schemaFilePath));
-    const errors = v.validate(projectConfigJson, projectConfigJsonSchema).errors;
-    const errorOrWarningType = this.getText("VALIDATIONS.SCHEMA.HEADER");
-    const errorsFOund = [];
-    for (let i: number = 0; i < errors.length; i++) {
-      this.logger.log("errors[i]", errors[i]);
-      errorsFOund.push(errorOrWarningType, errors[i].stack.toString().replace("instance.", ""), errors[i].schema.description);
+  protected async isConfigFileValid(filePath: string, schemaFilePath: string, preBuildValidationOnly: boolean = false) {
+    let errorsFound: any[] = [];
+    let warningsFound: any[] = [];
+    const valProjConfig = new Ch5ValidateProjectConfigCli(false, false);
+    valProjConfig.changeConfigParam("projectConfigJSONFile", filePath);
+    valProjConfig.changeConfigParam("projectConfigJSONSchemaFile", schemaFilePath);
+    const outputForValPC: boolean = await valProjConfig.run();
+    this.logger.log("outputForValPC", outputForValPC);
+    if (outputForValPC === false) {
+      const errorsFoundForValPC = valProjConfig.getErrors();
+      if (errorsFoundForValPC && errorsFoundForValPC.length > 0) {
+        errorsFound = errorsFound.concat(errorsFoundForValPC);
+        this.logger.log("errorsFound in Validate Project Config", errorsFound);
+      }
+      const warningsFoundForValPC = valProjConfig.getWarnings();
+      if (warningsFoundForValPC && warningsFoundForValPC.length > 0) {
+        warningsFound = warningsFound.concat(warningsFoundForValPC);
+        this.logger.log("warningsFound in Validate Project Config", warningsFound);
+      }
     }
 
-    if (runProjectConfigValidation === true) {
-      // run validate Project config
-      const valProjConfig = new Ch5ValidateProjectConfigCli(false);
-      valProjConfig.changeConfigParam("projectConfigJSONFile", filePath);
-      valProjConfig.changeConfigParam("projectConfigJSONSchemaFile", schemaFilePath);
-      valProjConfig.run();
+    if (preBuildValidationOnly === true) {
+      errorsFound = errorsFound.filter((dataObj: any) => { return (dataObj.type === Ch5ValidateProjectConfigCli.RULES.PRE_BUILD_RULES) });
+      warningsFound = warningsFound.filter((dataObj: any) => { return (dataObj.type === Ch5ValidateProjectConfigCli.RULES.PRE_BUILD_RULES) });
     }
-    //TODO - why is logger log not working
-    this.logger.log("Schema Validation Errors: ", errors.length);
-    return (errors.length === 0);
+    this.logger.log("Schema Validation Errors: ", errorsFound.length, errorsFound);
+    this.logger.log("Schema Validation Warnings: ", warningsFound.length, warningsFound);
+
+    if (errorsFound.length !== 0) {
+      this.logger.printError("Errors / Warnings found while validating input configuration file:\n");
+      valProjConfig.printOutputErrorsAndWarnings(errorsFound, warningsFound);
+    }
+    return (errorsFound.length === 0);
   }
 
   protected isConfigFileExist(fileName: string) {
@@ -485,28 +594,6 @@ export abstract class Ch5BaseClassForCliNew {
     } else {
       return false;
     }
-  }
-
-  /**
-   * Composes the output message for errors
-   * @param {array} dataArray
-   * @param {string} type
-   */
-  protected composeOutput(dataArray: any[], type: string) {
-    let outputMessage = this.getText("OUTPUT_ERROR_HEADER", type, String(dataArray.length)) + "\n";
-    let tab: string = "    ";
-    let numbering = 1;
-    let previousOutputHeading = "";
-    for (let i: number = 0; i < dataArray.length; i++) {
-      if (previousOutputHeading !== dataArray[i].heading) {
-        outputMessage += tab + String(numbering) + ". " + dataArray[i].heading + ": " + dataArray[i].message + "\n";
-        numbering += 1;
-      }
-      if (dataArray[i].resolution && dataArray[i].resolution.trim() !== "") {
-        outputMessage += tab + " (" + dataArray[i].resolution + ").\n";
-      }
-    }
-    return outputMessage;
   }
 
 }
