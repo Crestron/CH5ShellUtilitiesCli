@@ -166,13 +166,14 @@
     "projectName": {
       "title": "Project Name",
       "description": "A meaningful short name for the project.",
+      "pattern": "^[^\\s]+$",
       "type": "string"
     },
     "version": {
       "default": "0.0.1",
       "title": "Version",
       "description": "The version of the project configuration.",
-      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+      "pattern": "^[^\\s]+$",
       "type": "string"
     },
     "faviconPath": {
@@ -513,7 +514,7 @@
                   "type": "string",
                   "default": "",
                   "description": "Accepts join or contract name to log diagnostics when the event is received",
-                  "title": "Log on Project load"                                    
+                  "title": "Log on Project load"
                 },
                 "logDiagnostics": {
                   "type": "string",
@@ -538,7 +539,7 @@
           "required": [
             "logs"
           ]
-        },        
+        },
         "$component": {
           "$id": "#/properties/header/properties/$component",
           "default": "",
@@ -647,12 +648,7 @@
                     "pageName": "page1",
                     "fullPath": "./app/project/components/pages/page1/",
                     "fileName": "page1.html",
-                    "triggerViewChildProperties": {
-                      "sendEventOnShow": ""
-                    },
-                    "pageProperties": {
-                      "sendEventOnShow": ""
-                    },
+                    "triggerViewChildProperties": {},
                     "navigation": {
                       "sequence": 1,
                       "label": "page1",
@@ -711,50 +707,6 @@
                     "title": "preloadPage",
                     "default": false,
                     "description": "The preloadPage pages "
-                  },
-                  "pageProperties": {
-                    "$id": "#/properties/content/properties/pages/items/anyOf/0/properties/pageProperties",
-                    "default": {
-                      "sendEventOnShow": ""
-                    },
-                    "examples": [
-                      {
-                        "receiveStateShowPulse": "",
-                        "receiveStateHidePulse": "",
-                        "receiveStateShow": "",
-                        "sendEventOnShow": ""
-                      }
-                    ],
-                    "type": "object",
-                    "title": "pageProperties",
-                    "description": "The properties of the HTML page snippet.",
-                    "properties": {
-                      "receiveStateShowPulse": {
-                        "$id": "#/properties/content/properties/pages/items/anyOf/0/properties/pageProperties/properties/receiveStateShowPulse",
-                        "type": "string",
-                        "title": "receiveStateShowPulse",
-                        "description": "This controls the visibility of the elements."
-                      },
-                      "receiveStateHidePulse": {
-                        "$id": "#/properties/content/properties/pages/items/anyOf/0/properties/pageProperties/properties/receiveStateHidePulse",
-                        "type": "string",
-                        "title": "receiveStateHidePulse",
-                        "description": "This controls the visibility of the elements."
-                      },
-                      "receiveStateShow": {
-                        "$id": "#/properties/content/properties/pages/items/anyOf/0/properties/pageProperties/properties/receiveStateShow",
-                        "type": "string",
-                        "title": "receiveStateShow",
-                        "description": "This controls the visibility of the elements."
-                      },
-                      "sendEventOnShow": {
-                        "$id": "#/properties/content/properties/pages/items/anyOf/0/properties/pageProperties/properties/sendEventOnShow",
-                        "type": "string",
-                        "title": "sendEventOnShow",
-                        "description": "Sends a digital pulse when childView becomes visible."
-                      }
-                    },
-                    "additionalProperties": false
                   },
                   "triggerViewChildProperties": {
                     "$id": "#/properties/content/properties/pages/items/anyOf/0/properties/triggerViewChildProperties",
@@ -909,16 +861,6 @@
                     "description": "The filename of the widget.",
                     "title": "fileName",
                     "pattern": "\\.html$"
-                  },
-                  "widgetProperties": {
-                    "title": "widgetProperties",
-                    "description": "The properties, send and receive states for widget can be set here.",
-                    "anyOf": [
-                      {
-                        "$ref": "#/definitions/commonAttributes"
-                      }
-                    ],
-                    "additionalProperties": true
                   }
                 },
                 "additionalProperties": false

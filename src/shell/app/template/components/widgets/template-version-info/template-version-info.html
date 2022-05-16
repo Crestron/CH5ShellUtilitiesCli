@@ -54,35 +54,34 @@
                             <div id="memory-used"></div>
                         </div>
                         <ch5-button id="memory-info" shape="circle" size="x-small" iconClass="material-icons md-info"
-                            sendEventOnClick="infoMemory.clicked" role="button" aria-label="Open Version Information" aria-pressed="false">
+                            role="button" aria-label="Open Version Information" aria-pressed="false">
                         </ch5-button>
-    
-                        <ch5-modal-dialog receiveStateShowPulse="infoMemory.clicked" closable closeIcon="fa fa-window-close"
-                            hideOkButton="true" hideCancelButton="true" title="Memory Usage info" customclass="memory-usage-dialog">
-                            <!-- TODO -->
-                        </ch5-modal-dialog>
+
+                        <div id="memory-tooltip">
+                            <span>M Tooltip</span>
+                        </div>
+
                     </div>
                     <div class="memory-container">
                         <span id="total-components" data-ch5-i18n="-+header.info.diagnostics.memory.totalcomponents+-">Total Ch5 Components:</span>
-                        <ch5-button id="components-info" shape="circle" size="x-small" iconClass="material-icons md-info"
-                            sendEventOnClick="ch5components.clicked" role="button" aria-label="Open Version Information" aria-pressed="false">
+                        <ch5-button id="components-info" shape="circle" size="x-small" iconClass="material-icons md-info" role="button" aria-label="Open Version Information" aria-pressed="false">
                         </ch5-button>
-                        <ch5-modal-dialog receiveStateShowPulse="ch5components.clicked" closable closeIcon="fa fa-window-close"
-                            hideOkButton="true" hideCancelButton="true" title="Total Ch5 Components" customclass="ch5-components-dialog">
-                            <!-- TODO -->
-                        </ch5-modal-dialog>
+
+                        <div id="components-tooltip">
+                            <span>C Tooltip</span>
+                        </div>
                     </div>
                     <span id="total-dom" data-ch5-i18n="-+header.info.diagnostics.memory.totalnodes+-">Total DOM Nodes:</span>
     
                     <div class="memory-container">
                         <span id="page-count" data-ch5-i18n="-+header.info.diagnostics.memory.pagecount+-">Page Count:</span>
                         <ch5-button id="count-info" shape="circle" size="x-small" iconClass="material-icons md-info"
-                            sendEventOnClick="pageCount.clicked" role="button" aria-label="Open Version Information" aria-pressed="false">
+                             role="button" aria-label="Open Version Information" aria-pressed="false">
                         </ch5-button>
-                        <ch5-modal-dialog receiveStateShowPulse="pageCount.clicked" closable closeIcon="fa fa-window-close"
-                            hideOkButton="true" hideCancelButton="true" title="Page Count" customclass="page-count-dialog">
-                            <!-- TODO -->
-                        </ch5-modal-dialog>
+
+                        <div id="count-tooltip">
+                            <span>C Tooltip</span>
+                        </div>
                     </div>
                     <span id="current-components" data-ch5-i18n="-+header.info.diagnostics.memory.currentcomp+-">Current CH5 Components:</span>
                     <span id="start-duration" data-ch5-i18n="-+header.info.diagnostics.memory.startduration+-">Start Duration:</span>

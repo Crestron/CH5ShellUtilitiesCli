@@ -338,12 +338,6 @@ const templatePageModule = (() => {
 							*/
 
 							const htmlImportSnippet = document.createElement("ch5-import-htmlsnippet");
-							const htmlImportSnippetProperties = projectConfigResponse.content.pageProperties;
-							if (htmlImportSnippetProperties) {
-								Object.entries(htmlImportSnippetProperties).forEach(([key, value]) => {
-									htmlImportSnippet.setAttribute(key, value);
-								});
-							}
 							htmlImportSnippet.setAttribute("id", pagesList[i].pageName + "-import-page");
 							if (pagesList[i].preloadPage === true) {
 								// We need the below becos there is a flicker when page loads and hides if url is set - specifically with signal sent
@@ -483,7 +477,6 @@ const templatePageModule = (() => {
 				menu.setAttribute("onRelease", "templatePageModule.navigateTriggerViewByPageName('" + responseArrayForNavPages[i].pageName + "')");
 			}
 		}
-
 	}
 
 	function navigateToFirstPage(projectConfigResponse, responseArrayForNavPages) {

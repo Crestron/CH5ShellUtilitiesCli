@@ -45,6 +45,9 @@ const templateVersionInfoModule = (() => {
 
 	let diagnosticsPageChangeChanged = false;
 	let projectConfig;
+	let memoryToolTipVisible = false;
+	let componentsToolTipVisible = false;
+	let countsToolTipVisible = false;
 
 	/**
 	 * Initialize Method
@@ -73,6 +76,39 @@ const templateVersionInfoModule = (() => {
 		updateDiagnosticsHTML();
 
 		setTabsListeners();
+
+		initializeTooltips('memory-tooltip', 'memory-info', memoryToolTipVisible);
+		initializeTooltips('components-tooltip', 'components-info', componentsToolTipVisible);
+		initializeTooltips('count-tooltip', 'count-info', countsToolTipVisible);
+	}
+
+	function initializeTooltips(tooltipId, buttonId) {
+		const memoryTooltip = document.getElementById(buttonId).children[0];
+		document.getElementById(tooltipId).style.visibility = 'hidden';
+		document.getElementById(tooltipId).style.right = '100px';
+
+		memoryTooltip.addEventListener('click', () => {
+			toggleToolTip(tooltipId)
+		})
+		memoryTooltip.addEventListener('touch', () => {
+			toggleToolTip(tooltipId)
+		})
+	}
+
+	function toggleToolTip(tooltipId, tooltipvisible) {
+		const tooltip = document.getElementById(tooltipId);
+		const tooltipSize = tooltip.getBoundingClientRect();
+		if (tooltip.style.visibility === 'hidden') {
+			tooltip.style.visibility = 'visible'
+			const buffer = tooltip.style.right === '100px' ? 200 : 0;
+			if (tooltipSize.x + tooltipSize.width + buffer > window.innerWidth + 10) {
+				tooltip.style.right = '100px';
+			} else {
+				tooltip.style.right = '-100px';
+			}
+		} else {
+			tooltip.style.visibility = 'hidden'
+		}
 	}
 
 	function updateVersionTabHTML() {
