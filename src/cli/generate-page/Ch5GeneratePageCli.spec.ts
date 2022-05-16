@@ -201,9 +201,6 @@
 //           "fullPath": "./app/project/components/pages/page1/",
 //           "fileName": "page1.html",
 //           "standAloneView": false,
-//           "pageProperties": {
-//             "sendEventOnShow": ""
-//           },
 //           "navigation": {
 //             "sequence": 1,
 //             "label": "menu.page1",
@@ -218,9 +215,6 @@
 //           "fullPath": "./app/project/components/pages/page2/",
 //           "fileName": "page2.html",
 //           "standAloneView": false,
-//           "pageProperties": {
-//             "sendEventOnShow": ""
-//           },
 //           "navigation": {
 //             "sequence": 2,
 //             "label": "menu.page2",
@@ -235,9 +229,6 @@
 //           "fullPath": "./app/project/components/pages/page3/",
 //           "fileName": "page3.html",
 //           "standAloneView": false,
-//           "pageProperties": {
-//             "sendEventOnShow": ""
-//           },
 //           "navigation": {
 //             "sequence": 3,
 //             "label": "menu.page3",
@@ -252,9 +243,6 @@
 //           "fullPath": "./app/project/components/pages/page4/",
 //           "fileName": "page4.html",
 //           "standAloneView": false,
-//           "pageProperties": {
-//             "sendEventOnShow": ""
-//           },
 //           "navigation": {
 //             "sequence": 4,
 //             "label": "menu.page4",
@@ -269,9 +257,6 @@
 //           "fullPath": "./app/project/components/pages/page5/",
 //           "fileName": "page5.html",
 //           "standAloneView": false,
-//           "pageProperties": {
-//             "sendEventOnShow": ""
-//           },
 //           "navigation": {
 //             "sequence": 5,
 //             "label": "menu.page5",
@@ -286,9 +271,6 @@
 //           "fullPath": "./app/project/components/pages/page6/",
 //           "fileName": "page6.html",
 //           "standAloneView": false,
-//           "pageProperties": {
-//             "sendEventOnShow": ""
-//           },
 //           "navigation": {
 //             "sequence": 6,
 //             "label": "menu.page6",
@@ -303,8 +285,7 @@
 //         {
 //           "widgetName": "pagedisplay",
 //           "fullPath": "./app/project/components/widgets/pagedisplay/",
-//           "fileName": "pagedisplay.html",
-//           "widgetProperties": {}
+//           "fileName": "pagedisplay.html"
 //         }
 //       ]
 //     }

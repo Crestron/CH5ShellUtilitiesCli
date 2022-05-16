@@ -11,16 +11,12 @@ import { ICh5Cli } from "../ICh5Cli";
 const path = require('path');
 const fs = require("fs");
 const fsExtra = require("fs-extra");
-const Enquirer = require('enquirer');
-const enquirer = new Enquirer();
 
 export class Ch5GenerateWidgetCli extends Ch5BaseClassForCli implements ICh5Cli {
 
   /*
     - "basePathForWidgets": "./app/project/components/widgets/" - This indicates the path where the widget will be generated.
     - "templatesPath": "./ch5-shell-utilities-cli/src/cli/generate-widget/templates/" - This indicates the path where the templates can be found.
-    - "minLengthOfWidgetName": 2 - The minimum length for widget name.
-    - "maxLengthOfWidgetName": 31 - The maximum length for widget name.
   */
 
   private readonly MIN_LENGTH_OF_WIDGET_NAME: number = 2;
@@ -46,10 +42,6 @@ export class Ch5GenerateWidgetCli extends Ch5BaseClassForCli implements ICh5Cli 
         folderPath: ""
       }
     };
-  }
-
-  public get getEnquirer() {
-    return enquirer;
   }
 
   /**
@@ -183,7 +175,7 @@ export class Ch5GenerateWidgetCli extends Ch5BaseClassForCli implements ICh5Cli 
   }
 
   /**
-   * Create Folder for the Wudgets to be created
+   * Create Folder for the Widgets to be created
    */
   private async createFolder() {
     let isFolderCreated = false;

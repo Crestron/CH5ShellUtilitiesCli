@@ -89,17 +89,13 @@
 //                 "fullPath": "./app/project/components/pages/page1/",
 //                 "fileName": "page1.html",
 //                 "standAloneView": false,
-//                 "pageProperties": {
-//                   "sendEventOnShow": ""
-//                 },
 //               }
 //             ],
 //             widgets: [
 //               {
 //                 "widgetName": "pagedisplay",
 //                 "fullPath": "./app/project/components/widgets/pagedisplay/",
-//                 "fileName": "pagedisplay.html",
-//                 "widgetProperties": {}
+//                 "fileName": "pagedisplay.html"
 //               }
 //             ]
 //           }
@@ -139,17 +135,13 @@
 //                 "fullPath": "./app/project/components/pages/page1/",
 //                 "fileName": "page1.html",
 //                 "standAloneView": false,
-//                 "pageProperties": {
-//                   "sendEventOnShow": ""
-//                 },
 //               }
 //             ],
 //             widgets: [
 //               {
 //                 "widgetName": "pagedisplay",
 //                 "fullPath": "./app/project/components/widgets/pagedisplay/",
-//                 "fileName": "pagedisplay.html",
-//                 "widgetProperties": {}
+//                 "fileName": "pagedisplay.html"
 //               }
 //             ]
 //           }
@@ -189,17 +181,13 @@
 //                 "fullPath": "./app/project/components/pages/page1/",
 //                 "fileName": "page1.html",
 //                 "standAloneView": false,
-//                 "pageProperties": {
-//                   "sendEventOnShow": ""
-//                 },
 //               }
 //             ],
 //             widgets: [
 //               {
 //                 "widgetName": "pagedisplay",
 //                 "fullPath": "./app/project/components/widgets/pagedisplay/",
-//                 "fileName": "pagedisplay.html",
-//                 "widgetProperties": {}
+//                 "fileName": "pagedisplay.html"
 //               }
 //             ]
 //           }
@@ -238,17 +226,13 @@
 //                 "fullPath": "./app/project/components/pages/page1/",
 //                 "fileName": "page1.html",
 //                 "standAloneView": false,
-//                 "pageProperties": {
-//                   "sendEventOnShow": ""
-//                 },
 //               }
 //             ],
 //             widgets: [
 //               {
 //                 "widgetName": "pagedisplay",
 //                 "fullPath": "./app/project/components/widgets/pagedisplay/",
-//                 "fileName": "pagedisplay.html",
-//                 "widgetProperties": {}
+//                 "fileName": "pagedisplay.html"
 //               }
 //             ]
 //           }
@@ -288,17 +272,13 @@
 //                 "fullPath": "./app/project/components/pages/page1/",
 //                 "fileName": "page1.html",
 //                 "standAloneView": false,
-//                 "pageProperties": {
-//                   "sendEventOnShow": ""
-//                 },
 //               }
 //             ],
 //             widgets: [
 //               {
 //                 "widgetName": "pagedisplay",
 //                 "fullPath": "./app/project/components/widgets/pagedisplay/",
-//                 "fileName": "pagedisplay.html",
-//                 "widgetProperties": {}
+//                 "fileName": "pagedisplay.html"
 //               }
 //             ]
 //           }

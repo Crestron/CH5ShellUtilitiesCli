@@ -726,9 +726,6 @@
 //                                         "triggerViewChildProperties": {
 //                                             "sendeventonshow": ""
 //                                         },
-//                                         "pageProperties": {
-//                                             "sendEventOnShow": ""
-//                                         },
 //                                         "navigation": {
 //                                             "sequence": 1,
 //                                             "label": "page1",
@@ -773,22 +770,6 @@
 //                                         "title": "standAloneView",
 //                                         "default": false,
 //                                         "description": "The standAloneView pages will not be a part of the triggerview content (slide). The navigation node takes preference over standAloneView when it is specified for the page.\nThere are two instances where the standAloneView does not contain a navigation node:\n1. When standAloneView is set to false.\n* The pages will not be a part of the content triggerview (slide).\n* These pages can be used to include specific HTML content as required (for example, Header and Footer).\n\r2. When standAloneView is set to true.\n* The pages will not be a part of the content triggerview (slide).\n* This page will be automatically added as ch5-import-htmlsnippet in the index.html page.\n* These pages can be used for full screen pop-ups or page loading views.\n"
-//                                     },
-//                                     "pageProperties": {
-//                                         "$id": "#/properties/content/properties/pages/items/anyOf/0/properties/pageProperties",
-//                                         "default": {},
-//                                         "type": "object",
-//                                         "title": "pageProperties",
-//                                         "description": "The properties of the HTML page snippet.",
-//                                         "properties": {
-//                                             "sendEventOnShow": {
-//                                                 "$id": "#/properties/content/properties/pages/items/anyOf/0/properties/pageProperties/properties/sendEventOnShow",
-//                                                 "type": "string",
-//                                                 "title": "sendEventOnShow",
-//                                                 "description": "sendEventOnShow for the page."
-//                                             }
-//                                         },
-//                                         "additionalProperties": true
 //                                     },
 //                                     "triggerViewChildProperties": {
 //                                         "$id": "#/properties/content/properties/pages/items/anyOf/0/properties/triggerViewChildProperties",
@@ -944,16 +925,6 @@
 //                                         "title": "fileName",
 //                                         "pattern": "\\.html$"
 //                                     },
-//                                     "widgetProperties": {
-//                                         "title": "widgetProperties",
-//                                         "description": "The properties, send and receive states for widget can be set here.",
-//                                         "anyOf": [
-//                                             {
-//                                                 "$ref": "#/definitions/commonAttributes"
-//                                             }
-//                                         ],
-//                                         "additionalProperties": true
-//                                     }
 //                                 },
 //                                 "additionalProperties": false
 //                             }
@@ -1100,9 +1071,6 @@
 //                 "fullPath": "./app/project/components/pages/page1/",
 //                 "fileName": "page1.html",
 //                 "standAloneView": false,
-//                 "pageProperties": {
-//                     "sendEventOnShow": ""
-//                 },
 //                 "navigation": {
 //                     "sequence": 1,
 //                     "label": "menu.page1",
@@ -1117,8 +1085,7 @@
 //             {
 //                 "widgetName": "pagedisplay",
 //                 "fullPath": "./app/project/components/widgets/pagedisplay/",
-//                 "fileName": "pagedisplay.html",
-//                 "widgetProperties": {}
+//                 "fileName": "pagedisplay.html"
 //             }
 //         ]
 //     }
@@ -1197,9 +1164,6 @@
 //                 "fullPath": "./app/project/components/pages/page1/",
 //                 "fileName": "page1.html",
 //                 "standAloneView": false,
-//                 "pageProperties": {
-//                     "sendEventOnShow": ""
-//                 },
 //                 "navigation": {
 //                     "sequence": 1,
 //                     "label": "menu.page1",
@@ -1214,9 +1178,6 @@
 //                 "fullPath": "./app/project/components/pages/page1/",
 //                 "fileName": "page1.html",
 //                 "standAloneView": false,
-//                 "pageProperties": {
-//                     "sendEventOnShow": ""
-//                 },
 //                 "navigation": {
 //                     "sequence": 1,
 //                     "label": "menu.page1",
@@ -1231,8 +1192,7 @@
 //             {
 //                 "widgetName": "pagedisplay",
 //                 "fullPath": "./app/project/components/widgets/pagedisplay/",
-//                 "fileName": "pagedisplay.html",
-//                 "widgetProperties": {}
+//                 "fileName": "pagedisplay.html"
 //             }
 //         ]
 //     }
@@ -1311,9 +1271,6 @@
 //                 "fullPath": "./app/project/components/pages/page1/",
 //                 "fileName": "page1.html",
 //                 "standAloneView": false,
-//                 "pageProperties": {
-//                     "sendEventOnShow": ""
-//                 },
 //                 "navigation": {
 //                     "sequence": 1,
 //                     "label": "menu.page1",
@@ -1328,14 +1285,12 @@
 //             {
 //                 "widgetName": "pagedisplay",
 //                 "fullPath": "./app/project/components/widgets/pagedisplay/",
-//                 "fileName": "pagedisplay.html",
-//                 "widgetProperties": {}
+//                 "fileName": "pagedisplay.html"
 //             },
 //             {
 //                 "widgetName": "pagedisplay",
 //                 "fullPath": "./app/project/components/widgets/pagedisplay/",
-//                 "fileName": "pagedisplay.html",
-//                 "widgetProperties": {}
+//                 "fileName": "pagedisplay.html"
 //             }
 //         ]
 //     }

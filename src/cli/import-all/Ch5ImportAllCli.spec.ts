@@ -117,9 +117,6 @@
 //                       "fullPath": "./app/project/components/pages/page1/",
 //                       "fileName": "page1.html",
 //                       "standAloneView": false,
-//                       "pageProperties": {
-//                         "sendEventOnShow": ""
-//                       },
 //                     }
 //                   ]
 //                 }
@@ -147,9 +144,6 @@
 //                       "fullPath": "./app/project/components/pages/page1/",
 //                       "fileName": "page1.html",
 //                       "standAloneView": false,
-//                       "pageProperties": {
-//                         "sendEventOnShow": ""
-//                       },
 //                     }
 //                   ]
 //                 }

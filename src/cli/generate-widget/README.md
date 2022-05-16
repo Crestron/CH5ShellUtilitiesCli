@@ -116,9 +116,8 @@ A file named 'project-config.json' is located in the './app/' directory. This fi
     {
         "widgetName": "widget1",
         "fullPath": "./app/project/components/widgets/widget1/",
-        "fileName": "widget1.html",
-        "widgetProperties": {}
-      }
+        "fileName": "widget1.html"
+    }
 ```
 
 Refer to the project-config.json section for more details regarding the newly generated node.

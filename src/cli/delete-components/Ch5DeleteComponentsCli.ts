@@ -8,10 +8,6 @@
 import { Ch5BaseClassForCli } from "../Ch5BaseClassForCli";
 import { ICh5Cli } from "../ICh5Cli";
 
-const { MultiSelect } = require('enquirer');
-const Enquirer = require('enquirer');
-const enquirer = new Enquirer();
-
 export class Ch5DeleteComponentsCli extends Ch5BaseClassForCli implements ICh5Cli {
 
   private outputResponse: any = {};
@@ -22,14 +18,6 @@ export class Ch5DeleteComponentsCli extends Ch5BaseClassForCli implements ICh5Cl
    */
   public constructor(public showOutputMessages: boolean = true) {
     super("delete-components");
-  }
-
-  public get getEnquirer() {
-    return enquirer;
-  }
-
-  public get getMultiSelect() {
-    return MultiSelect;
   }
 
   /**

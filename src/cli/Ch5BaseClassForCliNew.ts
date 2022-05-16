@@ -332,7 +332,7 @@ export abstract class Ch5BaseClassForCliNew {
     return { version: "", isShellCliVersionGreater: false };
   }
 
-  protected checkVersionToExecute() {
+  public checkVersionToExecute() {
     let nodeVersionInstalled = "";
     let npmVersionInstalled = "";
     try {

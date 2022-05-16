@@ -11,16 +11,12 @@ import { ICh5Cli } from "../ICh5Cli";
 const path = require('path');
 const fs = require("fs");
 const fsExtra = require("fs-extra");
-const Enquirer = require('enquirer');
-const enquirer = new Enquirer();
 
 export class Ch5GeneratePageCli extends Ch5BaseClassForCli implements ICh5Cli {
 
   /*
     - "basePathForPages": "./app/project/components/pages/" - This indicates the path where the page will be generated.
     - "templatesPath": "./ch5-shell-utilities-cli/src/cli/generate-page/templates/" - This indicates the path where the templates can be found
-    - "minLengthOfPageName": 2 - The minimum length for page name
-    - "maxLengthOfPageName": 31 - The maximum length for page name
   */
 
   private readonly MIN_LENGTH_OF_PAGE_NAME: number = 2;
@@ -30,10 +26,6 @@ export class Ch5GeneratePageCli extends Ch5BaseClassForCli implements ICh5Cli {
 
   public constructor(public showOutputMessages: boolean = true) {
     super("generate-page");
-  }
-
-  public get getEnquirer() {
-    return enquirer;
   }
 
   /**

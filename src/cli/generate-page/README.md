@@ -137,9 +137,6 @@ A file named 'project-config.json' is located in the './app/' directory. This fi
         "cachePage": false,
         "preloadPage": false,
         "standAloneView": false,
-        "pageProperties": {
-          "sendEventOnShow": ""
-        },
         "navigation": {
           "sequence": 1,
           "label": "menu.page1",

@@ -11,7 +11,6 @@ import { Ch5CliUtil } from "./Ch5CliUtil";
 import { Ch5CliLogger } from "./Ch5CliLogger";
 import { Ch5CliNamingHelper } from "./Ch5CliNamingHelper";
 import { Ch5CliProjectConfig } from "./Ch5CliProjectConfig";
-import { Ch5ValidateProjectConfigCli } from "./validate-project-config/Ch5ValidateProjectConfigJsonCli";
 import { Ch5CliConfigFileReader } from "./Ch5CliConfigFileReader";
 import { ICh5CliConfigFile } from "./ICh5CliConfigFile";
 import { Ch5CliError } from "./Ch5CliError";
@@ -19,6 +18,7 @@ import { Ch5CliError } from "./Ch5CliError";
 const { Select, Confirm, prompt } = require('enquirer');
 const Enquirer = require('enquirer');
 const enquirer = new Enquirer();
+const { MultiSelect } = require('enquirer');
 const path = require('path');
 const fs = require("fs");
 const jsonSchema = require('jsonschema');
@@ -38,6 +38,10 @@ export abstract class Ch5BaseClassForCli {
 
   public get getEnquirer() {
     return enquirer;
+  }
+
+  public get getMultiSelect() {
+    return MultiSelect;
   }
 
   public get getPrompt() {
@@ -448,59 +452,6 @@ export abstract class Ch5BaseClassForCli {
       return e.message;
     } else {
       return this.getText("ERRORS.SOMETHING_WENT_WRONG");
-    }
-  }
-
-
-  protected async isConfigFileValid(filePath: string, schemaFilePath: string, preBuildValidationOnly: boolean = false) {
-    let errorsFound: any[] = [];
-    let warningsFound: any[] = [];
-    const valProjConfig = new Ch5ValidateProjectConfigCli(false, false);
-    valProjConfig.changeConfigParam("projectConfigJSONFile", filePath);
-    valProjConfig.changeConfigParam("projectConfigJSONSchemaFile", schemaFilePath);
-    const outputForValPC: boolean = await valProjConfig.run();
-    this.logger.log("outputForValPC", outputForValPC);
-    if (outputForValPC === false) {
-      const errorsFoundForValPC = valProjConfig.getErrors();
-      if (errorsFoundForValPC && errorsFoundForValPC.length > 0) {
-        errorsFound = errorsFound.concat(errorsFoundForValPC);
-        this.logger.log("errorsFound in Validate Project Config", errorsFound);
-      }
-      const warningsFoundForValPC = valProjConfig.getWarnings();
-      if (warningsFoundForValPC && warningsFoundForValPC.length > 0) {
-        warningsFound = warningsFound.concat(warningsFoundForValPC);
-        this.logger.log("warningsFound in Validate Project Config", warningsFound);
-      }
-    }
-
-    if (preBuildValidationOnly === true) {
-      errorsFound = errorsFound.filter((dataObj: any) => { return (dataObj.type === Ch5ValidateProjectConfigCli.RULES.PRE_BUILD_RULES) });
-      warningsFound = warningsFound.filter((dataObj: any) => { return (dataObj.type === Ch5ValidateProjectConfigCli.RULES.PRE_BUILD_RULES) });
-    }
-    this.logger.log("Schema Validation Errors: ", errorsFound.length, errorsFound);
-    this.logger.log("Schema Validation Warnings: ", warningsFound.length, warningsFound);
-
-    if (errorsFound.length !== 0) {
-      this.logger.printError("Errors / Warnings found while validating input configuration file:\n");
-      valProjConfig.printOutputErrorsAndWarnings(errorsFound, warningsFound);
-    }
-    return (errorsFound.length === 0);
-  }
-
-  protected isConfigFileExist(fileName: string) {
-    if (fs.existsSync(fileName)) {
-      const checkFileOrFolder = fs.statSync(fileName);
-      if (checkFileOrFolder && checkFileOrFolder.isFile()) {
-        if (path.extname(fileName).trim().toLowerCase() === ".json") {
-          return true;
-        } else {
-          return false;
-        }
-      } else {
-        return false;
-      }
-    } else {
-      return false;
     }
   }
 
