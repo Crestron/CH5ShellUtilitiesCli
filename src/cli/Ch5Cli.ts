@@ -72,8 +72,13 @@ export class Ch5ShellCli {
     program
       .name("ch5-shell-cli")
       .version(buildVersion)
-      .description("CH5 Shell Utilities CLI");
+      .description("CH5 Shell Utilities CLI")
+      .addHelpText('after', `
+  Version: ${buildVersion}
+      `);
 
+    //  Minimum node version required for CLI: v${buildVersion}
+    //  Minimum npm version required for CLI: v${buildVersion}
     // This adds a nice fancy ch5-shell-cli in console whenever a command is executed.
     // console.log(
     //   chalk.greenBright(

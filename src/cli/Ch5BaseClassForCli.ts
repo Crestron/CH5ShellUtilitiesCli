@@ -11,39 +11,45 @@ import { Ch5CliUtil } from "./Ch5CliUtil";
 import { Ch5CliLogger } from "./Ch5CliLogger";
 import { Ch5CliNamingHelper } from "./Ch5CliNamingHelper";
 import { Ch5CliProjectConfig } from "./Ch5CliProjectConfig";
+import { Ch5ValidateProjectConfigCli } from "./validate-project-config/Ch5ValidateProjectConfigJsonCli";
 import { Ch5CliConfigFileReader } from "./Ch5CliConfigFileReader";
+import { ICh5CliConfigFile } from "./ICh5CliConfigFile";
+import { Ch5CliError } from "./Ch5CliError";
 
+const { Select, Confirm, prompt } = require('enquirer');
+const Enquirer = require('enquirer');
+const enquirer = new Enquirer();
 const path = require('path');
-export class Ch5BaseClassForCli {
+const fs = require("fs");
+const jsonSchema = require('jsonschema');
+const child_process = require('child_process');
+
+export abstract class Ch5BaseClassForCli {
   private readonly _cliUtil: Ch5CliUtil;
   private readonly _cliLogger: Ch5CliLogger;
+  private readonly _cliConfigFileReader: Ch5CliConfigFileReader;
   private readonly _cliNamingHelper: Ch5CliNamingHelper;
   private readonly _cliProjectConfig: Ch5CliProjectConfig;
-  private readonly _cliConfigFileReader: Ch5CliConfigFileReader;
 
   private _folderPath: string = "";
   private CONFIG_FILE: any;
   private TRANSLATION_FILE: any;
   private _inputArguments: any = {};
 
-  private readonly COMMON_INPUT_PARAMS: any[] = [
-    {
-      "key": "verbose",
-      "description": "",
-      "type": "boolean",
-      "default": true,
-      "valueIfNotFound": false,
-      "alias": ["--verbose"]
-    },
-    {
-      "key": "help",
-      "description": "",
-      "type": "boolean",
-      "default": true,
-      "valueIfNotFound": false,
-      "alias": ["-h", "--help"]
-    }
-  ];
+  public get getEnquirer() {
+    return enquirer;
+  }
+
+  public get getPrompt() {
+    return prompt;
+  }
+  public get getSelect() {
+    return Select;
+  }
+
+  public get getConfirm() {
+    return Confirm;
+  }
 
   protected get inputArguments(): any {
     return this._inputArguments;
@@ -55,6 +61,18 @@ export class Ch5BaseClassForCli {
 
   protected get logger() {
     return this._cliLogger;
+  }
+
+  protected get configFileReader() {
+    return this._cliConfigFileReader;
+  }
+
+  protected get configFile() {
+    return this._cliConfigFileReader.configFile;
+  }
+
+  protected get configFileArgs() {
+    return this._cliConfigFileReader;
   }
 
   protected get namingHelper() {
@@ -70,10 +88,10 @@ export class Ch5BaseClassForCli {
     this._cliUtil = new Ch5CliUtil();
     this._cliNamingHelper = new Ch5CliNamingHelper();
     this._cliProjectConfig = new Ch5CliProjectConfig();
-    this._cliConfigFileReader = new Ch5CliConfigFileReader(path.join(__dirname, this._folderPath, "files", "config.json"));
-    this.CONFIG_FILE = JSON.parse(this.utils.readFileContentSync(path.join(__dirname, this._folderPath, "files", "config.json")));
+    this._cliConfigFileReader = new Ch5CliConfigFileReader(path.join(__dirname, this._folderPath, "files", "config.json"), JSON.parse(this._cliUtil.readFileContentSync(path.join(__dirname, "files", "environment.json"))));
+    this.CONFIG_FILE = this._cliConfigFileReader.configFile;
     this._inputArguments = this.processArgs();
-    this._cliLogger = new Ch5CliLogger(this._inputArguments["verbose"]);
+    this._cliLogger = new Ch5CliLogger(this._inputArguments["verbose"].argsValue);
     this.TRANSLATION_FILE = JSON.parse(this.utils.readFileContentSync(path.join(__dirname, this._folderPath, "i18n", "en.json")));
   }
 
@@ -88,7 +106,6 @@ export class Ch5BaseClassForCli {
 
   processArgsAnalyze(args: any): any {
     const completeInputParams = this._cliConfigFileReader.configParamOptions();
-
     const output: any = {};
     let arrayKey: any = null;
     let arrayParam: any = null;
@@ -145,6 +162,34 @@ export class Ch5BaseClassForCli {
     this.CONFIG_FILE[attrs[attrs.length - 1]] = value;
   }
 
+  public mergeJSON(...args: any) {
+    let target = {};
+    // Merge the object into the target object
+
+    //Loop through each object and conduct a merge
+    for (let i = 0; i < args.length; i++) {
+      target = this.merger(target, args[i]);
+    }
+    return target;
+  }
+
+  private merger(target: any, obj: any) {
+    for (let prop in obj) {
+      // eslint-disable-next-line no-prototype-builtins
+      if (obj.hasOwnProperty(prop)) {
+        if (Object.prototype.toString.call(obj[prop]) === '[object Object]') {
+          // If we're doing a deep merge and the property is an object
+          target[prop] = this.mergeJSON(target[prop], obj[prop]);
+          // target = merger(target, obj[prop]);
+        } else {
+          // Otherwise, do a regular merge
+          target[prop] = obj[prop];
+        }
+      }
+    }
+    return target;
+  }
+
   protected validateCLIInputArgument(inputObj: any, key: string, value: string, errorMessage: string) {
     this.logger.log(key + ": ", value);
     value = String(value).trim().toLowerCase();
@@ -165,28 +210,28 @@ export class Ch5BaseClassForCli {
       } else {
         if (inputObj.type === "string") {
           if (inputObj.validation !== "") {
-            if (inputObj.validation === "validatePackageName") {
-              const valOutput: any = this.validatePackage(value);
+            if (inputObj.validation === "validatePackageJsonProjectName") {
+              const valOutput: any = this.validatePackageJsonProjectName(value);
               if (valOutput.isValid === false) {
                 return {
                   value: null,
-                  error: valOutput.error
+                  warning: valOutput.error
                 };
               } else {
                 return {
                   value: value,
-                  error: ""
+                  warning: ""
                 };
               }
             }
             return {
               value: value,
-              error: ""
+              warning: ""
             };
           } else {
             return {
               value: value,
-              error: ""
+              warning: ""
             };
           }
         }
@@ -207,35 +252,131 @@ export class Ch5BaseClassForCli {
    * @param program
    */
   public async setupCommand(program: commander.Command) {
-    let programObject = program
-      .command(this.CONFIG_FILE.command)
-      .name(this.CONFIG_FILE.name)
-      .usage(this.CONFIG_FILE.usage);
+    if (this.CONFIG_FILE.allowedEnvironments.indexOf(String(this.CONFIG_FILE.settings.environment)) >= 0) {
+      let programObject = program
+        .command(this.CONFIG_FILE.command)
+        .name(this.CONFIG_FILE.name)
+        .usage(this.CONFIG_FILE.usage)
+        .description(this.CONFIG_FILE.description);
 
-    for (let i: number = 0; i < this.CONFIG_FILE.options.length; i++) {
-      programObject = programObject.option(this.convertArrayToCommaSeparatedString(this.CONFIG_FILE.options[i].alias), this.CONFIG_FILE.options[i].description);
-    }
-    programObject = programObject.option("--verbose", "Get detailed output of the process. This is helpful incase any errors are found.");
-
-    if (this.CONFIG_FILE.aliases && this.CONFIG_FILE.aliases.length > 0) {
-      programObject = programObject.aliases(this.CONFIG_FILE.aliases);
-    }
-
-    if (this.CONFIG_FILE.additionalHelp === true) {
-      const contentForHelp: string = await this.utils.readFileContent(path.join(__dirname, this._folderPath, "files", "help.txt"));
-      programObject = programObject.addHelpText('after', contentForHelp);
-    }
-
-    programObject.allowUnknownOption().action(async (options) => {
-      try {
-        await this.run();
-      } catch (e: any) {
-        this.utils.writeError(e);
+      for (let i: number = 0; i < this.CONFIG_FILE.options.length; i++) {
+        programObject = programObject.option(this.convertArrayToCommaSeparatedString(this.CONFIG_FILE.options[i].alias), this.CONFIG_FILE.options[i].description);
       }
-    });
-    return programObject;
+      programObject = programObject.option("--verbose", "Get detailed output of the process. This is helpful incase any errors are found.");
+
+      if (this.CONFIG_FILE.aliases && this.CONFIG_FILE.aliases.length > 0) {
+        programObject = programObject.aliases(this.CONFIG_FILE.aliases);
+      }
+
+      if (this.CONFIG_FILE.additionalHelp === true) {
+        const contentForHelp: string = await this.utils.readFileContent(path.join(__dirname, this._folderPath, "files", "help.txt"));
+        programObject = programObject.addHelpText('after', contentForHelp);
+      }
+
+      programObject.allowUnknownOption().action(async (options) => {
+        try {
+          await this.run();
+        } catch (e: any) {
+          this.utils.writeError(e);
+        }
+      });
+      return programObject;
+    }
   }
 
+  private compareVersions(cliVersionInput: string, userVersionInput: string) {
+    const cliVersion = cliVersionInput.split(".");
+    const userVersion = userVersionInput.split(".");
+
+    if (Number(userVersion[0]) > Number(cliVersion[0])) {
+      return { version: "MAJOR", isShellCliVersionGreater: false };
+    } else if (Number(userVersion[0]) < Number(cliVersion[0])) {
+      return { version: "MAJOR", isShellCliVersionGreater: true };
+    } else {
+      if (Number(userVersion[1]) > Number(cliVersion[1])) {
+        return { version: "MINOR", isShellCliVersionGreater: false };
+      } else if (Number(userVersion[1]) < Number(cliVersion[1])) {
+        return { version: "MINOR", isShellCliVersionGreater: true };
+      } else {
+        if (Number(userVersion[2]) > Number(cliVersion[2])) {
+          return { version: "BUILD", isShellCliVersionGreater: false };
+        } else if (Number(userVersion[2]) < Number(cliVersion[2])) {
+          return { version: "BUILD", isShellCliVersionGreater: true };
+        }
+      }
+    }
+    return { version: "", isShellCliVersionGreater: false };
+  }
+
+  protected checkVersionToExecute() {
+    let nodeVersionInstalled = "";
+    let npmVersionInstalled = "";
+    try {
+      nodeVersionInstalled = process.version;
+      nodeVersionInstalled = nodeVersionInstalled.replace(/(\r\n|\n|\r)/gm, "");
+      nodeVersionInstalled = nodeVersionInstalled.replace("v", "");
+      this.logger.log("node Version: ", nodeVersionInstalled);
+      const compareVersionOutputForNode = this.compareVersions(this.CONFIG_FILE.settings.minimumNodeVersion, nodeVersionInstalled);
+      this.logger.log("compareVersionOutputForNode: ", compareVersionOutputForNode);
+      if (compareVersionOutputForNode.version === "MAJOR") {
+        if (compareVersionOutputForNode.isShellCliVersionGreater === true) {
+          throw new Ch5CliError(this.getText("You seem to be using an older version of nodejs. Please upgrade to " + this.CONFIG_FILE.settings.minimumNodeVersion + " version of nodejs."));
+        } else {
+          this.logger.printWarning("Note: ch5-shell-cli has not been verified on your node version " + nodeVersionInstalled);
+        }
+      } else if (compareVersionOutputForNode.version === "MINOR") {
+        if (compareVersionOutputForNode.isShellCliVersionGreater === true) {
+          throw new Ch5CliError(this.getText("You seem to be using an older version of nodejs. Please upgrade to " + this.CONFIG_FILE.settings.minimumNodeVersion + " version of nodejs."));
+        } else {
+          // warning not required on minor and build versions
+        }
+      } else if (compareVersionOutputForNode.version === "BUILD") {
+        if (compareVersionOutputForNode.isShellCliVersionGreater === true) {
+          throw new Ch5CliError(this.getText("You seem to be using an older version of nodejs. Please upgrade to " + this.CONFIG_FILE.settings.minimumNodeVersion + " version of nodejs."));
+        } else {
+          // warning not required on minor and build versions
+        }
+      }
+
+      npmVersionInstalled = child_process.execSync('npm -v').toString();
+      npmVersionInstalled = npmVersionInstalled.replace(/(\r\n|\n|\r)/gm, "");
+      npmVersionInstalled = npmVersionInstalled.replace("v", "");
+      this.logger.log("npmVersionInstalled: ", npmVersionInstalled);
+      const compareVersionOutputForNPM = this.compareVersions(this.CONFIG_FILE.settings.minimumNPMVersion, npmVersionInstalled);
+      this.logger.log("compareVersionOutputForNPM: ", compareVersionOutputForNPM);
+      if (compareVersionOutputForNPM.version === "MAJOR") {
+        if (compareVersionOutputForNPM.isShellCliVersionGreater === true) {
+          throw new Ch5CliError(this.getText("You seem to be using an older version of npm. Please upgrade to " + this.CONFIG_FILE.settings.minimumNPMVersion + " version of npm."));
+        } else {
+          this.logger.printWarning("Note: ch5-shell-cli has not been verified on your npm version " + npmVersionInstalled);
+        }
+      } else if (compareVersionOutputForNPM.version === "MINOR") {
+        if (compareVersionOutputForNPM.isShellCliVersionGreater === true) {
+          throw new Ch5CliError(this.getText("You seem to be using an older version of npm. Please upgrade to " + this.CONFIG_FILE.settings.minimumNPMVersion + " version of npm."));
+        } else {
+          // warning not required on minor and build versions
+        }
+      } else if (compareVersionOutputForNPM.version === "BUILD") {
+        if (compareVersionOutputForNPM.isShellCliVersionGreater === true) {
+          throw new Ch5CliError(this.getText("You seem to be using an older version of npm. Please upgrade to " + this.CONFIG_FILE.settings.minimumNPMVersion + " version of npm."));
+        } else {
+          // warning not required on minor and build versions
+        }
+      }
+    } catch (e: any) {
+      if (e.name === "Ch5CliError") {
+        throw new Error(e.message);
+      } else {
+        if (nodeVersionInstalled === "") {
+          throw new Error(this.getText("You seem to be using an older version of nodejs. Please upgrade to version " + this.CONFIG_FILE.settings.minimumNodeVersion + " of nodejs."));
+        } else if (npmVersionInstalled === "") {
+          throw new Error(this.getText("You seem to be using an older version of npm. Please upgrade to version " + this.CONFIG_FILE.settings.minimumNPMVersion + " of npm."));
+        } else {
+          throw new Error(this.getText("To use ch5-shell-cli, please ensure that your nodejs version is " + this.CONFIG_FILE.settings.minimumNodeVersion + " and npm version is " + this.CONFIG_FILE.settings.minimumNPMVersion + ""));
+        }
+      }
+    }
+  }
   private convertArrayToCommaSeparatedString(input: string[]) {
     let output: string = "";
     for (let i: number = 0; i < input.length; i++) {
@@ -259,26 +400,23 @@ export class Ch5BaseClassForCli {
     return this.CONFIG_FILE[nodeName];
   }
 
-  private validatePackage(packageName: string) {
+  private validatePackageJsonProjectName(packageName: string) {
     /*
-      - package name length should be greater than zero
-      - all the characters in the package name must be lowercase i.e., no uppercase or mixed case names are allowed
-      - package name can consist of hyphens
-      - package name must not contain any non-url-safe characters (since name ends up being part of a URL)
-      - package name should not start with . or _
-      - package name should not contain any leading or trailing spaces
-      - package name should not contain any of the following characters: ~)('!*
-      - package name length cannot exceed 214      
+      - project name length should be greater than zero and cannot exceed 214
+      - project name characters must be lowercase i.e., no uppercase or mixed case names are allowed
+      - project name can consist of hyphens and numbers, and can only begin with alphabets
+      - project name must not contain any non-url-safe characters (since name ends up being part of a URL)
+      - project name should not contain any spaces or any of the following characters: ~)('!*
     */
     if (packageName && packageName.trim().length > 0) {
       packageName = packageName.trim().toLowerCase();
       packageName = packageName.substring(0, 213);
-      const packageNameValidity = new RegExp(/^[a-z][a-z0-9-_ $]*$/).test(packageName);
+      const packageNameValidity = new RegExp(/^[a-z][a-z0-9-._$]*$/).test(packageName);
       if (packageNameValidity === false) {
         return {
           value: null,
           isValid: false,
-          error: "Package name should not start with number or hyphen or underscore"
+          error: this.getText("COMMON.VALIDATIONS.PROJECT_NAME")
         };
       } else {
         return {
@@ -291,7 +429,7 @@ export class Ch5BaseClassForCli {
       return {
         value: "",
         isValid: false,
-        error: "Empty Package Name"
+        error: this.getText("COMMON.VALIDATIONS.PROJECT_NAME")
       };
     }
   }
@@ -310,6 +448,59 @@ export class Ch5BaseClassForCli {
       return e.message;
     } else {
       return this.getText("ERRORS.SOMETHING_WENT_WRONG");
+    }
+  }
+
+
+  protected async isConfigFileValid(filePath: string, schemaFilePath: string, preBuildValidationOnly: boolean = false) {
+    let errorsFound: any[] = [];
+    let warningsFound: any[] = [];
+    const valProjConfig = new Ch5ValidateProjectConfigCli(false, false);
+    valProjConfig.changeConfigParam("projectConfigJSONFile", filePath);
+    valProjConfig.changeConfigParam("projectConfigJSONSchemaFile", schemaFilePath);
+    const outputForValPC: boolean = await valProjConfig.run();
+    this.logger.log("outputForValPC", outputForValPC);
+    if (outputForValPC === false) {
+      const errorsFoundForValPC = valProjConfig.getErrors();
+      if (errorsFoundForValPC && errorsFoundForValPC.length > 0) {
+        errorsFound = errorsFound.concat(errorsFoundForValPC);
+        this.logger.log("errorsFound in Validate Project Config", errorsFound);
+      }
+      const warningsFoundForValPC = valProjConfig.getWarnings();
+      if (warningsFoundForValPC && warningsFoundForValPC.length > 0) {
+        warningsFound = warningsFound.concat(warningsFoundForValPC);
+        this.logger.log("warningsFound in Validate Project Config", warningsFound);
+      }
+    }
+
+    if (preBuildValidationOnly === true) {
+      errorsFound = errorsFound.filter((dataObj: any) => { return (dataObj.type === Ch5ValidateProjectConfigCli.RULES.PRE_BUILD_RULES) });
+      warningsFound = warningsFound.filter((dataObj: any) => { return (dataObj.type === Ch5ValidateProjectConfigCli.RULES.PRE_BUILD_RULES) });
+    }
+    this.logger.log("Schema Validation Errors: ", errorsFound.length, errorsFound);
+    this.logger.log("Schema Validation Warnings: ", warningsFound.length, warningsFound);
+
+    if (errorsFound.length !== 0) {
+      this.logger.printError("Errors / Warnings found while validating input configuration file:\n");
+      valProjConfig.printOutputErrorsAndWarnings(errorsFound, warningsFound);
+    }
+    return (errorsFound.length === 0);
+  }
+
+  protected isConfigFileExist(fileName: string) {
+    if (fs.existsSync(fileName)) {
+      const checkFileOrFolder = fs.statSync(fileName);
+      if (checkFileOrFolder && checkFileOrFolder.isFile()) {
+        if (path.extname(fileName).trim().toLowerCase() === ".json") {
+          return true;
+        } else {
+          return false;
+        }
+      } else {
+        return false;
+      }
+    } else {
+      return false;
     }
   }
 

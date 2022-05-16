@@ -39,8 +39,11 @@ export class Ch5CliConfigFileReader {
     return this._configFile;
   }
 
-  public constructor(path: string) {
+  public constructor(path: string, content?: any) {
     this._configFile = JSON.parse(fs.readFileSync(path, 'utf8')) as ICh5CliConfigFile;
+    if (content) {
+      this._configFile = { ...this._configFile, ...content };
+    }
     this._configFileOptions = [...this._configFile.options, ...this.COMMON_INPUT_PARAMS];
   }
 
