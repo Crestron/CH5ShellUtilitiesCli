@@ -5,6 +5,7 @@
     "gen:w"
   ],
   "usage": "[options]",
+  "description": "Generate widget in the shell-template project",
   "options": [
     {
       "key": "name",
@@ -12,7 +13,10 @@
       "type": "string",
       "default": "",
       "valueIfNotFound": "",
-      "alias": ["-n", "--name"]
+      "alias": [
+        "-n",
+        "--name"
+      ]
     }
   ],
   "additionalHelp": true,
@@ -20,15 +24,19 @@
   "minLengthOfWidgetName": 2,
   "maxLengthOfWidgetName": 31,
   "templateNames": {
-     "disallowed": {
-       "startsWith": [
-         "template"
-       ],
-       "equals": [
-         "service",
-         "translate",
-         "utils"
-       ]
-     }
-   }
+    "disallowed": {
+      "startsWith": [
+        "template"
+      ],
+      "equals": [
+        "service",
+        "translate",
+        "utils"
+      ]
+    }
+  },
+  "allowedEnvironments": [
+    "dev",
+    "prod"
+  ]
 }

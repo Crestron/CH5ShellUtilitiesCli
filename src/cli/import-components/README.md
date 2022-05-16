@@ -15,7 +15,7 @@ Usage:
     
 You could also use `yarn` or `npm run` to import components. The following are the commands:
     yarn import:components [options]
-    npm run import:components [options]
+    npm run import:components -- [options]
 
 You could use `ch5-shell-cli` to import the complete contents of the zip file to './app/project/components/' folder.
     ch5-shell-cli import:components -z {path} --all
@@ -28,8 +28,8 @@ You could use shortcut script `imp:c` with options:
     ch5-shell-cli imp:c [options]
 
 You could use shortcut script `imp:c` with yarn and npm commands as the following:
-    yarn imp:c
-    npm run imp:c
+    yarn imp:c [options]
+    npm run imp:c -- [options]
 
 Options:
     -h, --help,         Display help for command

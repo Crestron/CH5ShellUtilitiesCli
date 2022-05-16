@@ -3,6 +3,7 @@
   "name": "create:project",
   "aliases": [],
   "usage": "[options]",
+  "description": "Create a shell-template project",
   "options": [
     {
       "key": "config",
@@ -40,5 +41,9 @@
   "automatedTests": {
     "enable": true,
     "enableComponentDeleteAfterTest": true
-  }
+  },
+  "allowedEnvironments": [
+    "dev",
+    "prod"
+  ]
 }

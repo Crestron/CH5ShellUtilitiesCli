@@ -19,14 +19,14 @@ Usage:
     
 You could also use `yarn` or `npm run` to generate pages. The following are the commands:
     yarn generate:page [options]
-    npm run generate:page [options]
+    npm run generate:page -- [options]
 
 You could use shortcut script `gen:p` with options:
     ch5-shell-cli gen:p [options]
 
 You could use shortcut script `gen:p` with yarn and npm commands as the following:
     yarn gen:p [options]
-    npm run gen:p [options]
+    npm run gen:p -- [options]
 
 Options:
     -h, --help          Help for Generate Documentation

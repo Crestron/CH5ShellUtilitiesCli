@@ -15,14 +15,14 @@ Usage:
 
 You could also use `yarn` or `npm run` to delete components. The following are the commands:
     yarn delete:components [options]
-    npm run delete:components [options]
+    npm run delete:components -- [options]
 
 You could use shortcut script `del:c` with options:
     ch5-shell-cli del:c [options]
 
 You could use shortcut script `del:c` with yarn and npm commands as the following:
     yarn del:c [options]
-    npm run del:c [options]
+    npm run del:c -- [options]
     
 Options:
     -h, --help          Display help for command

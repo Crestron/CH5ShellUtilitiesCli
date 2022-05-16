@@ -3,6 +3,7 @@
   "name": "create:project:components",
   "aliases": [],
   "usage": "[options]",
+  "description": "Create a shell-template project along with components",
   "options": [
     {
       "key": "config",
@@ -40,5 +41,6 @@
   "automatedTests": {
     "enable": true,
     "enableComponentDeleteAfterTest": true
-  }
+  },
+  "allowedEnvironments": ["dev"]
 }

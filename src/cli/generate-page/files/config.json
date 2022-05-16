@@ -5,6 +5,7 @@
     "gen:p"
   ],
   "usage": "[options]",
+  "description": "Generate page in the shell-template project",
   "options": [
     {
       "key": "menu",
@@ -12,7 +13,10 @@
       "type": "string",
       "default": "",
       "valueIfNotFound": "",
-      "alias": ["-m", "--menu"]
+      "alias": [
+        "-m",
+        "--menu"
+      ]
     },
     {
       "key": "name",
@@ -20,7 +24,10 @@
       "type": "string",
       "default": "",
       "valueIfNotFound": "",
-      "alias": ["-n", "--name"]
+      "alias": [
+        "-n",
+        "--name"
+      ]
     }
   ],
   "additionalHelp": true,
@@ -44,5 +51,9 @@
         "webXPanel"
       ]
     }
-  }
+  },
+  "allowedEnvironments": [
+    "dev",
+    "prod"
+  ]
 }

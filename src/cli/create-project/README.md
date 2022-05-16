@@ -25,17 +25,15 @@ Since the configuration json file is not provided, all content information will 
 If the projectName argument is not provided, then the user will be prompted to add a project name. 
 
 Validation for projectName argument are as follows:
-    - package name length should be greater than zero
-    - all the characters in the package name must be lowercase i.e., no uppercase or mixed case names are allowed
-    - package name can consist of hyphens
-    - package name must not contain any non-url-safe characters (since name ends up being part of a URL)
-    - package name should not start with . or _
-    - package name should not contain any leading or trailing spaces
-    - package name should not contain any of the following characters: ~)('!*
-    - package name length cannot exceed 214   
+    - project name length should be greater than zero and cannot exceed 214
+    - project name characters must be lowercase i.e., no uppercase or mixed case names are allowed
+    - project name can consist of hyphens and numbers, and can only begin with alphabets
+    - project name must not contain any non-url-safe characters (since name ends up being part of a URL)
+    - project name should not contain any spaces or any of the following characters: ~)('!*
 
 To access help, execute `ch5-shell-cli create:project --help`.
 
+If config file is added as an argument along with other parameters to the create:project command, then config file takes precedence, and other parameters are ignored.
 
 ### Copyright
 

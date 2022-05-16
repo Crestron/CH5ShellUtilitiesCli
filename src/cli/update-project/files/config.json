@@ -3,6 +3,7 @@
   "name": "update:project",
   "aliases": [],
   "usage": "[options]",
+  "description": "Update the project-config.json file in the shell-template project",
   "options": [
     {
       "key": "config",
@@ -143,5 +144,9 @@
   "automatedTests": {
     "enable": true,
     "enableComponentDeleteAfterTest": true
-  }
+  },
+  "allowedEnvironments": [
+    "dev",
+    "prod"
+  ]
 }

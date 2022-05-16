@@ -17,14 +17,14 @@ Usage:
 
 You could also use `yarn` or `npm run` to export components. The following are the commands:
     yarn export:components [options]
-    npm run export:components [options]
+    npm run export:components -- [options]
 
 You could use shortcut script `exp:c` with options:
     ch5-shell-cli exp:c [options]
 
 You could use shortcut script `exp:c` with yarn and npm commands as the following:
     yarn exp:c [options]
-    npm run exp:c [options]
+    npm run exp:c -- [options]
 
 Options:
     -h, --help,         Display help for command

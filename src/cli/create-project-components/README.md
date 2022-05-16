@@ -1,41 +1,21 @@
-# Create Project
+# Create Project Components
 
-To create a project, open command-prompt or terminal,  go to the folder where you want to create the project, and then execute the command `ch5-shell-cli create:project`.
+To create a project, open command-prompt or terminal,  go to the folder where you want to create the project, and then execute the command `ch5-shell-cli create:project:components`.
 
 ## How to Use
 
 ```bash
 Usage:
-    ch5-shell-cli create:project [options]
+    ch5-shell-cli create:project:components [options]
 
 ```
 
-There are two ways to create a project using CLI. 
+To create a project along with components using CLI, follow the below procedure:
+    Pass a configuration JSON file: This file is similar to project-config.json. The project can be created with customized content like 'selectedTheme', newer pages and widgets, etc.. The user will not be prompted for any further information, and all details will be picked from the json file.
 
-a. Passing a configuration JSON file: This file is similar to project-config.json. The project can be created with customized content like 'selectedTheme', newer pages and widgets, etc.. The user will not be prompted for any further information, and all details will be picked from the json file.
+`ch5-shell-cli create:project:components --config ./downloads/sample-config.json`
 
-`ch5-shell-cli create:project --config ./downloads/sample-config.json`
-
-b. Passing the name of the project:
-
-`ch5-shell-cli create:project --projectName "my-new-shell-template"`
-
-Since the configuration json file is not provided, all content information will be selected from a default config file available internally in the CLI project. 
-
-If the projectName argument is not provided, then the user will be prompted to add a project name. 
-
-Validation for projectName argument are as follows:
-    - package name length should be greater than zero
-    - all the characters in the package name must be lowercase i.e., no uppercase or mixed case names are allowed
-    - package name can consist of hyphens
-    - package name must not contain any non-url-safe characters (since name ends up being part of a URL)
-    - package name should not start with . or _
-    - package name should not contain any leading or trailing spaces
-    - package name should not contain any of the following characters: ~)('!*
-    - package name length cannot exceed 214   
-
-To access help, execute `ch5-shell-cli create:project --help`.
-
+To access help, execute `ch5-shell-cli create:project:components --help`.
 
 ### Copyright
 

@@ -5,6 +5,7 @@
     "exp:a"
   ],
   "usage": "[options]",
+  "description": "Export assets from the shell-template project",
   "options": [
     {
       "key": "all",
@@ -12,7 +13,9 @@
       "type": "boolean",
       "default": true,
       "valueIfNotFound": false,
-      "alias": ["--all"]
+      "alias": [
+        "--all"
+      ]
     },
     {
       "key": "list",
@@ -20,18 +23,25 @@
       "type": "array",
       "default": [],
       "valueIfNotFound": [],
-      "alias": ["-l", "--list"]
+      "alias": [
+        "-l",
+        "--list"
+      ]
     }
   ],
   "additionalHelp": true,
   "requiredFolderPath": "./app/project/assets/",
-    "zipFolderName": "exported-assets",
-    "outputFileName": "exported-assets.zip",
-    "outputTempFolderName": "Exported-Assets-Code-Folder-Temp",
-    "zipFileDestinationPath": "./dist/",
-    "ignoreFilesFolders": [
-      ".DS_Store",
-      ".lock",
-      ".db"
-    ]
+  "zipFolderName": "exported-assets",
+  "outputFileName": "exported-assets.zip",
+  "outputTempFolderName": "Exported-Assets-Code-Folder-Temp",
+  "zipFileDestinationPath": "./dist/",
+  "ignoreFilesFolders": [
+    ".DS_Store",
+    ".lock",
+    ".db"
+  ],
+  "allowedEnvironments": [
+    "dev",
+    "prod"
+  ]
 }

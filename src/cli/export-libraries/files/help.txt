@@ -1,14 +1,14 @@
     
 You could also use `yarn` or `npm run` to export assets. The following are the commands:
     yarn export:library [options]
-    npm run export:library [options]
+    npm run export:library -- [options]
 
 You could use shortcut script `exp:l` with options:
     ch5-shell-cli exp:l [options]
 
 You could use shortcut script `exp:l` with yarn and npm commands as the following:
     yarn exp:l [options]
-    npm run exp:l [options]
+    npm run exp:l -- [options]
 
 Export the complete components directory from './app/project/library/' folder. To achieve this, use the below commands:
     ch5-shell-cli export:library --all

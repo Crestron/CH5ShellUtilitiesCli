@@ -2,6 +2,11 @@
   "command": "upgrade:project",
   "name": "upgrade:project",
   "usage": "",
+  "description": "Upgrade from version 1 to version 2 of the shell-template project",
   "options": [],
-  "additionalHelp": true
+  "additionalHelp": true,
+  "allowedEnvironments": [
+    "dev",
+    "prod"
+  ]
 }

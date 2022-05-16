@@ -30,20 +30,17 @@ Since the json file is not provided, user will need to atleast 1 argument. Multi
 ### Validations and Important points
 
 1. Validation for projectName argument are as follows:
-    - package name length should be greater than zero
-    - all the characters in the package name must be lowercase i.e., no uppercase or mixed case names are allowed
-    - package name can consist of hyphens
-    - package name must not contain any non-url-safe characters (since name ends up being part of a URL)
-    - package name should not start with . or _
-    - package name should not contain any leading or trailing spaces
-    - package name should not contain any of the following characters: ~)('!*
-    - package name length cannot exceed 214   
+    - project name length should be greater than zero and cannot exceed 214
+    - project name characters must be lowercase i.e., no uppercase or mixed case names are allowed
+    - project name can consist of hyphens and numbers, and can only begin with alphabets
+    - project name must not contain any non-url-safe characters (since name ends up being part of a URL)
+    - project name should not contain any spaces or any of the following characters: ~)('!*
 
 2. All argument names like projectName, menuOrientation etc are exactly the same as defined in project-config.json. Only exception is 'version'. To update version, you will need to use `ch5-shell-cli update:project --projectVersion "1.0.0"`
 
 3. Pages / widgets can be added using the configuration file method. If there are newer pages / widgets in the config file (that do not exist in the project), then the new pages / widgets will be added. If the config file does not contain the pages / widgets defined in the project, then these pages will be deleted and cannot be restored. The configuration file values will override the project-config.json file in the project.
 
-4. if a config file is used to update the project, a confirmation will be requested by the script for updating the project. You can pass --force to override the confirmation.
+4. if a config file is used to update the project, a confirmation will be requested by the script for updating the project. You can pass --force to override the confirmation. If config file is added as an argument along with other parameters to the update:project command, then config file takes precedence, and other parameters are ignored.
 
 5. To access help, execute `ch5-shell-cli update:project --help`.
 

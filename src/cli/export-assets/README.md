@@ -17,14 +17,14 @@ Usage:
 
 You could also use `yarn` or `npm run` to export assets. The following are the commands:
     yarn export:assets [options]
-    npm run export:assets [options]
+    npm run export:assets -- [options]
 
 You could use shortcut script `exp:a` with options:
     ch5-shell-cli exp:a [options]
 
 You could use shortcut script `exp:a` with yarn and npm commands as the following:
     yarn exp:a [options]
-    npm run exp:a [options]
+    npm run exp:a -- [options]
 
 Options:
     -h, --help,         Display help for command

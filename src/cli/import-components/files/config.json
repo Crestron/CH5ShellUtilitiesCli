@@ -5,6 +5,7 @@
     "imp:c"
   ],
   "usage": "[options]",
+  "description": "Import components to the shell-template project",
   "options": [
     {
       "key": "all",
@@ -12,7 +13,9 @@
       "type": "boolean",
       "default": true,
       "valueIfNotFound": false,
-      "alias": ["--all"]
+      "alias": [
+        "--all"
+      ]
     },
     {
       "key": "list",
@@ -20,7 +23,10 @@
       "type": "array",
       "default": [],
       "valueIfNotFound": [],
-      "alias": ["-l", "--list"]
+      "alias": [
+        "-l",
+        "--list"
+      ]
     },
     {
       "key": "force",
@@ -28,7 +34,10 @@
       "type": "boolean",
       "default": true,
       "valueIfNotFound": false,
-      "alias": ["-f", "--force"]
+      "alias": [
+        "-f",
+        "--force"
+      ]
     },
     {
       "key": "zipFile",
@@ -36,7 +45,10 @@
       "type": "string",
       "default": "",
       "valueIfNotFound": "",
-      "alias": ["-z", "--zipFile"]
+      "alias": [
+        "-z",
+        "--zipFile"
+      ]
     }
   ],
   "additionalHelp": true,
@@ -51,5 +63,9 @@
     ".DS_Store",
     ".lock",
     "Thumbs.db"
+  ],
+  "allowedEnvironments": [
+    "dev",
+    "prod"
   ]
 }

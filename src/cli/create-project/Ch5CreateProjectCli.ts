@@ -50,7 +50,7 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
         throw new Error(this.getText("VERIFY_INPUT_PARAMS.INVALID_CONFIG_INPUT"));
       }
       // Step 2: Check if json is as per its schema (.vscode is hidden folder)
-      if (!(this.isConfigFileValid(this.inputArgs["config"].argsValue, path.join(this.SHELL_FOLDER, this.VSCODE_SCHEMA_JSON_PATH), false))) {
+      if (!(await this.isConfigFileValid(this.inputArgs["config"].argsValue, path.join(this.SHELL_FOLDER, this.VSCODE_SCHEMA_JSON_PATH), true))) {
         throw new Error(this.getText("VERIFY_INPUT_PARAMS.INVALID_CONFIG_FILE"));
       }
     } else {
@@ -198,8 +198,8 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
 
       // 1. Project Data
       for (const k in newProjectConfigJSON) {
-        if (!(typeof newProjectConfigJSON[k] === 'object' && newProjectConfigJSON[k] !== null)) {
-          if (oldProjectConfigJSON[k] && oldProjectConfigJSON[k] !== newProjectConfigJSON[k]) {
+        if ((typeof newProjectConfigJSON[k] !== 'object' && newProjectConfigJSON[k] !== null)) {
+          if (oldProjectConfigJSON[k] !== newProjectConfigJSON[k]) {
             oldProjectConfigJSON[k] = newProjectConfigJSON[k];
             this.projectConfig.changeNodeValues(k, oldProjectConfigJSON[k]);
           }
@@ -273,7 +273,7 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
       }
 
       // Step 6: Run validate:project-config
-      if (!(this.isConfigFileValid(path.join(pathToCreateProject, this.PROJECT_CONFIG_JSON_PATH), path.join(pathToCreateProject, this.VSCODE_SCHEMA_JSON_PATH)))) {
+      if (!(await this.isConfigFileValid(path.join(pathToCreateProject, this.PROJECT_CONFIG_JSON_PATH), path.join(pathToCreateProject, this.VSCODE_SCHEMA_JSON_PATH)))) {
         throw new Error(this.getText("PROCESS_REQUEST.PROJECT_CONFIG_VALIDATION_FAILED"));
       }
 
@@ -321,7 +321,7 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
       await genPage.run();
 
       // Step 6: Run validate:project-config
-      if (!(this.isConfigFileValid(path.join(pathToCreateProject, this.PROJECT_CONFIG_JSON_PATH), path.join(pathToCreateProject, this.VSCODE_SCHEMA_JSON_PATH)))) {
+      if (!(await this.isConfigFileValid(path.join(pathToCreateProject, this.PROJECT_CONFIG_JSON_PATH), path.join(pathToCreateProject, this.VSCODE_SCHEMA_JSON_PATH)))) {
         throw new Error(this.getText("PROCESS_REQUEST.PROJECT_CONFIG_VALIDATION_FAILED"));
       }
 

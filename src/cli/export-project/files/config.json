@@ -5,6 +5,7 @@
     "exp:p"
   ],
   "usage": "",
+  "description": "Export complete shell-template project",
   "options": [],
   "additionalHelp": true,
   "temporaryFilePath": "./../dist/",
@@ -24,5 +25,9 @@
     "testem.log",
     ".DS_Store",
     "Thumbs.db"
+  ],
+  "allowedEnvironments": [
+    "dev",
+    "prod"
   ]
 }

@@ -15,7 +15,7 @@ Usage:
     
 You could also use `yarn` or `npm run` to import components. The following are the commands:
     yarn import:library [options]
-    npm run import:library [options]
+    npm run import:library -- [options]
 
 You could use `ch5-shell-cli` to import the complete contents of the zip file to './app/project/libraries/' folder (replace {path} with the location of the exported zip file):
     ch5-shell-cli import:library -z {path} --all
@@ -35,8 +35,8 @@ You could use shortcut script `imp:l` with options:
     ch5-shell-cli imp:l [options]
 
 You could use shortcut script `imp:l` with yarn and npm commands as the following:
-    yarn imp:l
-    npm run imp:l
+    yarn imp:l [options]
+    npm run imp:l -- [options]
 
 Import selected libraries from './app/project/libraries/' folder. In this case, the filenames are mandatory in the command prompt. The filename must follow the complete path starting from './app/project/libraries/....'. Only filenames can be provided here (no folder paths). Multiple file names can be provided in the command prompt. To achieve this, use the following commands:
     ch5-shell-cli import:library -z ./dist/exported-library.zip -l ./app/project/libraries/a.js ./app/project/libraries/b.js

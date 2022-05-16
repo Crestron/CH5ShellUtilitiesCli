@@ -17,7 +17,7 @@ Usage:
 
 You could also use `yarn` or `npm run` to export assets, libraries, and components. The following are the commands:
     yarn export:all [options]
-    npm run export:all [options]
+    npm run export:all -- [options]
 
 Options:
     -h, --help,         Display help for command

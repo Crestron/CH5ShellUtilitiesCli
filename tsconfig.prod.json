@@ -33,7 +33,7 @@
     "src/cli/**/*.ts",
     "node_modules",
     "test",
-    "./src/cli/create-project-components/**/*"
+    "src/cli/create-project-components/**/*"
   ],
   "hooks": [
     "copy-files"

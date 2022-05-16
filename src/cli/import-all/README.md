@@ -15,7 +15,7 @@ Usage:
     
 You could also use `yarn` or `npm run` to import all. The following are the commands:
     yarn import:all [options]
-    npm run import:all [options]
+    npm run import:all -- [options]
 
 Options:
     -h, --help,         Display help for command

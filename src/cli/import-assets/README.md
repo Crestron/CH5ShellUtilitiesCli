@@ -15,14 +15,14 @@ Usage:
     
 You could also use `yarn` or `npm run` to import assets. The following are the commands:
     yarn import:assets [options]
-    npm run import:assets [options]
+    npm run import:assets -- [options]
 
 You could use shortcut script `imp:a` with options:
     ch5-shell-cli imp:a [options]
 
 You could use shortcut script `imp:a` with yarn and npm commands as the following:
     yarn imp:a [options]
-    npm run imp:a [options]
+    npm run imp:a -- [options]
 
 Options:
     -h, --help,         Display help for command

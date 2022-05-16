@@ -1,14 +1,14 @@
     
 You could also use `yarn` or `npm run` to generate pages. The following are the commands:
     yarn generate:page [options]
-    npm run generate:page [options]
+    npm run generate:page -- [options]
 
 You could use shortcut script `gen:p` with options:
     ch5-shell-cli gen:p [options]
 
 You could use shortcut script `gen:p` with yarn and npm commands as the following:
     yarn gen:p [options]
-    npm run gen:p [options]
+    npm run gen:p -- [options]
     
 You could use `ch5-shell-cli` to generate pages with additional options. The following are some examples:
     ch5-shell-cli generate:page --name LEDLights

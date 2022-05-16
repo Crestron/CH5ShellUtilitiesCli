@@ -5,7 +5,8 @@
     "INVALID_CONFIG_FILE": "The specified config json file is not compatible with the expected Shell Template schema.",
     "INVALID_INPUT": "The input for {0} is invalid.",
     "INPUT_WARNING_TITLE": "Warning(s):\n{0}",
-    "MISSING_INPUTS_NEED_ATlEAST_ONE_DATA": "Need atleast one valid argument to execute this command."
+    "MISSING_INPUTS_NEED_ATlEAST_ONE_DATA": "Need atleast one valid argument to execute this command.",
+    "INVALID_PROJECT_CONFIG_JSON": "The existing project-config.json file does not match with its schema. Please correct the errors to proceed."
   },
   "CHECK_PROMPT_QUESTIONS": {
     "QUESTIONS": {

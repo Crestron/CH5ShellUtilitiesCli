@@ -19,14 +19,14 @@ Usage:
     
 You could also use `yarn` or `npm run` to generate widgets. The following are the commands:
     yarn generate:widget [options]
-    npm run generate:widget [options]
+    npm run generate:widget -- [options]
 
 You could use shortcut script `gen:w` with options:
     ch5-shell-cli gen:w [options]
     
 You could use shortcut script `gen:w` with yarn and npm commands as the following:
     yarn gen:w [options]
-    npm run gen:w [options]
+    npm run gen:w -- [options]
     
 Options:
     -h, --help          Help for Generate Documentation

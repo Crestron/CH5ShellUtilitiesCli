@@ -2,6 +2,7 @@
   "command": "export:all",
   "name": "export:all",
   "usage": "[options]",
+  "description": "Export assets, libraries, and components from the shell-template project",
   "options": [
     {
       "key": "all",
@@ -30,5 +31,6 @@
     ".DS_Store",
     ".lock",
     ".db"
-  ]
+  ],
+  "allowedEnvironments": ["dev", "prod"]
 }

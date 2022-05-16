@@ -4,7 +4,8 @@
     "INVALID_CONFIG_INPUT": "The config file is either missing or the path of config file seems incorrect. Ensure that the file is a .json file.",
     "INVALID_CONFIG_FILE": "The specified config json file is not compatible with the expected Shell Template schema.",
     "INVALID_INPUT": "The input for {0} is invalid.",
-    "INPUT_WARNING_TITLE": "Warning(s):\n{0}"
+    "INPUT_WARNING_TITLE": "Warning(s):\n{0}",
+    "INVALID_PROJECT_CONFIG_JSON": "The existing project-config.json file does not match with its schema. Please correct the errors to proceed."
   },
   "CHECK_PROMPT_QUESTIONS": {
     "QUESTIONS": {

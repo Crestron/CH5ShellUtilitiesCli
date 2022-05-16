@@ -5,6 +5,7 @@
     "del:c"
   ],
   "usage": "[options]",
+  "description": "Delete pages and widgets from the shell-template project",
   "options": [
     {
       "key": "list",
@@ -23,5 +24,6 @@
       "alias": ["-f", "--force"]
     }
   ],
-  "additionalHelp": true
+  "additionalHelp": true,
+  "allowedEnvironments": ["dev", "prod"]
 }
