@@ -102,58 +102,68 @@ export class Ch5UpgradeProjectCli extends Ch5BaseClassForCliNew implements ICh5C
   }
 
   processDirectories() {
+    const pathForV2 = path.resolve(path.join(this.temporaryPath, "v2"));
+    this.logger.log("pathForV2", pathForV2);
     // create temporary folder
-    fs.mkdirSync(`${this.temporaryPath}`);
-    // Move v2 to temporary path
-    fs.copySync(this.SHELL_FOLDER, this.temporaryPath);
-    this.processCode();
+    try {
+      fs.mkdirSync(pathForV2, { recursive: true });
+      // Move v2 to temporary path
+      fsExtra.copySync(this.SHELL_FOLDER, pathForV2);
+      this.processCode();
+    } catch (e) {
+      this.logger.printError(e);
+    }
   }
 
   processCode() {
-    // delete old template from v1
-    this.utils.deleteFolder(this.templatePath);
-    // delete old assets folder from project
-    this.utils.deleteFolder(this.assetsPath);
-    // delete old contract
-    this.utils.deleteFile(this.contractPath);
-    // delete old vscode path
-    this.utils.deleteFolder(this.vscodePath);
-    // delete old shell utilities
-    this.utils.deleteFolder(this.oldShellUtilitiesPath);
-    // copy new template from v2
-    fsExtra.copySync(`${this.temporaryPath}/v2/${this.templatePath}`, this.templatePath);
-    // copy assets from v2 to v1
-    fsExtra.copySync(`${this.temporaryPath}/v2/${this.assetsPath}`, this.assetsPath);
-    // copy new contract
-    fsExtra.copySync(`${this.temporaryPath}/v2/${this.contractPath}`, this.contractPath);
-    // copy new vscode
-    fsExtra.copySync(`${this.temporaryPath}/v2/${this.vscodePath}`, this.vscodePath);
-    // copy license
-    fsExtra.copySync(`${this.temporaryPath}/v2/${this.licensePath}`, this.licensePath);
-    // copy copyright
-    fsExtra.copySync(`${this.temporaryPath}/v2/${this.copyrightPath}`, this.copyrightPath);
-    // copy readme
-    fsExtra.copySync(`${this.temporaryPath}/v2/${this.readmePath}`, this.readmePath);
-    // copy package lock
-    fsExtra.copySync(`${this.temporaryPath}/v2/${this.packageLockPath}`, this.packageLockPath);
-    // copy app.config
-    fsExtra.copySync(`${this.temporaryPath}/v2/${this.appConfigPath}`, this.appConfigPath);
-    // copy webpack common
-    fsExtra.copySync(`${this.temporaryPath}/v2/${this.webpackCommonPath}`, this.webpackCommonPath);
-    // copy webpack dev 
-    fsExtra.copySync(`${this.temporaryPath}/v2/${this.webpackDevPath}`, this.webpackDevPath);
-    // copy webpack prod
-    fsExtra.copySync(`${this.temporaryPath}/v2/${this.webpackProdPath}`, this.webpackProdPath);
-    // copy index.html
-    fsExtra.copySync(`${this.temporaryPath}/v2/${this.indexHtmlPath}`, this.indexHtmlPath);
+    try {
+      // delete old template from v1
+      this.utils.deleteFolder(this.templatePath);
+      // delete old assets folder from project
+      this.utils.deleteFolder(this.assetsPath);
+      // delete old contract
+      this.utils.deleteFile(this.contractPath);
+      // delete old vscode path
+      this.utils.deleteFolder(this.vscodePath);
+      // delete old shell utilities
+      this.utils.deleteFolder(this.oldShellUtilitiesPath);
+      // copy new template from v2
+      fsExtra.copySync(`${this.temporaryPath}/v2/${this.templatePath}`, this.templatePath);
+      // copy assets from v2 to v1
+      fsExtra.copySync(`${this.temporaryPath}/v2/${this.assetsPath}`, this.assetsPath);
+      // copy new contract
+      fsExtra.copySync(`${this.temporaryPath}/v2/${this.contractPath}`, this.contractPath);
+      // copy new vscode
+      fsExtra.copySync(`${this.temporaryPath}/v2/${this.vscodePath}`, this.vscodePath);
+      // copy license
+      fsExtra.copySync(`${this.temporaryPath}/v2/${this.licensePath}`, this.licensePath);
+      // copy copyright
+      fsExtra.copySync(`${this.temporaryPath}/v2/${this.copyrightPath}`, this.copyrightPath);
+      // copy readme
+      fsExtra.copySync(`${this.temporaryPath}/v2/${this.readmePath}`, this.readmePath);
+      // copy package lock
+      fsExtra.copySync(`${this.temporaryPath}/v2/${this.packageLockPath}`, this.packageLockPath);
+      // copy app.config
+      fsExtra.copySync(`${this.temporaryPath}/v2/${this.appConfigPath}`, this.appConfigPath);
+      // copy webpack common
+      fsExtra.copySync(`${this.temporaryPath}/v2/${this.webpackCommonPath}`, this.webpackCommonPath);
+      // copy webpack dev 
+      fsExtra.copySync(`${this.temporaryPath}/v2/${this.webpackDevPath}`, this.webpackDevPath);
+      // copy webpack prod
+      fsExtra.copySync(`${this.temporaryPath}/v2/${this.webpackProdPath}`, this.webpackProdPath);
+      // copy index.html
+      fsExtra.copySync(`${this.temporaryPath}/v2/${this.indexHtmlPath}`, this.indexHtmlPath);
 
 
-    // copy package.json and keep old name from v1
-    const oldPackageName = (fsExtra.readJSONSync(this.packagePath)).name;
-    fsExtra.copySync(`${this.temporaryPath}/v2/${this.packagePath}`, this.packagePath);
-    const packageFile = editJsonFile(this.packagePath);
-    packageFile.set('name', oldPackageName);
-    packageFile.save();
+      // copy package.json and keep old name from v1
+      const oldPackageName = (fsExtra.readJSONSync(this.packagePath)).name;
+      fsExtra.copySync(`${this.temporaryPath}/v2/${this.packagePath}`, this.packagePath);
+      const packageFile = editJsonFile(this.packagePath);
+      packageFile.set('name', oldPackageName);
+      packageFile.save();
+    } catch (e: any) {
+      throw new Error(e);
+    }
   }
 
   processThemesDifferences() {
