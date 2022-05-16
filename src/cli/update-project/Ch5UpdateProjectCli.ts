@@ -13,7 +13,6 @@ import { Ch5GenerateWidgetCli } from "../generate-widget/Ch5GenerateWidgetCli";
 import { ICh5CliNew } from "../ICh5Cli";
 
 const path = require('path');
-const fs = require("fs");
 const fsExtra = require("fs-extra");
 
 export class Ch5UpdateProjectCli extends Ch5BaseClassForCliNew implements ICh5CliNew {
@@ -33,6 +32,7 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
    * Initialize process
    */
   async initialize() {
+    this.logger.start("initialize");
     this.outputResponse.data.updateInputs = [];
     this.outputResponse.data.projectName = "";
     this.outputResponse.data.backupFolder = "";
@@ -53,13 +53,18 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
    */
   async verifyInputParams() {
     this.logger.start("verifyInputParams");
+    // Step 0: Check if json in the project to be updated is valid or not
+    if (!(await this.isConfigFileValid(this.PROJECT_CONFIG_JSON_PATH, path.join(this.SHELL_FOLDER, this.VSCODE_SCHEMA_JSON_PATH)))) {
+      throw new Error(this.getText("VERIFY_INPUT_PARAMS.INVALID_PROJECT_CONFIG_JSON"));
+    }
+
     if (this.inputArgs["config"].argsValue !== "") {
       // Step 1: Check file extension for json, valid input for 'config' argument, and config file existence
       if (!(this.utils.isValidInput(this.inputArgs["config"].argsValue) && this.isConfigFileExist(this.inputArgs["config"].argsValue))) {
         throw new Error(this.getText("VERIFY_INPUT_PARAMS.INVALID_CONFIG_INPUT"));
       }
       // Step 2: Check if json is as per its schema (.vscode is hidden folder)
-      if (!(this.isConfigFileValid(this.inputArgs["config"].argsValue, path.join(this.SHELL_FOLDER, this.VSCODE_SCHEMA_JSON_PATH), false))) {
+      if (!(await this.isConfigFileValid(this.inputArgs["config"].argsValue, path.join(this.SHELL_FOLDER, this.VSCODE_SCHEMA_JSON_PATH), true))) {
         throw new Error(this.getText("VERIFY_INPUT_PARAMS.INVALID_CONFIG_FILE"));
       }
     } else {
@@ -72,7 +77,6 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
             "warning": ""
           };
           if (value.inputReceived === true) {
-            // TODO - how to check validity of data
             if (this.utils.isValidInput(value.argsValue)) {
               const validationResponse: any = this.validateCLIInputArgument(value, value.key, value.argsValue, this.getText("VERIFY_INPUT_PARAMS.INVALID_INPUT", value.key));
               this.logger.log("validationResponse", validationResponse);
@@ -117,18 +121,9 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
     this.logger.start("checkPromptQuestions");
     if (this.inputArgs["config"].argsValue !== "") {
 
-      const folderNameForBackup: string = this.getFolderName();
-      this.outputResponse.data.backupFolder = path.normalize(path.join(this.getConfigNode("backupFolder"), folderNameForBackup));
-      // Step 3: Take back up of existing json and project
-      fsExtra.copySync(this.inputArgs["config"].argsValue, path.join(this.getConfigNode("backupFolder"), folderNameForBackup, "project-config.json"));
-
-      const exportProject = new Ch5ExportProjectCli(false);
-      exportProject.changeConfigParam("zipFileDestinationPath", path.join(this.getConfigNode("backupFolder"), folderNameForBackup));
-      exportProject.run();
-
       // Identify changes
       // const newCheck = new CompareJSON();
-      // console.log(newCheck.map(oldProjectConfigJSON, newProjectConfigJSON));
+      // this.logger.log(newCheck.map(oldProjectConfigJSON, newProjectConfigJSON));
 
       let askConfirmation: boolean = false;
       if (this.inputArgs["force"].argsValue === true) {
@@ -171,7 +166,6 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
               message: this.getText(this.outputResponse.data.updateInputs[i].question, this.outputResponse.data.updateInputs[i].key),
               type: 'input'
             };
-            // TODO - validate method
             this.outputResponse.data.updateInputs[i].argsValue = await this.getPrompt(question)
               .then((answer: any) => { return answer[this.outputResponse.data.updateInputs[i].key]; })
               .catch((error: any) => { throw new Error(this.getText("ERRORS.DO_NOT_UPDATE_PROJECT")); });
@@ -194,14 +188,23 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
     if (this.outputResponse.askConfirmation === true) {
       if (this.inputArgs["config"].argsValue !== "") {
 
+        const folderNameForBackup: string = this.getFolderName();
+        this.outputResponse.data.backupFolder = path.normalize(path.join(this.getConfigNode("backupFolder"), folderNameForBackup));
+        // Step 3: Take back up of existing json and project
+        fsExtra.copySync(this.inputArgs["config"].argsValue, path.join(this.getConfigNode("backupFolder"), folderNameForBackup, "project-config.json"));
+
+        const exportProject = new Ch5ExportProjectCli(false);
+        exportProject.changeConfigParam("zipFileDestinationPath", path.join(this.getConfigNode("backupFolder"), folderNameForBackup));
+        await exportProject.run();
+
         // Step 4: Make changes to project-config.json stepwise
         const oldProjectConfigJSON: any = JSON.parse(this.utils.readFileContentSync(this.PROJECT_CONFIG_JSON_PATH));
         const newProjectConfigJSON: any = JSON.parse(this.utils.readFileContentSync(this.inputArgs["config"].argsValue));
 
         // 1. Project Data
         for (const k in newProjectConfigJSON) {
-          if (!(typeof newProjectConfigJSON[k] === 'object' && newProjectConfigJSON[k] !== null)) {
-            if (oldProjectConfigJSON[k] && oldProjectConfigJSON[k] !== newProjectConfigJSON[k]) {
+          if ((typeof newProjectConfigJSON[k] !== 'object' && newProjectConfigJSON[k] !== null)) {
+            if (oldProjectConfigJSON[k] !== newProjectConfigJSON[k]) {
               oldProjectConfigJSON[k] = newProjectConfigJSON[k];
               this.projectConfig.changeNodeValues(k, oldProjectConfigJSON[k]);
             }
@@ -314,7 +317,7 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
         }
 
         // Step 6: Run validate:project-config
-        if (!(this.isConfigFileValid(this.PROJECT_CONFIG_JSON_PATH, path.join(this.SHELL_FOLDER, this.VSCODE_SCHEMA_JSON_PATH)))) {
+        if (!(await this.isConfigFileValid(this.PROJECT_CONFIG_JSON_PATH, path.join(this.SHELL_FOLDER, this.VSCODE_SCHEMA_JSON_PATH)))) {
           throw new Error(this.getText("PROCESS_REQUEST.FAILURE_MESSAGE_INPUT_PARAM_CONFIG_FILE_INVALID"));
         }
 

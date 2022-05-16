@@ -21,14 +21,21 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
   private projectConfigJson: any = {};
   private projectConfigJsonSchema: any = {};
 
-  public constructor(public showOutputMessages: boolean = true) {
+  public static RULES: any = {
+    PRE_BUILD_RULES: "PRE_BUILD_RULES",
+    ALL_RULES: "ALL_RULES"
+  };
+
+  public constructor(public showOutputMessages: boolean = true, public exitProcess: boolean = true) {
     super("validate-project-config");
   }
 
   /**
-   * Method for validating projectconfig.json file
+   * Method for validating project-config.json file
    */
   async run() {
+    this.checkVersionToExecute();
+
     this.logger.log(this.getText("PROCESSING_MESSAGE"));
 
     this.projectConfigJson = JSON.parse(this.utils.readFileContentSync(this.getConfigNode("projectConfigJSONFile")));
@@ -65,10 +72,10 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
     // Check if theme name is duplicated in array
     this.checkIfThemeNamesAreRepeated(projectConfigObject.themes);
 
-    // If menuOrientation is either veritcal or horizontal , then check if atleast 1 navigation item exists in the list
+    // If menuOrientation is either vertical or horizontal , then check if atleast 1 navigation item exists in the list
     this.checkAtleastOneNavigationForMenu(pagesArray, projectConfigObject.menuOrientation);
 
-    // Warning for iconposition for vertical menu orientation
+    // Warning for iconPosition for vertical menu orientation
     this.checkIconPositionForVerticalMenu(pagesArray, projectConfigObject.menuOrientation);
 
     // Fix validate project config - We need to check menuOrientation="vertical" and header display="false" -
@@ -79,6 +86,7 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
 
     // Check if response.content.$defaultView has valid input
     this.checkIfDefaultViewIsValid(projectConfigObject.content.$defaultView, pagesArray);
+
 
     // Check if there are additional folders in the project which are not available in project-config.json and throw a warning
     // this.checkIfUnwantedFilesAndFoldersExist(pagesArray, "./app/project/components/pages/");
@@ -94,18 +102,16 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
 
     // Check if the header and footer components have navigation
     this.checkIfFooterComponentsHaveNavigation(projectConfigObject, pagesArray, projectConfigObject.footer.display, projectConfigObject.menuOrientation);
+
     if (this.showOutputMessages === true) {
-      if (this.getErrors().length > 0) {
-        this.logger.printError(this.composeOutput(this.getErrors(), this.getText("TYPE_ERROR")));
-      }
-      if (this.getWarnings().length > 0) {
-        this.logger.printWarning(this.composeOutput(this.getWarnings(), this.getText("TYPE_WARNING")));
-      }
+      this.printOutputErrorsAndWarnings(this.getErrors(), this.getWarnings());
     }
 
     if (this.getErrors().length > 0) {
       // Exit after printing both errors and warnings
-      process.exit(1);
+      if (this.exitProcess === true) {
+        process.exit(1);
+      }
       return false;
     }
 
@@ -115,6 +121,14 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
     return true;
   }
 
+  public printOutputErrorsAndWarnings(errors: any[], warnings: any[]) {
+    if (errors.length > 0) {
+      this.logger.printError(this.composeOutput(errors, this.getText("TYPE_ERROR")));
+    }
+    if (warnings.length > 0) {
+      this.logger.printWarning(this.composeOutput(warnings, this.getText("TYPE_WARNING")));
+    }
+  }
   /**
    * Validating the schema file
    */
@@ -122,10 +136,10 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
     let Validator = jsonSchema.Validator;
     let v = new Validator();
     const errors = v.validate(this.projectConfigJson, this.projectConfigJsonSchema).errors;
-    const errorOrWarningType = this.getText("VALIDATIONS.SCHEMA.HEADER");
+    const errorOrWarningTypeHeader: string = this.getText("VALIDATIONS.SCHEMA.HEADER");
     for (let i: number = 0; i < errors.length; i++) {
       this.logger.log("errors[i]", errors[i]);
-      this.addError(errorOrWarningType, errors[i].stack.toString().replace("instance.", ""), errors[i].schema.description);
+      this.addError(Ch5ValidateProjectConfigCli.RULES.PRE_BUILD_RULES, errorOrWarningTypeHeader, errors[i].stack.toString().replace("instance.", ""), errors[i].schema.description);
     }
   }
 
@@ -136,14 +150,14 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
     for (let i: number = 0; i < pagesArray.length; i++) {
       const page = pagesArray[i];
       if (!(page.hasOwnProperty("pageName"))) {
-        this.addError(this.getText("VALIDATIONS.PAGE_NAME_MISSING.HEADER", page.pageName),
+        this.addError(Ch5ValidateProjectConfigCli.RULES.ALL_RULES, this.getText("VALIDATIONS.PAGE_NAME_MISSING.HEADER", page.pageName),
           this.getText("VALIDATIONS.PAGE_NAME_MISSING.MESSAGE", page.fullPath, page.fileName), "");
       } else if (!fs.existsSync(page.fullPath)) {
-        this.addError(this.getText("VALIDATIONS.PAGE_MISSING_FILE_FOLDER.HEADER", page.pageName),
+        this.addError(Ch5ValidateProjectConfigCli.RULES.ALL_RULES, this.getText("VALIDATIONS.PAGE_MISSING_FILE_FOLDER.HEADER", page.pageName),
           this.getText("VALIDATIONS.PAGE_MISSING_FILE_FOLDER.FOLDER_PATH_MISSING", page.fullPath, page.fileName), "");
       } else {
         if (!fs.existsSync(page.fullPath + page.fileName)) {
-          this.addError(this.getText("VALIDATIONS.PAGE_MISSING_FILE_FOLDER.HEADER", page.pageName),
+          this.addError(Ch5ValidateProjectConfigCli.RULES.ALL_RULES, this.getText("VALIDATIONS.PAGE_MISSING_FILE_FOLDER.HEADER", page.pageName),
             this.getText("VALIDATIONS.PAGE_MISSING_FILE_FOLDER.FILE_NOT_IN_FOLDER", page.fileName,
               page.fullPath, page.pageName), "");
         }
@@ -158,16 +172,16 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
     for (let i: number = 0; i < widgetsArray.length; i++) {
       const widget = widgetsArray[i];
       if (!(widget.hasOwnProperty("widgetName"))) {
-        this.addError(this.getText("VALIDATIONS.WIDGET_NAME_MISSING.HEADER", widget.widgetName),
+        this.addError(Ch5ValidateProjectConfigCli.RULES.ALL_RULES, this.getText("VALIDATIONS.WIDGET_NAME_MISSING.HEADER", widget.widgetName),
           this.getText("VALIDATIONS.WIDGET_NAME_MISSING.MESSAGE", widget.fullPath, widget.fileName), "");
       } else if (!fs.existsSync(widget.fullPath)) {
-        this.addError(this.getText("VALIDATIONS.WIDGET_MISSING_FILE_FOLDER.HEADER",
+        this.addError(Ch5ValidateProjectConfigCli.RULES.ALL_RULES, this.getText("VALIDATIONS.WIDGET_MISSING_FILE_FOLDER.HEADER",
           widget.widgetName),
           this.getText("VALIDATIONS.WIDGET_MISSING_FILE_FOLDER.FOLDER_PATH_MISSING",
             widget.fullPath, widget.fileName), "");
       } else {
         if (!fs.existsSync(widget.fullPath + widget.fileName)) {
-          this.addError(this.getText("VALIDATIONS.WIDGET_MISSING_FILE_FOLDER.HEADER",
+          this.addError(Ch5ValidateProjectConfigCli.RULES.ALL_RULES, this.getText("VALIDATIONS.WIDGET_MISSING_FILE_FOLDER.HEADER",
             widget.widgetName),
             this.getText("VALIDATIONS.WIDGET_MISSING_FILE_FOLDER.FILE_NOT_IN_FOLDER",
               widget.fileName, widget.fullPath, widget.widgetName), "");
@@ -179,7 +193,7 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
   /**
    * Check if the selected theme is not empty and available in the list of themes
    */
-  private checkInvalidSelectedTheme(projectConfigObject: { selectedTheme: string; themes: string | any[]; }) {
+  private checkInvalidSelectedTheme(projectConfigObject: any) {
     let isThemeAvailable = false;
     const errorOrWarningType = this.getText("VALIDATIONS.SELECTED_THEME_INCORRECT.HEADER");
 
@@ -187,17 +201,17 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
       for (let i: number = 0; i < projectConfigObject.themes.length; i++) {
         if (projectConfigObject.selectedTheme.trim().toLowerCase() === projectConfigObject.themes[i].name.trim().toLowerCase()) {
           if (projectConfigObject.selectedTheme !== projectConfigObject.themes[i].name) {
-            this.addWarning(errorOrWarningType, this.getText("VALIDATIONS.SELECTED_THEME_INCORRECT.THEME_NAMING_STYLE", projectConfigObject.selectedTheme, projectConfigObject.themes[i].name), "");
+            this.addWarning(Ch5ValidateProjectConfigCli.RULES.PRE_BUILD_RULES, errorOrWarningType, this.getText("VALIDATIONS.SELECTED_THEME_INCORRECT.THEME_NAMING_STYLE", projectConfigObject.selectedTheme, projectConfigObject.themes[i].name), "");
           }
           isThemeAvailable = true;
           break;
         }
       }
       if (isThemeAvailable === false) {
-        this.addError(errorOrWarningType, this.getText("VALIDATIONS.SELECTED_THEME_INCORRECT.THEME_NOT_IN_LIST", projectConfigObject.selectedTheme), "");
+        this.addError(Ch5ValidateProjectConfigCli.RULES.PRE_BUILD_RULES, errorOrWarningType, this.getText("VALIDATIONS.SELECTED_THEME_INCORRECT.THEME_NOT_IN_LIST", projectConfigObject.selectedTheme), "");
       }
     } else {
-      this.addError(errorOrWarningType, this.getText("VALIDATIONS.SELECTED_THEME_INCORRECT.THEME_NOT_AVAILABLE"), "");
+      this.addError(Ch5ValidateProjectConfigCli.RULES.PRE_BUILD_RULES, errorOrWarningType, this.getText("VALIDATIONS.SELECTED_THEME_INCORRECT.THEME_NOT_AVAILABLE"), "");
     }
   }
 
@@ -210,10 +224,10 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
     for (let i: number = 0; i < pagesArray.length; i++) {
       const page = pagesArray[i];
       if (!(page.hasOwnProperty("pageName"))) {
-        this.addError(this.getText("VALIDATIONS.PAGE_NAME_MISSING.HEADER", page.pageName),
+        this.addError(Ch5ValidateProjectConfigCli.RULES.PRE_BUILD_RULES, this.getText("VALIDATIONS.PAGE_NAME_MISSING.HEADER", page.pageName),
           this.getText("VALIDATIONS.PAGE_NAME_MISSING.MESSAGE", page.fullPath, page.fileName), "");
       } else if (newPageArray.includes(page.pageName.trim().toLowerCase())) {
-        this.addError(errorOrWarningType, this.getText("VALIDATIONS.PAGE_NAMES_REPEATED.MESSAGE", page.pageName), "");
+        this.addError(Ch5ValidateProjectConfigCli.RULES.PRE_BUILD_RULES, errorOrWarningType, this.getText("VALIDATIONS.PAGE_NAMES_REPEATED.MESSAGE", page.pageName), "");
       } else {
         newPageArray.push(page.pageName.trim().toLowerCase());
       }
@@ -229,10 +243,10 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
     for (let i: number = 0; i < widgetsArray.length; i++) {
       const widget = widgetsArray[i];
       if (!(widget.hasOwnProperty("widgetName"))) {
-        this.addError(this.getText("VALIDATIONS.WIDGET_NAME_MISSING.HEADER", widget.pageName),
+        this.addError(Ch5ValidateProjectConfigCli.RULES.PRE_BUILD_RULES, this.getText("VALIDATIONS.WIDGET_NAME_MISSING.HEADER", widget.pageName),
           this.getText("VALIDATIONS.WIDGET_NAME_MISSING.MESSAGE", widget.fullPath, widget.fileName), "");
       } else if (newWidgetArray.includes(widget.widgetName.trim().toLowerCase())) {
-        this.addError(errorOrWarningType, this.getText("VALIDATIONS.PAGE_NAMES_REPEATED.MESSAGE", widget.widgetName), "");
+        this.addError(Ch5ValidateProjectConfigCli.RULES.PRE_BUILD_RULES, errorOrWarningType, this.getText("VALIDATIONS.PAGE_NAMES_REPEATED.MESSAGE", widget.widgetName), "");
       } else {
         newWidgetArray.push(widget.widgetName.trim().toLowerCase());
       }
@@ -248,7 +262,7 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
     for (let i: number = 0; i < pagesArray.length; i++) {
       if (pagesArray[i].navigation) {
         if (newPageArraySequence.includes(pagesArray[i].navigation.sequence)) {
-          this.addWarning(errorOrWarningType, this.getText("VALIDATIONS.NAVIGATION_PAGE_SEQUENCE.MESSAGE", pagesArray[i].pageName), "");
+          this.addWarning(Ch5ValidateProjectConfigCli.RULES.PRE_BUILD_RULES, errorOrWarningType, this.getText("VALIDATIONS.NAVIGATION_PAGE_SEQUENCE.MESSAGE", pagesArray[i].pageName), "");
         } else {
           newPageArraySequence.push(pagesArray[i].navigation.sequence);
         }
@@ -265,7 +279,7 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
     const newPageArraySequence: any[] = [];
     for (let i: number = 0; i < themes.length; i++) {
       if (newPageArraySequence.includes(themes[i].name)) {
-        this.addError(errorOrWarningType, this.getText("VALIDATIONS.REPEATED_THEME_NAME_IN_ARRAY.MESSAGE", themes[i].name), "");
+        this.addError(Ch5ValidateProjectConfigCli.RULES.PRE_BUILD_RULES, errorOrWarningType, this.getText("VALIDATIONS.REPEATED_THEME_NAME_IN_ARRAY.MESSAGE", themes[i].name), "");
       } else {
         newPageArraySequence.push(themes[i].name);
       }
@@ -285,13 +299,13 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
         }
       }
       if (menuCount === 0) {
-        this.addError(errorOrWarningType, this.getText("VALIDATIONS.ATLEAST_ONE_MENU.MESSAGE"), "");
+        this.addError(Ch5ValidateProjectConfigCli.RULES.PRE_BUILD_RULES, errorOrWarningType, this.getText("VALIDATIONS.ATLEAST_ONE_MENU.MESSAGE"), "");
       }
     }
   }
 
   /**
-   * Warning for iconposition for vertical menu orientation
+   * Warning for iconPosition for vertical menu orientation
    * @param {*} pagesArray
    * @param {*} menuOrientation
    */
@@ -300,7 +314,7 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
       const errorOrWarningType = this.getText("VALIDATIONS.ICON_POSITION_VERTICAL.HEADER");
       for (let i: number = 0; i < pagesArray.length; i++) {
         if (pagesArray[i].navigation && pagesArray[i].navigation.iconPosition !== "") {
-          this.addWarning(errorOrWarningType, this.getText("VALIDATIONS.ICON_POSITION_VERTICAL.MESSAGE"), "");
+          this.addWarning(Ch5ValidateProjectConfigCli.RULES.PRE_BUILD_RULES, errorOrWarningType, this.getText("VALIDATIONS.ICON_POSITION_VERTICAL.MESSAGE"), "");
           break;
         }
       }
@@ -315,7 +329,7 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
   private checkHeaderAvailabilityForVerticalMenu(headerDisplay: boolean, menuOrientation: string) {
     if (menuOrientation === "vertical" && headerDisplay === false) {
       const errorOrWarningType = this.getText("VALIDATIONS.VERTICAL_MENU_HEADER_AVAILABLE.HEADER");
-      this.addError(errorOrWarningType, this.getText("VALIDATIONS.VERTICAL_MENU_HEADER_AVAILABLE.MESSAGE"), "");
+      this.addError(Ch5ValidateProjectConfigCli.RULES.PRE_BUILD_RULES, errorOrWarningType, this.getText("VALIDATIONS.VERTICAL_MENU_HEADER_AVAILABLE.MESSAGE"), "");
     }
   }
 
@@ -336,16 +350,16 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
         if (getPageObject) {
           if (getPageObject.navigation) {
             // If navigation, then we have to throw error for now
-            this.addError(errorOrWarningType,
+            this.addError(Ch5ValidateProjectConfigCli.RULES.PRE_BUILD_RULES, errorOrWarningType,
               this.getText("VALIDATIONS.HEADER_COMPONENT_MISMATCH.ERROR_MESSAGE_NAVIGATION"), "");
           } else {
             if (getPageObject.standAloneView === true) {
-              this.addError(errorOrWarningType,
+              this.addError(Ch5ValidateProjectConfigCli.RULES.PRE_BUILD_RULES, errorOrWarningType,
                 this.getText("VALIDATIONS.HEADER_COMPONENT_MISMATCH.ERROR_MESSAGE_STANDALONE_TRUE"), "");
             }
           }
         } else {
-          this.addError(errorOrWarningType, this.getText("VALIDATIONS.HEADER_COMPONENT_MISMATCH.ERROR_MESSAGE_PAGE_MISSING"), "");
+          this.addError(Ch5ValidateProjectConfigCli.RULES.PRE_BUILD_RULES, errorOrWarningType, this.getText("VALIDATIONS.HEADER_COMPONENT_MISMATCH.ERROR_MESSAGE_PAGE_MISSING"), "");
         }
       }
     }
@@ -368,14 +382,14 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
         if (getPageObject) {
           if (getPageObject.navigation) {
             // If navigation, then we have to throw error for now
-            this.addError(errorOrWarningType, this.getText("VALIDATIONS.FOOTER_COMPONENT_MISMATCH.ERROR_MESSAGE_NAVIGATION"), "");
+            this.addError(Ch5ValidateProjectConfigCli.RULES.PRE_BUILD_RULES, errorOrWarningType, this.getText("VALIDATIONS.FOOTER_COMPONENT_MISMATCH.ERROR_MESSAGE_NAVIGATION"), "");
           } else {
             if (getPageObject.standAloneView === true) {
-              this.addError(errorOrWarningType, this.getText("VALIDATIONS.FOOTER_COMPONENT_MISMATCH.ERROR_MESSAGE_STANDALONE_TRUE"), "");
+              this.addError(Ch5ValidateProjectConfigCli.RULES.PRE_BUILD_RULES, errorOrWarningType, this.getText("VALIDATIONS.FOOTER_COMPONENT_MISMATCH.ERROR_MESSAGE_STANDALONE_TRUE"), "");
             }
           }
         } else {
-          this.addError(errorOrWarningType, this.getText("VALIDATIONS.FOOTER_COMPONENT_MISMATCH.ERROR_MESSAGE_PAGE_MISSING"), "");
+          this.addError(Ch5ValidateProjectConfigCli.RULES.PRE_BUILD_RULES, errorOrWarningType, this.getText("VALIDATIONS.FOOTER_COMPONENT_MISMATCH.ERROR_MESSAGE_PAGE_MISSING"), "");
         }
       }
     }
@@ -388,7 +402,7 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
   private checkIfNoPagesExist(pagesArray: any[]) {
     if (!(pagesArray && pagesArray.length > 0)) {
       const errorOrWarningType = this.getText("VALIDATIONS.EMPTY_PAGES_ARRAY.HEADER");
-      this.addError(errorOrWarningType, this.getText("VALIDATIONS.EMPTY_PAGES_ARRAY.MESSAGE"), "");
+      this.addError(Ch5ValidateProjectConfigCli.RULES.PRE_BUILD_RULES, errorOrWarningType, this.getText("VALIDATIONS.EMPTY_PAGES_ARRAY.MESSAGE"), "");
     }
   }
 
@@ -402,14 +416,14 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
     for (let i: number = 0; i < pagesArray.length; i++) {
       for (let j = 0; j < widgetsArray.length; j++) {
         if (!(pagesArray[i].hasOwnProperty("pageName"))) {
-          this.addError(this.getText("VALIDATIONS.PAGE_NAME_MISSING.HEADER", pagesArray[i].pageName),
+          this.addError(Ch5ValidateProjectConfigCli.RULES.PRE_BUILD_RULES, this.getText("VALIDATIONS.PAGE_NAME_MISSING.HEADER", pagesArray[i].pageName),
             this.getText("VALIDATIONS.PAGE_NAME_MISSING.MESSAGE",
               pagesArray[i].fullPath, pagesArray[i].fileName), "");
         } else if (!(widgetsArray[j].hasOwnProperty("widgetName"))) {
-          this.addError(this.getText("VALIDATIONS.WIDGET_NAME_MISSING.HEADER", widgetsArray[j].widgetName),
+          this.addError(Ch5ValidateProjectConfigCli.RULES.PRE_BUILD_RULES, this.getText("VALIDATIONS.WIDGET_NAME_MISSING.HEADER", widgetsArray[j].widgetName),
             this.getText("VALIDATIONS.WIDGET_NAME_MISSING.MESSAGE", widgetsArray[j].fullPath, widgetsArray[j].fileName), "");
         } else if (widgetsArray[j].widgetName.trim().toLowerCase() === pagesArray[i].pageName.trim().toLowerCase()) {
-          this.addError(errorOrWarningType,
+          this.addError(Ch5ValidateProjectConfigCli.RULES.PRE_BUILD_RULES, errorOrWarningType,
             this.getText("VALIDATIONS.PAGE_AND_WIDGET_DUPLICATES.MESSAGE",
               pagesArray[i].pageName, widgetsArray[j].widgetName), "");
         }
@@ -425,24 +439,24 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
   private checkIfDefaultViewIsValid(defaultView: string, pagesArray: any[]) {
     const errorOrWarningType = this.getText("VALIDATIONS.DEFAULT_VIEW_INVALID.HEADER");
     if (defaultView && this.utils.isValidInput(defaultView)) {
-      let lblnDefaultViewExists = false;
+      let defaultViewExists = false;
       for (let i: number = 0; i < pagesArray.length; i++) {
         if (pagesArray[i].pageName.trim().toLowerCase() === defaultView.trim().toLowerCase()) {
           if (pagesArray[i].navigation) {
-            lblnDefaultViewExists = true;
+            defaultViewExists = true;
             break;
           } else {
             // If no navigation, then we have to throw error for now
-            this.addError(errorOrWarningType, this.getText("VALIDATIONS.DEFAULT_VIEW_INVALID.ERROR_MESSAGE_NO_NAVIGATION", defaultView), "");
+            this.addError(Ch5ValidateProjectConfigCli.RULES.PRE_BUILD_RULES, errorOrWarningType, this.getText("VALIDATIONS.DEFAULT_VIEW_INVALID.ERROR_MESSAGE_NO_NAVIGATION", defaultView), "");
             return;
           }
         }
       }
-      if (lblnDefaultViewExists === false) {
-        this.addError(errorOrWarningType, this.getText("VALIDATIONS.DEFAULT_VIEW_INVALID.ERROR_MESSAGE", defaultView), "");
+      if (defaultViewExists === false) {
+        this.addError(Ch5ValidateProjectConfigCli.RULES.PRE_BUILD_RULES, errorOrWarningType, this.getText("VALIDATIONS.DEFAULT_VIEW_INVALID.ERROR_MESSAGE", defaultView), "");
       }
     } else {
-      this.addWarning(errorOrWarningType, this.getText("VALIDATIONS.DEFAULT_VIEW_INVALID.WARNING_MESSAGE"), "");
+      this.addWarning(Ch5ValidateProjectConfigCli.RULES.PRE_BUILD_RULES, errorOrWarningType, this.getText("VALIDATIONS.DEFAULT_VIEW_INVALID.WARNING_MESSAGE"), "");
     }
   }
 
@@ -496,7 +510,7 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
       }
     }
     if (lbnPathExists === false) {
-      this.addWarning(errorOrWarningType, this.getText("VALIDATIONS.PAGE_AND_WIDGET_DUPLICATES.MESSAGE", newFilePath), "");
+      this.addWarning(Ch5ValidateProjectConfigCli.RULES.PRE_BUILD_RULES, errorOrWarningType, this.getText("VALIDATIONS.PAGE_AND_WIDGET_DUPLICATES.MESSAGE", newFilePath), "");
     }
   }
 
@@ -516,14 +530,14 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
       }
     }
     if (lbnPathExists === false) {
-      this.addWarning(errorOrWarningType, this.getText("VALIDATIONS.PAGE_AND_WIDGET_DUPLICATES.MESSAGE", newFilePath), "");
+      this.addWarning(Ch5ValidateProjectConfigCli.RULES.PRE_BUILD_RULES, errorOrWarningType, this.getText("VALIDATIONS.PAGE_AND_WIDGET_DUPLICATES.MESSAGE", newFilePath), "");
     }
   }
 
   /**
    * Returns errors found
    */
-  private getErrors() {
+  public getErrors() {
     return this.errorsFound;
   }
 
@@ -540,7 +554,7 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
    * @param {string} message
    * @param {string} resolution
    */
-  private addError(heading: string, message: string, resolution: string) {
+  private addError(type: string, heading: string, message: string, resolution: string) {
     let valueExists = false;
     if (this.errorsFound.length > 0) {
       for (let item of this.errorsFound) {
@@ -552,6 +566,7 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
     }
     if (!valueExists) {
       this.errorsFound.push({
+        type: type,
         heading: heading,
         message: message,
         resolution: resolution
@@ -562,7 +577,7 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
   /**
    * Returns warnings found
    */
-  private getWarnings() {
+  public getWarnings() {
     return this.warningsFound;
   }
 
@@ -579,8 +594,9 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
    * @param {string} message
    * @param {string} resolution
    */
-  private addWarning(heading: string, message: string, resolution: string) {
+  private addWarning(type: string, heading: string, message: string, resolution: string) {
     this.warningsFound.push({
+      type: type,
       heading: heading,
       message: message,
       resolution: resolution

@@ -20,6 +20,7 @@ export class Ch5CreateProjectCliCustom extends Ch5BaseClassForCliNew implements 
 
   private readonly SHELL_FOLDER: string = path.normalize(path.join(__dirname, "../../", "shell"));
   private readonly PROJECT_CONFIG_JSON_PATH: string = path.normalize("/app/project-config.json");
+  private readonly VSCODE_SCHEMA_JSON_PATH: string = path.normalize(path.join(".vscode", "project-config-schema.json"));
 
   /**
    * Constructor
@@ -35,7 +36,6 @@ export class Ch5CreateProjectCliCustom extends Ch5BaseClassForCliNew implements 
     this.logger.start("initialize");
     this.outputResponse.data.updateInputs = [];
     this.outputResponse.data.projectName = "";
-    this.outputResponse.data.projectFolderPath = "";
     this.logger.end();
   }
 
@@ -50,9 +50,9 @@ export class Ch5CreateProjectCliCustom extends Ch5BaseClassForCliNew implements 
         throw new Error(this.getText("VERIFY_INPUT_PARAMS.INVALID_CONFIG_INPUT"));
       }
       // Step 2: Check if json is as per its schema (.vscode is hidden folder)
-      // if (!(this.isConfigFileValid(this.inputArgs["config"].argsValue, path.join(this.SHELL_FOLDER, ".vscode", "project-config-schema.json"), false))) {
-      //   throw new Error(this.getText("VERIFY_INPUT_PARAMS.INVALID_CONFIG_FILE"));
-      // }
+      if (!(await this.isConfigFileValid(this.inputArgs["config"].argsValue, path.join(this.SHELL_FOLDER, this.VSCODE_SCHEMA_JSON_PATH), true))) {
+        throw new Error(this.getText("VERIFY_INPUT_PARAMS.INVALID_CONFIG_FILE"));
+      }
     } else {
       this.logger.log("Blank project creation without json file");
 
@@ -69,6 +69,7 @@ export class Ch5CreateProjectCliCustom extends Ch5BaseClassForCliNew implements 
               if (validationResponse.warning === "") {
                 inputUpdate.argsValue = validationResponse.value;
               } else {
+                inputUpdate.argsValue = null;
                 inputUpdate.warning = validationResponse.warning;
               }
             }
@@ -76,6 +77,8 @@ export class Ch5CreateProjectCliCustom extends Ch5BaseClassForCliNew implements 
           }
         }
       });
+      this.logger.log("this.outputResponse.data.updateInputs: ", this.outputResponse.data.updateInputs);
+
       if (this.outputResponse.data.updateInputs.length === 0) {
         const value = this.inputArgs["projectName"];
         const inputUpdate = {
@@ -163,62 +166,19 @@ export class Ch5CreateProjectCliCustom extends Ch5BaseClassForCliNew implements 
    */
   async processRequest() {
     this.logger.start("processRequest");
+    const projectFolderPath = path.resolve(path.join("./"));
+
     if (this.inputArgs["config"].argsValue !== "") {
 
-      // Step 4: Make changes to project-config.json stepwise
       const newProjectConfigJSON: any = JSON.parse(this.utils.readFileContentSync(this.inputArgs["config"].argsValue));
-      const oldProjectConfigJSON: any = JSON.parse(this.utils.readFileContentSync(path.join(this.SHELL_FOLDER, this.PROJECT_CONFIG_JSON_PATH)));
 
-      // 1. Project Data
-      for (const k in newProjectConfigJSON) {
-        if (!(typeof newProjectConfigJSON[k] === 'object' && newProjectConfigJSON[k] !== null)) {
-          if (oldProjectConfigJSON[k] && oldProjectConfigJSON[k] !== newProjectConfigJSON[k]) {
-            oldProjectConfigJSON[k] = newProjectConfigJSON[k];
-          }
-        }
-      }
-
-      // 2. Themes
-      oldProjectConfigJSON["themes"] = newProjectConfigJSON["themes"];
-
-      // 3. Config
-      oldProjectConfigJSON["config"] = newProjectConfigJSON["config"];
-
-      // 4. Header
-      oldProjectConfigJSON["header"] = newProjectConfigJSON["header"];
-
-      // 5. Footer
-      oldProjectConfigJSON["footer"] = newProjectConfigJSON["footer"];
-
-      // 6. Content
-      oldProjectConfigJSON["content"]["triggerViewProperties"] = newProjectConfigJSON["content"]["triggerViewProperties"];
-
-      const pagesToBeCreated: any[] = [];
-      for (let i: number = 0; i < newProjectConfigJSON["content"]["pages"].length; i++) {
-        let pageObj = newProjectConfigJSON["content"]["pages"][i];
-        const pageInOldSet = oldProjectConfigJSON["content"]["pages"].find((pageName: any) => pageName === pageObj.pageName);
-        if (!pageInOldSet) {
-          // Exists in New set but not in old - so create page
-          pagesToBeCreated.push(pageObj);
-        }
-      }
-
-      const widgetsToBeCreated: any[] = [];
-      for (let i: number = 0; i < newProjectConfigJSON["content"]["widgets"].length; i++) {
-        let pageObj = newProjectConfigJSON["content"]["widgets"][i];
-        const pageInOldSet = oldProjectConfigJSON["content"]["widgets"].find((widgetName: any) => widgetName === pageObj.widgetName);
-        if (!pageInOldSet) {
-          // Exists in New set but not in old - so create page
-          widgetsToBeCreated.push(pageObj);
-        }
-      }
-
-      oldProjectConfigJSON["content"]["$defaultView"] = newProjectConfigJSON["content"]["$defaultView"];
-
-      const pathToCreateProject: string = path.resolve(path.join("./", oldProjectConfigJSON.projectName));
+      const pathToCreateProject: string = path.resolve(path.join("./", newProjectConfigJSON.projectName));
       if (!fs.existsSync(pathToCreateProject)) {
         fs.mkdirSync(pathToCreateProject, { recursive: true });
       }
+
+      this.logger.log("1. current working directory: " + process.cwd());
+      process.chdir(pathToCreateProject);
 
       try {
         const isFolder = await this.utils.readdirAsync(pathToCreateProject);
@@ -231,23 +191,79 @@ export class Ch5CreateProjectCliCustom extends Ch5BaseClassForCliNew implements 
 
       fsExtra.copySync(this.SHELL_FOLDER, pathToCreateProject, { recursive: true });
 
-      fs.writeFileSync(path.join(pathToCreateProject, this.PROJECT_CONFIG_JSON_PATH), JSON.stringify(oldProjectConfigJSON));
+      this.logger.log("2. current working directory: " + process.cwd());
 
-      process.chdir(pathToCreateProject);
+      // Step 4: Make changes to project-config.json stepwise
+      const oldProjectConfigJSON: any = JSON.parse(this.utils.readFileContentSync(path.join(this.SHELL_FOLDER, this.PROJECT_CONFIG_JSON_PATH)));
+
+      // 1. Project Data
+      for (const k in newProjectConfigJSON) {
+        if ((typeof newProjectConfigJSON[k] !== 'object' && newProjectConfigJSON[k] !== null)) {
+          if (oldProjectConfigJSON[k] !== newProjectConfigJSON[k]) {
+            oldProjectConfigJSON[k] = newProjectConfigJSON[k];
+            this.projectConfig.changeNodeValues(k, oldProjectConfigJSON[k]);
+          }
+        }
+      }
+
+      // 2. Themes
+      oldProjectConfigJSON["themes"] = newProjectConfigJSON["themes"];
+      this.projectConfig.changeNodeValues("themes", oldProjectConfigJSON["themes"]);
+
+      // 3. Config
+      oldProjectConfigJSON["config"] = newProjectConfigJSON["config"];
+      this.projectConfig.changeNodeValues("config", oldProjectConfigJSON["config"]);
+
+      // 4. Header
+      oldProjectConfigJSON["header"] = newProjectConfigJSON["header"];
+      this.projectConfig.changeNodeValues("header", oldProjectConfigJSON["header"]);
+
+      // 5. Footer
+      oldProjectConfigJSON["footer"] = newProjectConfigJSON["footer"];
+      this.projectConfig.changeNodeValues("footer", oldProjectConfigJSON["footer"]);
+
+      // 6. Content
+      oldProjectConfigJSON["content"]["triggerViewProperties"] = newProjectConfigJSON["content"]["triggerViewProperties"];
+      this.projectConfig.changeNodeValues("content.triggerViewProperties", oldProjectConfigJSON["content"]["triggerViewProperties"]);
+
+      oldProjectConfigJSON["content"]["$defaultView"] = newProjectConfigJSON["content"]["$defaultView"];
+      this.projectConfig.changeNodeValues("content.$defaultView", oldProjectConfigJSON["content"]["$defaultView"]);
+
+      // fs.writeFileSync(path.join(pathToCreateProject, this.PROJECT_CONFIG_JSON_PATH), JSON.stringify(oldProjectConfigJSON));
+
+      const pagesToBeCreated: any[] = [];
+      for (let i: number = 0; i < newProjectConfigJSON["content"]["pages"].length; i++) {
+        const pageObj = newProjectConfigJSON["content"]["pages"][i];
+        const pageInOldSet = oldProjectConfigJSON["content"]["pages"].find((page: any) => page.pageName.toString().toLowerCase() === pageObj.pageName.toString().toLowerCase());
+        if (!pageInOldSet) {
+          // Exists in New set but not in old - so create page
+          pagesToBeCreated.push(pageObj);
+        }
+      }
+
+      const widgetsToBeCreated: any[] = [];
+      for (let i: number = 0; i < newProjectConfigJSON["content"]["widgets"].length; i++) {
+        const widgetObj = newProjectConfigJSON["content"]["widgets"][i];
+        const pageInOldSet = oldProjectConfigJSON["content"]["widgets"].find((widget: any) => widget.widgetName.toString().toLowerCase() === widgetObj.widgetName.toString().toLowerCase());
+        if (!pageInOldSet) {
+          // Exists in New set but not in old - so create page
+          widgetsToBeCreated.push(widgetObj);
+        }
+      }
 
       const packageJsonFile = editJsonFile("./package.json"); // Must be after directory change
       packageJsonFile.set("name", oldProjectConfigJSON.projectName);
       packageJsonFile.save();
 
       this.outputResponse.data.projectName = oldProjectConfigJSON.projectName;
-      this.outputResponse.data.projectFolderPath = path.resolve(path.join("./"));
 
       // Step 5: Save Project-config
       for (let i: number = 0; i < pagesToBeCreated.length; i++) {
         const genPage: Ch5GeneratePageCli = new Ch5GeneratePageCli(false);
         genPage.setInputArgsForTesting(["-n", pagesToBeCreated[i].pageName, "-m", pagesToBeCreated[i].navigation ? "Y" : "N"]);
         await genPage.run();
-
+        this.projectConfig.replacePageNodeInJSON(pagesToBeCreated[i]);
+	
         if (pagesToBeCreated[i].pageContent) {
           let newContent: string = "";
           Object.entries(pagesToBeCreated[i].pageContent).forEach(([key, value]: any) => {
@@ -276,25 +292,24 @@ export class Ch5CreateProjectCliCustom extends Ch5BaseClassForCliNew implements 
         const genWidget: Ch5GenerateWidgetCli = new Ch5GenerateWidgetCli(false);
         genWidget.setInputArgsForTesting(["-n", widgetsToBeCreated[i].widgetName]);
         await genWidget.run();
+        this.projectConfig.removeWidgetFromJSON(widgetsToBeCreated[i]);
       }
 
       // Step 6: Run validate:project-config
-      if (!(this.isConfigFileValid(path.join(pathToCreateProject, this.PROJECT_CONFIG_JSON_PATH), path.join(pathToCreateProject, ".vscode", "project-config-schema.json")))) {
+      if (!(await this.isConfigFileValid(path.join(pathToCreateProject, this.PROJECT_CONFIG_JSON_PATH), path.join(pathToCreateProject, this.VSCODE_SCHEMA_JSON_PATH)))) {
         throw new Error(this.getText("PROCESS_REQUEST.PROJECT_CONFIG_VALIDATION_FAILED"));
       }
 
       // Step 8: Show proper messages  
       this.outputResponse.result = true;
-      this.outputResponse.successMessage = this.getText("LOG_OUTPUT.SUCCESS_MESSAGE", this.outputResponse.data.projectName, this.outputResponse.data.projectFolderPath);
+      this.outputResponse.successMessage = this.getText("LOG_OUTPUT.SUCCESS_MESSAGE", this.outputResponse.data.projectName, projectFolderPath);
     } else {
       // Step 4: Make changes to project-config.json stepwise
       const projectConfigJSON: any = JSON.parse(this.utils.readFileContentSync(path.resolve(path.join(this.SHELL_FOLDER, this.PROJECT_CONFIG_JSON_PATH))));
-      // this.projectConfigJsonSchema = JSON.parse(this.utils.readFileContentSync("./.vscode/project-config-schema.json"));
 
       // 1. Project Data
       projectConfigJSON.projectName = this.outputResponse.data.updateInputs.find((objValue: any) => objValue.key === "projectName").argsValue;
 
-      // projectConfigJSON.projectName = this.outputResponse.data.updateInputs.find((objValue: any) => objValue.key === "projectName").argsValue;
       const pathToCreateProject: string = path.resolve(path.join("./", projectConfigJSON.projectName));
 
       // Check if current folder is empty.
@@ -310,7 +325,9 @@ export class Ch5CreateProjectCliCustom extends Ch5BaseClassForCliNew implements 
       if (!fs.existsSync(pathToCreateProject)) {
         fs.mkdirSync(pathToCreateProject, { recursive: true });
       }
-      fsExtra.copySync(this.SHELL_FOLDER, pathToCreateProject, { recursive: true });
+
+      fsExtra.copySync(this.SHELL_FOLDER, pathToCreateProject);
+
       projectConfigJSON["content"]["$defaultView"] = "page1";
       fs.writeFileSync(path.join(pathToCreateProject, this.PROJECT_CONFIG_JSON_PATH), JSON.stringify(projectConfigJSON));
 
@@ -321,19 +338,18 @@ export class Ch5CreateProjectCliCustom extends Ch5BaseClassForCliNew implements 
       packageJsonFile.save();
 
       this.outputResponse.data.projectName = projectConfigJSON.projectName;
-      this.outputResponse.data.projectFolderPath = path.resolve(path.join("./"));
 
       const genPage: Ch5GeneratePageCli = new Ch5GeneratePageCli(false);
       genPage.setInputArgsForTesting(["-n", "page1", "-m", "Y"]);
       await genPage.run();
 
       // Step 6: Run validate:project-config
-      if (!(this.isConfigFileValid(path.join(pathToCreateProject, this.PROJECT_CONFIG_JSON_PATH), path.join(pathToCreateProject, ".vscode", "project-config-schema.json")))) {
+      if (!(await this.isConfigFileValid(path.join(pathToCreateProject, this.PROJECT_CONFIG_JSON_PATH), path.join(pathToCreateProject, this.VSCODE_SCHEMA_JSON_PATH)))) {
         throw new Error(this.getText("PROCESS_REQUEST.PROJECT_CONFIG_VALIDATION_FAILED"));
       }
 
       this.outputResponse.result = true;
-      this.outputResponse.successMessage = this.getText("LOG_OUTPUT.SUCCESS_MESSAGE", this.outputResponse.data.projectName, this.outputResponse.data.projectFolderPath);
+      this.outputResponse.successMessage = this.getText("LOG_OUTPUT.SUCCESS_MESSAGE", this.outputResponse.data.projectName, projectFolderPath);
     }
     this.logger.end();
   }
@@ -345,6 +361,5 @@ export class Ch5CreateProjectCliCustom extends Ch5BaseClassForCliNew implements 
     // Success case, the file was saved
     this.logger.log("File contents saved!");
   }
-
 
 }

@@ -13,13 +13,16 @@ export interface ICh5CliConfigFileParamOptions {
 }
 
 export interface ICh5CliConfigFile {
-  [key: string]: string | string[] | ICh5CliConfigFileParamOptions[] | boolean;
+  [key: string]: string | string[] | ICh5CliConfigFileParamOptions[] | boolean | null;
   command: string;
   name: string;
+  description: string;
   aliases: string[];
   usage: string;
   options: ICh5CliConfigFileParamOptions[];
   backupFolder: string;
   additionalHelp: boolean;
   automatedTests: boolean;
+  allowedEnvironments: string[];
+  settings: any;
 }

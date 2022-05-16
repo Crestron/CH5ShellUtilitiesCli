@@ -73,6 +73,8 @@ export class Ch5ImportAssetsCli extends Ch5BaseClassForCli implements ICh5Cli {
    */
   async run() {
     try {
+      this.checkVersionToExecute();
+
       // Initialize
       this.initialize();
 

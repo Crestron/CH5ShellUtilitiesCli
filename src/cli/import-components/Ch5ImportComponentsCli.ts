@@ -73,6 +73,8 @@ export class Ch5ImportComponentsCli extends Ch5BaseClassForCli implements ICh5Cl
    */
   async run() {
     try {
+      this.checkVersionToExecute();
+
       // Initialize
       this.initialize();
 

@@ -28,6 +28,8 @@ export class Ch5ExportProjectCli extends Ch5BaseClassForCli implements ICh5Cli {
    * Method for exporting project
    */
   async run() {
+    this.checkVersionToExecute();
+
     const packageJson: any = JSON.parse(JSON.stringify(fsExtra.readJSONSync("./package.json")));
 
     let fileName = this.namingHelper.removeAllSpaces(String(packageJson.name).trim());

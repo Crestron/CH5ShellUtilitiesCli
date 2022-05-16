@@ -22,7 +22,7 @@ export class Ch5GeneratePageCli extends Ch5BaseClassForCli implements ICh5Cli {
     - "minLengthOfPageName": 2 - The minimum length for page name
     - "maxLengthOfPageName": 31 - The maximum length for page name
   */
- 
+
   private readonly MIN_LENGTH_OF_PAGE_NAME: number = 2;
   private readonly MAX_LENGTH_OF_PAGE_NAME: number = 31;
 
@@ -58,6 +58,8 @@ export class Ch5GeneratePageCli extends Ch5BaseClassForCli implements ICh5Cli {
    */
   async run() {
     try {
+      this.checkVersionToExecute();
+
       // Initialize
       this.initialize();
 
@@ -333,10 +335,7 @@ export class Ch5GeneratePageCli extends Ch5BaseClassForCli implements ICh5Cli {
       "fileName": this.outputResponse.data.fileName + '.html',
       "cachePage": false,
       "preloadPage": false,
-      "standAloneView": !allowNavigation,
-      "pageProperties": {
-        "sendEventOnShow": ""
-      }
+      "standAloneView": !allowNavigation
     };
     if (allowNavigation === true) {
       const projectConfigJSON = this.projectConfig.getJson();

@@ -13,8 +13,9 @@
   "types": "build/@types/index.d.ts",
   "scripts": {
     "start": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts",
-    "build:dev": "tsc -p tsconfig.dev.json",
-    "build": "tsc -p tsconfig.prod.json",
+    "build:dev": "tsc -p tsconfig.dev.json && node build dev",
+    "build:prod": "tsc -p tsconfig.prod.json && node build prod",
+    "build": "npm run build:prod",
     "ch5-utils": "./build/index.js",
     "clean": "rimraf build",
     "create": "npm run build && npm run test",
@@ -51,7 +52,7 @@
   "devDependencies": {
     "@types/chai": "^4.2.15",
     "@types/fs-extra": "^9.0.9",
-    "@types/mocha": "^8.2.1",
+    "@types/mocha": "^8.2.3",
     "@types/mock-fs": "^4.13.0",
     "@types/node": "^14.14.35",
     "@types/sinon": "^10.0.2",

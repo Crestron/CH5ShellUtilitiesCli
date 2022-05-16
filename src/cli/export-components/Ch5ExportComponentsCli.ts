@@ -36,6 +36,8 @@ export class Ch5ExportComponentsCli extends Ch5BaseClassForCli implements ICh5Cl
    * Method for exporting components
    */
   async run() {
+    this.checkVersionToExecute();
+
     this.outputResponse = {};
     this.finalOutputZipFile = path.join(this.getConfigNode("zipFileDestinationPath"), this.getConfigNode("outputFileName"));
 

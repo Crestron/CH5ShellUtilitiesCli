@@ -73,6 +73,8 @@ export class Ch5ImportLibrariesCli extends Ch5BaseClassForCli implements ICh5Cli
    */
   async run() {
     try {
+      this.checkVersionToExecute();
+
       // Initialize
       this.initialize();
 

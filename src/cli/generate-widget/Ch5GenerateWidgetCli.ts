@@ -57,6 +57,8 @@ export class Ch5GenerateWidgetCli extends Ch5BaseClassForCli implements ICh5Cli 
    */
   async run() {
     try {
+      this.checkVersionToExecute();
+
       // Initialize
       this.initialize();
 
@@ -261,8 +263,7 @@ export class Ch5GenerateWidgetCli extends Ch5BaseClassForCli implements ICh5Cli 
     let widgetObject = {
       "widgetName": this.outputResponse.data.widgetName,
       "fullPath": this.outputResponse.data.folderPath,
-      "fileName": this.outputResponse.data.fileName + '.html',
-      "widgetProperties": {}
+      "fileName": this.outputResponse.data.fileName + '.html'
     };
     return widgetObject;
   }

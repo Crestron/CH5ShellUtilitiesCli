@@ -36,6 +36,8 @@ export class Ch5ExportAssetsCli extends Ch5BaseClassForCli implements ICh5Cli {
    * Method for exporting assets
    */
   async run() {
+    this.checkVersionToExecute();
+
     this.outputResponse = {};
     this.finalOutputZipFile = path.join(this.getConfigNode("zipFileDestinationPath"), this.getConfigNode("outputFileName"));
 

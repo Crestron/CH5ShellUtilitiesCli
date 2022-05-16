@@ -37,6 +37,8 @@ export class Ch5DeleteComponentsCli extends Ch5BaseClassForCli implements ICh5Cl
    */
   async run() {
     try {
+      this.checkVersionToExecute();
+
       // Initialize
       await this.initialize();
 
