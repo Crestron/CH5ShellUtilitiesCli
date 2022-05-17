@@ -22,6 +22,7 @@ export class Ch5UpgradeProjectCli extends Ch5BaseClassForCliNew implements ICh5C
 	private readonly cliProjectConfig: Ch5CliProjectConfig;
 
 	private readonly temporaryPath = './temp'
+	private readonly node_modules = './node_modules'
 	private readonly templatePath = './app/template'
 	private readonly assetsPath = './app/project/assets'
 	private readonly contractPath = './config/contract.cse2j'
@@ -121,6 +122,9 @@ export class Ch5UpgradeProjectCli extends Ch5BaseClassForCliNew implements ICh5C
 
 	processCode() {
 		try {
+			// delete node_modules
+			this.utils.deleteFolder(this.node_modules);
+
 			// delete old template from v1
 			this.utils.deleteFolder(this.templatePath);
 			// // delete old assets folder from project
