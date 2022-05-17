@@ -50,9 +50,9 @@ export class Ch5CreateProjectCliCustom extends Ch5BaseClassForCliNew implements 
         throw new Error(this.getText("VERIFY_INPUT_PARAMS.INVALID_CONFIG_INPUT"));
       }
       // Step 2: Check if json is as per its schema (.vscode is hidden folder)
-      if (!(await this.isConfigFileValid(this.inputArgs["config"].argsValue, path.join(this.SHELL_FOLDER, this.VSCODE_SCHEMA_JSON_PATH), true))) {
-        throw new Error(this.getText("VERIFY_INPUT_PARAMS.INVALID_CONFIG_FILE"));
-      }
+      // if (!(await this.isConfigFileValid(this.inputArgs["config"].argsValue, path.join(this.SHELL_FOLDER, this.VSCODE_SCHEMA_JSON_PATH), true))) {
+      //   throw new Error(this.getText("VERIFY_INPUT_PARAMS.INVALID_CONFIG_FILE"));
+      // }
     } else {
       this.logger.log("Blank project creation without json file");
 
@@ -262,11 +262,14 @@ export class Ch5CreateProjectCliCustom extends Ch5BaseClassForCliNew implements 
         const genPage: Ch5GeneratePageCli = new Ch5GeneratePageCli(false);
         genPage.setInputArgsForTesting(["-n", pagesToBeCreated[i].pageName, "-m", pagesToBeCreated[i].navigation ? "Y" : "N"]);
         await genPage.run();
+        const pageContentData = JSON.parse(JSON.stringify(pagesToBeCreated[i].pageContent));
+        delete pagesToBeCreated[i].pageContent;
+        this.logger.log("pagesToBeCreated[i]", pagesToBeCreated[i]);
         this.projectConfig.replacePageNodeInJSON(pagesToBeCreated[i]);
 	
-        if (pagesToBeCreated[i].pageContent) {
+        if (pageContentData) {
           let newContent: string = "";
-          Object.entries(pagesToBeCreated[i].pageContent).forEach(([key, value]: any) => {
+          Object.entries(pageContentData).forEach(([key, value]: any) => {
             const fileContent: string = fsExtra.readFileSync(path.join(__dirname, "templates", key + ".template"));
             for (let j: number = 0; j < value.length; j++) {
               let counterForIndex: number = 0;
