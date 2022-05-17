@@ -109,6 +109,9 @@ export class Ch5UpgradeProjectCli extends Ch5BaseClassForCliNew implements ICh5C
       fs.mkdirSync(pathForV2, { recursive: true });
       // Move v2 to temporary path
       fsExtra.copySync(this.SHELL_FOLDER, pathForV2);
+      // Reason for below: https://docs.npmjs.com/cli/v8/configuring-npm/package-lock-json
+      fs.renameSync(path.resolve(path.join(pathForV2, "packagelock.json")), path.resolve(path.join(pathForV2, "package-lock.json")));
+
       this.processCode();
     } catch (e: any) {
       this.logger.printError(e);

@@ -189,7 +189,8 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
         throw new Error(this.getText("PROCESS_REQUEST.FOLDER_CONTAINS_FILES", pathToCreateProject));
       }
 
-      fsExtra.copySync(this.SHELL_FOLDER, pathToCreateProject, { recursive: true });
+      fsExtra.copySync(this.SHELL_FOLDER, pathToCreateProject);
+      fs.renameSync(path.resolve(path.join(pathToCreateProject, "packagelock.json")), path.resolve(path.join(pathToCreateProject, "package-lock.json")));
 
       this.logger.log("2. current working directory: " + process.cwd());
 
@@ -304,6 +305,8 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
       }
 
       fsExtra.copySync(this.SHELL_FOLDER, pathToCreateProject);
+      // Reason for below: https://docs.npmjs.com/cli/v8/configuring-npm/package-lock-json
+      fs.renameSync(path.resolve(path.join(pathToCreateProject, "packagelock.json")), path.resolve(path.join(pathToCreateProject, "package-lock.json")));
 
       projectConfigJSON["content"]["$defaultView"] = "page1";
       fs.writeFileSync(path.join(pathToCreateProject, this.PROJECT_CONFIG_JSON_PATH), JSON.stringify(projectConfigJSON));
@@ -332,4 +335,3 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
   }
 
 }
-
