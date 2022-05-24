@@ -21,23 +21,23 @@ export class Ch5UpgradeProjectCli extends Ch5BaseClassForCliNew implements ICh5C
 	private readonly PROJECT_CONFIG_JSON_PATH: string = path.normalize("/app/project-config.json");
 	private readonly cliProjectConfig: Ch5CliProjectConfig;
 
-	private readonly temporaryPath = './temp'
-	private readonly node_modules = './node_modules'
-	private readonly templatePath = './app/template'
-	private readonly assetsPath = './app/project/assets'
-	private readonly contractPath = './config/contract.cse2j'
-	private readonly vscodePath = './.vscode'
-	private readonly licensePath = './LICENSE.txt'
-	private readonly copyrightPath = './copyright.txt'
-	private readonly packagePath = './package.json'
-	private readonly readmePath = './README.md'
-	private readonly packageLockPath = './package-lock.json'
-	private readonly appConfigPath = './app.config.js'
-	private readonly webpackCommonPath = './webpack.common.js'
-	private readonly webpackDevPath = './webpack.dev.js'
-	private readonly webpackProdPath = './webpack.prod.js'
-	private readonly indexHtmlPath = './app/index.html'
-	private readonly oldShellUtilitiesPath = './shell-utilities'
+	private readonly temporaryPath = './temp';
+	private readonly node_modules = './node_modules';
+	private readonly templatePath = './app/template';
+	private readonly assetsPath = './app/project/assets';
+	private readonly contractPath = './config/contract.cse2j';
+	private readonly vscodePath = './.vscode';
+	private readonly licensePath = './LICENSE.txt';
+	private readonly copyrightPath = './copyright.txt';
+	private readonly packagePath = './package.json';
+	private readonly readmePath = './README.md';
+	private readonly packageLockPath = './package-lock.json';
+	private readonly appConfigPath = './app.config.js';
+	private readonly webpackCommonPath = './webpack.common.js';
+	private readonly webpackDevPath = './webpack.dev.js';
+	private readonly webpackProdPath = './webpack.prod.js';
+	private readonly indexHtmlPath = './app/index.html';
+	private readonly oldShellUtilitiesPath = './shell-utilities';
 
 	/**
 	 * Constructor
@@ -203,7 +203,7 @@ export class Ch5UpgradeProjectCli extends Ch5BaseClassForCliNew implements ICh5C
 		const oldPages = this.cliProjectConfig.getJson().content.pages;
 
 		for (const oldPage of oldPages) {
-			oldPage.cachePage = true;
+			oldPage.cachePage = false;
 			oldPage.preloadPage = false;
 			delete oldPage.pageProperties;
 		}

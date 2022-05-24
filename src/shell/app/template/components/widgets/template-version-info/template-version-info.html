@@ -7,11 +7,9 @@
     under which you licensed this source code.
 -->
 <section id="template-version-info-page" aria-labelledby="Version Information">
-    <ch5-button id="infobtn" shape="circle" size="small" iconClass="material-icons md-info"
-        sendEventOnClick="infoBtn.clicked" role="button" aria-label="Open Version Information" aria-pressed="false">
+    <ch5-button id="infobtn" shape="circle" size="small" iconClass="material-icons md-info" sendEventOnClick="infoBtn.clicked" role="button" aria-label="Open Version Information" aria-pressed="false">
     </ch5-button>
-    <ch5-modal-dialog receiveStateShowPulse="infoBtn.clicked" closable closeIcon="fa fa-window-close"
-        hideOkButton="true" hideCancelButton="true" title="PROJECT INFO" customclass="project-info-dialog">
+    <ch5-modal-dialog receiveStateShowPulse="infoBtn.clicked" closable closeIcon="fa fa-window-close" hideOkButton="true" hideCancelButton="true" title="PROJECT INFO" customclass="project-info-dialog">
         <div id="tab-wrapper">
             <button id="version-tab" class="selected" data-ch5-i18n="-+header.info.tab.version+-">Version</button>
             <button id="webxpanel-tab" data-ch5-i18n="-+header.info.tab.webxpanel+-">WebXPanel</button>
@@ -45,16 +43,17 @@
 
         <div id="diagnostics-tab-content" style="display: none">
             <div id="diagnostics-info">
-                <span id="memory-collabsable-handler" data-ch5-i18n="-+header.info.diagnostics.memory.title+-">+ MEMORY INFO</span>
-                <div id="memory-collabsable-container">
+                <span id="memory-collabsable-handler" data-ch5-i18n="-+header.info.diagnostics.memory.title+-">+ MEMORY
+                    INFO</span>
+                <div id="memory-collabsable-container" class="container-hide">
                     <div class="memory-container">
-                        <span id="memory-usage" data-ch5-i18n="-+header.info.diagnostics.memory.status+-">Memory Status:</span>
+                        <span id="memory-usage" data-ch5-i18n="-+header.info.diagnostics.memory.status+-">Memory
+                            Status:</span>
                         <div id="memory-bar">
                             <span id="memory-span"></span>
                             <div id="memory-used"></div>
                         </div>
-                        <ch5-button id="memory-info" shape="circle" size="x-small" iconClass="material-icons md-info"
-                            role="button" aria-label="Open Version Information" aria-pressed="false">
+                        <ch5-button id="memory-info" shape="circle" size="x-small" iconClass="material-icons md-info" role="button" aria-label="Open Version Information" aria-pressed="false">
                         </ch5-button>
 
                         <div id="memory-tooltip">
@@ -63,7 +62,8 @@
 
                     </div>
                     <div class="memory-container">
-                        <span id="total-components" data-ch5-i18n="-+header.info.diagnostics.memory.totalcomponents+-">Total Ch5 Components:</span>
+                        <span id="total-components" data-ch5-i18n="-+header.info.diagnostics.memory.totalcomponents+-">Total Ch5
+                            Components:</span>
                         <ch5-button id="components-info" shape="circle" size="x-small" iconClass="material-icons md-info" role="button" aria-label="Open Version Information" aria-pressed="false">
                         </ch5-button>
 
@@ -71,26 +71,43 @@
                             <span>C Tooltip</span>
                         </div>
                     </div>
-                    <span id="total-dom" data-ch5-i18n="-+header.info.diagnostics.memory.totalnodes+-">Total DOM Nodes:</span>
-    
                     <div class="memory-container">
-                        <span id="page-count" data-ch5-i18n="-+header.info.diagnostics.memory.pagecount+-">Page Count:</span>
-                        <ch5-button id="count-info" shape="circle" size="x-small" iconClass="material-icons md-info"
-                             role="button" aria-label="Open Version Information" aria-pressed="false">
+                        <span id="total-dom" data-ch5-i18n="-+header.info.diagnostics.memory.totalnodes+-">Total DOM
+                            Nodes:</span>
+                    </div>
+                    <div class="memory-container">
+                        <span id="page-count" data-ch5-i18n="-+header.info.diagnostics.memory.pagecount+-">Page
+                            Count:</span>
+                        <ch5-button id="count-info" shape="circle" size="x-small" iconClass="material-icons md-info" role="button" aria-label="Open Version Information" aria-pressed="false">
                         </ch5-button>
 
                         <div id="count-tooltip">
                             <span>C Tooltip</span>
                         </div>
                     </div>
-                    <span id="current-components" data-ch5-i18n="-+header.info.diagnostics.memory.currentcomp+-">Current CH5 Components:</span>
-                    <span id="start-duration" data-ch5-i18n="-+header.info.diagnostics.memory.startduration+-">Start Duration:</span>
+                    <div class="memory-container">
+
+                        <span id="current-components" data-ch5-i18n="-+header.info.diagnostics.memory.currentcomp+-">Current
+                            CH5 Components:</span>
+                    </div>
+                    <div class="memory-container">
+
+                        <span id="start-duration" data-ch5-i18n="-+header.info.diagnostics.memory.startduration+-">Start
+                            Duration:</span>
+                    </div>
                 </div>
-                <span id="subscribe-collabsable-handler" data-ch5-i18n="-+header.info.diagnostics.subs.title+-">+ SUBSCRIPTIONS INFO</span>
-                <div id="subscribe-collabsable-container">
-                    <span id="total-subscriptions" data-ch5-i18n="-+header.info.diagnostics.subs.subs+-">Subscriptions:</span>
-                    <span id="total-subscribers" data-ch5-i18n="-+header.info.diagnostics.subs.subscribers+-">Subscribers:</span>
+
+                <span id="subscribe-collabsable-handler" data-ch5-i18n="-+header.info.diagnostics.subs.title+-">+
+                    SUBSCRIPTIONS INFO</span>
+                <div id="subscribe-collabsable-container" class="container-hide">
+                    <div class="subscriptions-container">
+                        <span id="total-subscriptions" data-ch5-i18n="-+header.info.diagnostics.subs.subs+-">Subscriptions:</span>
+                    </div>
+                    <div class="subscriptions-container">
+                        <span id="total-subscribers" data-ch5-i18n="-+header.info.diagnostics.subs.subscribers+-">Subscribers:</span>
+                    </div>
                 </div>
+
                 <button id="subscribe-log" data-ch5-i18n="-+header.info.diagnostics.logs+-">Add Log</button>
             </div>
             <table>

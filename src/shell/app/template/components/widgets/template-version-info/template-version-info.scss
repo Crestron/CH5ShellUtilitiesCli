@@ -57,7 +57,7 @@
   }
 
   div.ch5-modal-dialog.project-info-dialog {
-    width: 55vw;
+    width: 60vw;
     max-height: 70vh;
     max-width: 600px;
     border: $version-modal-dialog-border-width $border-type $black;
@@ -74,9 +74,10 @@
       margin: 0 0 10px 0;
     }
 
-    #version-tab-content, #webxpanel-tab-content, #diagnostics-tab-content {
-      max-height: calc(70vh - 120px);
-      padding-bottom: 5px;
+    #version-tab-content,
+    #webxpanel-tab-content,
+    #diagnostics-tab-content {
+      max-height: calc(70vh - 130px);
       overflow: auto;
     }
 
@@ -84,27 +85,37 @@
       margin-top: 10px;
       display: flex;
       max-width: 65%;
+
       button {
-        background-color: rgba(169,169,169, 0.5);
+        background-color: rgba(211, 211, 211, 0.5);
         flex-grow: 1;
         border: 1px solid darkgray;
+        opacity: 0.7;
+        font-weight: normal;
+
         &:first-child {
           border-right: none;
           border-top-left-radius: 3px;
         }
+
         &:last-child {
           border-left: none;
           border-top-right-radius: 3px;
         }
+
         &.selected {
-          background-color: rgba(211,211,211, 0.5);
+          font-weight: bold;
+          opacity: 1;
+          background-color: rgba(169, 169, 169, 0.5);
         }
       }
     }
 
     table {
       width: 100%;
-      th, td {
+
+      th,
+      td {
         border: 1px solid darkgray;
         padding: 5px;
       }
@@ -114,7 +125,7 @@
       }
 
       tr:nth-child(even) {
-        background-color: rgba(200,200,200, 0.4);
+        background-color: rgba(200, 200, 200, 0.4);
       }
     }
 
@@ -123,6 +134,7 @@
         margin-bottom: 10px;
         display: flex;
         flex-direction: column;
+
         .info-row {
           margin-left: 10px;
         }
@@ -136,41 +148,66 @@
           border-radius: 5px;
           margin-bottom: 10px;
           width: 100%;
+
           &:hover {
-            background:rgba(200,200,200, 0.5);
+            background: rgba(200, 200, 200, 0.5);
           }
+
           &:active {
-            background:rgba(180,180,180, 0.5);
+            background: rgba(180, 180, 180, 0.5);
           }
         }
-        #memory-collabsable-handler, #subscribe-collabsable-handler {
+
+        #memory-collabsable-handler,
+        #subscribe-collabsable-handler {
           font-weight: bold;
+          display: block;
+
           &:hover {
             cursor: pointer;
           }
         }
-        #memory-collabsable-container, #subscribe-collabsable-container {
+
+        .container-hide {
+          display: none !important;
+        }
+
+        #memory-collabsable-container,
+        #subscribe-collabsable-container {
           overflow: hidden;
-          height: 0;
           transition: 0.5s;
           margin: 0 0 10px 14px;
           display: flex;
-          flex-direction: column;
+          flex-wrap: wrap;
+
           & > span {
-            height: 36px;
+            height: 28px;
             display: inline-flex;
             align-items: center;
           }
         }
+
+        .subscriptions-container {
+          display: flex;
+          width: 265px;
+          align-items: center;
+          height: 36px;
+        }
+
         .memory-container {
           display: flex;
-          flex-direction: row;
+          width: 265px;
           align-items: center;
+          height: 36px;
+
           ch5-button {
             flex-grow: 1;
             text-align: end;
           }
-          #memory-tooltip, #components-tooltip, #count-tooltip {
+
+          #memory-tooltip,
+          #components-tooltip,
+          #count-tooltip {
             position: absolute;
             background: lightgray;
             padding: 2px 5px;
@@ -179,6 +216,7 @@
             visibility: hidden;
             right: -100px;
           }
+
           #memory-bar {
             margin-left: 10px;
             height: 20px;
@@ -186,16 +224,20 @@
             background: white;
             border: 1px solid gray;
             position: relative;
+
             #memory-used {
               height: 100%;
-              background: gray;
+              background: #d8d8d8;
             }
+
             #memory-span {
-              color: white;
+              color: black;
               position: absolute;
               left: 50%;
               top: 50%;
-              transform: translate(-50%,-50%);
+              transform: translate(-50%, -50%);
+              font-size: 14px;
+              font-weight: 600;
             }
           }
         }
@@ -211,6 +253,7 @@
       margin: 0;
       @include size(auto);
       background-color: transparent;
+
       span.ch5-modal-dialog-close-icon {
         display: block;
         font-size: rem-calc(24px);
@@ -220,89 +263,138 @@
     p {
       color: $version-modal-dialog-content-color;
       font-size: rem-calc(18px);
+
       span {
         display: block;
       }
     }
-
-    // p.version-error {
-    //   color: $red;
-    // }
 
     h4 {
       color: $black;
       font-size: rem-calc(24px);
     }
 
+    @media only screen and (max-width: 988px) {
+      width: 85vw;
+    }
+
     @media only screen and (max-width: 800px) {
       width: 85vw;
-      
-      .spacer {
-        visibility: hidden;
-      }
 
       #tab-wrapper {
-        flex-direction: column;
-        width: 100%;
-        max-width: 100%;
-        min-width: 0;
-        button {
-          flex-grow: 1;
-          border: 1px solid darkgray;
-          &:first-child {
-            border-right: 1px solid darkgray; // reset above rule
-            border-bottom: none;
-            border-top-right-radius: 3px;
-            border-bottom-left-radius: 0;
-          }
-          &:last-child {
-            border-left: 1px solid darkgray; // reset above rule
-            border-top: none;
-            border-top-right-radius: 0;
-            border-bottom-left-radius: 3px;
-            border-bottom-right-radius: 3px;
-          }
-        }
+        max-width: 70%;
+      }
+    }
+
+    @media only screen and (max-width: 697px) {
+      width: 80vw;
+
+      #memory-collabsable-container .memory-container,
+      #subscribe-collabsable-container .subscriptions-container {
+        width: 100% !important;
+      }
+    }
+
+    @media only screen and (max-width: 580px) {
+      width: 90vw;
+
+      #tab-wrapper {
+        max-width: 75%;
       }
 
-      #version-tab-content, #webxpanel-tab-content, #diagnostics-tab-content {
-        max-height: calc(70vh - 175px);
+      .ch5-modal-dialog-contents {
+        font-size: 16px;
       }
 
-      #diagnostics-tab-content {
-        #diagnostics-info {
-          #memory-collabsable-handler, #subscribe-collabsable-handler {
-            display: none;
-          }
-          #memory-collabsable-container, #subscribe-collabsable-container {
-            height: auto;
-            margin-left: 0;
-          }
-          #memory-collabsable-container {
-            margin-bottom: 0;
-          }
-        }
+      #memory-span {
+        font-size: 12px;
       }
     }
   }
-
-
 }
 
 .dark-theme {
   #template-version-info-page {
-    .ch5-modal-dialog {
+    .ch5-modal-dialog.project-info-dialog {
       border: 1px solid $color-darkgrey;
       color: $color-white;
       background-color: $color-darkestgrey;
+
       h4 {
         color: $color-white;
       }
+
       p {
         color: $color-offwhite;
       }
+
       .ch5-modal-dialog-close-icon-btn {
         color: $color-white;
+      }
+
+      #version-tab-content,
+      #webxpanel-tab-content,
+      #diagnostics-tab-content {
+        color: white;
+      }
+
+      #tab-wrapper {
+        button {
+          background-color: rgba(169, 169, 169, 0.8);
+          border: 1px solid darkgray;
+
+          &:first-child {
+            border-right: none;
+            border-top-left-radius: 3px;
+          }
+
+          &:last-child {
+            border-left: none;
+            border-top-right-radius: 3px;
+          }
+
+          &.selected {
+            background-color: rgba(211, 211, 211, 0.8);
+          }
+        }
+      }
+
+      table {
+        width: 100%;
+
+        th,
+        td {
+          border: 1px solid lightgray;
+          padding: 5px;
+        }
+
+        tr:nth-child(even) {
+          background-color: rgba(200, 200, 200, 0.6);
+        }
+
+        tr:nth-child(odd) {
+          background-color: rgba(200, 200, 200, 0.8);
+        }
+
+        tr:first-child {
+          background-color: rgba(80, 80, 80, 0.8);
+        }
+      }
+
+      #diagnostics-tab-content {
+        #diagnostics-info {
+          button#subscribe-log {
+            border: 1px solid darkgray;
+
+            &:hover {
+              background: rgba(200, 200, 200, 0.5);
+            }
+
+            &:active {
+              background: rgba(180, 180, 180, 0.5);
+            }
+          }
+        }
       }
     }
 

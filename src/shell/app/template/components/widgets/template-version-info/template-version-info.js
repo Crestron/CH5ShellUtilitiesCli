@@ -45,9 +45,11 @@ const templateVersionInfoModule = (() => {
 
 	let diagnosticsPageChangeChanged = false;
 	let projectConfig;
-	let memoryToolTipVisible = false;
-	let componentsToolTipVisible = false;
-	let countsToolTipVisible = false;
+	const tooltipVisibility = {
+		'memory-tooltip': false,
+		'components-tooltip': false,
+		'count-tooltip': false
+	}
 
 	/**
 	 * Initialize Method
@@ -77,9 +79,9 @@ const templateVersionInfoModule = (() => {
 
 		setTabsListeners();
 
-		initializeTooltips('memory-tooltip', 'memory-info', memoryToolTipVisible);
-		initializeTooltips('components-tooltip', 'components-info', componentsToolTipVisible);
-		initializeTooltips('count-tooltip', 'count-info', countsToolTipVisible);
+		initializeTooltips('memory-tooltip', 'memory-info');
+		initializeTooltips('components-tooltip', 'components-info');
+		initializeTooltips('count-tooltip', 'count-info');
 	}
 
 	function initializeTooltips(tooltipId, buttonId) {
@@ -95,11 +97,13 @@ const templateVersionInfoModule = (() => {
 		})
 	}
 
-	function toggleToolTip(tooltipId, tooltipvisible) {
+	function toggleToolTip(tooltipId) {
 		const tooltip = document.getElementById(tooltipId);
 		const tooltipSize = tooltip.getBoundingClientRect();
 		if (tooltip.style.visibility === 'hidden') {
+			hideOtherActiveTooltips();
 			tooltip.style.visibility = 'visible'
+			tooltipVisibility[tooltipId] = true;
 			const buffer = tooltip.style.right === '100px' ? 200 : 0;
 			if (tooltipSize.x + tooltipSize.width + buffer > window.innerWidth + 10) {
 				tooltip.style.right = '100px';
@@ -108,6 +112,15 @@ const templateVersionInfoModule = (() => {
 			}
 		} else {
 			tooltip.style.visibility = 'hidden'
+			tooltipVisibility[tooltipId] = false;
+		}
+	}
+
+	function hideOtherActiveTooltips() {
+		for (const tooltipId of Object.keys(tooltipVisibility)) {
+			tooltipVisibility[tooltipId] = false;
+			const tooltip = document.getElementById(tooltipId);
+			tooltip.style.visibility = 'hidden';
 		}
 	}
 
@@ -131,7 +144,18 @@ const templateVersionInfoModule = (() => {
 		const tableRow = document.createElement('tr');
 		for (const value of Object.values(data)) {
 			const tableData = document.createElement('td');
-			tableData.textContent = value;
+
+			if (value === 'Y') {
+				tableData.innerHTML = "&#10003; Yes";
+				tableData.style.color = "green";
+			}
+			else if (value === 'N') {
+				tableData.innerHTML = "&#x2716; No"
+				tableData.style.color = "orange";
+			}
+			else {
+				tableData.textContent = value;
+			}
 			tableRow.appendChild(tableData);
 		}
 		return tableRow;
@@ -150,18 +174,19 @@ const templateVersionInfoModule = (() => {
 
 		const memoryCollabsableContainer = document.getElementById(HTML_IDS.memoryCollabsableContainer);
 		const subscribeCollabsableContainer = document.getElementById(HTML_IDS.subscribeCollabsableContainer);
+		memoryCollabsableHandler.addEventListener('click', () => { toggleCollabsableContainer(memoryCollabsableContainer, memoryCollabsableHandler) });
+		subscriberCollabsableHandler.addEventListener("click", () => { toggleCollabsableContainer(subscribeCollabsableContainer, subscriberCollabsableHandler) });
 
-		memoryCollabsableHandler.addEventListener('click', toggleCollabsableContainer.bind(null, memoryCollabsableContainer, memoryCollabsableHandler));
-		subscriberCollabsableHandler.addEventListener('click', toggleCollabsableContainer.bind(null, subscribeCollabsableContainer, subscriberCollabsableHandler));
 	}
-
-	function toggleCollabsableContainer(collabsableContainer, collabsableHandler) {
-		if (!collabsableContainer.clientHeight) {
-			collabsableHandler.textContent = collabsableHandler.textContent.replace('+', '-');
-			collabsableContainer.style.height = `${collabsableContainer.scrollHeight + 27}px`;
-		} else {
-			collabsableContainer.style.height = '0';
-			collabsableHandler.textContent = collabsableHandler.textContent.replace('-', '+');
+	function toggleCollabsableContainer(container, handler) {
+		console.log(container, handler);
+		if (handler.textContent.includes('+')) {
+			container.classList.remove("container-hide")
+			handler.textContent = handler.textContent.replace('+', '-');
+		}
+		else {
+			container.classList.add("container-hide")
+			handler.textContent = handler.textContent.replace('-', '+');
 		}
 	}
 
@@ -238,7 +263,7 @@ const templateVersionInfoModule = (() => {
 		const listOfPages = projectConfigModule.getNavigationPages();
 
 		pageCountElement.textContent = `${translateModule.translateInstant('header.info.diagnostics.memory.pagecount')} ${listOfPages.length} (${listOfPages.filter(page => page.cachePage).length} Cached)`;
-
+		
 		for (const page of listOfPages) {
 			const processedPageName = page.navigation.isI18nLabel ? translateModule.translateInstant(page.navigation.label) : page.navigation.label;
 			const newTableEntry = createTableRow({ name: processedPageName, count: '', cached: page.cachePage ? 'Y' : 'N', nodes: '', time: '' });
@@ -273,7 +298,7 @@ const templateVersionInfoModule = (() => {
 			if (processedPages.has(pageConfiguration.pageName) && !pageConfiguration.cachePage || !processedPages.has(pageConfiguration.pageName)) {
 				const currentCh5Components = document.getElementById(HTML_IDS.currentComponents);
 
-				currentCh5Components.textContent = `${translateModule.translateInstant('header.info.diagnostics.memory.currentcomp')} ${(parseInt(currentCh5Components.textContent.split(':')[1].trim()) || 0) + totalComponentsOnPage}`;
+				currentCh5Components.textContent = `${translateModule.translateInstant('header.info.diagnostics.memory.currentcomp')} ${totalComponentsOnPage}`;
 			}
 
 			if (!processedPages.has(pageConfiguration.pageName)) {
@@ -322,8 +347,8 @@ const templateVersionInfoModule = (() => {
 
 					const oldPageTableEntry = document.getElementById(`diagnostics-table-${oldPageObject.pageName}`);
 					if (oldPageTableEntry) {
-						const oldPageComponentsCount = parseInt(oldPageTableEntry.childNodes[1].textContent);
-						currentCh5Components.textContent = `${translateModule.translateInstant('header.info.diagnostics.memory.currentcomp')} ${(parseInt(currentCh5Components.textContent.split(':')[1].trim()) || 0) - oldPageComponentsCount}`;
+
+						currentCh5Components.textContent = `${translateModule.translateInstant('header.info.diagnostics.memory.currentcomp')} ${(parseInt(currentCh5Components.textContent.split(':')[1].trim()) || 0)}`;
 					}
 				}
 			}

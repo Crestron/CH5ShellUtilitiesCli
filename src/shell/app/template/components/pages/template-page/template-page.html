@@ -49,6 +49,7 @@
 				</ch5-triggerview>
 			</div>
 		</div>
+		<!-- footer -->
 		<div class="horizontal-footer-menu" id="template-content-index-footer">
 			<ch5-list id="horizontal-menu-swiper-thumb" receiveStateScrollTo="scrollToMenu" scrollbar="false" class="swiper-thumb" orientation="horizontal" maxHeight="auto" indexId="idx" itemHeight="100%">
 				<template>
@@ -62,6 +63,9 @@
 					<path d="M11.67 3.87L9.9 2.1 0 12l9.9 9.9 1.77-1.77L3.54 12z" />
 				</svg>
 			</a>
+		</div>
+		<div id="footer-index-page">
+			<div id="footer-section-page"></div>
 		</div>
 	</template>
 
@@ -85,6 +89,10 @@
 				</div>
 			</div>
 		</div>
+		<!-- footer -->
+		<div id="footer-index-page">
+			<div id="footer-section-page"></div>
+		</div>
 	</template>
 
 	<template id="template-content-page-section-none">
@@ -94,17 +102,19 @@
 				</ch5-triggerview>
 			</div>
 		</div>
+		<!-- footer -->
+		<div id="footer-index-page">
+			<div id="footer-section-page"></div>
+		</div>
 	</template>
 </div>
-<!-- footer -->
-<div id="footer-index-page">
-	<div id="footer-section-page"></div>
-	<template id="footer-section-page-template1">
-		<section id="footer-page" class="footer-page">
-			Copyright (C) {{ copyrightYear }} to the present, Crestron Electronics, Inc.
-		</section>
-	</template>
-	<template id="footer-section-page-template2">
-		<ch5-import-htmlsnippet id="template-footer" url="{{customFooterUrl}}"></ch5-import-htmlsnippet>
-	</template>
-</div>
+
+
+<template id="footer-section-page-template1">
+	<section id="footer-page" class="footer-page">
+		Copyright (C) {{ copyrightYear }} to the present, Crestron Electronics, Inc.
+	</section>
+</template>
+<template id="footer-section-page-template2">
+	<ch5-import-htmlsnippet id="template-footer" url="{{customFooterUrl}}"></ch5-import-htmlsnippet>
+</template>
