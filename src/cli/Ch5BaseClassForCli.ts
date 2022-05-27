@@ -95,7 +95,7 @@ export abstract class Ch5BaseClassForCli {
     this._cliConfigFileReader = new Ch5CliConfigFileReader(path.join(__dirname, this._folderPath, "files", "config.json"), JSON.parse(this._cliUtil.readFileContentSync(path.join(__dirname, "files", "environment.json"))));
     this.CONFIG_FILE = this._cliConfigFileReader.configFile;
     this._inputArguments = this.processArgs();
-    this._cliLogger = new Ch5CliLogger(this._inputArguments["verbose"].argsValue);
+    this._cliLogger = new Ch5CliLogger(this._inputArguments["verbose"]);
     this.TRANSLATION_FILE = JSON.parse(this.utils.readFileContentSync(path.join(__dirname, this._folderPath, "i18n", "en.json")));
   }
 
@@ -116,12 +116,6 @@ export abstract class Ch5BaseClassForCli {
     let continueProcess = false;
     args.forEach((val: any, index: any, array: any) => {
       if (String(val).indexOf('--') === 0 || String(val).indexOf('-') === 0) {
-        let optionName = null;
-        if (String(val).indexOf('--') === 0) {
-          optionName = val.replace('--', '');
-        } else if (String(val).indexOf('-') === 0) {
-          optionName = val.replace('-', '');
-        }
         const paramObj = completeInputParams.find((tempObj) => tempObj.alias.map((v: string) => v.toLowerCase()).includes(val.trim().toLowerCase()));
         if (paramObj) {
           arrayKey = paramObj.key;
@@ -381,6 +375,7 @@ export abstract class Ch5BaseClassForCli {
       }
     }
   }
+
   private convertArrayToCommaSeparatedString(input: string[]) {
     let output: string = "";
     for (let i: number = 0; i < input.length; i++) {

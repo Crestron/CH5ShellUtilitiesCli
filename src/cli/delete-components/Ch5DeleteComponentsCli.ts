@@ -10,7 +10,17 @@ import { ICh5Cli } from "../ICh5Cli";
 
 export class Ch5DeleteComponentsCli extends Ch5BaseClassForCli implements ICh5Cli {
 
-  private outputResponse: any = {};
+  private outputResponse: any = {
+    result: false,
+    errorMessage: "",
+    warningMessage: "",
+    data: {
+      components: [],
+      deleteConfirmation: false
+    },
+    validInputsForComponentNames: [],
+    invalidInputsForComponentNames: []
+  };
   private pagesAndWidgets: any = [];
 
   /**
@@ -35,6 +45,7 @@ export class Ch5DeleteComponentsCli extends Ch5BaseClassForCli implements ICh5Cl
 
       // Ask details to developer based on input parameter validation
       await this.checkPromptQuestions();
+
       // Update project-config first (so that if this fails, we don't worry about file deletion). Next Delete Files
       await this.processRequest();
 

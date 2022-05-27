@@ -17,7 +17,9 @@ const findRemoveSync = require('find-remove');
 
 export class Ch5ExportAllCli extends Ch5BaseClassForCli implements ICh5Cli {
 
-  private outputResponse: any = {};
+  private outputResponse: any = {
+    result: false
+  };
   private finalOutputZipFile: string = "";
 
   /*
@@ -40,34 +42,46 @@ export class Ch5ExportAllCli extends Ch5BaseClassForCli implements ICh5Cli {
    * Method for exporting all
    */
   async run() {
-    this.checkVersionToExecute();
+    try {
+      this.outputResponse = {
+        result: false
+      };
+      this.checkVersionToExecute();
 
-    this.outputResponse = {};
-    this.finalOutputZipFile = path.join(this.getConfigNode("zipFileDestinationPath"), this.getConfigNode("outputFileName"));
-    if (this.inputArguments["all"] === true) {
-      if (fs.existsSync(this.getConfigNode("requiredFolderPath"))) {
-        if (fs.readdirSync(this.getConfigNode("requiredFolderPath")).length > 0) {
-          await this.copyAndZipFiles([], true);
+      this.finalOutputZipFile = path.join(this.getConfigNode("zipFileDestinationPath"), this.getConfigNode("outputFileName"));
+      if (this.inputArguments["all"] === true) {
+        if (fs.existsSync(this.getConfigNode("requiredFolderPath"))) {
+          if (fs.readdirSync(this.getConfigNode("requiredFolderPath")).length > 0) {
+            await this.copyAndZipFiles([], true);
+          } else {
+            this.outputResponse['result'] = false;
+            this.outputResponse['errorMessage'] = this.getText("FAILURE_MESSAGE_NO_FILES_IN_DIR");
+            this.logFinalResponses();
+          }
         } else {
           this.outputResponse['result'] = false;
-          this.outputResponse['errorMessage'] = this.getText("FAILURE_MESSAGE_NO_FILES_IN_DIR");
+          this.outputResponse['errorMessage'] = this.getText("FAILURE_MESSAGE_NO_DIR");
           this.logFinalResponses();
         }
       } else {
-        this.outputResponse['result'] = false;
-        this.outputResponse['errorMessage'] = this.getText("FAILURE_MESSAGE_NO_DIR");
-        this.logFinalResponses();
+        let inputNames = this.inputArguments["list"];
+        this.logger.log("inputNames", inputNames);
+        if (inputNames && inputNames.length > 0) {
+          await this.copyAndZipFiles(inputNames, false);
+        } else {
+          this.outputResponse['result'] = false;
+          this.outputResponse['errorMessage'] = this.getText("FAILURE_MESSAGE_INPUT_PARAMS_EMPTY_IN_REQUEST");
+          this.logFinalResponses();
+        }
       }
-    } else {
-      let inputNames = this.inputArguments["list"];
-      this.logger.log("inputNames", inputNames);
-      if (inputNames && inputNames.length > 0) {
-        await this.copyAndZipFiles(inputNames, false);
+    } catch (e: any) {
+      if (e && this.utils.isValidInput(e.message)) {
+        this.outputResponse.errorMessage = e.message;
       } else {
-        this.outputResponse['result'] = false;
-        this.outputResponse['errorMessage'] = this.getText("FAILURE_MESSAGE_INPUT_PARAMS_EMPTY_IN_REQUEST");
-        this.logFinalResponses();
+        this.outputResponse.errorMessage = this.getText("ERRORS.SOMETHING_WENT_WRONG");
+        this.logger.log(e);
       }
+      this.logFinalResponses();
     }
     return this.outputResponse['result'];
   }
