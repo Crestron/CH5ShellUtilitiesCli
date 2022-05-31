@@ -182,7 +182,7 @@ const templatePageModule = (() => {
 					const widgets = projectConfigResponse.content.widgets;
 					for (let i = 0; i < widgets.length; i++) {
 						const htmlImportSnippet = document.createElement("ch5-import-htmlsnippet");
-						htmlImportSnippet.setAttribute("id", widgets[i].widgetName + "-import-page");
+						htmlImportSnippet.setAttribute("id", widgets[i].widgetName + "-import-widget");
 						htmlImportSnippet.setAttribute("url", widgets[i].fullPath + widgets[i].fileName);
 						htmlImportSnippet.setAttribute("show", "false");
 						widgetsAndStandalonePages.appendChild(htmlImportSnippet);
@@ -241,9 +241,12 @@ const templatePageModule = (() => {
 								}
 							});
 						}
+
 						if (projectConfigResponse.header.displayInfo === true) {
-							const headerSectionPageSet1 = document.getElementById('header-section-page-set1');
-							headerSectionPageSet1.innerHTML = utilsModule.replacePlaceHolders(document.getElementById("header-section-page-template1-set1").innerHTML, mergedJsonContentHeader);
+							if (projectConfigResponse.header.$component === "") {
+								const headerSectionPageSet1 = document.getElementById('header-section-page-set1');
+								headerSectionPageSet1.innerHTML = utilsModule.replacePlaceHolders(document.getElementById("header-section-page-template1-set1").innerHTML, mergedJsonContentHeader);
+							}
 						}
 					} else {
 						document.getElementById("header-index-page").remove();

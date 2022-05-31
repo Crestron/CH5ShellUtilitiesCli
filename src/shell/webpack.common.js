@@ -241,12 +241,11 @@ function getVersionForPackages() {
     crestronDependencies.push(getDependencyEntry(fileName, packageJsonFile, folderStat))
   }
 
-  
-  // Include the shell template as well
+  // Include the shell template
   const shellProjectStat = fs.statSync(__dirname);
   const packageJsonFile = fs.readFileSync('./package.json', 'utf-8');
-  crestronDependencies.push(getDependencyEntry('ch5-shell', packageJsonFile, shellProjectStat));
-  
+  crestronDependencies.push(getDependencyEntry('ch5 shell template project', packageJsonFile, shellProjectStat));
+
   return JSON.stringify(crestronDependencies);
 }
 
@@ -254,7 +253,7 @@ function getDependencyEntry(name, package, folderStat) {
   return {
     name,
     version: JSON.parse(package).version,
-    lastModifiedDate: folderStat.ctime.getDate() + '-' + folderStat.ctime.toLocaleDateString('en-US', {month: 'short'}) + '-' + folderStat.ctime.getFullYear()
+    lastModifiedDate: folderStat.ctime.getDate() + '-' + folderStat.ctime.toLocaleDateString('en-US', { month: 'short' }) + '-' + folderStat.ctime.getFullYear()
   }
 }
 
