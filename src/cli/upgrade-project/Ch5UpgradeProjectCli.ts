@@ -127,10 +127,10 @@ export class Ch5UpgradeProjectCli extends Ch5BaseClassForCliNew implements ICh5C
 
 			// delete old template from v1
 			this.utils.deleteFolder(this.templatePath);
-			// // delete old assets folder from project
+			// delete old assets folder from project
 			// this.utils.deleteFolder(this.assetsPath);
 			// delete old contract
-			this.utils.deleteFile(this.contractPath);
+			// this.utils.deleteFile(this.contractPath);
 			// delete old vscode path
 			this.utils.deleteFolder(this.vscodePath);
 			// delete old shell utilities
