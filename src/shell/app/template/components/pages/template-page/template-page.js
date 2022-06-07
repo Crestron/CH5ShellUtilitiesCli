@@ -383,7 +383,7 @@ const templatePageModule = (() => {
 					if (triggerview) {
 						triggerview.addEventListener("select", (event) => {
 							const listOfPages = projectConfigModule.getNavigationPages();
-							if (listOfPages.length > 0 && listOfPages[event.detail].pageName !== selectedPage.pageName) {
+							if (listOfPages.length > 0 && event.detail !== undefined && listOfPages[event.detail].pageName !== selectedPage.pageName) {
 								navigateTriggerViewByIndex(event.detail);
 							}
 						});
