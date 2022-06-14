@@ -140,7 +140,7 @@ export class Ch5UpgradeProjectCli extends Ch5BaseClassForCliNew implements ICh5C
 			// copy assets from v2 to v1
 			fsExtra.copySync(path.resolve(path.join(this.temporaryPath, "v2", this.assetsPath)), this.assetsPath);
 			// copy new contract
-			fsExtra.copySync(path.resolve(path.join(this.temporaryPath, "v2", this.contractPath)), this.contractPath);
+			// fsExtra.copySync(path.resolve(path.join(this.temporaryPath, "v2", this.contractPath)), this.contractPath);
 			// copy new vscode
 			fsExtra.copySync(path.resolve(path.join(this.temporaryPath, "v2", this.vscodePath)), this.vscodePath);
 			// copy license
