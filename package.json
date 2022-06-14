@@ -15,6 +15,7 @@
     "start": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts",
     "build:dev": "tsc -p tsconfig.dev.json && node build dev",
     "build:prod": "tsc -p tsconfig.prod.json && node build prod",
+    "build:test": "tsc -p tsconfig.test.json && node build dev",
     "build": "npm run build:prod",
     "ch5-utils": "./build/index.js",
     "clean": "rimraf build",
@@ -28,7 +29,7 @@
     "tsc": "tsc --declaration --declarationDir build/@types",
     "mtest": "mocha -r ts-node/register test/index.ts --timeout 15000 --reporter mochawesome",
     "test:mocha:report": "mocha --config=.mocharc.json --timeout 15000 --reporter mochawesome",
-    "test:mocha": "npm run build && nyc mocha --config=.mocharc.json"
+    "test:mocha": "npm run clean && npm run build:test && nyc mocha --config=.mocharc.json"
   },
   "keywords": [
     "ch5",
@@ -57,7 +58,6 @@
     "@types/node": "^14.14.35",
     "@types/sinon": "^10.0.2",
     "chai": "^4.3.4",
-    "copyfiles": "^2.4.1",
     "mocha": "^9.0.0",
     "mochawesome": "^7.1.2",
     "mock-fs": "^5.0.0",
