@@ -32,7 +32,6 @@ const templateVersionInfoModule = (() => {
 		startDuration: 'start-duration',
 		memoryCollabsableContainer: 'memory-collabsable-container',
 		memoryCollabsableHandler: 'memory-collabsable-handler',
-		subscribeCollabsableHandler: 'subscribe-collabsable-handler',
 		subscribeCollabsableContainer: 'subscribe-collabsable-container',
 		subscribeLogButton: 'subscribe-log'
 	};
@@ -45,6 +44,7 @@ const templateVersionInfoModule = (() => {
 
 	let diagnosticsPageChangeChanged = false;
 	let projectConfig;
+	let isListenerInitialized = false;
 	const tooltipVisibility = {
 		'memory-tooltip': false,
 		'components-tooltip': false,
@@ -78,50 +78,6 @@ const templateVersionInfoModule = (() => {
 		updateDiagnosticsHTML();
 
 		setTabsListeners();
-
-		initializeTooltips('memory-tooltip', 'memory-info');
-		initializeTooltips('components-tooltip', 'components-info');
-		initializeTooltips('count-tooltip', 'count-info');
-	}
-
-	function initializeTooltips(tooltipId, buttonId) {
-		const memoryTooltip = document.getElementById(buttonId).children[0];
-		document.getElementById(tooltipId).style.visibility = 'hidden';
-		document.getElementById(tooltipId).style.right = '100px';
-
-		memoryTooltip.addEventListener('click', () => {
-			toggleToolTip(tooltipId)
-		})
-		memoryTooltip.addEventListener('touch', () => {
-			toggleToolTip(tooltipId)
-		})
-	}
-
-	function toggleToolTip(tooltipId) {
-		const tooltip = document.getElementById(tooltipId);
-		const tooltipSize = tooltip.getBoundingClientRect();
-		if (tooltip.style.visibility === 'hidden') {
-			hideOtherActiveTooltips();
-			tooltip.style.visibility = 'visible'
-			tooltipVisibility[tooltipId] = true;
-			const buffer = tooltip.style.right === '100px' ? 200 : 0;
-			if (tooltipSize.x + tooltipSize.width + buffer > window.innerWidth + 10) {
-				tooltip.style.right = '100px';
-			} else {
-				tooltip.style.right = '-100px';
-			}
-		} else {
-			tooltip.style.visibility = 'hidden'
-			tooltipVisibility[tooltipId] = false;
-		}
-	}
-
-	function hideOtherActiveTooltips() {
-		for (const tooltipId of Object.keys(tooltipVisibility)) {
-			tooltipVisibility[tooltipId] = false;
-			const tooltip = document.getElementById(tooltipId);
-			tooltip.style.visibility = 'hidden';
-		}
 	}
 
 	function updateVersionTabHTML() {
@@ -162,24 +118,16 @@ const templateVersionInfoModule = (() => {
 	}
 
 	function updateDiagnosticsHTML() {
-		updateMemoryUsage();
 		updatePageCount();
-		updateStartDuration();
 		registerCollabsableHandler();
 	}
 
 	function registerCollabsableHandler() {
 		const memoryCollabsableHandler = document.getElementById(HTML_IDS.memoryCollabsableHandler);
-		const subscriberCollabsableHandler = document.getElementById(HTML_IDS.subscribeCollabsableHandler);
-
 		const memoryCollabsableContainer = document.getElementById(HTML_IDS.memoryCollabsableContainer);
-		const subscribeCollabsableContainer = document.getElementById(HTML_IDS.subscribeCollabsableContainer);
 		memoryCollabsableHandler.addEventListener('click', () => { toggleCollabsableContainer(memoryCollabsableContainer, memoryCollabsableHandler) });
-		subscriberCollabsableHandler.addEventListener("click", () => { toggleCollabsableContainer(subscribeCollabsableContainer, subscriberCollabsableHandler) });
-
 	}
 	function toggleCollabsableContainer(container, handler) {
-		console.log(container, handler);
 		if (handler.textContent.includes('+')) {
 			container.classList.remove("container-hide")
 			handler.textContent = handler.textContent.replace('+', '-');
@@ -190,69 +138,56 @@ const templateVersionInfoModule = (() => {
 		}
 	}
 
-	function updateStartDuration() {
-		const startDurationElement = document.getElementById(HTML_IDS.startDuration);
-		const perfData = window.PerformanceNavigationTiming;
-		startDurationElement.textContent = `${translateModule.translateInstant('header.info.diagnostics.memory.startduration')} ${parseInt(performance.getEntriesByType('navigation')[0].duration).toFixed(2)} ms`;
-	}
-
 	function updateSubscriptions() {
-		let subscriptions = 0;
+		let tsubscriptions = 0;
 		let subscribers = 0;
+		let data = [];
 		const signals = CrComLib.getSubscriptionsCount();
-		for (const [signalType, value] of Object.entries(signals)) {
+		for (const [sType, value] of Object.entries(signals)) {
 			for (const [signal, details] of Object.entries(value)) {
-				subscriptions++;
+				tsubscriptions++;
+				let signalType = sType != undefined ? sType : "";
+				let signalName = signal != undefined ? signal : "";
+				let subscriptions = Object.values(details._subscriptions).length - 1;
+				data.push({ signalType, signalName, subscriptions });
 				subscribers += Object.values(details._subscriptions).length - 1;
 			}
 		}
-
 		const subscriptionsElement = document.getElementById(HTML_IDS.totalSubscriptions);
 		const subscribersElement = document.getElementById(HTML_IDS.totalSubscribers);
 
-		subscriptionsElement.textContent = `${translateModule.translateInstant('header.info.diagnostics.subs.subs')} ${subscriptions}`;
-		subscribersElement.textContent = `${translateModule.translateInstant('header.info.diagnostics.subs.subscribers')} ${subscribers}`;
+		subscriptionsElement.textContent = tsubscriptions;
+		subscribersElement.textContent = subscribers;
 
-		setLogButtonListener();
+		if (!isListenerInitialized) {
+			isListenerInitialized = true;
+			setLogButtonListener();
+		}
+		return data;
 	}
 
 	function setLogButtonListener() {
 		document.getElementById(HTML_IDS.subscribeLogButton).addEventListener('click', logSubscriptionsCount);
-		CrComLib.subscribeState('b', 'receiveStateLogDiagnostics', (value) => logSubscriptionsCount(null, value));
+		CrComLib.subscribeState('b', '' + projectConfig.header.diagnostics.logs.receiveStateLogDiagnostics, (value) => logSubscriptionsCount(null, value));
 	}
 
 	function logSubscriptionsCount(event, signalValue) {
 		const currentCh5Components = document.getElementById(HTML_IDS.currentComponents);
 		const totalCh5Components = document.getElementById(HTML_IDS.totalComponents);
 		const totalDomNodes = document.getElementById(HTML_IDS.totalDom);
-
-		const subscriptions = CrComLib.getSubscriptionsCount();
-		const memory = window.performance.memory;
-		const components = {
+		const signals = updateSubscriptions();
+		const ch5components = {
 			currentCh5Components: currentCh5Components.textContent,
 			totalCh5Components: totalCh5Components.textContent,
-			totalDomNodes: totalDomNodes.textContent
+			totalDomNodes: totalDomNodes.textContent,
+			componentsAndAttributes: CrComLib.countNumberOfCh5Components(document.getElementsByTagName('body')[0])
 		}
+
+		const signalNames = document.getElementById(HTML_IDS.totalSubscribers).textContent;
+		const subscriptions = document.getElementById(HTML_IDS.totalSubscriptions).textContent;
 		if ((signalValue !== undefined && signalValue === true) || signalValue === undefined) {
-			console.log({ subscriptions, memory, components });
+			console.log({ signals, ch5components, signalNames, subscriptions });
 		}
-	}
-
-	function updateMemoryUsage() {
-		const memoryUsed = document.getElementById(HTML_IDS.memoryUsed);
-		const memorySpan = document.getElementById(HTML_IDS.memorySpan);
-
-		const width = (window.performance.memory.usedJSHeapSize / window.performance.memory.totalJSHeapSize * 100).toFixed(0) + '%';
-
-		memoryUsed.style.width = width;
-		memorySpan.textContent = width;
-
-		setInterval(() => {
-			const width = (window.performance.memory.usedJSHeapSize / window.performance.memory.totalJSHeapSize * 100).toFixed(0) + '%';
-
-			memoryUsed.style.width = width;
-			memorySpan.textContent = width;
-		}, 30000);
 	}
 
 	function updatePageCount() {
@@ -262,11 +197,11 @@ const templateVersionInfoModule = (() => {
 
 		const listOfPages = projectConfigModule.getNavigationPages();
 
-		pageCountElement.textContent = `${translateModule.translateInstant('header.info.diagnostics.memory.pagecount')} ${listOfPages.length} (${listOfPages.filter(page => page.cachePage).length} Cached)`;
-		
+		pageCountElement.textContent = `${translateModule.translateInstant('header.info.diagnostics.pagecount')} ${listOfPages.length} (${listOfPages.filter(page => page.cachePage).length} Cached)`;
+
 		for (const page of listOfPages) {
 			const processedPageName = page.navigation.isI18nLabel ? translateModule.translateInstant(page.navigation.label) : page.navigation.label;
-			const newTableEntry = createTableRow({ name: processedPageName, count: '', cached: page.cachePage ? 'Y' : 'N', nodes: '', time: '' });
+			const newTableEntry = createTableRow({ name: processedPageName, count: '', cached: page.cachePage ? 'Y' : 'N', nodes: '' });
 			newTableEntry.setAttribute('id', `diagnostics-table-${page.pageName}`);
 			diagnosticsTableElement.appendChild(newTableEntry);
 		}
@@ -287,7 +222,6 @@ const templateVersionInfoModule = (() => {
 			performanceEntry = resources.filter(entry => entry.name.includes(pageUrl.substring(1)));
 		}
 
-
 		// Wait for the page to load
 		const diagnosticsPageChangeInterval = setInterval(() => {
 			// if (resources.length || templateAppLoaderModule.pageDurationList.size > 0) {
@@ -298,7 +232,7 @@ const templateVersionInfoModule = (() => {
 			if (processedPages.has(pageConfiguration.pageName) && !pageConfiguration.cachePage || !processedPages.has(pageConfiguration.pageName)) {
 				const currentCh5Components = document.getElementById(HTML_IDS.currentComponents);
 
-				currentCh5Components.textContent = `${translateModule.translateInstant('header.info.diagnostics.memory.currentcomp')} ${totalComponentsOnPage}`;
+				currentCh5Components.textContent = `${totalComponentsOnPage}`;
 			}
 
 			if (!processedPages.has(pageConfiguration.pageName)) {
@@ -310,29 +244,17 @@ const templateVersionInfoModule = (() => {
 
 				const ch5ComponentsCountForCurrentPage = pageTableEntry.childNodes[1];
 				const domNodesForCurrentPage = pageTableEntry.childNodes[3];
-				const loadTime = pageTableEntry.childNodes[4];
-
-				loadTime.textContent = obj.loadDuration;
-
-				if(obj.loadDuration === 0) {
-					console.log("Duration is showing as zero");
-					console.log(obj);
-				}
 
 				ch5ComponentsCountForCurrentPage.textContent = totalComponentsOnPage;
 				domNodesForCurrentPage.textContent = domNodesOnPage;
 
-				currentDomNodes.textContent = `${translateModule.translateInstant('header.info.diagnostics.memory.totalnodes')} ${(parseInt(currentDomNodes.textContent.split(':')[1].trim()) || 0) + domNodesOnPage}`;
-
-				totalCh5Components.textContent = `${translateModule.translateInstant('header.info.diagnostics.memory.totalcomponents')} ${(parseInt(totalCh5Components.textContent.split(':')[1].trim()) || 0) + totalComponentsOnPage}`;
+				currentDomNodes.textContent = `${(parseInt(currentDomNodes.textContent) || 0) + domNodesOnPage}`;
+				totalCh5Components.textContent = `${(parseInt(totalCh5Components.textContent) || 0) + totalComponentsOnPage}`
 
 				processedPages.add(pageConfiguration.pageName);
-				updateSubscriptions();
 				diagnosticsPageChangeChanged = true;
 			}
-			// } else {
-			// performanceEntry = performance.getEntriesByType('resource').filter(entry => entry.name.includes(pageUrl.substring(1)))
-			// }
+			updateSubscriptions();
 		}, 1000);
 	}
 
@@ -348,7 +270,7 @@ const templateVersionInfoModule = (() => {
 					const oldPageTableEntry = document.getElementById(`diagnostics-table-${oldPageObject.pageName}`);
 					if (oldPageTableEntry) {
 
-						currentCh5Components.textContent = `${translateModule.translateInstant('header.info.diagnostics.memory.currentcomp')} ${(parseInt(currentCh5Components.textContent.split(':')[1].trim()) || 0)}`;
+						currentCh5Components.textContent = `${(currentCh5Components.textContent)}`;
 					}
 				}
 			}
@@ -410,7 +332,7 @@ const templateVersionInfoModule = (() => {
 	 */
 	return {
 		updateDiagnosticsOnPageChange,
-		handleUnloadedPageCount
+		handleUnloadedPageCount,
+		logSubscriptionsCount
 	};
-
 })();

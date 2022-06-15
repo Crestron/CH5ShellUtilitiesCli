@@ -170,6 +170,7 @@ const templatePageModule = (() => {
 					// featureModule.initializeLogger(serverIPAddress, serverPortNumber);
 					serviceModule.initialize(projectConfigResponse);
 					navigationModule.goToPage(projectConfigResponse.content.$defaultView);
+					featureModule.logDiagnostics(projectConfigResponse.header.diagnostics.logs.logDiagnostics);
 
 					// Changes for index.html - Start
 					document.getElementById("favicon").setAttribute("href", projectConfigResponse.faviconPath);

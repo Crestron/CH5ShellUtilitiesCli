@@ -1,5 +1,5 @@
 
-/* global CrComLib, projectConfigModule, loggerService */
+/* global CrComLib, projectConfigModule, loggerService, templateVersionInfoModule */
 
 const featureModule = (() => {
   'use strict';
@@ -47,11 +47,35 @@ const featureModule = (() => {
   }
 
   /**
+   * Log information in specific interval as mentioned in project-config.json
+   * @param {string} duration duration to log issues
+   * @returns 
+   */
+  function logDiagnostics(duration) {
+    let delay = 0;
+    let logInterval;
+    if (duration === "none") {
+      return;
+    } else if (duration === "hourly") {
+      delay = 60 * 60 * 1000; // 1 hour in msec
+    } else if (duration === "daily") {
+      delay = 60 * 60 * 1000 * 24; // 24 hour in msec
+    } else if (duration === "weekly") {
+      delay = 60 * 60 * 1000 * 24 * 7; // Weekly in msec
+    }
+
+    if (!logInterval) {
+      logInterval = setInterval(templateVersionInfoModule.logSubscriptionsCount, delay);
+    }
+  }
+
+  /**
    * All public method and properties exporting here
    */
   return {
     changeTheme,
-    initializeLogger
+    initializeLogger,
+    logDiagnostics
   };
 
 })();

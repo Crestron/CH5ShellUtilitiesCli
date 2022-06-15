@@ -11,9 +11,9 @@
         "AUTHENTICATION_REQUIRED": "AUTHENTICATION REQUIRED",
         "CONNECT_CIP": "CONNECTED",
         "NOT_AUTHORIZED": "NOT AUTHORIZED",
-        "FETCH_TOKEN_FAILED": "FAILED TO FETCH TOKEN" 
+        "FETCH_TOKEN_FAILED": "FAILED TO FETCH TOKEN"
       },
-      "license":{
+      "license": {
         "csmobilitysupport": "Control system does not support Mobility license",
         "mobilitylicenserequired": "Mobility license is required (expired or never applied)",
         "mobilitylicensevalid": "Mobility license is valid",
@@ -29,7 +29,7 @@
         "dockerdisconnected": "NOT CONNECTED",
         "dockerconnected": "DOCKER CONNECTED",
         "dockererror": "CONNECTION ERROR"
-      },      
+      },
       "form": {
         "ipaddress": "IP Address / Hostname",
         "portnumber": "Port Number",
@@ -48,9 +48,7 @@
   },
   "header": {
     "accessibility": {
-      "nav": {
-
-      }
+      "nav": {}
     },
     "info": {
       "tab": {
@@ -75,27 +73,19 @@
       },
       "diagnostics": {
         "logs": "Add Log",
-        "memory": {
-          "title": "+ MEMORY INFO",
-          "status": "Memory Status:",
-          "totalcomponents": "Total Ch5 Components:",
-          "totalnodes": "Total DOM Nodes:",
-          "pagecount": "Page Count:",
-          "currentcomp": "Current CH5 Components:",
-          "startduration": "Start Duration:"
-        },
-        "subs": {
-          "title": "+ SUBSCRIPTIONS INFO",
-          "subs": "Subscriptions:",
-          "subscribers": "Subscribers:"
-        },
+        "title": "+ INFO",
+        "totalcomponents": "Total Ch5 Components:",
+        "totalnodes": "Total DOM Nodes:",
+        "pagecount": "Page Count:",
+        "currentcomp": "Current CH5 Components:",
+        "subscription": "Total Subscriptions:",
+        "subscribers": "Signals:",
         "pages": {
           "header": {
             "name": "Name",
             "ch5count": "Ch5 Count",
             "cached": "Cached",
-            "nodes": "Nodes",
-            "time": "Time (ms)"
+            "nodes": "Nodes"
           }
         }
       }

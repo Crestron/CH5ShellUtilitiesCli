@@ -7,116 +7,77 @@
     under which you licensed this source code.
 -->
 <section id="template-version-info-page" aria-labelledby="Version Information">
-    <ch5-button id="infobtn" shape="circle" size="small" iconClass="material-icons md-info" sendEventOnClick="infoBtn.clicked" role="button" aria-label="Open Version Information" aria-pressed="false">
+    <ch5-button id="infobtn" shape="circle" size="small" iconClass="material-icons md-info"
+        sendEventOnClick="infoBtn.clicked" role="button" aria-label="Open Version Information" aria-pressed="false">
     </ch5-button>
-    <ch5-modal-dialog receiveStateShowPulse="infoBtn.clicked" closable closeIcon="fa fa-window-close" hideOkButton="true" hideCancelButton="true" title="PROJECT INFO" customclass="project-info-dialog">
+    <ch5-modal-dialog receiveStateShowPulse="infoBtn.clicked" closable closeIcon="fa fa-window-close"
+        hideOkButton="true" hideCancelButton="true" customclass="project-info-dialog">
         <div id="tab-wrapper">
-            <button id="version-tab" class="selected" data-ch5-i18n="-+header.info.tab.version+-">Version</button>
-            <button id="webxpanel-tab" data-ch5-i18n="-+header.info.tab.webxpanel+-">WebXPanel</button>
-            <button id="diagnostics-tab" data-ch5-i18n="-+header.info.tab.diagnostics+-">Diagnostics</button>
+            <button id="version-tab" class="selected" data-ch5-i18n="-+header.info.tab.version+-"></button>
+            <button id="webxpanel-tab" data-ch5-i18n="-+header.info.tab.webxpanel+-"></button>
+            <button id="diagnostics-tab" data-ch5-i18n="-+header.info.tab.diagnostics+-"></button>
         </div>
         <div class="spacer"></div>
-
         <div id="version-tab-content">
             <table>
                 <tr>
-                    <th data-ch5-i18n="-+header.info.version.header.package+-">Package</th>
-                    <th data-ch5-i18n="-+header.info.version.header.version+-">Version</th>
-                    <th data-ch5-i18n="-+header.info.version.header.date+-">Date</th>
+                    <th data-ch5-i18n="-+header.info.version.header.package+-"></th>
+                    <th data-ch5-i18n="-+header.info.version.header.version+-"></th>
+                    <th data-ch5-i18n="-+header.info.version.header.date+-"></th>
                 </tr>
             </table>
         </div>
-
         <div id="webxpanel-tab-content" style="display: none">
             <div class="connection">
-                <h4 data-ch5-i18n="-+header.info.webxpanel.connection+-">Connection</h4>
-                <span class="info-row status" data-ch5-i18n="-+header.info.webxpanel.status+-">Status:</span>
-                <span class="info-row cs" data-ch5-i18n="-+header.info.webxpanel.cs+-">CS:</span>
-                <span class="info-row ipid" data-ch5-i18n="-+header.info.webxpanel.ipid+-">IPID:</span>
-                <span class="info-row roomid" data-ch5-i18n="-+header.info.webxpanel.roomid+-">Room ID:</span>
+                <h4 data-ch5-i18n="-+header.info.webxpanel.connection+-"></h4>
+                <span class="info-row status" data-ch5-i18n="-+header.info.webxpanel.status+-"></span>
+                <span class="info-row cs" data-ch5-i18n="-+header.info.webxpanel.cs+-"></span>
+                <span class="info-row ipid" data-ch5-i18n="-+header.info.webxpanel.ipid+-"></span>
+                <span class="info-row roomid" data-ch5-i18n="-+header.info.webxpanel.roomid+-"></span>
             </div>
             <div class="license">
-                <h4 data-ch5-i18n="-+header.info.webxpanel.license+-">License</h4>
+                <h4 data-ch5-i18n="-+header.info.webxpanel.license+-"></h4>
                 <span class="info-row lic" id="lic"></span>
             </div>
         </div>
-
         <div id="diagnostics-tab-content" style="display: none">
             <div id="diagnostics-info">
-                <span id="memory-collabsable-handler" data-ch5-i18n="-+header.info.diagnostics.memory.title+-">+ MEMORY
+                <span id="memory-collabsable-handler" data-ch5-i18n="-+header.info.diagnostics.title+-">+
                     INFO</span>
                 <div id="memory-collabsable-container" class="container-hide">
                     <div class="memory-container">
-                        <span id="memory-usage" data-ch5-i18n="-+header.info.diagnostics.memory.status+-">Memory
-                            Status:</span>
-                        <div id="memory-bar">
-                            <span id="memory-span"></span>
-                            <div id="memory-used"></div>
-                        </div>
-                        <ch5-button id="memory-info" shape="circle" size="x-small" iconClass="material-icons md-info" role="button" aria-label="Open Version Information" aria-pressed="false">
-                        </ch5-button>
-
-                        <div id="memory-tooltip">
-                            <span>M Tooltip</span>
-                        </div>
-
+                        <span data-ch5-i18n="-+header.info.diagnostics.totalcomponents+-"></span>&nbsp;
+                        <span id="total-components"></span>
                     </div>
                     <div class="memory-container">
-                        <span id="total-components" data-ch5-i18n="-+header.info.diagnostics.memory.totalcomponents+-">Total Ch5
-                            Components:</span>
-                        <ch5-button id="components-info" shape="circle" size="x-small" iconClass="material-icons md-info" role="button" aria-label="Open Version Information" aria-pressed="false">
-                        </ch5-button>
-
-                        <div id="components-tooltip">
-                            <span>C Tooltip</span>
-                        </div>
+                        <span id="page-count" data-ch5-i18n="-+header.info.diagnostics.pagecount+-">
+                        </span>
                     </div>
                     <div class="memory-container">
-                        <span id="total-dom" data-ch5-i18n="-+header.info.diagnostics.memory.totalnodes+-">Total DOM
-                            Nodes:</span>
-                    </div>
-                    <div class="memory-container">
-                        <span id="page-count" data-ch5-i18n="-+header.info.diagnostics.memory.pagecount+-">Page
-                            Count:</span>
-                        <ch5-button id="count-info" shape="circle" size="x-small" iconClass="material-icons md-info" role="button" aria-label="Open Version Information" aria-pressed="false">
-                        </ch5-button>
-
-                        <div id="count-tooltip">
-                            <span>C Tooltip</span>
-                        </div>
-                    </div>
-                    <div class="memory-container">
-
-                        <span id="current-components" data-ch5-i18n="-+header.info.diagnostics.memory.currentcomp+-">Current
-                            CH5 Components:</span>
-                    </div>
-                    <div class="memory-container">
-
-                        <span id="start-duration" data-ch5-i18n="-+header.info.diagnostics.memory.startduration+-">Start
-                            Duration:</span>
-                    </div>
-                </div>
-
-                <span id="subscribe-collabsable-handler" data-ch5-i18n="-+header.info.diagnostics.subs.title+-">+
-                    SUBSCRIPTIONS INFO</span>
-                <div id="subscribe-collabsable-container" class="container-hide">
-                    <div class="subscriptions-container">
-                        <span id="total-subscriptions" data-ch5-i18n="-+header.info.diagnostics.subs.subs+-">Subscriptions:</span>
+                        <span data-ch5-i18n="-+header.info.diagnostics.currentcomp+-"></span>&nbsp;
+                        <span id="current-components"></span>
                     </div>
                     <div class="subscriptions-container">
-                        <span id="total-subscribers" data-ch5-i18n="-+header.info.diagnostics.subs.subscribers+-">Subscribers:</span>
+                        <span data-ch5-i18n="-+header.info.diagnostics.subscribers+-"></span>&nbsp;
+                        <span id="total-subscribers"></span>
+                    </div>                    
+                    <div class="memory-container">
+                        <span data-ch5-i18n="-+header.info.diagnostics.totalnodes+-"></span>&nbsp;
+                        <span id="total-dom"></span>
+                    </div>
+                    <div class="subscriptions-container">
+                        <span data-ch5-i18n="-+header.info.diagnostics.subscription+-"></span>&nbsp;
+                        <span id="total-subscriptions"></span>
                     </div>
                 </div>
-
-                <button id="subscribe-log" data-ch5-i18n="-+header.info.diagnostics.logs+-">Add Log</button>
+                <button id="subscribe-log" data-ch5-i18n="-+header.info.diagnostics.logs+-"></button>
             </div>
             <table>
                 <tr>
-                    <th data-ch5-i18n="-+header.info.diagnostics.pages.header.name+-">Name</th>
-                    <th data-ch5-i18n="-+header.info.diagnostics.pages.header.ch5count+-">Ch5 Count</th>
-                    <th data-ch5-i18n="-+header.info.diagnostics.pages.header.cached+-">Cached</th>
-                    <th data-ch5-i18n="-+header.info.diagnostics.pages.header.nodes+-">Nodes</th>
-                    <th data-ch5-i18n="-+header.info.diagnostics.pages.header.time+-">Time (ms)</th>
+                    <th data-ch5-i18n="-+header.info.diagnostics.pages.header.name+-"></th>
+                    <th data-ch5-i18n="-+header.info.diagnostics.pages.header.ch5count+-"></th>
+                    <th data-ch5-i18n="-+header.info.diagnostics.pages.header.cached+-"></th>
+                    <th data-ch5-i18n="-+header.info.diagnostics.pages.header.nodes+-"></th>
                 </tr>
             </table>
         </div>
