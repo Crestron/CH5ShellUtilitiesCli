@@ -320,7 +320,7 @@ export abstract class Ch5BaseClassForCli {
         if (compareVersionOutputForNode.isShellCliVersionGreater === true) {
           throw new Ch5CliError(this.getText("You seem to be using an older version of nodejs (" + nodeVersionInstalled + "). Please upgrade to " + this.CONFIG_FILE.settings.minimumNodeVersion + " version of nodejs."));
         } else {
-          this.logger.printWarning("You are currently using the node version " + nodeVersionInstalled + ". ch5-shell-cli has a minimum required node version of " + this.CONFIG_FILE.settings.minimumNodeVersion + "."); 
+          this.logger.printWarning("You are currently using the node version " + nodeVersionInstalled + ". ch5-shell-cli has a minimum required node version of " + this.CONFIG_FILE.settings.minimumNodeVersion + ".");
         }
       } else if (compareVersionOutputForNode.version === "MINOR") {
         if (compareVersionOutputForNode.isShellCliVersionGreater === true) {
@@ -346,7 +346,7 @@ export abstract class Ch5BaseClassForCli {
         if (compareVersionOutputForNPM.isShellCliVersionGreater === true) {
           throw new Ch5CliError(this.getText("You seem to be using an older version of npm (" + npmVersionInstalled + "). Please upgrade to " + this.CONFIG_FILE.settings.minimumNPMVersion + " version of npm."));
         } else {
-          this.logger.printWarning("You are currently using the npm version " + npmVersionInstalled + ". ch5-shell-cli has a minimum required npm version of " + this.CONFIG_FILE.settings.minimumNPMVersion + "."); 
+          this.logger.printWarning("You are currently using the npm version " + npmVersionInstalled + ". ch5-shell-cli has a minimum required npm version of " + this.CONFIG_FILE.settings.minimumNPMVersion + ".");
         }
       } else if (compareVersionOutputForNPM.version === "MINOR") {
         if (compareVersionOutputForNPM.isShellCliVersionGreater === true) {
@@ -363,14 +363,25 @@ export abstract class Ch5BaseClassForCli {
       }
     } catch (e: any) {
       if (e.name === "Ch5CliError") {
-        throw new Error(e.message);
+        this.logger.printError(e.message);
+        process.exit(1);
+        // throw new Error(e.message);
       } else {
         if (nodeVersionInstalled === "") {
-          throw new Error(this.getText("You seem to be using an older version of nodejs. Please upgrade to version " + this.CONFIG_FILE.settings.minimumNodeVersion + " of nodejs."));
+          const errorMessage = this.getText("You seem to be using an older version of nodejs. Please upgrade to version " + this.CONFIG_FILE.settings.minimumNodeVersion + " of nodejs.");
+          this.logger.printError(errorMessage);
+          process.exit(1);
+          // throw new Error((errorMessage));
         } else if (npmVersionInstalled === "") {
-          throw new Error(this.getText("You seem to be using an older version of npm. Please upgrade to version " + this.CONFIG_FILE.settings.minimumNPMVersion + " of npm."));
+          const errorMessage = this.getText("You seem to be using an older version of npm. Please upgrade to version " + this.CONFIG_FILE.settings.minimumNPMVersion + " of npm.");
+          this.logger.printError(errorMessage);
+          process.exit(1);
+          // throw new Error((errorMessage));
         } else {
-          throw new Error(this.getText("To use ch5-shell-cli, please ensure that your nodejs version is " + this.CONFIG_FILE.settings.minimumNodeVersion + " and npm version is " + this.CONFIG_FILE.settings.minimumNPMVersion + ""));
+          const errorMessage = this.getText("To use ch5-shell-cli, please ensure that your nodejs version is " + this.CONFIG_FILE.settings.minimumNodeVersion + " and npm version is " + this.CONFIG_FILE.settings.minimumNPMVersion + "");
+          this.logger.printError(errorMessage);
+          process.exit(1);
+          // throw new Error((errorMessage));
         }
       }
     }

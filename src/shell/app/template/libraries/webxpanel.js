@@ -11,10 +11,10 @@ var webXPanelModule = (function () {
   "use strict";
 
   const config = {
-    "host": "",
+    "host": window.location.hostname,
     "port": 49200,
     "roomId": "",
-    "ipId": "",
+    "ipId": "0x03",
     "tokenSource": "",
     "tokenUrl": ""
   };

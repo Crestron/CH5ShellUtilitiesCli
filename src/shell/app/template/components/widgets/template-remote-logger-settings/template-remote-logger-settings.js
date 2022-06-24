@@ -150,11 +150,11 @@ const templateRemoteLoggerSettingsModule = (() => {
   }
 
   /**
-   * Calculate the Ttime difference
+   * Calculate the Time difference
    */
   function timeDifference() {
-    let endTimer = Date.now();
-    let timerDiff = Math.floor((endTimer - startTimer) / 1000);
+    const endTimer = Date.now();
+    const timerDiff = Math.floor((endTimer - startTimer) / 1000);
     return timerDiff;
   }
 
@@ -162,7 +162,7 @@ const templateRemoteLoggerSettingsModule = (() => {
    * Displays the logger popup
    */
   function showLoggerPopUp() {
-    let model = document.getElementById("loggerModalWrapper");
+    const model = document.getElementById("loggerModalWrapper");
     const errorMessage = document.querySelector(".ui.error.message");
     errorMessage.style.display = "none";
     clickCounter();
@@ -180,14 +180,7 @@ const templateRemoteLoggerSettingsModule = (() => {
   }
 
   /**
-   * Closes the logger popup
-   */
-  function closePopUp() {
-    document.getElementById("modalForRemoteLogger").setAttribute("show", false);
-  }
-
-  /**
-   * Retreive the inputs from the form and passes to the setRemoteLoggerConfig()
+   * Retrieve the inputs from the form and passes to the setRemoteLoggerConfig()
    */
   function updateLoggerInfo() {
     const hostName = ipAddressElem.value;
@@ -275,7 +268,6 @@ const templateRemoteLoggerSettingsModule = (() => {
     showLoggerPopUp: showLoggerPopUp,
     validate: validate,
     resetConnection: resetConnection,
-    closePopUp: closePopUp,
     updateLoggerInfo: updateLoggerInfo,
     setRemoteLoggerConfig: setRemoteLoggerConfig,
   };

@@ -11,7 +11,7 @@
         sendEventOnClick="infoBtn.clicked" role="button" aria-label="Open Version Information" aria-pressed="false">
     </ch5-button>
     <ch5-modal-dialog receiveStateShowPulse="infoBtn.clicked" closable closeIcon="fa fa-window-close"
-        hideOkButton="true" hideCancelButton="true" customclass="project-info-dialog">
+        hideOkButton="true" hideCancelButton="true" title="-+header.info.title+-" customclass="project-info-dialog">
         <div id="tab-wrapper">
             <button id="version-tab" class="selected" data-ch5-i18n="-+header.info.tab.version+-"></button>
             <button id="webxpanel-tab" data-ch5-i18n="-+header.info.tab.webxpanel+-"></button>
@@ -42,9 +42,7 @@
         </div>
         <div id="diagnostics-tab-content" style="display: none">
             <div id="diagnostics-info">
-                <span id="memory-collabsable-handler" data-ch5-i18n="-+header.info.diagnostics.title+-">+
-                    INFO</span>
-                <div id="memory-collabsable-container" class="container-hide">
+                <div id="memory-collabsable-container">
                     <div class="memory-container">
                         <span data-ch5-i18n="-+header.info.diagnostics.totalcomponents+-"></span>&nbsp;
                         <span id="total-components"></span>
@@ -57,15 +55,15 @@
                         <span data-ch5-i18n="-+header.info.diagnostics.currentcomp+-"></span>&nbsp;
                         <span id="current-components"></span>
                     </div>
-                    <div class="subscriptions-container">
+                    <div class="memory-container">
                         <span data-ch5-i18n="-+header.info.diagnostics.subscribers+-"></span>&nbsp;
                         <span id="total-subscribers"></span>
-                    </div>                    
+                    </div>
                     <div class="memory-container">
                         <span data-ch5-i18n="-+header.info.diagnostics.totalnodes+-"></span>&nbsp;
                         <span id="total-dom"></span>
                     </div>
-                    <div class="subscriptions-container">
+                    <div class="memory-container">
                         <span data-ch5-i18n="-+header.info.diagnostics.subscription+-"></span>&nbsp;
                         <span id="total-subscriptions"></span>
                     </div>

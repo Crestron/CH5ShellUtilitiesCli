@@ -51,6 +51,7 @@
       "nav": {}
     },
     "info": {
+      "title": "PROJECT INFO",
       "tab": {
         "version": "Version",
         "webxpanel": "WebXPanel",
@@ -74,16 +75,16 @@
       "diagnostics": {
         "logs": "Add Log",
         "title": "+ INFO",
-        "totalcomponents": "Total Ch5 Components:",
+        "totalcomponents": "Total CH5 Tags/Attrs:",
         "totalnodes": "Total DOM Nodes:",
         "pagecount": "Page Count:",
-        "currentcomp": "Current CH5 Components:",
+        "currentcomp": "Current CH5 Tags/Attrs:",
         "subscription": "Total Subscriptions:",
         "subscribers": "Signals:",
         "pages": {
           "header": {
             "name": "Name",
-            "ch5count": "Ch5 Count",
+            "ch5count": "CH5 Tags/Attrs",
             "cached": "Cached",
             "nodes": "Nodes"
           }

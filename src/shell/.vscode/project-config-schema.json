@@ -649,6 +649,8 @@
                     "fullPath": "./app/project/components/pages/page1/",
                     "fileName": "page1.html",
                     "triggerViewChildProperties": {},
+                    "cachePage": false,
+                    "preloadPage": false,
                     "navigation": {
                       "sequence": 1,
                       "label": "page1",
@@ -663,7 +665,9 @@
                   "pageName",
                   "fullPath",
                   "fileName",
-                  "standAloneView"
+                  "standAloneView",
+                  "cachePage",
+                  "preloadPage"
                 ],
                 "properties": {
                   "pageName": {
@@ -699,14 +703,14 @@
                     "type": "boolean",
                     "title": "cachePage",
                     "default": false,
-                    "description": "The cachePage pages will cache the page during"
+                    "description": "The cachePage property will cache the page in Shell Template"
                   },
                   "preloadPage": {
                     "$id": "#/properties/content/properties/pages/items/anyOf/0/properties/preloadPage",
                     "type": "boolean",
                     "title": "preloadPage",
                     "default": false,
-                    "description": "The preloadPage pages "
+                    "description": "The preloadPage property will preload the page in Shell Template "
                   },
                   "triggerViewChildProperties": {
                     "$id": "#/properties/content/properties/pages/items/anyOf/0/properties/triggerViewChildProperties",
