@@ -38,6 +38,18 @@ const templatePageModule = (() => {
 		if (pageName !== selectedPage.pageName) {
 			const pageObject = projectConfigModule.getNavigationPages().find(page => page.pageName === pageName);
 			const oldPage = JSON.parse(JSON.stringify(selectedPage));
+			// Loop and set url and receiveStateUrl based on proper preload and cachePage values
+			if (oldPage.preloadPage === true && oldPage.cachePage === false) {
+				const htmlImportSnippet = document.getElementById(oldPage.pageName + "-import-page");
+				htmlImportSnippet.removeAttribute("url");
+				htmlImportSnippet.setAttribute("receiveStateShow", oldPage.pageName + "-import-page-show");
+				htmlImportSnippet.setAttribute("noShowType", "remove");
+			} else if (oldPage.preloadPage === false && oldPage.cachePage === true) {
+				const htmlImportSnippet = document.getElementById(oldPage.pageName + "-import-page");
+				htmlImportSnippet.removeAttribute("receiveStateShow");
+				htmlImportSnippet.setAttribute("url", oldPage.fullPath + oldPage.fileName);
+				htmlImportSnippet.setAttribute("noShowType", "display");
+			}
 			CrComLib.publishEvent("b", "active_state_class_" + oldPage.pageName, false);
 			selectedPage = JSON.parse(JSON.stringify(pageObject));
 			CrComLib.publishEvent("b", "active_state_class_" + selectedPage.pageName, true);
@@ -343,15 +355,50 @@ const templatePageModule = (() => {
 
 							const htmlImportSnippet = document.createElement("ch5-import-htmlsnippet");
 							htmlImportSnippet.setAttribute("id", pagesList[i].pageName + "-import-page");
+
+							/*
+							preloadPage: FALSE + cachedPage: FALSE (Default setting)
+								* page is not loaded on startup - load time is only during first time page is called
+								* page is not cached - each time user comes to the page, the page is loaded, and unloaded when user leaves the page.
+							preloadPage: FALSE + cachedPage: TRUE
+								* page is not loaded on startup - load time is only during the time page is called. Since page is cached, load time is only for first time.
+								* page is cached - load time is whenever the user opens the page. Each time user comes to the page, the page is available already and there is no page load time. Even after user leaves the page, the page is not removed from DOM and is always available. DOM weight for project is high because of this feature.
+							preloadPage: TRUE + cachedPage: FALSE
+								* page is loaded on startup - load time is during first time page is called
+								* page is not cached - each time user comes to the page, the page is loaded, and unloaded when user leaves the page. However, since the page is loaded for first time, the page will not be removed from DOM unless user visits the page atleast once. Once the user visits the page, and leaves the page, the page is removed from DOM. After user leaves the page, the load time is during each page call again.
+							preloadPage: TRUE + cachedPage: TRUE
+								* page is loaded on startup - load time is during first time page is called
+								* page is cached - load time is during the project load. Each time user comes to the page, the page is available already and there is no page load time. Even after user leaves the page, the page is not removed from DOM and is always available. DOM weight for project is high because of this feature.
+							*/
 							if (pagesList[i].preloadPage === true) {
 								// We need the below becos there is a flicker when page loads and hides if url is set - specifically with signal sent
 								htmlImportSnippet.setAttribute("url", pagesList[i].fullPath + pagesList[i].fileName);
+								if (pagesList[i].cachePage === true) {
+									htmlImportSnippet.setAttribute("noShowType", "display");
+								} else {
+									htmlImportSnippet.setAttribute("noShowType", "display");
+									// Set to display and change to remove after page is visited
+									// htmlImportSnippet.setAttribute("receiveStateShow", pagesList[i].pageName + "-import-page-show");
+									// htmlImportSnippet.setAttribute("noShowType", "remove");
+								}
 							} else {
 								htmlImportSnippet.setAttribute("receiveStateShow", pagesList[i].pageName + "-import-page-show");
+								if (pagesList[i].cachePage === true) {
+									htmlImportSnippet.setAttribute("noShowType", "display");
+								} else {
+									htmlImportSnippet.setAttribute("noShowType", "remove");
+								}
 							}
-							if (pagesList[i].cachePage === false) {
-								htmlImportSnippet.setAttribute("noShowType", "remove");
-							}
+
+							// if (pagesList[i].preloadPage === true) {
+							// 	// We need the below becos there is a flicker when page loads and hides if url is set - specifically with signal sent
+							// 	htmlImportSnippet.setAttribute("url", pagesList[i].fullPath + pagesList[i].fileName);
+							// } else {
+							// 	htmlImportSnippet.setAttribute("receiveStateShow", pagesList[i].pageName + "-import-page-show");
+							// }
+							// if (pagesList[i].cachePage === false) {
+							// 	htmlImportSnippet.setAttribute("noShowType", "remove");
+							// }
 
 							// LOADING INDICATOR - Uncomment the below line along with code in navigation.js file to enable loading indicator
 							// childNodeTriggerView.appendChild(htmlImportSnippetForLoader);

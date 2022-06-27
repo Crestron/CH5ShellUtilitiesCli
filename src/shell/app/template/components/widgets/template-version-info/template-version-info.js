@@ -147,22 +147,7 @@ const templateVersionInfoModule = (() => {
 		document.getElementById(HTML_IDS.subscribeLogButton).addEventListener('click', logSubscriptionsCount);
 		CrComLib.subscribeState('b', '' + projectConfig.header.diagnostics.logs.receiveStateLogDiagnostics, (value) => logSubscriptionsCount(null, value));
 	}
-
-	function calculateCachedPage() {
-		const listOfPages = projectConfigModule.getNavigationPages();
-		listOfPages.forEach(page => {
-			if (page.cachePage) {
-				const pageImporterElementCachedPage = page.pageName + "-import-page";
-				for (let i = 0; i < projectConfig.content.pages.length; i++) {
-					const pageObj = projectConfig.content.pages[i];
-					if (page.pageName === pageObj.pageName) {
-						updateDiagnosticsOnPageChange(pageImporterElementCachedPage, pageObj);
-					}
-				}
-			}
-		});
-	}
-
+	
 	function logSubscriptionsCount(event, signalValue) {
 		const currentCh5Components = document.getElementById(HTML_IDS.currentComponents);
 		const totalCh5Components = document.getElementById(HTML_IDS.totalComponents);
@@ -180,7 +165,6 @@ const templateVersionInfoModule = (() => {
 		if ((signalValue !== undefined && signalValue === true) || signalValue === undefined) {
 			console.log({ signals, ch5components, signalNames, subscriptions });
 		}
-		calculateCachedPage();
 	}
 
 	function updatePageCount() {
@@ -196,52 +180,58 @@ const templateVersionInfoModule = (() => {
 			diagnosticsTableElement.appendChild(newTableEntry);
 		}
 	}
-
-	function updateDiagnosticsOnPageChange(idComponent, pageConfiguration) {
+	function diagnosticsTable(idComponent, pageName) {
 		const pageImporterElement = document.getElementById(idComponent);
-		const pageUrl = pageImporterElement.getAttribute('url');
-		let resources = performance.getEntriesByType('resource');
-		let isPeformanceEmpty = true;
-		let performanceEntry;
-
-		if (resources === undefined || resources.length <= 0) {
-			console.log("Calculate Load Times: there are NO `resource` performance records");
-		} else {
-			isPeformanceEmpty = false;
-			performanceEntry = resources.filter(entry => entry.name.includes(pageUrl.substring(1)));
-		}
-
+		const domNodesOnPage = pageImporterElement.getElementsByTagName('*').length;
+		const pageTableEntry = document.getElementById(`diagnostics-table-${pageName}`);
+		const ch5ComponentsCountForCurrentPage = pageTableEntry.childNodes[1];
+		const domNodesForCurrentPage = pageTableEntry.childNodes[3];
+		ch5ComponentsCountForCurrentPage.textContent = `${CrComLib.countNumberOfCh5Components(pageImporterElement).total}`;
+		domNodesForCurrentPage.textContent = domNodesOnPage;
+	}
+	function updateDiagnosticsOnPageChange(idComponent, pageConfiguration) {
 		// Wait for the page to load
 		const diagnosticsPageChangeInterval = setInterval(() => {
 			// if (resources.length || templateAppLoaderModule.pageDurationList.size > 0) {
 			clearInterval(diagnosticsPageChangeInterval);
 			const totalCh5Components = document.getElementById(HTML_IDS.totalComponents);
-			const totalComponentsOnPage = CrComLib.countNumberOfCh5Components(pageImporterElement).total;
-			let totalCachedCount = 0;
+			const currentDomNodes = document.getElementById(HTML_IDS.totalDom);
+			const currentCh5Components = document.getElementById(HTML_IDS.currentComponents);
+			let totalCh5Count = 0;
+			let totalDomCount = 0;
+			let totalComponentsOnPage = 0;
+			let preloadPageList = [];
 			const listOfPages = projectConfigModule.getNavigationPages();
 			listOfPages.forEach(page => {
-				if (page.cachePage && page.pageName !== pageConfiguration.pageName) {
-					const pageImporterElementCachedPage = document.getElementById(page.pageName + "-import-page");
-					totalCachedCount = totalCachedCount + Number(CrComLib.countNumberOfCh5Components(pageImporterElementCachedPage).total);
-				}
+				if (page.preloadPage) preloadPageList.push(page);
 			})
-			const currentCh5Components = document.getElementById(HTML_IDS.currentComponents);
-			currentCh5Components.textContent = `${totalComponentsOnPage + totalCachedCount}`;
+
 			if (!processedPages.has(pageConfiguration.pageName)) {
-				const domNodesOnPage = pageImporterElement.getElementsByTagName('*').length;
-				const currentDomNodes = document.getElementById(HTML_IDS.totalDom);
-				const pageTableEntry = document.getElementById(`diagnostics-table-${pageConfiguration.pageName}`);
-				const ch5ComponentsCountForCurrentPage = pageTableEntry.childNodes[1];
-				const domNodesForCurrentPage = pageTableEntry.childNodes[3];
-
-				ch5ComponentsCountForCurrentPage.textContent = totalComponentsOnPage;
-				domNodesForCurrentPage.textContent = domNodesOnPage;
-
-				currentDomNodes.textContent = `${(parseInt(currentDomNodes.textContent) || 0) + domNodesOnPage}`;
-				totalCh5Components.textContent = `${(parseInt(totalCh5Components.textContent) || 0) + totalComponentsOnPage}`;
+				diagnosticsTable(pageConfiguration.pageName + "-import-page", pageConfiguration.pageName);
 				processedPages.add(pageConfiguration.pageName);
 				diagnosticsPageChangeChanged = true;
 			}
+			if (pageConfiguration.navigation.sequence === 1) {
+				preloadPageList.forEach(pageConfiguration => {
+					diagnosticsTable(pageConfiguration.pageName + "-import-page", pageConfiguration.pageName);
+				})
+			}
+			listOfPages.forEach(page => {
+				const pageTableEntry = document.getElementById(`diagnostics-table-${page.pageName}`);
+				if (pageTableEntry.getElementsByTagName("td")[1].innerText !== "") {
+					totalCh5Count = totalCh5Count + Number(pageTableEntry.getElementsByTagName("td")[1].innerText);
+				}
+				if (pageTableEntry.getElementsByTagName("td")[3].innerText !== "") {
+					totalDomCount = totalDomCount + Number(pageTableEntry.getElementsByTagName("td")[3].innerText);
+				}
+				const pageImporterElement = document.getElementById(page.pageName + "-import-page");
+				if (!pageImporterElement) return;
+				totalComponentsOnPage = totalComponentsOnPage + Number(CrComLib.countNumberOfCh5Components(pageImporterElement).total);
+			})
+			totalCh5Components.innerHTML = totalCh5Count.toString();
+			currentDomNodes.innerHTML = totalDomCount.toString();
+			currentCh5Components.textContent = totalComponentsOnPage.toString();
+
 			updateSubscriptions();
 		}, 1000);
 	}

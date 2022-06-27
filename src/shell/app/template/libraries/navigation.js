@@ -40,10 +40,13 @@ const navigationModule = (() => {
 		const routeId = pageObject.pageName + "-import-page";
 		const listOfPages = projectConfigModule.getNavigationPages();
 		for (let i = 0; i < listOfPages.length; i++) {
-			if (listOfPages[i].cachePage === false && listOfPages[i].preloadPage === false) {
-				if (routeId !== listOfPages[i].pageName + "-import-page") {
-					CrComLib.publishEvent('b', listOfPages[i].pageName + "-import-page-show", false);
-				}
+			// if (listOfPages[i].cachePage === false && listOfPages[i].preloadPage === false) {
+
+			if (routeId !== listOfPages[i].pageName + "-import-page") {
+				const htmlImportSnippet = document.getElementById(listOfPages[i].pageName + "-import-page");
+				// if (htmlImportSnippet.hasAttribute("receivestateshow")) {
+				CrComLib.publishEvent('b', listOfPages[i].pageName + "-import-page-show", false);
+				// }
 			}
 		}
 
