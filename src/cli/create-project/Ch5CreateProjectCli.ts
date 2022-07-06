@@ -261,14 +261,16 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
       // Step 5: Save Project-config
       for (let i: number = 0; i < pagesToBeCreated.length; i++) {
         const genPage: Ch5GeneratePageCli = new Ch5GeneratePageCli(false);
-        genPage.setInputArgsForTesting(["-n", pagesToBeCreated[i].pageName, "-m", pagesToBeCreated[i].navigation ? "Y" : "N"]);
+        const newPageName = pagesToBeCreated[i].fileName.toLowerCase().split(".")[0]; // pagesToBeCreated[i].pageName - picking file name to accommodate hyphens
+        genPage.setInputArgsForTesting(["-n", newPageName, "-m", pagesToBeCreated[i].navigation ? "Y" : "N"]);
         await genPage.run();
         this.projectConfig.replacePageNodeInJSON(pagesToBeCreated[i]);
       }
 
       for (let i: number = 0; i < widgetsToBeCreated.length; i++) {
         const genWidget: Ch5GenerateWidgetCli = new Ch5GenerateWidgetCli(false);
-        genWidget.setInputArgsForTesting(["-n", widgetsToBeCreated[i].widgetName]);
+        const newWidgetName = widgetsToBeCreated[i].fileName.toLowerCase().split(".")[0]; // widgetsToBeCreated[i].widgetName - picking file name to accommodate hyphens
+        genWidget.setInputArgsForTesting(["-n", newWidgetName]);
         await genWidget.run();
         this.projectConfig.removeWidgetFromJSON(widgetsToBeCreated[i]);
       }

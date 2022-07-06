@@ -34,7 +34,21 @@ After the initial setup, you can use this command to rebuild and publish changes
 
 ## Developer
 
-### How to use config.json
+### Testing Scripts
+
+1. create project
+
+rm -rf * &&  ch5-shell-cli create:project --projectName 'shell-template' && cd shell-template && npm install && npm run gen:p -- --name 'page-2' -m Y && cd .. &&  mkdir tt1 && cd tt1 && ch5-shell-cli create:project --config /Users/rdabbir/Downloads/tt/shell-template/app/project-config.json && cd ..
+
+rm -rf * &&  ch5-shell-cli create:project --projectName 'shell-template' && cd shell-template && npm install && npm run gen:w -- --name 'widget-2' && cd .. &&  mkdir tt1 && cd tt1 && ch5-shell-cli create:project --config /Users/rdabbir/Downloads/tt/shell-template/app/project-config.json && cd ..
+
+2. update project
+
+rm -rf * &&  ch5-shell-cli create:project --projectName 'shell-template' && cd shell-template && npm install && npm run gen:p -- --name 'page-2' -m Y && cd .. && mkdir tt1 && cd tt1 && ch5-shell-cli create:project --projectName 'shell-template' && cd 'shell-template' && ch5-shell-cli update:project --config /Users/rdabbir/Downloads/tt/shell-template/app/project-config.json && cd ..
+
+rm -rf * &&  ch5-shell-cli create:project --projectName 'shell-template' && cd shell-template && npm install && npm run gen:w -- --name 'widget-2' && cd .. &&  mkdir tt1 && cd tt1 && ch5-shell-cli create:project --projectName 'shell-template' && cd 'shell-template' &&  ch5-shell-cli update:project --config /Users/rdabbir/Downloads/tt/shell-template/app/project-config.json && cd ..
+
+### How to use config.jso
 ## License
 
 Copyright (C) 2022 to the present, Crestron Electronics, Inc.
