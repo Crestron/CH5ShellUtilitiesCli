@@ -253,7 +253,7 @@ function getDependencyEntry(name, package, folderStat) {
   return {
     name,
     version: JSON.parse(package).version,
-    lastModifiedDate: folderStat.ctime.getDate() + '-' + folderStat.ctime.toLocaleDateString('en-US', { month: 'short' }) + '-' + folderStat.ctime.getFullYear()
+    // lastModifiedDate: folderStat.ctime.getDate() + '-' + folderStat.ctime.toLocaleDateString('en-US', { month: 'short' }) + '-' + folderStat.ctime.getFullYear()
   }
 }
 

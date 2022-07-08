@@ -201,6 +201,7 @@
     },
     "useWebXPanel": {
       "default": false,
+      "type": "boolean",
       "description": "Use WebXPanel in the CH5 Project to connect with the CS.",
       "title": "Use WebXPanel"
     },

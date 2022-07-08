@@ -85,6 +85,7 @@
           "header": {
             "name": "Name",
             "ch5count": "CH5 Tags/Attrs",
+            "preload": "Preload",
             "cached": "Cached",
             "nodes": "Nodes"
           }

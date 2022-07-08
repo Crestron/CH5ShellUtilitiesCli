@@ -43,10 +43,9 @@ const navigationModule = (() => {
 			// if (listOfPages[i].cachePage === false && listOfPages[i].preloadPage === false) {
 
 			if (routeId !== listOfPages[i].pageName + "-import-page") {
-				const htmlImportSnippet = document.getElementById(listOfPages[i].pageName + "-import-page");
-				// if (htmlImportSnippet.hasAttribute("receivestateshow")) {
+				const listOfNavigationButtons = document.querySelectorAll('ch5-button[id*=menu-list-id-');
+				listOfNavigationButtons.forEach(e => e.children[0].style.pointerEvents = "none");
 				CrComLib.publishEvent('b', listOfPages[i].pageName + "-import-page-show", false);
-				// }
 			}
 		}
 
@@ -64,19 +63,25 @@ const navigationModule = (() => {
 		}, 50);
 
 		// Allow components and pages to be transitioned
-		setTimeout(() => {
-			if (displayInfo === undefined) {
-				projectConfigModule.projectConfigData().then(projectConfigResponse => {
-					displayInfo = projectConfigResponse.header.displayInfo;
-					displayHeader = projectConfigResponse.header.display;
-					if (displayInfo && displayHeader) {
-						templateVersionInfoModule.updateDiagnosticsOnPageChange(routeId, pageObject);
-					}
-				})
-			} else if (displayInfo && displayHeader) {
-				templateVersionInfoModule.updateDiagnosticsOnPageChange(routeId, pageObject);
+		let loadedSubId = CrComLib.subscribeState('o', 'ch5-import-htmlsnippet:' + pageObject.pageName + '-import-page', (value) => {
+			if (value['loaded']) {
+				if (displayInfo === undefined) {
+					projectConfigModule.projectConfigData().then(projectConfigResponse => {
+						displayInfo = projectConfigResponse.header.displayInfo;
+						displayHeader = projectConfigResponse.header.display;
+						if (displayInfo && displayHeader) {
+							templateVersionInfoModule.updateDiagnosticsOnPageChange(pageObject);
+						}
+					})
+				} else if (displayInfo && displayHeader) {
+					templateVersionInfoModule.updateDiagnosticsOnPageChange(pageObject);
+				}
+				setTimeout(() => {
+					CrComLib.unsubscribeState('o', 'ch5-import-htmlsnippet:' + pageObject.pageName + '-import-page', loadedSubId);
+					loadedSubId = '';
+				});
 			}
-		}, 100);
+		});
 	}
 
 	return {

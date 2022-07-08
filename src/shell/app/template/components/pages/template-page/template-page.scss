@@ -213,6 +213,8 @@ div#pageStatusIdentifier {
   }
 }
 .horizontal-footer-menu {
+  line-height: 1.2;
+
   // thumbnail swiper
   .swiper-thumb {
     width: 100%;
@@ -240,8 +242,12 @@ div#pageStatusIdentifier {
             opacity: 0.35;
             border: 0;
             border-radius: 0;
+            justify-content: center;
             &.ch5-button--selected {
               opacity: 1;
+            }
+            .cb-btn {
+              width: 125px !important;
             }
           }
         }
@@ -398,7 +404,6 @@ div#pageStatusIdentifier {
             opacity: 0.35;
             border: 0;
             border-radius: 0;
-
             @include size(100%, 54px);
             .cb-btn {
               text-align: left;
