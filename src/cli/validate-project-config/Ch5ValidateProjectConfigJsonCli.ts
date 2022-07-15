@@ -456,7 +456,7 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
         this.addError(Ch5ValidateProjectConfigCli.RULES.PRE_BUILD_RULES, errorOrWarningType, this.getText("VALIDATIONS.DEFAULT_VIEW_INVALID.ERROR_MESSAGE", defaultView), "");
       }
     } else {
-      this.addWarning(Ch5ValidateProjectConfigCli.RULES.PRE_BUILD_RULES, errorOrWarningType, this.getText("VALIDATIONS.DEFAULT_VIEW_INVALID.WARNING_MESSAGE"), "");
+      this.addError(Ch5ValidateProjectConfigCli.RULES.PRE_BUILD_RULES, errorOrWarningType, this.getText("VALIDATIONS.DEFAULT_VIEW_INVALID.WARNING_MESSAGE"), "");
     }
   }
 
