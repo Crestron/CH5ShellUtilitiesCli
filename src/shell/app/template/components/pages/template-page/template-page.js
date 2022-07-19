@@ -1,5 +1,5 @@
 /*jslint es6 */
-/*global CrComLib, webXPanelModule, projectConfigModule, featureModule, templateAppLoaderModule, translateModule, serviceModule, utilsModule, navigationModule */
+/*global CrComLib, webXPanelModule, templateVersionInfoModule, projectConfigModule, featureModule, templateAppLoaderModule, translateModule, serviceModule, utilsModule, navigationModule */
 
 const templatePageModule = (() => {
 	'use strict';
@@ -7,7 +7,10 @@ const templatePageModule = (() => {
 	let triggerview = null;
 	let horizontalMenuSwiperThumb = null;
 	let selectedPage = { name: "" };
+	let totalPreloadPage = 0;
+	let preloadPageLoaded = 0;
 	let _isPageLoaded = false;
+	let allPagesLoaded = false;
 	let isWebXPanelInitialized = false; // avoid calling connection method multiple times
 
 	const effects = {
@@ -181,7 +184,7 @@ const templatePageModule = (() => {
 					*/
 					// featureModule.initializeLogger(serverIPAddress, serverPortNumber);
 					serviceModule.initialize(projectConfigResponse);
-					navigationModule.goToPage(projectConfigResponse.content.$defaultView);
+					// navigationModule.goToPage(projectConfigResponse.content.$defaultView);
 					featureModule.logDiagnostics(projectConfigResponse.header.diagnostics.logs.logDiagnostics);
 
 					// Changes for index.html - Start
@@ -308,6 +311,7 @@ const templatePageModule = (() => {
 					app.innerHTML = utilsModule.replacePlaceHolders(data, mergedJsonContent);
 
 					const pagesList = projectConfigModule.getNavigationPages();
+					pagesList.forEach(e => { if (e.preloadPage) totalPreloadPage++ })
 					if (projectConfigResponse.menuOrientation === "horizontal") {
 						const horizontalMenuSwiperThumb = document.getElementById("horizontal-menu-swiper-thumb");
 						if (horizontalMenuSwiperThumb) {
@@ -370,17 +374,18 @@ const templatePageModule = (() => {
 								* page is loaded on startup - load time is during first time page is called
 								* page is cached - load time is during the project load. Each time user comes to the page, the page is available already and there is no page load time. Even after user leaves the page, the page is not removed from DOM and is always available. DOM weight for project is high because of this feature.
 							*/
+							let pageLoadTimeout = 2000;
+							if (CrComLib.isCrestronTouchscreen()) {
+								pageLoadTimeout = 15000;
+							}
+
 							if (pagesList[i].preloadPage === true) {
 								// We need the below becos there is a flicker when page loads and hides if url is set - specifically with signal sent
-								htmlImportSnippet.setAttribute("url", pagesList[i].fullPath + pagesList[i].fileName);
-								if (pagesList[i].cachePage === true) {
-									htmlImportSnippet.setAttribute("noShowType", "display");
-								} else {
-									htmlImportSnippet.setAttribute("noShowType", "display");
-									// Set to display and change to remove after page is visited
-									// htmlImportSnippet.setAttribute("receiveStateShow", pagesList[i].pageName + "-import-page-show");
-									// htmlImportSnippet.setAttribute("noShowType", "remove");
-								}
+								setTimeout(() => {
+									htmlImportSnippet.setAttribute("url", pagesList[i].fullPath + pagesList[i].fileName);
+									preloadPageLoaded++;
+								}, pageLoadTimeout);
+								htmlImportSnippet.setAttribute("noShowType", "display");
 							} else {
 								htmlImportSnippet.setAttribute("receiveStateShow", pagesList[i].pageName + "-import-page-show");
 								if (pagesList[i].cachePage === true) {
@@ -389,16 +394,6 @@ const templatePageModule = (() => {
 									htmlImportSnippet.setAttribute("noShowType", "remove");
 								}
 							}
-
-							// if (pagesList[i].preloadPage === true) {
-							// 	// We need the below becos there is a flicker when page loads and hides if url is set - specifically with signal sent
-							// 	htmlImportSnippet.setAttribute("url", pagesList[i].fullPath + pagesList[i].fileName);
-							// } else {
-							// 	htmlImportSnippet.setAttribute("receiveStateShow", pagesList[i].pageName + "-import-page-show");
-							// }
-							// if (pagesList[i].cachePage === false) {
-							// 	htmlImportSnippet.setAttribute("noShowType", "remove");
-							// }
 
 							// LOADING INDICATOR - Uncomment the below line along with code in navigation.js file to enable loading indicator
 							// childNodeTriggerView.appendChild(htmlImportSnippetForLoader);
@@ -556,11 +551,24 @@ const templatePageModule = (() => {
 	 * Loader method is for spinner
 	 */
 	function hideLoading(pageObject) {
-		let endDuration = new Date().getTime();
-		templateAppLoaderModule.endPageLoad(pageObject, endDuration);
-		setTimeout(() => {
+		if (totalPreloadPage === preloadPageLoaded) {
+			allPagesLoaded = true;
+			let endDuration = new Date().getTime();
+			templateAppLoaderModule.endPageLoad(pageObject, endDuration);
 			document.getElementById("loader").style.display = "none";
-		}, 100);
+			const listOfPages = projectConfigModule.getNavigationPages();
+			listOfPages.forEach(page => {
+				if (page.preloadPage) {
+					templateVersionInfoModule.updateDiagnosticsOnPageChange(page)
+				}
+			})
+
+		} else if (!allPagesLoaded) {
+			setTimeout(() => {
+				hideLoading(pageObject);
+			}, 500);
+		}
+
 	}
 
 	window.addEventListener("orientationchange", function () {

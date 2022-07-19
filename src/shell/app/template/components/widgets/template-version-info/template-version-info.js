@@ -10,7 +10,6 @@
 const templateVersionInfoModule = (() => {
 	'use strict';
 
-	const processedPages = new Set();
 	let diagnosticsTableCount = {
 		totalCh5Components: 0,
 		totalDomCount: 0,
@@ -24,11 +23,12 @@ const templateVersionInfoModule = (() => {
 		versionTabContent: 'version-tab-content',
 		webxpanelTabContent: 'webxpanel-tab-content',
 		diagnosticsTabContent: 'diagnostics-tab-content',
+		diagnosticPageHeader: 'diagnostic-page-header',
 		memoryUsed: 'memory-used',
 		memorySpan: 'memory-span',
 		memoryBar: 'memory-bar',
 		totalComponents: 'total-components',
-		totalSubscriptions: 'total-subscriptions',
+		totalSignals: 'total-signal',
 		totalSubscribers: 'total-subscribers',
 		pageCount: 'page-count',
 		totalDom: 'total-dom',
@@ -129,11 +129,11 @@ const templateVersionInfoModule = (() => {
 				subscribers += Object.values(details._subscriptions).length - 1;
 			}
 		}
-		const subscriptionsElement = document.getElementById(HTML_IDS.totalSubscriptions);
+		const totalSignalsCount = document.getElementById(HTML_IDS.totalSignals);
 		const subscribersElement = document.getElementById(HTML_IDS.totalSubscribers);
 
-		subscriptionsElement.textContent = tsubscriptions;
-		subscribersElement.textContent = subscribers;
+		totalSignalsCount.textContent = subscribers;
+		subscribersElement.textContent = tsubscriptions;
 		const listOfNavigationButtons = document.querySelectorAll('ch5-button[id*=menu-list-id-');
 		listOfNavigationButtons.forEach(e => e.children[0].style.pointerEvents = "auto");
 		if (!isListenerInitialized) {
@@ -158,7 +158,7 @@ const templateVersionInfoModule = (() => {
 		}
 
 		const signalNames = document.getElementById(HTML_IDS.totalSubscribers).textContent;
-		const subscriptions = document.getElementById(HTML_IDS.totalSubscriptions).textContent;
+		const subscriptions = document.getElementById(HTML_IDS.totalSignals).textContent;
 		if ((signalValue !== undefined && signalValue === true) || signalValue === undefined) {
 			console.log({ signals, ch5components, signalNames, subscriptions });
 		}
@@ -166,19 +166,21 @@ const templateVersionInfoModule = (() => {
 
 	function updatePageCount() {
 		const diagnosticsTabContentElement = document.getElementById(HTML_IDS.diagnosticsTabContent);
+		const diagnosticPageHeaderElement = document.getElementById(HTML_IDS.diagnosticPageHeader);
 		const diagnosticsTableElement = diagnosticsTabContentElement.querySelector('tbody');
 		const pageCountElement = document.getElementById(HTML_IDS.pageCount);
 		const listOfPages = projectConfigModule.getNavigationPages();
-		pageCountElement.textContent = `${translateModule.translateInstant('header.info.diagnostics.pagecount')} ${listOfPages.length} (${listOfPages.filter(page => page.cachePage).length} Cached)`;
+		pageCountElement.textContent = `${translateModule.translateInstant('header.info.diagnostics.pagecount')} ${listOfPages.length}`;
+		diagnosticPageHeaderElement.children[2].textContent = diagnosticPageHeaderElement.children[2].textContent + ` (${listOfPages.filter(page => page.preloadPage).length})`;
+		diagnosticPageHeaderElement.children[3].textContent = diagnosticPageHeaderElement.children[3].textContent + ` (${listOfPages.filter(page => page.cachePage).length})`;
 		for (const page of listOfPages) {
 			const processedPageName = page.navigation.isI18nLabel ? translateModule.translateInstant(page.navigation.label) : page.navigation.label;
-			const newTableEntry = createTableRow({ name: processedPageName, count: '', cached: page.cachePage ? 'Y' : 'N', preload: page.preloadPage ? 'Y' : 'N', nodes: '' });
+			const newTableEntry = createTableRow({ name: processedPageName, count: '', preload: page.preloadPage ? 'Y' : 'N', cached: page.cachePage ? 'Y' : 'N', nodes: '' });
 			newTableEntry.setAttribute('id', `diagnostics-table-${page.pageName}`);
 			diagnosticsTableElement.appendChild(newTableEntry);
 			diagnosticsTableCount.ch5ComponentsPageWise[`${page.pageName}`] = {};
 			if (page.preloadPage) {
 				diagnosticsTable(page.pageName + "-import-page", page.pageName);
-				processedPages.add(page.pageName);
 			}
 		}
 	}
@@ -186,25 +188,34 @@ const templateVersionInfoModule = (() => {
 		const pageImporterElement = document.getElementById(idComponent);
 		const domNodesOnPage = pageImporterElement.getElementsByTagName('*').length;
 		const pageTableEntry = document.getElementById(`diagnostics-table-${pageName}`);
+		if (!pageTableEntry) {
+			return;
+		}
 		const ch5ComponentsCountForCurrentPage = pageTableEntry.childNodes[1];
 		const domNodesForCurrentPage = pageTableEntry.childNodes[4];
 		ch5ComponentsCountForCurrentPage.textContent = CrComLib.countNumberOfCh5Components(pageImporterElement).total;
 		domNodesForCurrentPage.textContent = domNodesOnPage;
-		diagnosticsTableCount.totalCh5Components = diagnosticsTableCount.totalCh5Components + CrComLib.countNumberOfCh5Components(pageImporterElement).total;
-		diagnosticsTableCount.totalDomCount = diagnosticsTableCount.totalDomCount + domNodesOnPage;
 		diagnosticsTableCount.ch5ComponentsPageWise[`${pageName}`] = CrComLib.countNumberOfCh5Components(pageImporterElement);
+		diagnosticsTableCount.ch5ComponentsPageWise[`${pageName}`].domNodes = domNodesOnPage;
+		diagnosticsTableCount.totalCh5Components = 0;
+		diagnosticsTableCount.totalDomCount = 0;
+		let diagnosticsPageKeys = Object.keys(diagnosticsTableCount.ch5ComponentsPageWise);
+		diagnosticsPageKeys.forEach(key => {
+			diagnosticsTableCount.totalCh5Components = diagnosticsTableCount.totalCh5Components + (diagnosticsTableCount.ch5ComponentsPageWise[`${key}`].total || 0);
+			diagnosticsTableCount.totalDomCount = diagnosticsTableCount.totalDomCount + (diagnosticsTableCount.ch5ComponentsPageWise[`${key}`].domNodes || 0);
+		})
 	}
 	function updateDiagnosticsOnPageChange(pageConfiguration) {
 		setTimeout(() => {
-			if (!processedPages.has(pageConfiguration.pageName)) {
-				diagnosticsTable(pageConfiguration.pageName + "-import-page", pageConfiguration.pageName);
-				processedPages.add(pageConfiguration.pageName);
-				diagnosticsPageChangeChanged = true;
-			}
+			diagnosticsTable(pageConfiguration.pageName + "-import-page", pageConfiguration.pageName);
+			diagnosticsPageChangeChanged = true;
 			const totalCh5Components = document.getElementById(HTML_IDS.totalComponents);
 			const currentDomNodes = document.getElementById(HTML_IDS.totalDom);
 			const currentCh5Components = document.getElementById(HTML_IDS.currentComponents);
 			const listOfPages = projectConfigModule.getNavigationPages();
+			if (!totalCh5Components) {
+				return;
+			}
 			totalCh5Components.innerHTML = diagnosticsTableCount.totalCh5Components;
 			currentDomNodes.innerHTML = diagnosticsTableCount.totalDomCount;
 			let currentCh5ComponentsCount = 0;
@@ -214,7 +225,7 @@ const templateVersionInfoModule = (() => {
 			})
 			currentCh5Components.textContent = currentCh5ComponentsCount;
 			updateSubscriptions();
-		}, 150);
+		}, 1000);
 	}
 
 	function handleUnloadedPageCount(oldPageObject) {

@@ -428,7 +428,7 @@ div#pageStatusIdentifier {
           text-shadow: 1px 1px 1px #777;
           min-width: 36px;
           min-height: 36px;
-          @include size(36px);
+          width: 36px;
         }
         .material-icons.ch5-button--icon,
         .material-icons-outline.ch5-button--icon,
@@ -445,7 +445,9 @@ div#pageStatusIdentifier {
         }
         .ch5-button--icon {
           font-size: 36px;
-          margin-left: 4px;
+          min-width: 36px;
+          min-height: 36px;
+          width: 36px;
         }
       }
       &:last-child {
