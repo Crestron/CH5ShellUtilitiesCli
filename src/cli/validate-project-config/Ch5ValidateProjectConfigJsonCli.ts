@@ -38,11 +38,17 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
 
     this.logger.log(this.getText("PROCESSING_MESSAGE"));
 
-    this.projectConfigJson = JSON.parse(this.utils.readFileContentSync(this.getConfigNode("projectConfigJSONFile")));
-    this.projectConfigJsonSchema = JSON.parse(this.utils.readFileContentSync(this.getConfigNode("projectConfigJSONSchemaFile")));
-
     this.clearErrors();
     this.clearWarnings();
+
+    try {
+      this.projectConfigJson = JSON.parse(this.utils.readFileContentSync(this.getConfigNode("projectConfigJSONFile")));
+      this.projectConfigJsonSchema = JSON.parse(this.utils.readFileContentSync(this.getConfigNode("projectConfigJSONSchemaFile")));
+    } catch (e: any) {
+      this.logger.log(e.message);
+      // Exit after printing both errors and warnings
+      this.addError(Ch5ValidateProjectConfigCli.RULES.ALL_RULES, "Project Config JSON", e.message, "");
+    }
 
     const projectConfigObject = JSON.parse(JSON.stringify(this.projectConfigJson));
     const pagesArray = projectConfigObject.content.pages;

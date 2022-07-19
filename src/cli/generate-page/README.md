@@ -134,8 +134,8 @@ A file named 'project-config.json' is located in the './app/' directory. This fi
         "pageName": "page1",
         "fullPath": "./app/project/components/pages/page1/",
         "fileName": "page1.html",
+        "preloadPage": true,
         "cachePage": false,
-        "preloadPage": false,
         "standAloneView": false,
         "navigation": {
           "sequence": 1,

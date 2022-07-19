@@ -204,7 +204,7 @@ export class Ch5UpgradeProjectCli extends Ch5BaseClassForCliNew implements ICh5C
 
 		for (const oldPage of oldPages) {
 			oldPage.cachePage = false;
-			oldPage.preloadPage = false;
+			oldPage.preloadPage = true;
 			delete oldPage.pageProperties;
 		}
 

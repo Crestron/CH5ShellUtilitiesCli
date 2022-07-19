@@ -650,8 +650,8 @@
                     "fullPath": "./app/project/components/pages/page1/",
                     "fileName": "page1.html",
                     "triggerViewChildProperties": {},
+                    "preloadPage": true,
                     "cachePage": false,
-                    "preloadPage": false,
                     "navigation": {
                       "sequence": 1,
                       "label": "page1",
