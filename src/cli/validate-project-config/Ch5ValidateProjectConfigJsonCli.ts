@@ -66,6 +66,9 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
     // Check repeated page names
     this.checkIfPagesAreRepeated(pagesArray);
 
+    // Check if page names / widget names have been manually updated incorrectly
+    this.verifyPageNameAndWidgetNameWithFileNames(pagesArray, widgetsArray);
+
     // Check repeated widget names
     this.checkIfWidgetsAreRepeated(widgetsArray);
 
@@ -218,6 +221,34 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
       }
     } else {
       this.addError(Ch5ValidateProjectConfigCli.RULES.PRE_BUILD_RULES, errorOrWarningType, this.getText("VALIDATIONS.SELECTED_THEME_INCORRECT.THEME_NOT_AVAILABLE"), "");
+    }
+  }
+
+
+  private verifyPageNameAndWidgetNameWithFileNames(pagesArray: any[], widgetArray: any[]) {
+    const errorOrWarningType = this.getText("VALIDATIONS.INVALID_PAGE_WIDGET_NAMES.HEADER");
+    for (let i: number = 0; i < pagesArray.length; i++) {
+      const page = pagesArray[i];
+      if (page.hasOwnProperty("pageName")) {
+
+        const validatePageName = this.namingHelper.camelize(page.fileName.split(".")[0]);
+        if (validatePageName !== page.pageName) {
+          this.logger.log("  validatePageName: ", validatePageName, page.pageName);
+          this.addError(Ch5ValidateProjectConfigCli.RULES.PRE_BUILD_RULES, errorOrWarningType,
+            this.getText("VALIDATIONS.INVALID_PAGE_WIDGET_NAMES.MESSAGE", page.pageName, page.fileName), "");
+        }
+      }
+    }
+    for (let i: number = 0; i < widgetArray.length; i++) {
+      const widget = widgetArray[i];
+      if (widget.hasOwnProperty("widgetName")) {
+        const validateWidgetName = this.namingHelper.camelize(widget.fileName.split(".")[0]);
+        if (validateWidgetName !== widget.widgetName) {
+          this.logger.log("  validateWidgetName: ", validateWidgetName, widget.widgetName);
+          this.addError(Ch5ValidateProjectConfigCli.RULES.PRE_BUILD_RULES, errorOrWarningType,
+            this.getText("VALIDATIONS.INVALID_PAGE_WIDGET_NAMES.MESSAGE", widget.widgetName, widget.fileName), "");
+        }
+      }
     }
   }
 
