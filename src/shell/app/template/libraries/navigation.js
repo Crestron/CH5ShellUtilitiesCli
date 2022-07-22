@@ -4,26 +4,9 @@
 const navigationModule = (() => {
 	'use strict';
 
-	let currentPageName = '';
 
 	let displayInfo;
 	let displayHeader;
-
-	function goToPage(pageName) {
-		const navigationPages = projectConfigModule.getAllPages();
-		const pageObject = navigationPages.find(page => page.pageName === pageName);
-		templateAppLoaderModule.showLoading(pageObject);
-		// Remove the elements that were removed from the diagnostics tab
-		if (currentPageName) {
-			templateVersionInfoModule.handleUnloadedPageCount(navigationPages.find(page => page.pageName === currentPageName));
-		}
-		currentPageName = pageName;
-		setTimeout(() => {
-			const url = pageObject.fullPath + pageObject.fileName;
-			// TODO - Handle using promises
-			showPage(pageObject, url);
-		});
-	}
 
 	function isCachePageLoaded(routeId) {
 		if (document.getElementById(routeId)) {
@@ -36,15 +19,17 @@ const navigationModule = (() => {
 		}
 	}
 
-	function showPage(pageObject, url) {
+	function goToPage(pageName) {
+		const navigationPages = projectConfigModule.getAllPages();
+		const pageObject = navigationPages.find(page => page.pageName === pageName);
+		templateAppLoaderModule.showLoading(pageObject);
+		const listOfNavigationButtons = document.querySelectorAll('ch5-button[id*=menu-list-id-');
+		listOfNavigationButtons.forEach(e => e.children[0].style.pointerEvents = "none");
+		const url = pageObject.fullPath + pageObject.fileName;
 		const routeId = pageObject.pageName + "-import-page";
 		const listOfPages = projectConfigModule.getNavigationPages();
 		for (let i = 0; i < listOfPages.length; i++) {
-			// if (listOfPages[i].cachePage === false && listOfPages[i].preloadPage === false) {
-
 			if (routeId !== listOfPages[i].pageName + "-import-page") {
-				const listOfNavigationButtons = document.querySelectorAll('ch5-button[id*=menu-list-id-');
-				listOfNavigationButtons.forEach(e => e.children[0].style.pointerEvents = "none");
 				CrComLib.publishEvent('b', listOfPages[i].pageName + "-import-page-show", false);
 			}
 		}
@@ -83,7 +68,6 @@ const navigationModule = (() => {
 			}
 		});
 	}
-
 	return {
 		goToPage
 	};

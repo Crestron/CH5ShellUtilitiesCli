@@ -11,6 +11,7 @@ const templatePageModule = (() => {
 	let preloadPageLoaded = 0;
 	let _isPageLoaded = false;
 	let allPagesLoaded = false;
+	let firstLoad = false;
 	let isWebXPanelInitialized = false; // avoid calling connection method multiple times
 
 	const effects = {
@@ -556,13 +557,15 @@ const templatePageModule = (() => {
 			let endDuration = new Date().getTime();
 			templateAppLoaderModule.endPageLoad(pageObject, endDuration);
 			document.getElementById("loader").style.display = "none";
-			const listOfPages = projectConfigModule.getNavigationPages();
-			listOfPages.forEach(page => {
-				if (page.preloadPage) {
-					templateVersionInfoModule.updateDiagnosticsOnPageChange(page)
-				}
-			})
-
+			if (!firstLoad) {
+				firstLoad = true;
+				const listOfPages = projectConfigModule.getNavigationPages();
+				listOfPages.forEach(page => {
+					if (page.preloadPage) {
+						templateVersionInfoModule.updateDiagnosticsOnPageChange(page)
+					}
+				})
+			}
 		} else if (!allPagesLoaded) {
 			setTimeout(() => {
 				hideLoading(pageObject);
