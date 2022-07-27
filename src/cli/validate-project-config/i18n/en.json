@@ -17,9 +17,21 @@
       "HEADER": "Page names repeated in project-config.json",
       "MESSAGE": "Page name '{0}' is repeated."
     },
-    "INVALID_PAGE_WIDGET_NAMES": {
-      "HEADER": "Invalid Page / Widget Names",
-      "MESSAGE": "Page / Widget name '{0}' not matching with its corresponding file name '{1}'."
+    "INVALID_PAGE_NAMES": {
+      "HEADER": "Invalid Page Names",
+      "MESSAGE": "Page name '{0}' not matching with its corresponding file name '{1}'."
+    },
+    "INVALID_WIDGET_NAMES": {
+      "HEADER": "Invalid Widget Names",
+      "MESSAGE": "Widget name '{0}' not matching with its corresponding file name '{1}'."
+    },
+    "INVALID_PAGE_FOLDER_PATH": {
+      "HEADER": "Invalid Page Fullpath",
+      "MESSAGE": "Page Fullpath '{0}' is not a valid path for pages."
+    },
+    "INVALID_WIDGET_FOLDER_PATH": {
+      "HEADER": "Invalid Widget Fullpath",
+      "MESSAGE": "Widget Fullpath '{0}' is not a valid path for widgets."
     },
     "PAGE_NAME_MISSING": {
       "HEADER": "Page name missing in project-config.json",

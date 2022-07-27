@@ -66,8 +66,17 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
     // Check repeated page names
     this.checkIfPagesAreRepeated(pagesArray);
 
-    // Check if page names / widget names have been manually updated incorrectly
-    this.verifyPageNameAndWidgetNameWithFileNames(pagesArray, widgetsArray);
+    // Check if page names have been manually updated incorrectly
+    this.verifyPageNameWithFileNames(pagesArray);
+
+    // Check if widget names have been manually updated incorrectly
+    this.verifyWidgetNameWithFileNames(widgetsArray);
+
+    // Check if page folder path have been manually updated incorrectly
+    this.verifyPageFolderPath(pagesArray);
+
+    // Check if widget folder path have been manually updated incorrectly
+    this.verifyWidgetFolderPath(widgetsArray);
 
     // Check repeated widget names
     this.checkIfWidgetsAreRepeated(widgetsArray);
@@ -224,8 +233,35 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
     }
   }
 
+  private verifyPageFolderPath(pagesArray: any[]) {
+    const errorOrWarningType = this.getText("VALIDATIONS.INVALID_PAGE_FOLDER_PATH.HEADER");
+    const pageFolderNamePath: string = "./app/project/components/pages/";
+    for (let i: number = 0; i < pagesArray.length; i++) {
+      const page = pagesArray[i];
+      if (page.hasOwnProperty("fullPath")) {
+        if (page.fullPath.toString().startsWith(pageFolderNamePath) === false) {
+          this.addError(Ch5ValidateProjectConfigCli.RULES.PRE_BUILD_RULES, errorOrWarningType,
+            this.getText("VALIDATIONS.INVALID_PAGE_FOLDER_PATH.MESSAGE", page.fullPath), "");
+        }
+      }
+    }
+  }
 
-  private verifyPageNameAndWidgetNameWithFileNames(pagesArray: any[], widgetArray: any[]) {
+  private verifyWidgetFolderPath(widgetArray: any[]) {
+    const errorOrWarningType = this.getText("VALIDATIONS.INVALID_WIDGET_FOLDER_PATH.HEADER");
+    const widgetFolderNamePath: string = "./app/project/components/widgets/";
+    for (let i: number = 0; i < widgetArray.length; i++) {
+      const widget = widgetArray[i];
+      if (widget.hasOwnProperty("fullPath")) {
+        if (widget.fullPath.toString().startsWith(widgetFolderNamePath) === false) {
+          this.addError(Ch5ValidateProjectConfigCli.RULES.PRE_BUILD_RULES, errorOrWarningType,
+            this.getText("VALIDATIONS.INVALID_WIDGET_FOLDER_PATH.MESSAGE", widget.fullPath), "");
+        }
+      }
+    }
+  }
+
+  private verifyPageNameWithFileNames(pagesArray: any[]) {
     const errorOrWarningType = this.getText("VALIDATIONS.INVALID_PAGE_WIDGET_NAMES.HEADER");
     for (let i: number = 0; i < pagesArray.length; i++) {
       const page = pagesArray[i];
@@ -235,10 +271,14 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
         if (validatePageName !== page.pageName) {
           this.logger.log("  validatePageName: ", validatePageName, page.pageName);
           this.addError(Ch5ValidateProjectConfigCli.RULES.PRE_BUILD_RULES, errorOrWarningType,
-            this.getText("VALIDATIONS.INVALID_PAGE_WIDGET_NAMES.MESSAGE", page.pageName, page.fileName), "");
+            this.getText("VALIDATIONS.INVALID_PAGE_NAMES.MESSAGE", page.pageName, page.fileName), "");
         }
       }
     }
+  }
+
+  private verifyWidgetNameWithFileNames(widgetArray: any[]) {
+    const errorOrWarningType = this.getText("VALIDATIONS.INVALID_PAGE_WIDGET_NAMES.HEADER");
     for (let i: number = 0; i < widgetArray.length; i++) {
       const widget = widgetArray[i];
       if (widget.hasOwnProperty("widgetName")) {
@@ -246,7 +286,7 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
         if (validateWidgetName !== widget.widgetName) {
           this.logger.log("  validateWidgetName: ", validateWidgetName, widget.widgetName);
           this.addError(Ch5ValidateProjectConfigCli.RULES.PRE_BUILD_RULES, errorOrWarningType,
-            this.getText("VALIDATIONS.INVALID_PAGE_WIDGET_NAMES.MESSAGE", widget.widgetName, widget.fileName), "");
+            this.getText("VALIDATIONS.INVALID_WIDGET_NAMES.MESSAGE", widget.widgetName, widget.fileName), "");
         }
       }
     }
