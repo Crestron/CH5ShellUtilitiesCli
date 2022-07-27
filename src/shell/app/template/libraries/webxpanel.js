@@ -32,9 +32,9 @@ var webXPanelModule = (function () {
   var pcConfig = config;
   var urlConfig = config;
   var isDisplayHeader = false;
+  var isEmptyHeaderComponent = true;
   var isDisplayInfo = false;
   var connectParams = config;
-
   /**
    * Function to set status bar current state - hidden being default
    * @param {*} classNameToAdd
@@ -148,9 +148,9 @@ var webXPanelModule = (function () {
       }, 10000);
       updateInfoStatus("app.webxpanel.status.CONNECT_CIP");
 
-      if (isDisplayInfo) {
+      if (isVersionInfoDisplayed()) {
         document.querySelector('#webxpanel-tab-content .connection .cs').textContent = `CS: wss://${connectParams.host}:${connectParams.port}`;
-        document.querySelector('#webxpanel-tab-content .connection .ipid').textContent = `IPID: ${Number(msg.detail.ipId).toString(16)}`;
+        document.querySelector('#webxpanel-tab-content .connection .ipid').textContent = `IPID: ${urlConfig.ipId}`;
         if (msg.detail.roomId !== "") {
           document.querySelector('#webxpanel-tab-content .connection .roomid').textContent = `Room Id: ${msg.detail.roomId}`;
         }
@@ -204,7 +204,7 @@ var webXPanelModule = (function () {
         licenseMessage = translateModule.translateInstant("app.webxpanel.license.mobilitylicensenotrequired");
       }
 
-      if (isDisplayInfo) {
+      if (isVersionInfoDisplayed()) {
         const licenseText = document.getElementById("lic");
         licenseText.textContent = licenseMessage;
       }
@@ -230,7 +230,7 @@ var webXPanelModule = (function () {
     let statusMessage = translateModule.translateInstant(statusMessageKey);
     if (statusMessage) {
       let sMsg = statusMsgPrefix + statusMessage;
-      if (isDisplayInfo) {
+      if (isVersionInfoDisplayed()) {
         status.innerHTML = sMsg;
       } else {
         console.log(sMsg);
@@ -238,11 +238,14 @@ var webXPanelModule = (function () {
     }
   }
 
+  function isVersionInfoDisplayed() {
+    return (isDisplayInfo && isEmptyHeaderComponent);
+  }
   /**
    * Show the badge on the info icon for connection status.
    */
   function displayConnectionWarning() {
-    if (!isDisplayInfo) {
+    if (!isVersionInfoDisplayed()) {
       return;
     }
 
@@ -256,7 +259,7 @@ var webXPanelModule = (function () {
    * Remove the badge on the info icon.
    */
   function removeConnectionWarning() {
-    if (!isDisplayInfo) {
+    if (!isVersionInfoDisplayed()) {
       return;
     }
 
@@ -270,7 +273,7 @@ var webXPanelModule = (function () {
    * Show the badge on the info icon for license expiry warning.
    */
   function displayLicenseWarning(warnDays, remainingDays) {
-    if (!isDisplayInfo) {
+    if (!isVersionInfoDisplayed()) {
       return;
     }
 
@@ -314,12 +317,11 @@ var webXPanelModule = (function () {
      * if the header is false then displayInfo needs to be false
      * even if it is set as true in project-config.json
      */
-    if (isDisplayHeader) {
-      isDisplayInfo = projectConfig.header.displayInfo;
-    }
+    isDisplayInfo = projectConfig.header.displayInfo;
+    isEmptyHeaderComponent = (projectConfig.header.$component === "") ? true : false;
 
     // Show the connection bar when true
-    if (isDisplayInfo) {
+    if (isVersionInfoDisplayed()) {
       status = document.querySelector('#webxpanel-tab-content .connection .status');
     }
 
@@ -336,7 +338,7 @@ var webXPanelModule = (function () {
 
     updateInfoStatus("app.webxpanel.status.CONNECT_WS");
 
-    if (isDisplayInfo) {
+    if (isVersionInfoDisplayed()) {
       if (connectParams.host !== "") {
         document.querySelector('#webxpanel-tab-content .connection .cs').textContent = `CS: wss://${connectParams.host}:${connectParams.port}`;
       }

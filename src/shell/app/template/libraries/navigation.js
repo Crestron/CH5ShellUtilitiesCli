@@ -61,6 +61,7 @@ const navigationModule = (() => {
 				} else if (displayInfo && displayHeader) {
 					templateVersionInfoModule.updateDiagnosticsOnPageChange(pageObject);
 				}
+				listOfNavigationButtons.forEach(e => e.children[0].style.pointerEvents = "auto");
 				setTimeout(() => {
 					CrComLib.unsubscribeState('o', 'ch5-import-htmlsnippet:' + pageObject.pageName + '-import-page', loadedSubId);
 					loadedSubId = '';

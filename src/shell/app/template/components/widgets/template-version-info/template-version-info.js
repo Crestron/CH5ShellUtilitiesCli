@@ -155,23 +155,19 @@ const templateVersionInfoModule = (() => {
 	}
 
 	function updateDiagnosticsOnPageChange(pageConfiguration) {
-		setTimeout(() => {
-			if(!diagnosticTab){
-				const listOfNavigationButtons = document.querySelectorAll('ch5-button[id*=menu-list-id-');
-				listOfNavigationButtons.forEach(e => e.children[0].style.pointerEvents = "auto");
-				return;
-			}
-			getCurrentCh5Components();
-			if ( processedPage.has(pageConfiguration.pageName)) {
-				const listOfNavigationButtons = document.querySelectorAll('ch5-button[id*=menu-list-id-');
-				listOfNavigationButtons.forEach(e => e.children[0].style.pointerEvents = "auto");
-				return;
-			}
 			setTimeout(() => {
-				processedPage.add(pageConfiguration.pageName);
-				diagnosticsTable(pageConfiguration.pageName + "-import-page", pageConfiguration.pageName);
-			}, 150);
-		});
+				if(!diagnosticTab){
+					return;
+				}
+				setTimeout(() => {
+					if ( !processedPage.has(pageConfiguration.pageName)) {
+						processedPage.add(pageConfiguration.pageName);
+						diagnosticsTable(pageConfiguration.pageName + "-import-page", pageConfiguration.pageName);
+					}
+					getCurrentCh5Components();
+					updateSubscriptions();
+				}, 150);
+			});
 	}
 	function getCurrentCh5Components() {
 		const currentCh5Components = document.getElementById(HTML_IDS.currentComponents);
@@ -202,9 +198,6 @@ const templateVersionInfoModule = (() => {
 
 		totalCh5Components.innerHTML = diagnosticsTableCount.totalCh5Components;
 		currentDomNodes.innerHTML = diagnosticsTableCount.totalDomCount;
-		updateSubscriptions();
-		const listOfNavigationButtons = document.querySelectorAll('ch5-button[id*=menu-list-id-');
-		listOfNavigationButtons.forEach(e => e.children[0].style.pointerEvents = "auto");
 	}
 
 	function updateSubscriptions() {

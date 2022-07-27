@@ -12,6 +12,7 @@ const templatePageModule = (() => {
 	let _isPageLoaded = false;
 	let allPagesLoaded = false;
 	let firstLoad = false;
+	let pageLoadTimeout = 2000;
 	let isWebXPanelInitialized = false; // avoid calling connection method multiple times
 
 	const effects = {
@@ -375,7 +376,6 @@ const templatePageModule = (() => {
 								* page is loaded on startup - load time is during first time page is called
 								* page is cached - load time is during the project load. Each time user comes to the page, the page is available already and there is no page load time. Even after user leaves the page, the page is not removed from DOM and is always available. DOM weight for project is high because of this feature.
 							*/
-							let pageLoadTimeout = 2000;
 							if (CrComLib.isCrestronTouchscreen()) {
 								pageLoadTimeout = 15000;
 							}
@@ -484,7 +484,7 @@ const templatePageModule = (() => {
 
 	function connectToWebXPanel(projectConfigResponse) {
 		if (projectConfigResponse.useWebXPanel && !isWebXPanelInitialized) {
-			if (projectConfigResponse.header.display && projectConfigResponse.header.displayInfo) {
+			if (projectConfigResponse.header.display && projectConfigResponse.header.displayInfo && projectConfigResponse.header.$component.trim() === "") {
 				let loadListCh5 = CrComLib.subscribeState('o', 'ch5-import-htmlsnippet:template-version-info-import-page', (value) => {
 					if (value['loaded']) {
 						webXPanelModule.connect(projectConfigResponse);
@@ -556,16 +556,20 @@ const templatePageModule = (() => {
 			allPagesLoaded = true;
 			let endDuration = new Date().getTime();
 			templateAppLoaderModule.endPageLoad(pageObject, endDuration);
-			document.getElementById("loader").style.display = "none";
-			if (!firstLoad) {
-				firstLoad = true;
-				const listOfPages = projectConfigModule.getNavigationPages();
-				listOfPages.forEach(page => {
-					if (page.preloadPage) {
-						templateVersionInfoModule.updateDiagnosticsOnPageChange(page)
-					}
-				})
+			if(!firstLoad){
+				firstLoad=true
+				const hideLoaderTimeout = setInterval(() => {
+					clearInterval(hideLoaderTimeout);
+					const listOfPages = projectConfigModule.getNavigationPages();
+					listOfPages.forEach(page => {
+						if (page.preloadPage) { templateVersionInfoModule.updateDiagnosticsOnPageChange(page)}
+					})
+					document.getElementById("loader").style.display = "none";
+				}, pageLoadTimeout); 
+			}else{
+				document.getElementById("loader").style.display = "none";
 			}
+
 		} else if (!allPagesLoaded) {
 			setTimeout(() => {
 				hideLoading(pageObject);
