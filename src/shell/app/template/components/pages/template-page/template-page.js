@@ -52,7 +52,9 @@ const templatePageModule = (() => {
 			} else if (oldPage.preloadPage === false && oldPage.cachePage === true) {
 				const htmlImportSnippet = document.getElementById(oldPage.pageName + "-import-page");
 				htmlImportSnippet.removeAttribute("receiveStateShow");
-				htmlImportSnippet.setAttribute("url", oldPage.fullPath + oldPage.fileName);
+				if (htmlImportSnippet.hasAttribute("url") === false || !htmlImportSnippet.getAttribute("url") || htmlImportSnippet.getAttribute("url") === "") {
+					htmlImportSnippet.setAttribute("url", oldPage.fullPath + oldPage.fileName);
+				}
 				htmlImportSnippet.setAttribute("noShowType", "display");
 			}
 			CrComLib.publishEvent("b", "active_state_class_" + oldPage.pageName, false);
@@ -556,17 +558,17 @@ const templatePageModule = (() => {
 			allPagesLoaded = true;
 			let endDuration = new Date().getTime();
 			templateAppLoaderModule.endPageLoad(pageObject, endDuration);
-			if(!firstLoad){
-				firstLoad=true
+			if (!firstLoad) {
+				firstLoad = true
 				const hideLoaderTimeout = setInterval(() => {
 					clearInterval(hideLoaderTimeout);
 					const listOfPages = projectConfigModule.getNavigationPages();
 					listOfPages.forEach(page => {
-						if (page.preloadPage) { templateVersionInfoModule.updateDiagnosticsOnPageChange(page)}
+						if (page.preloadPage) { templateVersionInfoModule.updateDiagnosticsOnPageChange(page) }
 					})
 					document.getElementById("loader").style.display = "none";
-				}, pageLoadTimeout); 
-			}else{
+				}, pageLoadTimeout);
+			} else {
 				document.getElementById("loader").style.display = "none";
 			}
 

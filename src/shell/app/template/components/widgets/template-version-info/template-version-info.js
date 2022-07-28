@@ -156,7 +156,9 @@ const templateVersionInfoModule = (() => {
 
 	function updateDiagnosticsOnPageChange(pageConfiguration) {
 			setTimeout(() => {
+				const listOfNavigationButtons = document.querySelectorAll('ch5-button[id*=menu-list-id-');
 				if(!diagnosticTab){
+					listOfNavigationButtons.forEach(e => e.children[0].style.pointerEvents = "auto");
 					return;
 				}
 				setTimeout(() => {
@@ -166,6 +168,7 @@ const templateVersionInfoModule = (() => {
 					}
 					getCurrentCh5Components();
 					updateSubscriptions();
+					listOfNavigationButtons.forEach(e => e.children[0].style.pointerEvents = "auto");
 				}, 150);
 			});
 	}

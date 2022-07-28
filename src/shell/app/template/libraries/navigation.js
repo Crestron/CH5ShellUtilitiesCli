@@ -24,7 +24,6 @@ const navigationModule = (() => {
 		const pageObject = navigationPages.find(page => page.pageName === pageName);
 		templateAppLoaderModule.showLoading(pageObject);
 		const listOfNavigationButtons = document.querySelectorAll('ch5-button[id*=menu-list-id-');
-		listOfNavigationButtons.forEach(e => e.children[0].style.pointerEvents = "none");
 		const url = pageObject.fullPath + pageObject.fileName;
 		const routeId = pageObject.pageName + "-import-page";
 		const listOfPages = projectConfigModule.getNavigationPages();
@@ -55,13 +54,14 @@ const navigationModule = (() => {
 						displayInfo = projectConfigResponse.header.displayInfo;
 						displayHeader = projectConfigResponse.header.display;
 						if (displayInfo && displayHeader) {
+							listOfNavigationButtons.forEach(e => e.children[0].style.pointerEvents = "none");
 							templateVersionInfoModule.updateDiagnosticsOnPageChange(pageObject);
 						}
 					})
 				} else if (displayInfo && displayHeader) {
+					listOfNavigationButtons.forEach(e => e.children[0].style.pointerEvents = "none");
 					templateVersionInfoModule.updateDiagnosticsOnPageChange(pageObject);
 				}
-				listOfNavigationButtons.forEach(e => e.children[0].style.pointerEvents = "auto");
 				setTimeout(() => {
 					CrComLib.unsubscribeState('o', 'ch5-import-htmlsnippet:' + pageObject.pageName + '-import-page', loadedSubId);
 					loadedSubId = '';
