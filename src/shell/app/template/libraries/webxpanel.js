@@ -239,7 +239,7 @@ var webXPanelModule = (function () {
   }
 
   function isVersionInfoDisplayed() {
-    return (isDisplayInfo && isEmptyHeaderComponent);
+    return (isDisplayInfo && isEmptyHeaderComponent && isDisplayHeader);
   }
   /**
    * Show the badge on the info icon for connection status.
