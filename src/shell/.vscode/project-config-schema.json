@@ -710,7 +710,7 @@
                     "$id": "#/properties/content/properties/pages/items/anyOf/0/properties/preloadPage",
                     "type": "boolean",
                     "title": "preloadPage",
-                    "default": false,
+                    "default": true,
                     "description": "The preloadPage property will preload the page in Shell Template "
                   },
                   "triggerViewChildProperties": {
