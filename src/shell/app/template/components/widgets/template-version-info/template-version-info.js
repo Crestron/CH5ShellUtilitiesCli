@@ -89,12 +89,28 @@ const templateVersionInfoModule = (() => {
 		for (const value of Object.values(data)) {
 			const tableData = document.createElement('td');
 			if (value === 'Y') {
-				tableData.innerHTML = "&#10003; Yes";
+				const spanTag = document.createElement('span');
+				const spanContent = document.createElement('span');
+				const iconTag = document.createElement('i');
+				iconTag.className = "fas fa-check";
+				spanContent.innerHTML = "Yes";
+				spanTag.style.paddingRight = "5px";
 				tableData.style.color = "green";
+				spanTag.appendChild(iconTag);
+				tableData.appendChild(spanTag);
+				tableData.appendChild(spanContent);
 			}
 			else if (value === 'N') {
-				tableData.innerHTML = "&#x2716; No"
+				const spanTagXmark = document.createElement('span');
+				const spanContentXmark = document.createElement('span');
+				const iconTagXmark = document.createElement('i');
+				iconTagXmark.className = "fas fa-times";
+				spanContentXmark.innerHTML = "No";
+				spanTagXmark.style.paddingRight = "5px";
 				tableData.style.color = "orange";
+				spanTagXmark.appendChild(iconTagXmark);
+				tableData.appendChild(spanTagXmark);
+				tableData.appendChild(spanContentXmark);
 			}
 			else {
 				tableData.textContent = value;
