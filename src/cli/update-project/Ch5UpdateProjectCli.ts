@@ -168,9 +168,13 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
             };
             this.outputResponse.data.updateInputs[i].argsValue = await this.getPrompt(question)
               .then((answer: any) => { 
-                if(this.outputResponse.data.updateInputs[i].key==="projectName")
+                if(this.outputResponse.data.updateInputs[i].key==="projectName"){
                 return answer[this.outputResponse.data.updateInputs[i].key].toLowerCase();
-                return answer[this.outputResponse.data.updateInputs[i].key]; })
+              }
+                else {
+                return answer[this.outputResponse.data.updateInputs[i].key];}
+               }
+               )
               .catch((error: any) => { throw new Error(this.getText("ERRORS.DO_NOT_UPDATE_PROJECT")); });
 
             this.logger.log(this.outputResponse.data.updateInputs[i].key + ": ", this.outputResponse.data.updateInputs[i].argsValue);
