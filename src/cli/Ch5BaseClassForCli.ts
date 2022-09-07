@@ -421,7 +421,7 @@ export abstract class Ch5BaseClassForCli {
     if (packageName && packageName.trim().length > 0) {
       packageName = packageName.trim().toLowerCase();
       packageName = packageName.substring(0, 213);
-      //const packageNameValidity = new RegExp(/^[a-z][a-z0-9-._$]*$/).test(packageName);
+      // const packageNameValidity = new RegExp(/^[a-z][a-z0-9-._$]*$/).test(packageName);
       const regexValue = /^(?:@[a-z0-9-*~][a-z0-9-*._~]*\/)?[a-z0-9-~][a-z0-9-._~]*$/; // /^[a-z][a-z0-9-._$]*$/
       const packageNameValidity = new RegExp(regexValue).test(packageName);
      
