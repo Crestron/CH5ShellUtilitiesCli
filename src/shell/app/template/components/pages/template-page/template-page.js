@@ -559,15 +559,19 @@ const templatePageModule = (() => {
 			let endDuration = new Date().getTime();
 			templateAppLoaderModule.endPageLoad(pageObject, endDuration);
 			if (!firstLoad) {
-				firstLoad = true
-				const hideLoaderTimeout = setInterval(() => {
-					clearInterval(hideLoaderTimeout);
-					const listOfPages = projectConfigModule.getNavigationPages();
-					listOfPages.forEach(page => {
-						if (page.preloadPage) { templateVersionInfoModule.updateDiagnosticsOnPageChange(page) }
-					})
+				firstLoad = true;
+				if (totalPreloadPage === 0) {
 					document.getElementById("loader").style.display = "none";
-				}, pageLoadTimeout);
+				} else {
+					const hideLoaderTimeout = setInterval(() => {
+						clearInterval(hideLoaderTimeout);
+						const listOfPages = projectConfigModule.getNavigationPages();
+						listOfPages.forEach(page => {
+							if (page.preloadPage) { templateVersionInfoModule.updateDiagnosticsOnPageChange(page) }
+						})
+						document.getElementById("loader").style.display = "none";
+					}, pageLoadTimeout);
+				}
 			} else {
 				document.getElementById("loader").style.display = "none";
 			}
