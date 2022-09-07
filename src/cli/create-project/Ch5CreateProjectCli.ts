@@ -152,7 +152,8 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
             if (!this.utils.isValidInput(response.projectName)) {
               throw new Error(this.getText("COMMON.SOMETHING_WENT_WRONG"));
             }
-            this.outputResponse.data.updateInputs[i].argsValue = response.projectName;
+            
+            this.outputResponse.data.updateInputs[i].argsValue = response.projectName.toLowerCase();
             this.logger.log(this.outputResponse.data.updateInputs[i].key + ": ", this.outputResponse.data.updateInputs[i].argsValue);
           }
         }
