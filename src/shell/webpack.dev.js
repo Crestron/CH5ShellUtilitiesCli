@@ -5,8 +5,8 @@
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const WriteJsonPlugin = require('write-json-webpack-plugin');
-const ConcatPlugin = require('webpack-concat-plugin');
+const GenerateJsonPlugin = require('generate-json-webpack-plugin');
+const WebpackConcatPlugin = require('webpack-concat-files-plugin');
 const common = require('./webpack.common.js');
 const pkg = require('./package.json');
 const BrowserSyncPlugin = require("browser-sync-webpack-plugin");
@@ -34,35 +34,23 @@ module.exports = merge(common("dev"), {
   mode: "development",
   watch: true,
   plugins: [
-    new ConcatPlugin({
-      uglify: false,
-      sourceMap: false,
-      name: 'result',
-      outputPath: 'libraries/',
-      fileName: 'cr-com-lib.js',
-      filesToConcat: jsList,
-      attributes: {
-        async: true
-      }
+    new WebpackConcatPlugin({
+      bundles: [
+        {
+          dest: './dist/dev/Shell/libraries/cr-com-lib.js',
+          src: jsList,
+        },
+      ],
     }),
-    new ConcatPlugin({
-      uglify: false,
-      sourceMap: false,
-      name: 'result',
-      outputPath: 'libraries/',
-      fileName: 'component.js',
-      filesToConcat: componentsList,
-      attributes: {
-        async: true
-      }
+    new WebpackConcatPlugin({
+      bundles: [
+        {
+          dest: './dist/dev/Shell/libraries/component.js',
+          src: componentsList,
+        },
+      ],
     }),
-    new WriteJsonPlugin({
-      object: appVersionInfo,
-      path: 'assets/data/',
-      filename: 'app.manifest.json',
-      flatten: true,
-      pretty: true
-    }),
+    new GenerateJsonPlugin('assets/data/app.manifest.json', appVersionInfo),
     new HtmlWebpackPlugin({
       filename: 'index.html',
       inject: false,

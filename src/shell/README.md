@@ -8,25 +8,21 @@ https://www.crestron.com/developer
 
 # Shell Template
 
-The project have dependencies that require nodejs(https://nodejs.org), together with YARN(https://yarnpkg.com) or NPM.
+The project have dependencies that require nodejs(https://nodejs.org), together with npm run(https://npm runpkg.com) or NPM.
 
 # Installation
 
 ## Install all global dependencies
 
-Run `yarn global add @crestron/ch5-utilities-cli` or `npm install -g @crestron/ch5-utilities-cli` to deploy the project on device.
+Run `npm run global add @crestron/ch5-utilities-cli` or `npm install -g @crestron/ch5-utilities-cli` to deploy the project on device.
 
 ## Install all local dependencies
 
-Run `yarn install` to install all dependencies for the project.
+Run `npm run install` to install all dependencies for the project.
 
 ## Development server
 
-Run `yarn start` for a dev server. Navigate to `http://localhost:3000/`. The app will automatically reload if you change any of the source files.
-
-## Build
-
-Run `yarn build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Run `npm run start` for a dev server. Navigate to `http://localhost:3000/`. The app will automatically reload if you change any of the source files.
 
 # How to deploy the project in TSW device
 
@@ -35,16 +31,20 @@ Need to add the hostname or IP address of TSW device in package.json, like below
 
 ## Production build
 
-Run `yarn build:prod` to build the project in production mode. The build artifacts will be stored in the `dist/` directory.
+Run `npm run build:prod` to build the project in production mode. The build artifacts will be stored in the `dist/` directory.
 
 ## Create archive
 
-Run `yarn build:archive` to create .ch5z file which supports TSW device. The build artifacts will be stored in the `dist/` directory.
+Run `npm run build:archive` to create .ch5z file which supports TSW device. The build artifacts will be stored in the `dist/` directory.
 
 ## Deploy the project in TSW device
 
-Run `yarn build:deploy` to deploy the project in TSW device.
+Run `npm run build:deploy` to deploy the project in TSW device.
 
 ## Deploy the project in one step
 
-Run `yarn build:onestep` to build, archive and deploy the project in one step.
+Run `npm run build:onestep` to build, archive and deploy the project in one step.
+
+## npm audit
+
+Run `npm audit`

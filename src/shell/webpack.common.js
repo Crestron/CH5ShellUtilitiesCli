@@ -26,14 +26,6 @@ function getConfig(envPath) {
       to: `${distPath}`,
       from: `${srcRoot}/*.ico`,
     },
-    fontIcon: {
-      to: `${distPath}/assets/webfonts`,
-      from: `${nodeModules}@fortawesome/fontawesome-free/webfonts/**/*`,
-    },
-    materialIconWebFonts: {
-      to: `${distPath}/assets/font`,
-      from: `${nodeModules}@material-icons/font/font/**/*`,
-    },
     layoutCss: {
       to: `${distPath}/assets/css`,
       from: `${baseThemePath}`,
@@ -176,16 +168,8 @@ module.exports = (env) => {
           use: [{
             loader: MiniCssExtractPlugin.loader,
           },
-            "css-loader?url=false"
+            "css-loader",
           ]
-        },
-        {
-          test: /\.(png|jpg|svg|woff|woff2|eot|ttf)$/,
-          loader: "url-loader",
-          options: {
-            limit: 120000,
-            name: "images/[name].[ext]"
-          }
         },
         {
           test: /\.scss$/,
@@ -193,7 +177,7 @@ module.exports = (env) => {
             loader: MiniCssExtractPlugin.loader,
           },
             "css-loader",
-            "sass-loader?url=false",
+            "sass-loader",
           ]
         },
         {
