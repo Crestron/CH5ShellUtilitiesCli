@@ -9,7 +9,6 @@ const CreateFileWebpack = require('create-file-webpack');
 const appConfig = require("./app.config");
 const appConfigDistPath = appConfig.distPath;
 const basePath = appConfig.basePath;
-const nodeModules = appConfig.nodeModules;
 const srcRoot = appConfig.srcRoot;
 const srcTemplateRoot = appConfig.srcTemplateRoot;
 const srcProjectRoot = appConfig.srcProjectRoot;
@@ -170,6 +169,20 @@ module.exports = (env) => {
           },
             "css-loader",
           ]
+        },
+        {
+          test: /\.(woff(2)?|ttf|eot)$/,
+          type: 'asset/resource',
+          generator: {
+            filename: './app/template/fonts/[name][ext]',
+          },
+        },
+        {
+          test: /\.(png|jpg|svg)$/,
+          type: 'asset/resource',
+          generator: {
+            filename: './app/template/img/[name][ext]',
+          },
         },
         {
           test: /\.scss$/,
