@@ -171,17 +171,31 @@ module.exports = (env) => {
           ]
         },
         {
-          test: /\.(woff(2)?|ttf|eot)$/,
-          type: 'asset/resource',
-          generator: {
-            filename: './app/template/fonts/[name][ext]',
-          },
-        },
-        {
           test: /\.(png|jpg|svg)$/,
           type: 'asset/resource',
           generator: {
-            filename: './app/template/img/[name][ext]',
+            filename: './app/template/assets/img/[name][ext]', // trans-bg.png
+          },
+        },
+        {
+          test: /\.(woff|woff2|eot|ttf)$/,
+          type: 'asset/resource',
+          generator: {
+            filename: './assets/font/[name][ext]', // material icons font
+          },
+        },
+        {
+          test: /fa-/,
+          type: 'asset/resource',
+          generator: {
+            filename: './assets/webfonts/[name][ext]', // font awesome webfonts
+          },
+        },
+        {
+          test: /roboto-/,
+          type: 'asset/resource',
+          generator: {
+            filename: './assets/webfonts/[name][ext]', // roboto webfonts
           },
         },
         {
