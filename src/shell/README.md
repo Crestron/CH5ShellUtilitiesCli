@@ -45,6 +45,3 @@ Run `npm run build:deploy` to deploy the project in TSW device.
 
 Run `npm run build:onestep` to build, archive and deploy the project in one step.
 
-## npm audit
-
-Run `npm audit`
