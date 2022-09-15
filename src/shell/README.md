@@ -8,7 +8,7 @@ https://www.crestron.com/developer
 
 # Shell Template
 
-The project have dependencies that require nodejs(https://nodejs.org), together with npm run(https://npm runpkg.com) or NPM.
+The project have dependencies that require nodejs(https://nodejs.org), together with NPM.
 
 # Installation
 
