@@ -14,7 +14,7 @@ The project have dependencies that require nodejs(https://nodejs.org), together 
 
 ## Install all global dependencies
 
-Run `npm run global add @crestron/ch5-utilities-cli` or `npm install -g @crestron/ch5-utilities-cli` to deploy the project on device.
+Run `npm install -g @crestron/ch5-utilities-cli` to deploy the project on device.
 
 ## Install all local dependencies
 
