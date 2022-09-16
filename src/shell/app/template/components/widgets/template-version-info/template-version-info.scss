@@ -9,7 +9,7 @@
 
 #template-version-info-page {
   padding: 0.5rem;
-  $version-modal-dialog-content-color: $color-lightgrey !default;
+  $version-modal-dialog-content-color: $color-lightgrey  !default;
   $border-type: solid;
   $version-modal-dialog-border-width: 1px;
 
@@ -231,9 +231,19 @@
       }
     }
 
+    @media only screen and (max-width: 560px) {
+      #diagnosticsTableElement {
+        font-size: 16px;
+      }
+    }
+
     @media only screen and (max-width: 500px) {
       .ch5-modal-dialog-contents {
         font-size: 16px;
+
+        #diagnosticsTableElement {
+          font-size: 14px;
+        }
       }
     }
   }
