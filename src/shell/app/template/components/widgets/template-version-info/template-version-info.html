@@ -20,11 +20,13 @@
         <div class="spacer"></div>
         <div id="version-tab-content">
             <table>
-                <tr>
-                    <th data-ch5-i18n="-+header.info.version.header.package+-"></th>
-                    <th data-ch5-i18n="-+header.info.version.header.version+-"></th>
-                    <!-- <th data-ch5-i18n="-+header.info.version.header.date+-"></th> -->
-                </tr>
+                <tbody id="versionTableBody">
+                    <tr>
+                        <th data-ch5-i18n="-+header.info.version.header.package+-"></th>
+                        <th data-ch5-i18n="-+header.info.version.header.version+-"></th>
+                        <!-- <th data-ch5-i18n="-+header.info.version.header.date+-"></th> -->
+                    </tr>
+                </tbody>
             </table>
         </div>
         <div id="webxpanel-tab-content" style="display: none">
@@ -42,7 +44,14 @@
         </div>
         <div id="diagnostics-tab-content" style="display: none">
             <div id="diagnostics-info">
-                <div id="memory-collabsable-container">
+                <span id="totalComponents">Total CH5 Tags/Attrs: </span>
+                <span id="currentComponents">Current CH5 Tags/Attrs: </span>
+                <span id="totalDom">Total DOM Nodes: </span>
+                <span id="pageCount">Page Count: </span>
+                <span id="totalSubscribers">Total Signals: </span>
+                <span id="totalSignals">Total Subscriptions: </span>
+                <!--        
+                <div id="memory-collabsable-container" style="display:none;">
                     <div class="row">
                         <div class="col-6">
                             <span data-ch5-i18n="-+header.info.diagnostics.totalcomponents+-"></span>&nbsp;
@@ -73,17 +82,19 @@
                             <span id="total-signal"></span>
                         </div>
                     </div>
-                </div>
-                <button id="subscribe-log" data-ch5-i18n="-+header.info.diagnostics.logs+-"></button>
+                </div> -->
             </div>
+            <button id="subscribeLogButton" data-ch5-i18n="-+header.info.diagnostics.logs+-"></button>
             <table>
-                <tr id="diagnostic-page-header">
-                    <th data-ch5-i18n="-+header.info.diagnostics.pages.header.name+-"></th>
-                    <th data-ch5-i18n="-+header.info.diagnostics.pages.header.ch5count+-"></th>
-                    <th data-ch5-i18n="-+header.info.diagnostics.pages.header.preload+-"></th>
-                    <th data-ch5-i18n="-+header.info.diagnostics.pages.header.cached+-"></th>
-                    <th data-ch5-i18n="-+header.info.diagnostics.pages.header.nodes+-"></th>
-                </tr>
+                <tbody id="diagnosticsTableElement">
+                    <tr id="diagnosticPageHeaderElement">
+                        <th data-ch5-i18n="-+header.info.diagnostics.pages.header.name+-"></th>
+                        <th data-ch5-i18n="-+header.info.diagnostics.pages.header.ch5count+-"></th>
+                        <th data-ch5-i18n="-+header.info.diagnostics.pages.header.preload+-"></th>
+                        <th data-ch5-i18n="-+header.info.diagnostics.pages.header.cached+-"></th>
+                        <th data-ch5-i18n="-+header.info.diagnostics.pages.header.nodes+-"></th>
+                    </tr>
+                </tbody>
             </table>
         </div>
     </ch5-modal-dialog>

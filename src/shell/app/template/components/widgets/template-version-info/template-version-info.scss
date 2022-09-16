@@ -59,7 +59,7 @@
   div.ch5-modal-dialog.project-info-dialog {
     width: 60vw;
     max-height: 70vh;
-    max-width: 600px;
+    max-width: 630px;
     border: $version-modal-dialog-border-width $border-type $black;
     min-height: min(430px, 70vh);
     overflow: initial;
@@ -144,92 +144,38 @@
 
     #diagnostics-tab-content {
       #diagnostics-info {
-        button#subscribe-log {
-          border: 1px solid darkgray;
-          border-radius: 5px;
-          margin-bottom: 10px;
-          width: 100%;
-          color: black;
+        display: flex;
+        flex-wrap: wrap;
 
-          &:hover {
-            background: rgba(200, 200, 200, 0.5);
-          }
-
-          &:active {
-            background: rgba(180, 180, 180, 0.5);
-          }
+        span {
+          flex: 1 0 50%;
+          height: 2rem;
+          line-height: 2rem;
         }
 
-        #memory-collabsable-handler,
-        #subscribe-collabsable-handler {
-          font-weight: bold;
-          display: block;
-
-          &:hover {
-            cursor: pointer;
+        @media only screen and (max-width: 740px) {
+          span {
+            flex: 1 0 100%;
           }
         }
-
-        .container-hide {
-          display: none !important;
-        }
-
-        #memory-collabsable-container,
-        #subscribe-collabsable-container {
-          overflow: hidden;
-          transition: 0.5s;
-          margin: 0 0 10px 14px;
-
-          &>span {
-            height: 28px;
-            display: inline-flex;
-            align-items: center;
-          }
-        }
-
-        .subscriptions-container {
-          display: flex;
-          width: 265px;
-          align-items: center;
-        }
-
-        #memory-tooltip,
-        #components-tooltip,
-        #count-tooltip {
-          position: absolute;
-          background: lightgray;
-          padding: 2px 5px;
-          border-radius: 5px;
-          z-index: 1000;
-          visibility: hidden;
-          right: -100px;
-        }
-
-        #memory-bar {
-          margin-left: 10px;
-          height: 20px;
-          width: 30%;
-          background: white;
-          border: 1px solid gray;
-          position: relative;
-
-          #memory-used {
-            height: 100%;
-            background: #d8d8d8;
-          }
-
-          #memory-span {
-            color: black;
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 14px;
-            font-weight: 600;
-          }
-        }
-
       }
+
+      button#subscribeLogButton {
+        border: 1px solid darkgray;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        width: 100%;
+        color: black;
+
+        &:hover {
+          background: rgba(200, 200, 200, 0.5);
+        }
+
+        &:active {
+          background: rgba(180, 180, 180, 0.5);
+        }
+      }
+
     }
 
     .ch5-modal-dialog-contents {
@@ -239,7 +185,7 @@
     .ch5-modal-dialog-close-icon-btn {
       padding: 0;
       margin: 0;
-      color:black;
+      color: black;
       @include size(auto);
       background-color: transparent;
 
@@ -268,23 +214,12 @@
     }
 
     @media only screen and (max-width: 800px) {
-      width: 85vw;
-
       #tab-wrapper {
-        max-width: 70%;
+        max-width: 80%;
       }
     }
 
-    @media only screen and (max-width: 697px) {
-      width: 80vw;
-
-      #memory-collabsable-container .memory-container,
-      #subscribe-collabsable-container .subscriptions-container {
-        width: 100% !important;
-      }
-    }
-
-    @media only screen and (max-width: 580px) {
+    @media only screen and (max-width: 650px) {
       width: 90vw;
 
       #tab-wrapper {
@@ -292,11 +227,13 @@
       }
 
       .ch5-modal-dialog-contents {
-        font-size: 16px;
+        font-size: 18px;
       }
+    }
 
-      #memory-span {
-        font-size: 12px;
+    @media only screen and (max-width: 500px) {
+      .ch5-modal-dialog-contents {
+        font-size: 16px;
       }
     }
   }
@@ -370,21 +307,6 @@
         }
       }
 
-      #diagnostics-tab-content {
-        #diagnostics-info {
-          button#subscribe-log {
-            border: 1px solid darkgray;
-
-            &:hover {
-              background: rgba(200, 200, 200, 0.5);
-            }
-
-            &:active {
-              background: rgba(180, 180, 180, 0.5);
-            }
-          }
-        }
-      }
     }
 
     .ch5-button {
