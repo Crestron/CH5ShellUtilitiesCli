@@ -1,0 +1,29 @@
+{
+  "INITIALIZE": {},
+  "VERIFY_INPUT_PARAMS": {
+    "INVALID_CONFIG_INPUT": "The config file is either missing or the path of config file seems incorrect. Ensure that the file is a .json file.",
+    "INVALID_CONFIG_FILE": "The specified config json file is not compatible with the expected Shell Template schema.",
+    "INVALID_INPUT": "The input for {0} is invalid.",
+    "INPUT_WARNING_TITLE": "Warning(s):\n{0}",
+    "INVALID_PROJECT_CONFIG_JSON": "The existing project-config.json file does not match with its schema. Please correct the errors to proceed."
+  },
+  "CHECK_PROMPT_QUESTIONS": {
+    "QUESTIONS": {
+      "CONFIG_FILE": "Please enter the location of the config file",
+      "PROJECT_NAME": "Please enter the name of the Project to be created"
+    }
+  },
+  "PROCESS_REQUEST": {
+    "FAILURE_MESSAGE_INPUT_PARAM_CONFIG_FILE_INVALID": "The input config file is invalid.",
+    "PROJECT_CONFIG_VALIDATION_FAILED": "The generated project-config.json file is not compatible with the expected Shell Template schema.",
+    "FOLDER_CONTAINS_FILES": "The folder {0} contains files. Project can be created only in empty folders."
+  },
+  "CLEAN_UP": {},
+  "LOG_OUTPUT": {
+    "SUCCESS_MESSAGE": "Project '{0}' successfully created at '{1}'.\n\nExecute the command npm install, and then npm start within the project directory to see your project in the browser."
+  },
+  "ERRORS": {
+    "PROGRAM_STOPPED_OR_UNKNOWN_ERROR": "Either the program has been cancelled or an unknown error occurred. Please try again.",
+    "DO_NOT_UPDATE_PROJECT": "Project update cancelled."
+  }
+}

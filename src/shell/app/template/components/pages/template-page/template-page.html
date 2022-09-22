@@ -1,0 +1,120 @@
+<!-- header -->
+<div id="header-index-page">
+	<div id="header-section-page"></div>
+	<template id="header-section-page-template1">
+		<section id="header-page">
+			<nav role="navigation" class="navbar navbar-dark navbar-default fixed-top">
+				<div id="pageStatusIdentifier" class="hide"></div>
+				<div class="change-theme form-inline">
+					<a class="btn-link toggler display-none" id="sidebarToggle" onclick="templatePageModule.toggleSidebar()">
+						<i class="toggle-icon"></i>
+					</a>
+					<a class="navbar-brand">
+						<ch5-image class="d-block img-fluid" id="brandLogo" onclick="templateRemoteLoggerSettingsModule.showLoggerPopUp();"></ch5-image>
+					</a>
+					<ch5-import-htmlsnippet id="template-remote-logger-settings-import-page" url="./app/template/components/widgets/template-remote-logger-settings/template-remote-logger-settings.html">
+					</ch5-import-htmlsnippet>
+				</div>
+				<div id="header-section-page-set1"></div>
+				<template id="header-section-page-template1-set1">
+					<div class="navbar-action-right">
+						<ch5-import-htmlsnippet id="template-version-info-import-page" url="./app/template/components/widgets/template-version-info/template-version-info.html">
+						</ch5-import-htmlsnippet>
+					</div>
+				</template>
+			</nav>
+		</section>
+	</template>
+	<template id="header-section-page-template2">
+		<section id="header-page">
+			<nav role="navigation" class="navbar navbar-dark navbar-default fixed-top">
+				<div id="pageStatusIdentifier" class="hide"></div>
+				<ch5-import-htmlsnippet id="template-header" url="{{customHeaderUrl}}"></ch5-import-htmlsnippet>
+			</nav>
+		</section>
+	</template>
+</div>
+
+<!-- Content -->
+<div id="content-index-page">
+	<div id="template-content-page-wrapper">
+		<ch5-background id="template-content-background"></ch5-background>
+		<div id="template-content-page-content"></div>
+	</div>
+
+	<template id="template-content-page-section-horizontal">
+		<div id="content-index-body">
+			<div class="horizontal-menu">
+				<ch5-triggerview id="triggerviewInContentHorizontal" class="triggerview">
+				</ch5-triggerview>
+			</div>
+		</div>
+		<!-- footer -->
+		<div class="horizontal-footer-menu" id="template-content-index-footer">
+			<ch5-list id="horizontal-menu-swiper-thumb" receiveStateScrollTo="scrollToMenu" scrollbar="false" class="swiper-thumb" orientation="horizontal" maxHeight="auto" indexId="idx" itemHeight="100%">
+				<template>
+					<div class="horizontal-list-item">
+						<ch5-button id="menu-list-id-{{idx}}" type="text" shape="rectangle" stretch="both" receiveStateSelected="active_state_class_{{idx}}" onRelease="templatePageModule.navMenu({{idx}})"></ch5-button>
+					</div>
+				</template>
+			</ch5-list>
+			<a class="thumb-action" onclick="templatePageModule.openThumbNav()">
+				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 12 24">
+					<path d="M11.67 3.87L9.9 2.1 0 12l9.9 9.9 1.77-1.77L3.54 12z" />
+				</svg>
+			</a>
+		</div>
+		<div id="footer-index-page">
+			<div id="footer-section-page"></div>
+		</div>
+	</template>
+
+	<template id="template-content-page-section-vertical">
+		<div id="content-index-body">
+			<div class="vertical-menu">
+				<div class="vertical-menu-cols">
+					<div class="nav-panel col-auto height-for-list-menu">
+						<ch5-list id="vertical-menu-swiper-thumb" class="swiper-thumb" orientation="vertical" itemHeight="50px" maxHeight="auto" indexId="idx" itemWidth="100%">
+							<template>
+								<div class="vertical-list-item">
+									<ch5-button id="menu-list-id-{{idx}}" type="text" shape="rectangle" hAlignLabel="left" receiveStateSelected="active_state_class_{{idx}}" onRelease="templatePageModule.navMenu({{idx}})"></ch5-button>
+								</div>
+							</template>
+						</ch5-list>
+					</div>
+					<div class="vertical-menu-child-col">
+						<ch5-triggerview id="triggerviewInContentVertical" class="triggerview">
+						</ch5-triggerview>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- footer -->
+		<div id="footer-index-page">
+			<div id="footer-section-page"></div>
+		</div>
+	</template>
+
+	<template id="template-content-page-section-none">
+		<div id="content-index-body">
+			<div class="no-menu">
+				<ch5-triggerview id="triggerviewInContentNone" class="triggerview">
+				</ch5-triggerview>
+			</div>
+		</div>
+		<!-- footer -->
+		<div id="footer-index-page">
+			<div id="footer-section-page"></div>
+		</div>
+	</template>
+</div>
+
+
+<template id="footer-section-page-template1">
+	<section id="footer-page" class="footer-page">
+		Copyright (C) {{ copyrightYear }} to the present, Crestron Electronics, Inc.
+	</section>
+</template>
+<template id="footer-section-page-template2">
+	<ch5-import-htmlsnippet id="template-footer" url="{{customFooterUrl}}"></ch5-import-htmlsnippet>
+</template>

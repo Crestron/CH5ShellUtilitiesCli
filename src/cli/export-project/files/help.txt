@@ -1,0 +1,11 @@
+    
+You could also use `yarn` or `npm run` to export project. The following are the commands:
+    yarn export:project
+    npm run export:project
+
+You could use shortcut script `exp:p` with options:
+    ch5-shell-cli exp:p
+
+You could use shortcut script `exp:p` with yarn and npm commands as the following:
+    yarn exp:p
+    npm run exp:p

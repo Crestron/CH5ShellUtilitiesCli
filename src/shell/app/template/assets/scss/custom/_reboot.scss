@@ -1,0 +1,116 @@
+// Copyright (C) 2022 to the present, Crestron Electronics, Inc.
+// All rights reserved.
+// No part of this software may be reproduced in any form, machine
+// or natural, without the express written consent of Crestron Electronics.
+// Use of this source code is subject to the terms of the Crestron Software License Agreement
+// under which you licensed this source code.
+
+html,
+body {
+  height: 100%;
+}
+
+html {
+  -webkit-text-size-adjust: 100%; // 4
+  -ms-text-size-adjust: 100%; // 4
+  -ms-overflow-style: scrollbar; // 5
+  -webkit-tap-highlight-color: rgba($black, 0); // 6
+  overflow: hidden;
+}
+
+// IE10+ doesn't honor `<meta name="viewport">` in some cases.
+@at-root {
+  @-ms-viewport {
+    width: device-width;
+  }
+}
+
+dfn {
+  font-style: italic; // Add the correct font style in Android 4.3-
+}
+
+input[type="date"],
+input[type="time"],
+input[type="datetime-local"],
+input[type="month"] {
+  // Remove the default appearance of temporal inputs to avoid a Mobile Safari
+  // bug where setting a custom line-height prevents text from being vertically
+  // centered within the input.
+  // See https://bugs.webkit.org/show_bug.cgi?id=139848
+  // and https://github.com/twbs/bootstrap/issues/11266
+  -webkit-appearance: listbox;
+}
+
+[type="search"]::-webkit-search-cancel-button,
+[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+
+.iframe-full {
+  display: block;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  @include size(100%);
+}
+
+// select
+.ch5-custom-select {
+  border: 0;
+  color: $white;
+  border-radius: 0;
+  height: 100%;
+
+  .ch5-select__main {
+    padding: 0.5rem 1rem;
+    color: inherit;
+
+    .fa {
+      display: none;
+    }
+  }
+
+  .ch5-select__panel__items .ch5-select__panel__item {
+    padding: 0.8rem 1rem;
+  }
+}
+
+// slider
+.ch5-slider {
+  .noUi-handle {
+    &:after {
+      content: "";
+      background-color: transparent;
+      background-image: url("#{$image-path}trans-bg.png");
+      @include size(300%);
+      position: absolute;
+      left: -100%;
+      top: -100%;
+    }
+  }
+
+  @include media-breakpoint-down(sm) {
+    &.ch5-slider--orientation--horizontal.ch5-slider--shape--circle.ch5-slider--handle-size--regular .noUi-handle {
+      @include size(28px);
+
+      &:after {
+        @include size(200%);
+        left: -50%;
+        top: -50%;
+      }
+    }
+  }
+}
+
+$customLists: ch5-custom-list, list-scroller, source-list, video-list, swiper-thumb;
+
+@each $list in $customLists {
+  .#{$list} {
+    .list-item {
+      background-color: transparent;
+      color: inherit;
+      border: 0;
+      padding: 0;
+    }
+  }
+}

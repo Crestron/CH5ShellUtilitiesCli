@@ -1,0 +1,7 @@
+{
+    "INVALID_STRUCTURE": {
+        "MISSING_FILE": "Could not find the files. Kindly run this command from the app folder path.",
+        "INVALID_PERMISSIONS": "Unable to write files, check your access for the directories."
+    },
+    "SUCCESS_MESSAGE": "Your project has been upgraded from V1 to V2 successfully. Refer to the Crestron HTML5 User Interface developer documentation for more information on changes that can be made to your project output.\nPlease ensure to run npm install before starting the project."
+}

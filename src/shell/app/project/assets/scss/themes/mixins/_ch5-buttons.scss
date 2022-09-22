@@ -1,0 +1,50 @@
+ /* Copyright (C) 2020 to the present, Crestron Electronics, Inc.
+  * All rights reserved.
+  * No part of this software may be reproduced in any form, machine
+  * or natural, without the express written consent of Crestron Electronics.
+  * Use of this source code is subject to the terms of the Crestron Software License Agreement 
+  * under which you licensed this source code.
+  */
+ @mixin ch5-button-variant($background, $border, $pressed-bg) {
+   background-color: $background;
+   border-color: $border;
+   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
+   color: #fff;
+
+   &.ch5-button--pressed:not(.ch5-button--disabled),
+   &.ch5-button--selected {
+     background-color: $pressed-bg;
+   }
+
+   &.ch5-button--disabled {
+     opacity: 0.5;
+     cursor: default;
+   }
+ }
+
+ @mixin ch5-button-outline-variant($color, $pressed-bg) {
+   color: $color;
+   background-color: transparent;
+   background-image: none;
+   border-color: $color;
+   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
+
+   &.ch5-button--pressed,
+   &.ch5-button--selected {
+     background-color: transparent;
+   }
+ }
+
+ @mixin ch5-button-gradient-variant($start-color, $end-color, $color, $border-color: #fff) {
+   color: $color;
+   background-color: $end-color;
+   background-image: linear-gradient(to bottom left, $start-color, $end-color);
+   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
+   border: 0.25px solid $border-color;
+
+   &.ch5-button--pressed,
+   &.ch5-button--selected {
+     background-color: $start-color;
+     background-image: linear-gradient(to bottom left, $end-color, $start-color);
+   }
+ }

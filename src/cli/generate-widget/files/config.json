@@ -1,0 +1,42 @@
+{
+  "command": "generate:widget",
+  "name": "generate:widget",
+  "aliases": [
+    "gen:w"
+  ],
+  "usage": "[options]",
+  "description": "Generate widget in the shell-template project",
+  "options": [
+    {
+      "key": "name",
+      "description": "Set the name of the widget to be created",
+      "type": "string",
+      "default": "",
+      "valueIfNotFound": "",
+      "alias": [
+        "-n",
+        "--name"
+      ]
+    }
+  ],
+  "additionalHelp": true,
+  "basePathForWidgets": "./app/project/components/widgets/",
+  "minLengthOfWidgetName": 2,
+  "maxLengthOfWidgetName": 31,
+  "templateNames": {
+    "disallowed": {
+      "startsWith": [
+        "template"
+      ],
+      "equals": [
+        "service",
+        "translate",
+        "utils"
+      ]
+    }
+  },
+  "allowedEnvironments": [
+    "dev",
+    "prod"
+  ]
+}

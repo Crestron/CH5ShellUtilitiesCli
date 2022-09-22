@@ -1,0 +1,31 @@
+{
+  "SUCCESS_MESSAGE": "Congratulations! The page '{0}' has been created at the location '{1}'. The page has been added to the project-config.json file.",
+  "SUCCESS_MESSAGE_NAVIGATION_ADDED": "The page has also been added to navigation menu. You can change the navigation styles in the project-config.json file.",
+  "SUCCESS_MESSAGE_CONCLUSION": "If web server (ex: npm script ‘start’) is running, restart to load the new page.",
+  "ERRORS": {
+    "SOMETHING_WENT_WRONG": "Something went wrong. Either input values are missing/incorrect, or the program stopped intentionally/accidentally. Please try again.",
+    "ERROR_IN_FOLDER_PATH": "Something went wrong with the input values for the folder path. Please check the folder path and try again.",
+    "PROGRAM_STOPPED_OR_UNKNOWN_ERROR": "Either input values are missing/incorrect, or the program stopped intentionally/accidentally.",
+    "PAGE_NAME_LENGTH": "Page Name is mandatory and must contain a minimum of {0} characters and a maximum of {1} characters.",
+    "PAGE_NAME_MANDATORY": "Page Name is mandatory, must start with a letter, and can contain letters, numbers, spaces, underscore(s), and hyphen(s).",
+    "PAGE_EXISTS_IN_PROJECT_CONFIG_JSON": "Page already exists in the project-config.json file. Please enter a new page name.",
+    "WIDGET_EXISTS_IN_PROJECT_CONFIG_JSON": "Widget name already exists for a widget in the 'project' folder. Please enter a new page name.",
+    "PAGE_CANNOT_START_WITH": "Page name cannot start with {0}.",
+    "PAGE_DISALLOWED_KEYWORDS": "Page / Widget / Module file already exists in the 'template' folder. Please enter a new page name.",
+    "PAGE_NAME_EMPTY_IN_REQUEST": "Page name is empty. Page Name is mandatory, must start with a letter, and can contain letters, numbers, spaces, underscore(s), and hyphen(s).\n",
+    "PAGE_NAME_INVALID_ENTRY": "Page name does not meet the expected criterion. {0}\n",
+    "ADD_TO_MENU_EMPTY_IN_REQUEST": "Menu Option is empty. Valid values are 'Y' or 'y' and 'N' or 'n'.\n",
+    "ADD_TO_MENU_INVALID_ENTRY": "Invalid Menu Option. Valid values are 'Y' or 'y' and 'N' or 'n'.\n",
+    "MESSAGE_TITLE": "Following error(s) were found in the command line statement:\n {0}",
+    "TAB_DELIMITER": "-   ",
+    "HTML_FILE_EXISTS": "File with the name '{0}' already exists in the path '{1}'. No Page Created."
+  },
+  "VALIDATIONS": {
+    "GET_PAGE_NAME": "Please enter Page Name",
+    "GET_ADD_TO_MENU_MESSAGE": "Please confirm that the new page should be added to Page Navigation",
+    "GET_ADD_TO_MENU_HINT_YES": "Adds a menu item to the navigation menu",
+    "GET_ADD_TO_MENU_HINT_NO": "A Page is created without adding menu item to the navigation menu",
+    "GET_ADD_TO_MENU_YES": "Yes",
+    "GET_ADD_TO_MENU_NO": "No"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "command": "export:project",
+  "name": "export:project",
+  "aliases": [
+    "exp:p"
+  ],
+  "usage": "",
+  "description": "Export complete shell-template project",
+  "options": [],
+  "additionalHelp": true,
+  "temporaryFilePath": "./../dist/",
+  "zipFileDestinationPath": "./dist/",
+  "ignoreFilesFolders": [
+    "node_modules",
+    "dist",
+    "www",
+    "/out-tsc",
+    ".project",
+    ".classpath",
+    ".settings/",
+    ".sublime-workspace",
+    ".sass-cache",
+    "npm-debug.log",
+    "yarn-error.log",
+    "testem.log",
+    ".DS_Store",
+    "Thumbs.db"
+  ],
+  "allowedEnvironments": [
+    "dev",
+    "prod"
+  ]
+}

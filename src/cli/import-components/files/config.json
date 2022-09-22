@@ -1,0 +1,71 @@
+{
+  "command": "import:components",
+  "name": "import:components",
+  "aliases": [
+    "imp:c"
+  ],
+  "usage": "[options]",
+  "description": "Import components to the shell-template project",
+  "options": [
+    {
+      "key": "all",
+      "description": "Select this option to import all the components",
+      "type": "boolean",
+      "default": true,
+      "valueIfNotFound": false,
+      "alias": [
+        "--all"
+      ]
+    },
+    {
+      "key": "list",
+      "description": "Prefix for list of component names",
+      "type": "array",
+      "default": [],
+      "valueIfNotFound": [],
+      "alias": [
+        "-l",
+        "--list"
+      ]
+    },
+    {
+      "key": "force",
+      "description": "Forces import without asking for a confirmation",
+      "type": "boolean",
+      "default": true,
+      "valueIfNotFound": false,
+      "alias": [
+        "-f",
+        "--force"
+      ]
+    },
+    {
+      "key": "zipFile",
+      "description": "Prefix for full location path of the zip file to be imported",
+      "type": "string",
+      "default": "",
+      "valueIfNotFound": "",
+      "alias": [
+        "-z",
+        "--zipFile"
+      ]
+    }
+  ],
+  "additionalHelp": true,
+  "basePathForPages": "./app/project/components/pages/",
+  "requiredFolderPath": "./app/project/components/",
+  "zipFolderName": "imported-components",
+  "exportedFolderName": "exported-components",
+  "outputFileName": "imported-components.zip",
+  "outputTempFolderName": "Imported-Components-Code-Folder-Temp",
+  "zipFileDestinationPath": "./dist/",
+  "ignoreFilesFolders": [
+    ".DS_Store",
+    ".lock",
+    "Thumbs.db"
+  ],
+  "allowedEnvironments": [
+    "dev",
+    "prod"
+  ]
+}

@@ -1,0 +1,21 @@
+
+<ch5-form>
+    <ch5-toggle <%attributes%>>
+    </ch5-toggle>
+
+    <br><br>
+
+    <ch5-slider <%attributes%>>
+    </ch5-slider>
+    
+    <ch5-select <%attributes%>>
+         <template>
+            <ch5-select-option>
+                <span>Option {{idx}}</span>
+            </ch5-select-option>
+         </template>
+    </ch5-select>
+
+    <br><br>
+
+</ch5-form>

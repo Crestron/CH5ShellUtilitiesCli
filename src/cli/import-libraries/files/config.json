@@ -1,0 +1,70 @@
+{
+  "command": "import:library",
+  "name": "import:library",
+  "aliases": [
+    "imp:l"
+  ],
+  "usage": "[options]",
+  "description": "Import libraries to the shell-template project",
+  "options": [
+    {
+      "key": "all",
+      "description": "Select this option to import all the library files",
+      "type": "boolean",
+      "default": true,
+      "valueIfNotFound": false,
+      "alias": [
+        "--all"
+      ]
+    },
+    {
+      "key": "list",
+      "description": "Prefix for list of library file names",
+      "type": "array",
+      "default": [],
+      "valueIfNotFound": [],
+      "alias": [
+        "-l",
+        "--list"
+      ]
+    },
+    {
+      "key": "force",
+      "description": "Forces import without asking for a confirmation",
+      "type": "boolean",
+      "default": true,
+      "valueIfNotFound": false,
+      "alias": [
+        "-f",
+        "--force"
+      ]
+    },
+    {
+      "key": "zipFile",
+      "description": "Prefix for full location path of the zip file to be imported",
+      "type": "string",
+      "default": "",
+      "valueIfNotFound": "",
+      "alias": [
+        "-z",
+        "--zipFile"
+      ]
+    }
+  ],
+  "additionalHelp": true,
+  "requiredFolderPath": "./app/project/libraries/",
+  "zipFolderName": "imported-libraries",
+  "exportedFolderName": "exported-library",
+  "outputFileName": "imported-libraries.zip",
+  "outputTempFolderName": "Imported-Libraries-Code-Folder-Temp",
+  "zipFileDestinationPath": "./dist/",
+  "ignoreFilesFolders": [
+    ".DS_Store",
+    ".lock",
+    "Thumbs.db"
+  ],
+  "allowedEnvironments": [
+    "dev",
+    "prod"
+  ]
+}

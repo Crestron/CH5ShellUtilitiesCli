@@ -1,0 +1,10 @@
+    
+Use `ch5-shell-cli` to create a new project with components. The following is the command:
+    ch5-shell-cli create:project:components [options]
+
+To create a project along with components using CLI, follow the below procedure:
+    Pass a configuration JSON file: This file is similar to project-config.json. The project can be created with customized content like 'selectedTheme', newer pages and widgets, etc.. The user will not be prompted for any further information, and all details will be picked from the json file.
+
+`ch5-shell-cli create:project:components --config ./downloads/sample-config.json`
+
+To access help, execute `ch5-shell-cli create:project:components --help`.

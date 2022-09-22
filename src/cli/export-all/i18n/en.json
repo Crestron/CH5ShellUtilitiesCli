@@ -1,0 +1,10 @@
+{
+  "SUCCESS_MESSAGE_ALL": "Congratulations! './app/project' folder exported to '{0}'.",
+  "SUCCESS_MESSAGE_SPECIFIC": "Congratulations! The selected files '{1}' are exported to '{0}'.",
+  "SUCCESS_MESSAGE_SPECIFIC_WITH_ERROR": "Congratulations! The selected files '{1}' are exported to '{0}'. The files '{2}' are not available in the './app/project' folder.",
+  "FAILURE_MESSAGE_NO_DIR": "Export failed. The directory does not exist.",
+  "FAILURE_MESSAGE_NO_FILES_IN_DIR": "Export failed. The are no files to export in the directory.",
+  "FAILURE_MESSAGE_NO_VALID_FILES_IN_DIR": "Export All failed. There are no valid files in the folder.",
+  "FAILURE_MESSAGE_NO_VALID_INPUTS": "Export All failed. The input filenames provided are either invalid or they do not exist in the './app/project' folder.",
+  "FAILURE_MESSAGE_INPUT_PARAMS_EMPTY_IN_REQUEST": "There are no input filenames provided to export all."
+}

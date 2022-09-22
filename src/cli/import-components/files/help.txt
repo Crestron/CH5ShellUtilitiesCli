@@ -1,0 +1,31 @@
+    
+You could also use `yarn` or `npm run` to import components. The following are the commands:
+    yarn import:components [options]
+    npm run import:components -- [options]
+
+You could use `ch5-shell-cli` to import the complete contents of the zip file to './app/project/components/' folder.
+    ch5-shell-cli import:components -z {path} --all
+
+You could also use `yarn` or `npm run` to import components. The following are the commands:
+    yarn import:components -z {path} --all
+    npm run import:components -- -z {path} --all
+
+You could use shortcut script `imp:c` with options:
+    ch5-shell-cli imp:c [options]
+
+You could use shortcut script `imp:c` with yarn and npm commands as the following:
+    yarn imp:c [options]
+    npm run imp:c -- [options]
+
+Import selected components from './app/project/components/' folder. In this case, the filenames are mandatory in the command prompt. The filename must follow the complete path starting from './app/project/components/....'. Only file names can be provided here (no folder paths). Multiple file names can be provided in the command prompt. To achieve this, use the following commands:
+    ch5-shell-cli import:components -z ./dist/exported-components.zip -l ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
+    ch5-shell-cli import:components -z ./dist/exported-components.zip --list ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
+    ch5-shell-cli imp:c -z ./dist/exported-components.zip -l ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
+
+You could also use `yarn` or `npm run` to import selected components from './app/project/components/' folder. The following are the commands:
+    yarn import:components -z ./dist/exported-components.zip -l ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
+    npm run import:components -- -z ./dist/exported-components.zip -l ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
+    yarn import:components -z ./dist/exported-components.zip --list ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
+    npm run import:components -- -z ./dist/exported-components.zip --list ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
+    yarn imp:c -z ./dist/exported-components.zip -l ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
+    npm run imp:c -- -z ./dist/exported-components.zip -l ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html

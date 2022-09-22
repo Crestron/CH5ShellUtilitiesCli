@@ -1,0 +1,49 @@
+{
+  "command": "create:project",
+  "name": "create:project",
+  "aliases": [],
+  "usage": "[options]",
+  "description": "Create a shell-template project",
+  "options": [
+    {
+      "key": "config",
+      "description": "Config file required to create project",
+      "type": "string",
+      "default": "",
+      "valueIfNotFound": "",
+      "alias": [
+        "--config"
+      ],
+      "allowedValues": [],
+      "allowedAliases": [],
+      "validation": "fileAvailableAtLocation",
+      "question": "CHECK_PROMPT_QUESTIONS.QUESTIONS.CONFIG_FILE",
+      "isSpecialArgument": true
+    },
+    {
+      "key": "projectName",
+      "description": "Set the name of the Project in package.json and project-config.json",
+      "type": "string",
+      "default": "",
+      "valueIfNotFound": "",
+      "alias": [
+        "--projectName"
+      ],
+      "allowedValues": [],
+      "allowedAliases": [],
+      "validation": "validatePackageJsonProjectName",
+      "question": "CHECK_PROMPT_QUESTIONS.QUESTIONS.PROJECT_NAME",
+      "isSpecialArgument": false
+    }
+  ],
+  "backupFolder": "./dist/",
+  "additionalHelp": true,
+  "automatedTests": {
+    "enable": true,
+    "enableComponentDeleteAfterTest": true
+  },
+  "allowedEnvironments": [
+    "dev",
+    "prod"
+  ]
+}

@@ -1,0 +1,10 @@
+/*
+    This file is included under the path "app\template\assets\scss\main.scss"
+    It ensures that this file with all custom properties gets bundled along with the main project when transpilation occurs
+*/
+
+// themes
+@import "./themes/mixins/ch5-buttons";
+@import "./themes/project-light-theme";
+@import "./themes/project-dark-theme";
+@import "./themes/project-custom-theme";

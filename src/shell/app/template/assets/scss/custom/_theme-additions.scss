@@ -1,0 +1,205 @@
+// Copyright (C) 2022 to the present, Crestron Electronics, Inc.
+// All rights reserved.
+// No part of this software may be reproduced in any form, machine
+// or natural, without the express written consent of Crestron Electronics.
+// Use of this source code is subject to the terms of the Crestron Software License Agreement
+// under which you licensed this source code.
+/* Additions to default light-theme and dark-theme */
+
+.light-theme {
+  .footer-page {
+    background-color: #efefef;
+    color: #000;
+  }
+
+  // navbars
+  .navbar-dark {
+    background-color: #afafaf;
+
+    &.navbar-default {
+      &,
+      .navbar-nav {
+        background-color: #efefef;
+      }
+
+      .btn-link,
+      .navbar-nav .nav-link {
+        color: $black;
+      }
+
+      // VERTICAL MENU START
+      .toggler {
+        .toggle-icon {
+          border-color: $black;
+
+          &::before,
+          &::after {
+            background-color: $black;
+          }
+        }
+      }
+      // VERTICAL MENU END
+
+      .active,
+      .navbar-nav .active a {
+        color: #ff8800;
+      }
+    }
+  }
+
+  // bottom navigation
+  .swiper-thumb {
+    background-color: #cacaca;
+
+    .list-item {
+      ch5-button .ch5-button {
+        background-color: #eeeeee;
+        color: #121212;
+        fill: #121212;
+      }
+
+      .ch5-button--img {
+        fill: #121212;
+      }
+    }
+  }
+
+  .thumb-action svg {
+    fill: #ff8800;
+  }
+
+  .horizontal-menu,
+  .horizontal-footer-menu {
+    .swiper-thumb {
+      .list-item {
+        ch5-button {
+          .ch5-button {
+            color: $black;
+          }
+        }
+        .ch5-button--img {
+          fill: $black;
+        }
+      }
+    }
+  }
+
+  .vertical-menu {
+    .swiper-thumb {
+      .list-item {
+        ch5-button {
+          .ch5-button {
+            color: $black;
+          }
+        }
+        .ch5-button--img {
+          fill: $black;
+        }
+      }
+    }
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color: #fff;
+  }
+
+  // heading
+  .heading-color {
+    color: darken(#212529, 10%);
+  }
+}
+
+.dark-theme {
+  .footer-page {
+    background-color: darken(#343a40, 5%);
+    color: #fff;
+  }
+
+  // navbars
+  .navbar-dark {
+    background-color: darken(#343a40, 5%);
+
+    &.navbar-default {
+      &,
+      .navbar-nav {
+        background-color: $black;
+      }
+
+      .btn-link,
+      .navbar-nav .nav-link {
+        color: $white;
+      }
+
+      // VERTICAL MENU START
+      .toggler {
+        .toggle-icon {
+          border-color: $white;
+
+          &::before,
+          &::after {
+            background-color: $white;
+          }
+        }
+      }
+      // VERTICAL MENU END
+
+      .active,
+      .navbar-nav .active a {
+        color: darken(#29abe2, 10%);
+      }
+    }
+  }
+
+  // bottom navigation
+  .swiper-thumb {
+    background-color: #000;
+
+    .list-item ch5-button .ch5-button {
+      background-color: darken(#959595, 10%);
+    }
+  }
+
+  .thumb-action svg {
+    fill: darken(#29abe2, 10%);
+  }
+
+  .horizontal-menu,
+  .horizontal-footer-menu {
+    .swiper-thumb {
+      .list-item {
+        ch5-button {
+          .ch5-button {
+            color: $white;
+          }
+        }
+        .ch5-button--img {
+          fill: $white;
+        }
+      }
+    }
+  }
+
+  .vertical-menu {
+    .swiper-thumb {
+      .list-item {
+        ch5-button {
+          .ch5-button {
+            color: $white;
+          }
+        }
+        .ch5-button--img {
+          fill: $white;
+        }
+      }
+    }
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color: #404040;
+  }
+
+  // heading
+  .heading-color {
+    color: darken(#fff, 10%);
+  }
+}

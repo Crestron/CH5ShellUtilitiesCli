@@ -1,0 +1,67 @@
+{
+  "command": "import:all",
+  "name": "import:all",
+  "usage": "[options]",
+  "description": "Import assets, libraries, and components to the shell-template project",
+  "options": [
+    {
+      "key": "all",
+      "description": "Select this option to import all the files",
+      "type": "boolean",
+      "default": true,
+      "valueIfNotFound": false,
+      "alias": [
+        "--all"
+      ]
+    },
+    {
+      "key": "list",
+      "description": "Prefix for list of file names",
+      "type": "array",
+      "default": [],
+      "valueIfNotFound": [],
+      "alias": [
+        "-l",
+        "--list"
+      ]
+    },
+    {
+      "key": "force",
+      "description": "Forces import without asking for a confirmation",
+      "type": "boolean",
+      "default": true,
+      "valueIfNotFound": false,
+      "alias": [
+        "-f",
+        "--force"
+      ]
+    },
+    {
+      "key": "zipFile",
+      "description": "Prefix for full location path of the zip file to be imported",
+      "type": "string",
+      "default": "",
+      "valueIfNotFound": "",
+      "alias": [
+        "-z",
+        "--zipFile"
+      ]
+    }
+  ],
+  "additionalHelp": true,
+  "requiredFolderPath": "./app/project/",
+  "zipFolderName": "imported-all",
+  "exportedFolderName": "exported-all",
+  "outputFileName": "imported-all.zip",
+  "outputTempFolderName": "Imported-All-Code-Folder-Temp",
+  "zipFileDestinationPath": "./dist/",
+  "ignoreFilesFolders": [
+    ".DS_Store",
+    ".lock",
+    "Thumbs.db"
+  ],
+  "allowedEnvironments": [
+    "dev",
+    "prod"
+  ]
+}

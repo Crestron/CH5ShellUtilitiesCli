@@ -1,0 +1,32 @@
+// Copyright (C) 2022 to the present, Crestron Electronics, Inc.
+// All rights reserved.
+// No part of this software may be reproduced in any form, machine
+// or natural, without the express written consent of Crestron Electronics.
+// Use of this source code is subject to the terms of the Crestron Software License Agreement
+// under which you licensed this source code.
+
+::-webkit-scrollbar {
+  width: 7px;
+}
+
+::-webkit-scrollbar-track,
+ch5-list .scrollbar-container {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb,
+ch5-list .scrollbar {
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.9);
+}
+
+ch5-list {
+  .ch5-list-vertical-scrollbar {
+    padding-right: 0;
+  }
+
+  .ch5-list-horizontal-scrollbar {
+    padding-bottom: 0;
+  }
+}

@@ -1,0 +1,281 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "type": "object",
+  "title": "Configuration file to apply a new scenario to CH5 Emulator",
+  "description": "CH5 Emulator provides rudamentary control system logic to allow CH5 developers to test a UI without a control system.",
+  "default": {},
+  "examples": [
+    {
+      "cues": [
+        {
+          "type": "b", "event": "22", "trigger": true,
+          "actions": [
+            {"type": "b", "state": "22", "logic": "toggle"}
+          ]
+        }
+      ],
+      "onStart": [
+        {"type": "b", "state": "22", "value": true}
+      ]
+    }
+  ],
+  "required": [
+    "cues"
+  ],
+  "properties": {
+    "cues": {
+      "$id": "#/properties/cues",
+      "type": "array",
+      "title": "Array of cue objects",
+      "description": "A cue is defined by: type:string, event:string, trigger:boolean|string|number, and actions:array.",
+      "default": [],
+      "examples": [
+        [
+          {
+            "type": "b", "event": "22", "trigger": true,
+            "actions": [
+              {"type": "b", "state": "22", "logic": "toggle"}
+            ]
+          }
+        ]
+      ],
+      "additionalItems": false,
+      "items": {
+        "$id": "#/properties/cues/items",
+        "anyOf": [
+          {
+            "$id": "#/properties/cues/items/anyOf/0",
+            "type": "object",
+            "title": "Array of cues",
+            "description": "This contains an array of cues objects",
+            "default": {},
+            "examples": [
+              { 
+                "type": "b", "event": "22", "trigger": true,
+                "actions": [
+                  {"type": "b", "state": "22", "logic": "toggle"}
+                ]
+              }
+            ],
+            "required": [
+              "type",
+              "event",
+              "trigger",
+              "actions"
+            ],
+            "properties": {
+              "type": {
+                "$id": "#/properties/cues/items/anyOf/0/properties/type",
+                "type": "string",
+                "title": "The cues type field",
+                "description": "The type for cue or for action can be:\n       \"b\" or \"boolean\": for a boolean event\n       \"n\" or \"number\" or \"numeric\": for a number event\n       \"s\" or \"string\": for a string event\n       \"o\" or \"object\": for an object event",
+                "enum": ["b", "boolean", "n", "numeric", "number", "s", "string", "o", "object"],
+                "default": "b",
+                "examples": [
+                  "boolean"
+                ]
+              },
+              "event": {
+                "$id": "#/properties/cues/items/anyOf/0/properties/event",
+                "type": "string",
+                "title": "The event value",
+                "description": "The value of the event for a cue which represents the name of that event.",
+                "default": "",
+                "examples": [
+                  "19"
+                ]
+              },
+              "trigger": {
+                "$id": "#/properties/cues/items/anyOf/0/properties/trigger",
+                "type": ["boolean", "integer", "string", "object"],
+                "title": "The trigger field",
+                "description": "The trigger can be either a fixed value of the same type as the event, or the string \"&change\". \nIf it is a fixed value, then, when the emulator detects that the value of event has changed to that value given in the trigger, it executes the actions. \nIf the value is \"&change\", regardless of event value, the actions are executed on any change.",
+                "default": false,
+                "examples": [
+                  "&change",
+                  0,
+                  true
+                ]
+              },
+              "actions": {
+                "$id": "#/properties/cues/items/anyOf/0/properties/actions",
+                "type": "array",
+                "title": "The actions schema",
+                "description": "An action is defined by: type:string, state:string, logic:string, and other fields (depending on type).",
+                "default": [],
+                "examples": [
+                  [
+                    {"type": "b", "state": "22", "logic": "toggle"}
+                  ]
+                ],
+                "additionalItems": false,
+                "items": {
+                  "$id": "#/properties/cues/items/anyOf/0/properties/actions/items",
+                  "anyOf": [
+                    {
+                      "$id": "#/properties/cues/items/anyOf/0/properties/actions/items/anyOf/0",
+                      "type": "object",
+                      "title": "The action properties",
+                      "description": "This is the action object",
+                      "default": {},
+                      "examples": [
+                        {"type": "b", "state": "22", "logic": "toggle"}
+                      ],
+                      "required": [
+                        "type",
+                        "state",
+                        "logic"
+                      ],
+                      "properties": {
+                        "type": {
+                          "$id": "#/properties/cues/items/anyOf/0/properties/actions/items/anyOf/0/properties/type",
+                          "type": "string",
+                          "title": "The type field",
+                          "enum": ["b", "boolean", "n", "numeric", "number", "s", "string", "o", "object"],
+                          "description": "The action type field can have a boolean, number, string or object as a value",
+                          "default": "b",
+                          "examples": [
+                            "boolean"
+                          ]
+                        },
+                        "state": {
+                          "$id": "#/properties/cues/items/anyOf/0/properties/actions/items/anyOf/0/properties/state",
+                          "type": "string",
+                          "title": "The state field",
+                          "description": "The value of the state for an action is a string which represents the name of that action.",
+                          "default": "19",
+                          "examples": [
+                            "19"
+                          ]
+                        },
+                        "logic": {
+                          "$id": "#/properties/cues/items/anyOf/0/properties/actions/items/anyOf/0/properties/logic",
+                          "type": "string",
+                          "title": "The logic field",
+                          "enum": ["link", "set", "toggle", "pulse", "increment", "decrement", "rcb"], 
+                          "description": "The logic can be a \"link\", \"set\", \"toggle\", \"pulse\", \"increment\", \"decrement\" or \"rcb\".",
+                          "default": "link",
+                          "examples": [
+                            "set"
+                          ]
+                        },
+                        "value": {
+                          "$id": "#/properties/cues/items/anyOf/0/properties/actions/items/anyOf/0/properties/value",
+                          "type": ["boolean", "integer", "string", "object"],
+                          "title": "The action value",
+                          "description": "The value set when the logic is \"set\".\nThe type of this field should be same as the \"type\" parameter",
+                          "properties": {
+                            "rcb": {
+                              "$id": "#/properties/cues/items/anyOf/0/properties/actions/items/anyOf/0/properties/value/properties/rcb",
+                              "type": "object",
+                              "title": "The RCB logic",
+                              "description": "RCB logic can be accomplished by defining an action containing an object state or event of RCB type. A 5th key is expected as the amount of time in milliseconds to reach the level. An explanation about the purpose of this instance.",
+                              "default": {},
+                              "examples": [
+                                {
+                                  "value": 101,
+                                  "time": 1500
+                                }
+                              ],
+                              "required": [
+                                "value",
+                                "time"
+                              ],
+                              "properties": {
+                                "value": {
+                                  "$id": "#/properties/cues/items/anyOf/0/properties/actions/items/anyOf/0/properties/value/properties/rcb/properties/value",
+                                  "type": "integer",
+                                  "title": "The value field",
+                                  "description": "The terminal value of the state",
+                                  "default": 0
+                                },
+                                "time": {
+                                  "$id": "#/properties/cues/items/anyOf/0/properties/actions/items/anyOf/0/properties/value/properties/rcb/properties/time",
+                                  "type": "integer",
+                                  "title": "The time field",
+                                  "description": "The amount of time in milliseconds to reach the level set by the \"value\" property.",
+                                  "default": 0,
+                                  "examples": [
+                                    1500
+                                  ]
+                                }
+                              },
+                              "additionalProperties": false
+                            }
+                          },
+                          "additionalProperties": false
+                        }
+                      },
+                      "additionalProperties": false
+                    }
+                  ]
+                }
+              }
+            },
+            "additionalProperties": false
+          }
+        ]
+      }
+    },
+    "onStart": {
+      "$id": "#/properties/onStart",
+      "type": "array",
+      "title": "The onStart schema",
+      "description": "This sets the default values during start.",
+      "default": [],
+      "examples": [
+        [
+          {"type": "b", "state": "19", "value": true}
+        ]
+      ],
+      "additionalItems": true,
+      "items": {
+        "$id": "#/properties/onStart/items",
+        "anyOf": [
+          {
+            "$id": "#/properties/onStart/items/anyOf/0",
+            "type": "object",
+            "title": "Action field",
+            "description": "These are the items to run during start.",
+            "default": {},
+            "examples": [
+              {"type": "b", "state": "22", "value": true}
+            ],
+            "required": [
+              "type",
+              "state",
+              "value"
+            ],
+            "properties": {
+              "state": {
+                "$id": "#/properties/onStart/items/anyOf/0/properties/state",
+                "type": "string",
+                "title": "The state field",
+                "description": "The value of the state for an action is a string which represents the name of that action.",
+                "default": ""
+              },
+              "type": {
+                "$id": "#/properties/onStart/items/anyOf/0/properties/type",
+                "type": "string",
+                "title": "The type field",
+                "description": "The type field can have a \"boolean\", \"number\", \"string\" or \"object\" as a value.",
+                "enum": ["b", "boolean", "n", "numeric", "number", "s", "string", "o", "object"]
+              },
+              "value": {
+                "$id": "#/properties/onStart/items/anyOf/0/properties/value",
+                "type": ["boolean", "integer", "string", "object"],
+                "title": "The value field",
+                "description": "This is the value initially set.",
+                "examples": [
+                  0, false, "indirect text"
+                ]
+              }
+            },
+            "additionalProperties": false
+          }
+        ]
+      }
+    }
+  },
+  "additionalProperties": false
+}

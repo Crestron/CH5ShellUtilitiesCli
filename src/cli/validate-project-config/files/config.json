@@ -1,0 +1,17 @@
+{
+  "command": "validate:project-config",
+  "name": "validate:project-config",
+  "aliases": [
+    "val:pc"
+  ],
+  "usage": "",
+  "description": "Validate project-config.json file in the shell-template project for errors",
+  "options": [],
+  "projectConfigJSONFile": "./app/project-config.json",
+  "projectConfigJSONSchemaFile": "./.vscode/project-config-schema.json",
+  "additionalHelp": true,
+  "allowedEnvironments": [
+    "dev",
+    "prod"
+  ]
+}
