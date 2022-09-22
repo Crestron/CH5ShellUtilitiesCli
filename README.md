@@ -2,20 +2,14 @@
   <img src="https://kenticoprod.azureedge.net/kenticoblob/crestron/media/crestron/generalsiteimages/crestron-logo.png">
 </p>
  
-<<<<<<< HEAD
-# CH5 Utilities - Getting Started
 
-> Archiving and distribution utilities to be used by the applications implemented with the CH5 Components Library.
-=======
 # CH5 Shell Utilities CLI - Getting Started
 
 > Archiving and distribution utilities from the ch5-shell-cli library wrapped as CLI commands.
->>>>>>> 11e092272cfe40900c72eeaa5e3951f3233b2aee
 
 ## Table of Contents
 
 - [Background](#background)
-<<<<<<< HEAD
 - [Setup](#setup)
 - [Commands](#commands)
 - [Configuration](#configuration)
@@ -203,5 +197,4 @@ or natural, without the express written consent of Crestron Electronics.
 
 Use of this source code is subject to the terms of the Crestron Software License Agreement
 under which you licensed this source code. For the terms of the license,
->>>>>>> 11e092272cfe40900c72eeaa5e3951f3233b2aee
 please see the license agreement between you and Crestron at http://www.crestron.com/sla.
