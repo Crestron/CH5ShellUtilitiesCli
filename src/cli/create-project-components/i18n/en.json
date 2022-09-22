@@ -1,0 +1,23 @@
+{
+  "INITIALIZE": {},
+  "VERIFY_INPUT_PARAMS": {
+    "INVALID_CONFIG_INPUT": "The config file is either missing or the path of config file seems incorrect. Ensure that the file is a .json file.",
+    "INVALID_CONFIG_FILE": "The specified config json file is not compatible with the expected Shell Template schema.",
+    "INVALID_INPUT": "The input for {0} is invalid.",
+    "INPUT_WARNING_TITLE": "Warning(s):\n{0}"
+  },
+  "CHECK_PROMPT_QUESTIONS": {
+    "QUESTIONS": {
+      "CONFIG_FILE": "Please enter the location of the config file",
+      "PROJECT_NAME": "Please enter the name of the Project to be created"
+    }
+  },
+  "PROCESS_REQUEST": {
+    "PROJECT_CONFIG_VALIDATION_FAILED": "The generated project-config.json file is not compatible with the expected Shell Template schema.",
+    "FOLDER_CONTAINS_FILES": "The folder {0} contains files. Project can be created only in empty folders."
+  },
+  "CLEAN_UP": {},
+  "LOG_OUTPUT": {
+    "SUCCESS_MESSAGE": "Project '{0}' Successfully created at '{1}'"
+  }
+}

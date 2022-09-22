@@ -1,0 +1,7 @@
+{
+  "settings": {
+    "environment": "prod",
+    "minimumNodeVersion": "16.13.0",
+    "minimumNPMVersion": "8.9.0"
+  }
+}

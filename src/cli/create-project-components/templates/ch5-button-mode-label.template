@@ -1,0 +1,4 @@
+
+<ch5-button>
+  <ch5-button-mode <%attributes%>>
+</ch5-button>

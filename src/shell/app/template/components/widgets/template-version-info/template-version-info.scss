@@ -1,0 +1,336 @@
+// Copyright (C) 2022 to the present, Crestron Electronics, Inc.
+// All rights reserved.
+// No part of this software may be reproduced in any form, machine
+// or natural, without the express written consent of Crestron Electronics.
+// Use of this source code is subject to the terms of the Crestron Software License Agreement
+// under which you licensed this source code.
+
+@import "./../../../../template/assets/scss/all-var-fns-mix";
+
+#template-version-info-page {
+  padding: 0.5rem;
+  $version-modal-dialog-content-color: $color-lightgrey  !default;
+  $border-type: solid;
+  $version-modal-dialog-border-width: 1px;
+
+  margin-left: 1rem;
+
+  #infobtn.warn {
+    position: relative;
+
+    &:after {
+      content: "!";
+      position: absolute;
+      background: #dc3545;
+      color: white;
+      border-radius: 50%;
+      height: 13px;
+      border: 1px solid #711c24;
+      width: 13px;
+      line-height: 12px;
+      text-align: center;
+      top: -2px;
+      right: -2px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+  }
+
+  .ch5-button {
+    background-color: transparent;
+    border: none;
+    color: #808080;
+    height: 36px;
+    width: 36px;
+    box-shadow: none;
+    cursor: pointer;
+
+    .cb-btn {
+      @include size(100%);
+      padding: 0;
+    }
+
+    i {
+      font-size: 32px;
+      padding: 0;
+    }
+  }
+
+  div.ch5-modal-dialog.project-info-dialog {
+    width: 60vw;
+    max-height: 70vh;
+    max-width: 630px;
+    border: $version-modal-dialog-border-width $border-type $black;
+    min-height: min(430px, 70vh);
+    overflow: initial;
+
+    .ch5-modal-dialog-header {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .spacer {
+      border: 1px solid gray;
+      margin: 0 0 10px 0;
+    }
+
+    #version-tab-content,
+    #webxpanel-tab-content,
+    #diagnostics-tab-content {
+      max-height: calc(70vh - 130px);
+      overflow: auto;
+    }
+
+    #tab-wrapper {
+      margin-top: 10px;
+      display: flex;
+      max-width: 65%;
+
+      button {
+        background-color: rgba(211, 211, 211, 0.5);
+        flex-grow: 1;
+        border: 1px solid darkgray;
+        opacity: 0.7;
+        font-weight: normal;
+        color: black;
+
+        &:first-child {
+          border-right: none;
+          border-top-left-radius: 3px;
+        }
+
+        &:last-child {
+          border-left: none;
+          border-top-right-radius: 3px;
+        }
+
+        &.selected {
+          font-weight: bold;
+          opacity: 1;
+          background-color: rgba(169, 169, 169, 0.5);
+        }
+      }
+    }
+
+    table {
+      width: 100%;
+
+      th,
+      td {
+        border: 1px solid darkgray;
+        padding: 5px;
+      }
+
+      tr:first-child {
+        background-color: lightgrey;
+      }
+
+      tr:nth-child(even) {
+        background-color: rgba(200, 200, 200, 0.4);
+      }
+    }
+
+    #webxpanel-tab-content {
+      .connection {
+        margin-bottom: 10px;
+        display: flex;
+        flex-direction: column;
+
+        .info-row {
+          margin-left: 10px;
+        }
+      }
+    }
+
+    #diagnostics-tab-content {
+      #diagnostics-info {
+        display: flex;
+        flex-wrap: wrap;
+
+        span {
+          flex: 1 0 50%;
+          height: 2rem;
+          line-height: 2rem;
+        }
+
+        @media only screen and (max-width: 740px) {
+          span {
+            flex: 1 0 100%;
+          }
+        }
+      }
+
+      button#subscribeLogButton {
+        border: 1px solid darkgray;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        width: 100%;
+        color: black;
+
+        &:hover {
+          background: rgba(200, 200, 200, 0.5);
+        }
+
+        &:active {
+          background: rgba(180, 180, 180, 0.5);
+        }
+      }
+
+    }
+
+    .ch5-modal-dialog-contents {
+      padding: 0;
+    }
+
+    .ch5-modal-dialog-close-icon-btn {
+      padding: 0;
+      margin: 0;
+      color: black;
+      @include size(auto);
+      background-color: transparent;
+
+      span.ch5-modal-dialog-close-icon {
+        display: block;
+        font-size: rem-calc(24px);
+      }
+    }
+
+    p {
+      color: $version-modal-dialog-content-color;
+      font-size: rem-calc(18px);
+
+      span {
+        display: block;
+      }
+    }
+
+    h4 {
+      color: $black;
+      font-size: rem-calc(24px);
+    }
+
+    @media only screen and (max-width: 988px) {
+      width: 85vw;
+    }
+
+    @media only screen and (max-width: 800px) {
+      #tab-wrapper {
+        max-width: 80%;
+      }
+    }
+
+    @media only screen and (max-width: 650px) {
+      width: 90vw;
+
+      #tab-wrapper {
+        max-width: 75%;
+      }
+
+      .ch5-modal-dialog-contents {
+        font-size: 18px;
+      }
+    }
+
+    @media only screen and (max-width: 560px) {
+      #diagnosticsTableElement {
+        font-size: 16px;
+      }
+    }
+
+    @media only screen and (max-width: 500px) {
+      .ch5-modal-dialog-contents {
+        font-size: 16px;
+
+        #diagnosticsTableElement {
+          font-size: 14px;
+        }
+      }
+    }
+  }
+}
+
+.dark-theme {
+  #template-version-info-page {
+    .ch5-modal-dialog.project-info-dialog {
+      border: 1px solid $color-darkgrey;
+      color: $color-white;
+      background-color: $color-darkestgrey;
+
+      h4 {
+        color: $color-white;
+      }
+
+      p {
+        color: $color-offwhite;
+      }
+
+      .ch5-modal-dialog-close-icon-btn {
+        color: $color-white;
+      }
+
+      #version-tab-content,
+      #webxpanel-tab-content,
+      #diagnostics-tab-content {
+        color: white;
+      }
+
+      #tab-wrapper {
+        button {
+          background-color: rgba(169, 169, 169, 0.8);
+          border: 1px solid darkgray;
+
+          &:first-child {
+            border-right: none;
+            border-top-left-radius: 3px;
+          }
+
+          &:last-child {
+            border-left: none;
+            border-top-right-radius: 3px;
+          }
+
+          &.selected {
+            background-color: rgba(211, 211, 211, 0.8);
+          }
+        }
+      }
+
+      table {
+        width: 100%;
+
+        th,
+        td {
+          border: 1px solid lightgray;
+          padding: 5px;
+        }
+
+        tr:nth-child(even) {
+          background-color: rgba(200, 200, 200, 0.6);
+        }
+
+        tr:nth-child(odd) {
+          background-color: rgba(200, 200, 200, 0.8);
+        }
+
+        tr:first-child {
+          background-color: rgba(80, 80, 80, 0.8);
+        }
+      }
+
+    }
+
+    .ch5-button {
+      background-color: black;
+      border: none;
+      color: white;
+      height: 32px;
+      width: 32px;
+      box-shadow: none;
+
+      .cb-btn {
+        @include size(100%);
+        padding: 0;
+      }
+    }
+  }
+}

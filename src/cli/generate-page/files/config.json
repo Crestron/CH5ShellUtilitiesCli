@@ -1,0 +1,59 @@
+{
+  "command": "generate:page",
+  "name": "generate:page",
+  "aliases": [
+    "gen:p"
+  ],
+  "usage": "[options]",
+  "description": "Generate page in the shell-template project",
+  "options": [
+    {
+      "key": "menu",
+      "description": "Allow the page navigation to be added to Menu (valid input values are 'Y', 'y', 'N', 'n'",
+      "type": "string",
+      "default": "",
+      "valueIfNotFound": "",
+      "alias": [
+        "-m",
+        "--menu"
+      ]
+    },
+    {
+      "key": "name",
+      "description": "Set the Name of the page to be created",
+      "type": "string",
+      "default": "",
+      "valueIfNotFound": "",
+      "alias": [
+        "-n",
+        "--name"
+      ]
+    }
+  ],
+  "additionalHelp": true,
+  "basePathForPages": "./app/project/components/pages/",
+  "automatedTests": {
+    "enable": true,
+    "enableComponentDeleteAfterTest": true
+  },
+  "templateNames": {
+    "disallowed": {
+      "startsWith": [
+        "template"
+      ],
+      "equals": [
+        "service",
+        "translate",
+        "utils",
+        "feature",
+        "navigation",
+        "projectConfig",
+        "webXPanel"
+      ]
+    }
+  },
+  "allowedEnvironments": [
+    "dev",
+    "prod"
+  ]
+}

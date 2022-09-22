@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // Copyright (C) 2018 to the present, Crestron Electronics, Inc.
 // All rights reserved.
 // No part of this software may be reproduced in any form, machine
@@ -32,3 +33,10 @@ export const distributor = async (filename: string, options: IConfigOptions): Pr
 
   await dist.initializeTransferWithCredentialsCheck(filename, options);
 };
+=======
+#!/usr/bin/env node
+import { Ch5ShellCli } from "./cli";
+
+const cli = new Ch5ShellCli();
+cli.run();
+>>>>>>> 11e092272cfe40900c72eeaa5e3951f3233b2aee

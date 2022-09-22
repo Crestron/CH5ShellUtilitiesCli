@@ -1,0 +1,11 @@
+@import "./../../../../template/assets/scss/all-var-fns-mix";
+
+#template-app-loader {
+  height: 100%;
+  overflow: hidden;
+
+  #app-loader {
+    z-index: $zindex-tooltip + 10;
+    height: 100%;
+  }
+}

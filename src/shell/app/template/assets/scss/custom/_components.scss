@@ -1,0 +1,162 @@
+// Copyright (C) 2022 to the present, Crestron Electronics, Inc.
+// All rights reserved.
+// No part of this software may be reproduced in any form, machine
+// or natural, without the express written consent of Crestron Electronics.
+// Use of this source code is subject to the terms of the Crestron Software License Agreement
+// under which you licensed this source code.
+
+// custom header
+.navbar-default.navbar {
+  @include box-shadow(0 0 15px rgba(0, 0, 0, 0.85));
+  z-index: $zindex-fixed;
+  flex-wrap: nowrap;
+  height: $header-height;
+
+  .dropdown {
+    position: relative;
+    font-size: rem-calc(24px);
+  }
+
+  .navbar-nav {
+    flex-direction: row;
+    justify-content: flex-end;
+
+    & > li > a {
+      font-size: rem-calc(24px);
+      padding-left: $navbar-nav-link-padding-x;
+      padding-right: $navbar-nav-link-padding-x;
+      line-height: 1;
+    }
+  }
+
+  .form-inline {
+    width: 80%;
+    display: flex;
+    flex-wrap: nowrap;
+
+    .btn-link {
+      padding: 0.5rem;
+      @include transition(color 0.5s linear);
+
+      & + .btn-link {
+        margin-left: 1rem;
+      }
+
+      &:hover {
+        opacity: 0.5;
+      }
+
+      &.active {
+        opacity: 1;
+      }
+    }
+  }
+
+  #header-section-page-set1,
+  .navbar-action-right {
+    display: flex;
+    flex-wrap: nowrap;
+    width: 20%;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  @include media-breakpoint-down(sm) {
+    height: $header-height-sm;
+    padding-left: $mobile-gutter-space;
+    padding-right: $mobile-gutter-space;
+
+    .form-inline .btn-link + .btn-link {
+      margin-left: $mobile-gutter-space;
+    }
+
+    .navbar-brand {
+      padding: 0;
+    }
+
+    .dropdown {
+      text-align: right;
+
+      .navbar-nav {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        left: auto;
+      }
+
+      .btn-link {
+        padding: $mobile-gutter-space;
+        text-decoration: none;
+
+        &.open + .navbar-nav {
+          display: block !important;
+        }
+      }
+    }
+  }
+
+  // VERTICAL MENU START
+
+  // animated bar
+  .toggler {
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+
+    &::after {
+      content: "";
+      background-color: transparent;
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      right: 0;
+    }
+
+    .toggle-icon {
+      display: block;
+      width: 18px;
+      margin: 0 10px 0 10px;
+      position: relative;
+      border-top: 2px solid;
+
+      &::before,
+      &::after {
+        content: "";
+        height: 2px;
+        width: 100%;
+        position: absolute;
+        top: -8px;
+        transform: rotate(0deg);
+        transform-origin: 5%;
+      }
+
+      &::after {
+        top: 4px;
+      }
+    }
+
+    &.active .toggle-icon {
+      border-top-color: transparent !important;
+
+      &::before {
+        transform: rotate(45deg);
+      }
+
+      &::after {
+        transform: rotate(-45deg);
+      }
+    }
+  }
+
+  .toggle-icon,
+  .toggle-icon::before,
+  .toggle-icon::after,
+  .toggler.active .toggle-icon,
+  .toggler.active .toggle-icon::before,
+  .toggler.active .toggle-icon::after {
+    transition: all 0.2s ease-in-out;
+  }
+
+  // VERTICAL MENU END
+}

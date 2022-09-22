@@ -1,0 +1,10 @@
+{
+  "COMMON": {
+    "TAB_DELIMITER": "   ",
+    "HYPHEN_DELIMITER": "-   ",
+    "SOMETHING_WENT_WRONG": "Something went wrong. Either input values are missing/incorrect, or the program stopped intentionally/accidentally. Please try again.",
+    "VALIDATIONS": {
+      "PROJECT_NAME": "\n\t- project name length should be greater than zero and cannot exceed 214\n\t- project name characters must be lowercase i.e., no uppercase or mixed case names are allowed\n\t- project name can consist of hyphens and numbers, and can only begin with alphabets\n\t- project name must not contain any non-url-safe characters (since name ends up being part of a URL)\n\t- project name should not contain any spaces or any of the following characters: ~)('!*\n"
+    }
+  }
+}

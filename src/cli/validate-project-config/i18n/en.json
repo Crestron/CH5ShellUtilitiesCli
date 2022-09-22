@@ -1,0 +1,106 @@
+{
+  "VALIDATIONS": {
+    "SCHEMA": {
+      "HEADER": "project-config.json file validation"
+    },
+    "PAGE_MISSING_FILE_FOLDER": {
+      "HEADER": "Missing / Incorrect path for File(s) / Folder(s) for the page '{0}'",
+      "FOLDER_PATH_MISSING": "The folder path '{0}' does not exist for the file '{1}'.",
+      "FILE_NOT_IN_FOLDER": "File '{0}' does not exist in the path '{1}' for the file '{2}'."
+    },
+    "WIDGET_MISSING_FILE_FOLDER": {
+      "HEADER": "Missing / Incorrect path for File(s) / Folder(s) for the widget '{0}'",
+      "FOLDER_PATH_MISSING": "The folder path '{0}' does not exist for the file '{1}'.",
+      "FILE_NOT_IN_FOLDER": "File '{0}' does not exist in the path '{1}' for the file '{2}'."
+    },
+    "PAGE_NAMES_REPEATED": {
+      "HEADER": "Page names repeated in project-config.json",
+      "MESSAGE": "Page name '{0}' is repeated."
+    },
+    "INVALID_PAGE_NAMES": {
+      "HEADER": "Invalid Page Names",
+      "MESSAGE": "Page name '{0}' not matching with its corresponding file name '{1}'."
+    },
+    "INVALID_WIDGET_NAMES": {
+      "HEADER": "Invalid Widget Names",
+      "MESSAGE": "Widget name '{0}' not matching with its corresponding file name '{1}'."
+    },
+    "INVALID_PAGE_FOLDER_PATH": {
+      "HEADER": "Invalid Page Fullpath",
+      "MESSAGE": "Page Fullpath '{0}' is not a valid path for pages."
+    },
+    "INVALID_WIDGET_FOLDER_PATH": {
+      "HEADER": "Invalid Widget Fullpath",
+      "MESSAGE": "Widget Fullpath '{0}' is not a valid path for widgets."
+    },
+    "PAGE_NAME_MISSING": {
+      "HEADER": "Page name missing in project-config.json",
+      "MESSAGE": "Page name '{0}' param does not exist."
+    },
+    "WIDGET_NAMES_REPEATED": {
+      "HEADER": "Widget names repeated in project-config.json",
+      "MESSAGE": "Widget name '{0}' is repeated."
+    },
+    "WIDGET_NAME_MISSING": {
+      "HEADER": "Widget name missing in project-config.json",
+      "MESSAGE": "Widget name '{0}' param does not exist."
+    },
+    "DEFAULT_VIEW_INVALID": {
+      "HEADER": "content.$defaultView in project-config.json",
+      "ERROR_MESSAGE": "There is no page in the project-config.json file with the $defaultView '{0}'.",
+      "ERROR_MESSAGE_NO_NAVIGATION": "The page defined in $defaultView '{0}' does not have a navigation node.",
+      "WARNING_MESSAGE": "$defaultView is empty in the project-config.json file."
+    },
+    "NAVIGATION_PAGE_SEQUENCE": {
+      "HEADER": "Page sequence for navigation",
+      "MESSAGE": "Page '{0}' has duplicate sequence."
+    },
+    "SELECTED_THEME_INCORRECT": {
+      "HEADER": "Invalid selected theme",
+      "THEME_NOT_IN_LIST": "Selected theme '{0}' is not available in the list of themes.",
+      "THEME_NOT_AVAILABLE": "Selected theme cannot be empty.",
+      "THEME_NAMING_STYLE": "Selected theme '{0}' and theme name in the list of themes '{1}' have a case mismatch."
+    },
+    "REPEATED_THEME_NAME_IN_ARRAY": {
+      "HEADER": "Duplicate theme name",
+      "MESSAGE": "Theme name '{0}' is repeated in the themes array."
+    },
+    "ATLEAST_ONE_MENU": {
+      "HEADER": "Minimum one navigation item",
+      "MESSAGE": "For 'horizontal' or 'vertical' menu, there must be at least one page with navigation."
+    },
+    "ICON_POSITION_VERTICAL": {
+      "HEADER": "Icon Position",
+      "MESSAGE": "Icon position is applicable for 'horizontal' menu. The menuOrientation defined in project-config.json file is 'vertical' menu. The iconPosition will not be applied to the navigation icons."
+    },
+    "VERTICAL_MENU_HEADER_AVAILABLE": {
+      "HEADER": "Header hidden for Vertical menu",
+      "MESSAGE": "The header cannot be hidden for 'vertical' menu orientation."
+    },
+    "EMPTY_PAGES_ARRAY": {
+      "HEADER": "No pages found",
+      "MESSAGE": "There are no pages available in the project. At least one page is required for the project to run."
+    },
+    "PAGE_AND_WIDGET_DUPLICATES": {
+      "HEADER": "Same Page name and Widget name",
+      "MESSAGE": "Page name and Widget name are the same for page '{0}' and '{1}'."
+    },
+    "HEADER_COMPONENT_MISMATCH": {
+      "HEADER": "Header Component Name",
+      "ERROR_MESSAGE_NAVIGATION": "The page used in 'header -> $component' has navigation node. This node must not be present.",
+      "ERROR_MESSAGE_STANDALONE_TRUE": "The page used in 'header -> $component' has standAloneView set to true. This node must be set to false.",
+      "ERROR_MESSAGE_PAGE_MISSING": "The page used in 'header -> $component' does not exist."
+    },
+    "FOOTER_COMPONENT_MISMATCH": {
+      "HEADER": "Footer Component Name",
+      "ERROR_MESSAGE_NAVIGATION": "The page used in 'footer -> $component' has navigation node. This node must not be present.",
+      "ERROR_MESSAGE_STANDALONE_TRUE": "The page used in 'footer -> $component' has standAloneView set to true. This node must be set to false.",
+      "ERROR_MESSAGE_PAGE_MISSING": "The page used in 'footer -> $component' does not exist."
+    }
+  },
+  "SUCCESS_MESSAGE": "project-config.json processed successfully!",
+  "PROCESSING_MESSAGE": "Validating project-config.json......",
+  "OUTPUT_ERROR_HEADER": "{0} Found ({1}):",
+  "TYPE_ERROR": "Errors",
+  "TYPE_WARNING": "Warnings"
+}

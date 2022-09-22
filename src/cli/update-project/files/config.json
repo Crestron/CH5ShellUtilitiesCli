@@ -1,0 +1,152 @@
+{
+  "command": "update:project",
+  "name": "update:project",
+  "aliases": [],
+  "usage": "[options]",
+  "description": "Update the project-config.json file in the shell-template project",
+  "options": [
+    {
+      "key": "config",
+      "description": "Config file required to create project",
+      "type": "string",
+      "default": "",
+      "valueIfNotFound": "",
+      "alias": [
+        "--config"
+      ],
+      "allowedValues": [],
+      "allowedAliases": [],
+      "validation": "fileAvailableAtLocation",
+      "question": "CHECK_PROMPT_QUESTIONS.QUESTIONS.CONFIG_FILE",
+      "isSpecialArgument": true
+    },
+    {
+      "key": "projectName",
+      "description": "Set the project name in package.json and project-config.json",
+      "type": "string",
+      "default": "",
+      "valueIfNotFound": "",
+      "alias": [
+        "--projectName"
+      ],
+      "allowedValues": [],
+      "allowedAliases": [],
+      "validation": "validatePackageJsonProjectName",
+      "question": "CHECK_PROMPT_QUESTIONS.QUESTIONS.PROJECT_NAME",
+      "isSpecialArgument": false
+    },
+    {
+      "key": "version",
+      "description": "Set the version in project-config.json",
+      "type": "string",
+      "default": "",
+      "valueIfNotFound": "",
+      "alias": [
+        "--projectVersion"
+      ],
+      "allowedValues": [],
+      "allowedAliases": [],
+      "validation": "",
+      "question": "CHECK_PROMPT_QUESTIONS.QUESTIONS.PROJECT_VERSION",
+      "isSpecialArgument": false
+    },
+    {
+      "key": "faviconPath",
+      "description": "Set the favicon name in project-config.json",
+      "type": "string",
+      "default": "",
+      "valueIfNotFound": "",
+      "alias": [
+        "--faviconPath"
+      ],
+      "allowedValues": [],
+      "allowedAliases": [],
+      "validation": "",
+      "question": "CHECK_PROMPT_QUESTIONS.QUESTIONS.FAVICON",
+      "isSpecialArgument": false
+    },
+    {
+      "key": "menuOrientation",
+      "description": "Set the menu orientation for the project level triggerview",
+      "type": "enum",
+      "default": "horizontal",
+      "valueIfNotFound": null,
+      "alias": [
+        "--menuOrientation"
+      ],
+      "allowedValues": [
+        "horizontal",
+        "vertical",
+        "none"
+      ],
+      "allowedAliases": [
+        "horizontal",
+        "vertical",
+        "none"
+      ],
+      "question": "CHECK_PROMPT_QUESTIONS.QUESTIONS.MENU_ORIENTATION",
+      "isSpecialArgument": false
+    },
+    {
+      "key": "selectedTheme",
+      "description": "Set the name of the selected theme",
+      "type": "enum",
+      "default": "",
+      "valueIfNotFound": "",
+      "alias": [
+        "--selectedTheme"
+      ],
+      "allowedValues": [],
+      "allowedAliases": [],
+      "question": "CHECK_PROMPT_QUESTIONS.QUESTIONS.SELECTED_THEME",
+      "isSpecialArgument": false
+    },
+    {
+      "key": "useWebXPanel",
+      "description": "Use WebXPanel",
+      "type": "boolean",
+      "default": true,
+      "valueIfNotFound": null,
+      "alias": [
+        "--useWebXPanel"
+      ],
+      "allowedValues": [
+        "true",
+        "false"
+      ],
+      "allowedAliases": [
+        "true",
+        "false",
+        "y",
+        "n"
+      ],
+      "question": "CHECK_PROMPT_QUESTIONS.QUESTIONS.USE_WEBXPANEL",
+      "isSpecialArgument": false
+    },
+    {
+      "key": "force",
+      "description": "",
+      "type": "boolean",
+      "default": true,
+      "valueIfNotFound": false,
+      "alias": [
+        "-f",
+        "--force"
+      ],
+      "allowedValues": [],
+      "allowedAliases": [],
+      "question": "VALIDATIONS.FORCE",
+      "isSpecialArgument": true
+    }
+  ],
+  "backupFolder": "./dist/backup/",
+  "additionalHelp": true,
+  "automatedTests": {
+    "enable": true,
+    "enableComponentDeleteAfterTest": true
+  },
+  "allowedEnvironments": [
+    "dev",
+    "prod"
+  ]
+}

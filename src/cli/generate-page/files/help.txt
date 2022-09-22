@@ -1,0 +1,74 @@
+    
+You could also use `yarn` or `npm run` to generate pages. The following are the commands:
+    yarn generate:page [options]
+    npm run generate:page -- [options]
+
+You could use shortcut script `gen:p` with options:
+    ch5-shell-cli gen:p [options]
+
+You could use shortcut script `gen:p` with yarn and npm commands as the following:
+    yarn gen:p [options]
+    npm run gen:p -- [options]
+    
+You could use `ch5-shell-cli` to generate pages with additional options. The following are some examples:
+    ch5-shell-cli generate:page --name LEDLights
+    ch5-shell-cli generate:page -n LEDLights
+    ch5-shell-cli generate:page --name LEDLights --menu Y
+    ch5-shell-cli generate:page -n LEDLights -m Y
+    ch5-shell-cli gen:p --name LEDLights
+    ch5-shell-cli gen:p -n LEDLights
+    ch5-shell-cli gen:p --name LEDLights --menu Y
+    ch5-shell-cli gen:p -n LEDLights -m Y
+    
+You could also use `yarn` or `npm run` to generate pages. The following are the commands:
+    yarn generate:page --name LEDLights
+    yarn generate:page -n LEDLights
+    yarn generate:page --name LEDLights --menu Y
+    yarn generate:page -n LEDLights -m Y
+    yarn gen:p --name LEDLights
+    yarn gen:p -n LEDLights
+    yarn gen:p --name LEDLights --menu Y
+    yarn gen:p -n LEDLights -m Y
+    npm run generate:page --  --name LEDLights
+    npm run generate:page --  -n LEDLights
+    npm run generate:page --  --name LEDLights --menu N
+    npm run generate:page --  -n LEDLights -m N
+    npm run gen:p --  --name LEDLights
+    npm run gen:p --  -n LEDLights
+    npm run gen:p --  --name LEDLights --menu N
+    npm run gen:p --  -n LEDLights -m N
+
+The Page Name is mandatory to create a page. It must start with a letter and can contain letters, hyphens, spaces, underscores and numbers.
+
+If page name is not provided in the 'generate:page' command, or if the page name is incorrect, the developer will be prompted to enter a page name, and a default value for the page name will be displayed. This page name will be defaulted with the below business rules:
+    • Set the name of page as 'PageX', where 'X' is an incremental number.
+    • If 'PageX' already exists, then X is incremented by 1.
+
+Examples:
+ • List of existing pages: Page1, Page2, Page04, Page3. New prompted page name is Page4
+ • List of existing pages: Page1, Page2, Page6, Page7. New prompted page name is Page3
+
+The developer can accept the default page name, or can change the default page name as needed. The default is page name is displayed as a placeholder in the terminal window. Some additional features to modify default page name are:
+• Click the 'Tab' key to make changes to this value.
+• Click the 'Enter' key to accept the page name.
+• Start typing on the placeholder to create a custom page name.
+
+Based on the input for page name, the following will be the generated pages and file or folder names:
+
+| No  | Input Page Name | Generated Page Name | Generated File and Folder Names |
+| --- | --------------- | ------------------- | ------------------------------- |
+| 01  | LEDLights       | ledlights           | ledlights                       |
+| 02  | ledlights       | ledlights           | ledlights                       |
+| 03  | LEDLIGHTS       | ledlights           | ledlights                       |
+| 04  | LED-Lights      | ledLights           | led-lights                      |
+| 05  | LED_Lights      | ledLights           | led-lights                      |
+| 06  | led-lights      | ledLights           | led-lights                      |
+| 07  | led_lights      | ledLights           | led-lights                      |
+| 08  | led lights      | ledLights           | led-lights                      |
+
+Each page generated will contain the following files:
+
+- {page}.html
+- {page}.js
+- {page}.scss
+- {page}-emulator.json

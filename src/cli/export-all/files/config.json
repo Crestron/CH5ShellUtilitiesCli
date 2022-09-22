@@ -1,0 +1,36 @@
+{
+  "command": "export:all",
+  "name": "export:all",
+  "usage": "[options]",
+  "description": "Export assets, libraries, and components from the shell-template project",
+  "options": [
+    {
+      "key": "all",
+      "description": "Select this option to export all the files",
+      "type": "boolean",
+      "default": true,
+      "valueIfNotFound": false,
+      "alias": ["--all"]
+    },
+    {
+      "key": "list",
+      "description": "Prefix for list of file names",
+      "type": "array",
+      "default": [],
+      "valueIfNotFound": [],
+      "alias": ["-l", "--list"]
+    }
+  ],
+  "additionalHelp": true,
+  "requiredFolderPath": "./app/project/",
+  "zipFolderName": "exported-all",
+  "outputFileName": "exported-all.zip",
+  "outputTempFolderName": "Exported-All-Code-Folder-Temp",
+  "zipFileDestinationPath": "./dist/",
+  "ignoreFilesFolders": [
+    ".DS_Store",
+    ".lock",
+    ".db"
+  ],
+  "allowedEnvironments": ["dev", "prod"]
+}

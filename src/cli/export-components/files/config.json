@@ -1,0 +1,48 @@
+{
+  "command": "export:components",
+  "name": "export:components",
+  "aliases": [
+    "exp:c"
+  ],
+  "usage": "[options]",
+  "description": "Export components from the shell-template project",
+  "options": [
+    {
+      "key": "all",
+      "description": "Select this option to export all the component files",
+      "type": "boolean",
+      "default": true,
+      "valueIfNotFound": false,
+      "alias": [
+        "--all"
+      ]
+    },
+    {
+      "key": "list",
+      "description": "Prefix for list of component file names",
+      "type": "array",
+      "default": [],
+      "valueIfNotFound": [],
+      "alias": [
+        "-l",
+        "--list"
+      ]
+    }
+  ],
+  "additionalHelp": true,
+  "basePathForPages": "./app/project/components/pages/",
+  "requiredFolderPath": "./app/project/components/",
+  "zipFolderName": "exported-components",
+  "outputFileName": "exported-components.zip",
+  "outputTempFolderName": "Exported-Components-Code-Folder-Temp",
+  "zipFileDestinationPath": "./dist/",
+  "ignoreFilesFolders": [
+    ".DS_Store",
+    ".lock",
+    ".db"
+  ],
+  "allowedEnvironments": [
+    "dev",
+    "prod"
+  ]
+}

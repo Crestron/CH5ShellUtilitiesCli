@@ -1,0 +1,48 @@
+# Create Project
+
+To create a project, open command-prompt or terminal,  go to the folder where you want to create the project, and then execute the command `ch5-shell-cli create:project`.
+
+## How to Use
+
+```bash
+Usage:
+    ch5-shell-cli create:project [options]
+
+```
+
+There are two ways to create a project using CLI. 
+
+a. Passing a configuration JSON file: This file is similar to project-config.json. The project can be created with customized content like 'selectedTheme', newer pages and widgets, etc.. The user will not be prompted for any further information, and all details will be picked from the json file.
+
+`ch5-shell-cli create:project --config ./downloads/sample-config.json`
+
+b. Passing the name of the project:
+
+`ch5-shell-cli create:project --projectName "my-new-shell-template"`
+
+Since the configuration json file is not provided, all content information will be selected from a default config file available internally in the CLI project. 
+
+If the projectName argument is not provided, then the user will be prompted to add a project name. 
+
+Validation for projectName argument are as follows:
+    - project name length should be greater than zero and cannot exceed 214
+    - project name characters must be lowercase i.e., no uppercase or mixed case names are allowed
+    - project name can consist of hyphens and numbers, and can only begin with alphabets
+    - project name must not contain any non-url-safe characters (since name ends up being part of a URL)
+    - project name should not contain any spaces or any of the following characters: ~)('!*
+
+To access help, execute `ch5-shell-cli create:project --help`.
+
+If config file is added as an argument along with other parameters to the create:project command, then config file takes precedence, and other parameters are ignored.
+
+### Copyright
+
+Copyright (C) 2022 to the present, Crestron Electronics, Inc.
+
+All rights reserved.
+
+No part of this software may be reproduced in any form, machine
+or natural, without the express written consent of Crestron Electronics.
+
+Use of this source code is subject to the terms of the Crestron Software License Agreement
+under which you licensed this source code.

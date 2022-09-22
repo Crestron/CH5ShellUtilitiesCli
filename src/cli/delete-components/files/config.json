@@ -1,0 +1,29 @@
+{
+  "command": "delete:components",
+  "name": "delete:components",
+  "aliases": [
+    "del:c"
+  ],
+  "usage": "[options]",
+  "description": "Delete pages and widgets from the shell-template project",
+  "options": [
+    {
+      "key": "list",
+      "description": "Prefix for list of component names to be deleted",
+      "type": "array",
+      "default": [],
+      "valueIfNotFound": [],
+      "alias": ["-l", "--list"]
+    },
+    {
+      "key": "force",
+      "description": "Forces the script to delete the component without asking for a confirmation",
+      "type": "boolean",
+      "default": true,
+      "valueIfNotFound": false,
+      "alias": ["-f", "--force"]
+    }
+  ],
+  "additionalHelp": true,
+  "allowedEnvironments": ["dev", "prod"]
+}

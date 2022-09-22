@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 Copyright (C) 2018 to the present, Crestron Electronics, Inc.
+=======
+Copyright (C) 2022 to the present, Crestron Electronics, Inc.
+>>>>>>> 11e092272cfe40900c72eeaa5e3951f3233b2aee
 All rights reserved.
 No part of this software may be reproduced in any form, machine
 or natural, without the express written consent of Crestron Electronics.

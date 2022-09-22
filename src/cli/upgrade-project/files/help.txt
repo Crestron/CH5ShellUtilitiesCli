@@ -1,0 +1,4 @@
+    
+You could also use `yarn` or `npm run` to upgrade the project from V1 to V2. The following are the commands:
+    yarn upgrade:project
+    npm run upgrade:project

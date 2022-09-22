@@ -1,0 +1,23 @@
+{
+  "SUCCESS_MESSAGE": "Congratulations! The component(s) '{0}' have been deleted from the project. The necessary change has been made to the project-config.json file.",
+  "SUCCESS_MESSAGE_WITH_EXCEPTION": "The component(s) '{0}' are not valid components in the project.",
+  "SUCCESS_MESSAGE_CONCLUSION": "If web server (ex: npm script ‘start’) is running, please restart the project.",
+  "VALIDATIONS": {
+    "SELECT_COMPONENT_TO_DELETE": "Please select the pages / widgets that you want to delete. Click on the 'space' bar to select the component(s).",
+    "HINT_COMPONENT_DETAILS": "{0} located at {1}",
+    "ARE_YOU_SURE_TO_DELETE": "Please confirm that you want to delete the selected component(s). Once deleted, the component cannot be restored. You should export the components before deleting them.",
+    "CONFIRMATION_OPTION_YES": "Yes",
+    "CONFIRMATION_OPTION_NO": "No",
+    "CONFIRMATION_OPTION_YES_DESCRIPTION": "The selected component(s) will be permanently deleted. These files cannot be restored once deleted.",
+    "CONFIRMATION_OPTION_NO_DESCRIPTION": "The delete component process will be cancelled."
+  },
+  "ERRORS": {
+    "NO_PAGES_WIDGETS_AVAILABLE_IN_PROJECT": "The are no pages and widgets available in the project.",
+    "INVALID_PARAM_INPUTS": "There are no page or widget names available in the project as per the inputs in the command prompt.",
+    "MESSAGE_TITLE": "Following error(s) were found in the command line statement:\n {0}",
+    "NO_COMPONENTS_FOR_DELETION": "No components have been selected for deletion.",
+    "DO_NOT_DELETE_COMPONENTS": "Process terminated since you do not wish to delete the selected components.",
+    "SOMETHING_WENT_WRONG": "Something went wrong. Please try again.",
+    "PROGRAM_STOPPED_OR_UNKNOWN_ERROR": "Either input values are missing/incorrect, or the program stopped intentionally/accidentally."
+  }
+}

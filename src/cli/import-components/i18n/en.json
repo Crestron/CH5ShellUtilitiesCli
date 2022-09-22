@@ -1,0 +1,27 @@
+{
+  "VALIDATIONS": {
+    "OVERWRITE_FILES": "Do you wish to overwrite the files?",
+    "OVERWRITE_FILES_YES": "Yes",
+    "OVERWRITE_FILES_NO": "No",
+    "OVERWRITE_FILES_HINT_YES": "Select Yes to overwrite the files",
+    "OVERWRITE_FILES_HINT_NO": "Select No to retain the original files",
+    "EXISTING_FILES_IN_IMPORT_FOLDER": "The following files already exist in the project: ",
+    "NO_NEW_FILES_AVAILABLE_TO_BE_IMPORTED": "There are no new files available to be imported.",
+    "NEW_FILES_TO_BE_IMPORTED": "The following are new files to be imported: ",
+    "INVALID_FILES_IN_IMPORT_LIST": "The following are invalid files: "
+  },
+  "SUCCESS_MESSAGE_ALL": "Congratulations! All the project components are successfully imported.",
+  "SUCCESS_MESSAGE_SPECIFIC": "Congratulations! The following components are imported into the project:\n{0}",
+  "SUCCESS_MESSAGE_SPECIFIC_WITH_ERROR": "Congratulations! The following components are imported into the project:\n{0}\n\nThe following components are not imported into the project:\n{1}\n\nThe following components are invalid:\n{2}",
+  "FAILURE_MESSAGE_INVALID_ZIP_FILE_EXTRACT": "Invalid zip file used for importing components. Use exported-components.zip file to perform 'import:components'. This file must be generated using the 'export:components' script.",
+  "FAILURE_MESSAGE_NO_VALID_FILES_IN_DIR": "Import Components failed.",
+  "FAILURE_MESSAGE_NO_VALID_OVERWRITE_FILES": "Import Components failed. There are no new files available for import.",
+  "FAILURE_MESSAGE_NO_VALID_INPUTS": "Import Components failed. The input filenames provided are either invalid or they do not exist in the components folder.",
+  "FAILURE_MESSAGE_INPUT_PARAMS_INVALID_IN_REQUEST": "There are no valid input filenames provided to import components. The following input files do not exist in the {0} file:\n{1}",
+  "FAILURE_MESSAGE_INPUT_PARAMS_EMPTY_IN_REQUEST": "There are no input filenames provided to import components.",
+  "FAILURE_MESSAGE_INPUT_PARAM_ZIP_FILE_MISSING": "The zip file path to import components is missing / invalid. Ensure add -z {path} or --zipFile {path} to the command prompt. Also, either set --all for importing all files Or set the import file paths using -l {path(s)} or --list {path(s)}.",
+  "ERRORS": {
+    "SOMETHING_WENT_WRONG": "Something went wrong. Please try again.",
+    "PROGRAM_STOPPED_OR_UNKNOWN_ERROR": "Either input values are missing/incorrect, or the program stopped intentionally/accidentally."
+  }
+}

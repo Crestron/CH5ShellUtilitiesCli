@@ -1,0 +1,47 @@
+{
+  "command": "export:library",
+  "name": "export:library",
+  "aliases": [
+    "exp:l"
+  ],
+  "usage": "[options]",
+  "description": "Export libraries from the shell-template project",
+  "options": [
+    {
+      "key": "all",
+      "description": "Select this option to export all the library files",
+      "type": "boolean",
+      "default": true,
+      "valueIfNotFound": false,
+      "alias": [
+        "--all"
+      ]
+    },
+    {
+      "key": "list",
+      "description": "Prefix for list of library file names",
+      "type": "array",
+      "default": [],
+      "valueIfNotFound": [],
+      "alias": [
+        "-l",
+        "--list"
+      ]
+    }
+  ],
+  "additionalHelp": true,
+  "requiredFolderPath": "./app/project/libraries/",
+  "zipFolderName": "exported-library",
+  "outputFileName": "exported-library.zip",
+  "outputTempFolderName": "Exported-Library-Code-Folder-Temp",
+  "zipFileDestinationPath": "./dist/",
+  "ignoreFilesFolders": [
+    ".DS_Store",
+    ".lock",
+    ".db"
+  ],
+  "allowedEnvironments": [
+    "dev",
+    "prod"
+  ]
+}

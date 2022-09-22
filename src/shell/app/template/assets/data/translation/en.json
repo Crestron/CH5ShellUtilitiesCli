@@ -1,0 +1,112 @@
+{
+  "app": {
+    "title": "Crestron CH5 || HTML 5 UI Development Shell Template",
+    "webxpanel": {
+      "statusmessageprefix": "Status: ",
+      "status": {
+        "CONNECT_WS": "WS CONNECTING...",
+        "DISCONNECT_CIP": "DISCONNECTED",
+        "ERROR_WS": "WS ERROR",
+        "AUTHENTICATION_FAILED": "AUTHENTICATION FAILED",
+        "AUTHENTICATION_REQUIRED": "AUTHENTICATION REQUIRED",
+        "CONNECT_CIP": "CONNECTED",
+        "NOT_AUTHORIZED": "NOT AUTHORIZED",
+        "FETCH_TOKEN_FAILED": "FAILED TO FETCH TOKEN"
+      },
+      "license": {
+        "csmobilitysupport": "Control system does not support Mobility license",
+        "mobilitylicenserequired": "Mobility license is required (expired or never applied)",
+        "mobilitylicensevalid": "Mobility license is valid",
+        "mobilitylicensewarning": "Mobility license expires in {{licenseDaysRemaining}} day(s)",
+        "mobilitylicensetrial": "Trial period expires in {{trialPeriodDaysRemaining}} day(s)",
+        "mobilitylicensenotrequired": "Mobility license not required"
+      }
+    },
+    "ch5logger": {
+      "title": "REMOTE LOGGER SETTINGS",
+      "docker": {
+        "dockerconnecting": "DOCKER CONNECTING",
+        "dockerdisconnected": "NOT CONNECTED",
+        "dockerconnected": "DOCKER CONNECTED",
+        "dockererror": "CONNECTION ERROR"
+      },
+      "form": {
+        "ipaddress": "IP Address / Hostname",
+        "portnumber": "Port Number",
+        "connect": "CONNECT",
+        "disconnect": "DISCONNECT",
+        "connecting": "CONNECTING...",
+        "error": {
+          "ipaddress": "Please enter valid IP Address/Hostname",
+          "portnumber": "Please enter valid Port Number"
+        }
+      },
+      "note": "Note:",
+      "note1": "You need to add attribute 'debug' to CH5 tag.",
+      "note2": "The values will be stored only for this session."
+    }
+  },
+  "header": {
+    "accessibility": {
+      "nav": {}
+    },
+    "info": {
+      "title": "PROJECT INFORMATION",
+      "tab": {
+        "version": "Version",
+        "webxpanel": "WebXPanel",
+        "diagnostics": "Diagnostics"
+      },
+      "version": {
+        "header": {
+          "package": "Package",
+          "version": "Version",
+          "date": "Date"
+        }
+      },
+      "webxpanel": {
+        "connection": "Connection",
+        "status": "Status:",
+        "cs": "CS:",
+        "ipid": "IPID:",
+        "roomid": "Room ID:",
+        "license": "License"
+      },
+      "diagnostics": {
+        "logs": "Add Log",
+        "title": "+ INFO",
+        "totalcomponents": "Total CH5 Tags/Attrs:",
+        "totalnodes": "Total DOM Nodes:",
+        "pagecount": "Page Count:",
+        "currentcomp": "Current CH5 Tags/Attrs:",
+        "subscription": "Total Subscriptions:",
+        "subscribers": "Total Signals:",
+        "pages": {
+          "header": {
+            "name": "Name",
+            "ch5count": "CH5 Tags/Attrs",
+            "preload": "Preload",
+            "cached": "Cached",
+            "nodes": "Nodes"
+          }
+        }
+      }
+    }
+  },
+  "footer": {
+    "accessibility": {
+      "button": {
+        "navMenu": "Open Navigation Menu"
+      }
+    }
+  },
+  "versionInfo": {
+    "title": "Version Info",
+    "accessibility": {
+      "button": {
+        "version": "Open Version Information"
+      }
+    }
+  },
+  "lang": "English"
+}

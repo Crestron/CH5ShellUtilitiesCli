@@ -1,0 +1,41 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "lib": [
+      "es6",
+      "es2015",
+      "dom"
+    ],
+    "declaration": true,
+    "outDir": "build",
+    "rootDirs": [
+      "src",
+      "test"
+    ],
+    "strict": true,
+    "types": [
+      "node",
+      "mocha"
+    ],
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "newLine": "LF"
+  },
+  "include": [
+    "src/**/*",
+    "src/shell/**/*",
+    "src/shell/.vscode/emulator-schema.json",
+    "src/shell/.vscode/project-config-schema.json",
+    "src/shell/.vscode/settings.json"
+  ],
+  "exclude": [
+    "src/cli/**/*.ts",
+    "node_modules",
+    "test",
+    "src/cli/create-project-components/**/*"
+  ],
+  "hooks": [
+    "copy-files"
+  ]
+}

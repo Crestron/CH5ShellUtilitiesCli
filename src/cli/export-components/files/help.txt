@@ -1,0 +1,35 @@
+
+You could also use `yarn` or `npm run` to export components. The following are the commands:
+    yarn export:components [options]
+    npm run export:components -- [options]
+
+You could use shortcut script `exp:c` with options:
+    ch5-shell-cli exp:c [options]
+
+You could use shortcut script `exp:c` with yarn and npm commands as the following:
+    yarn exp:c [options]
+    npm run exp:c -- [options]
+
+Export the complete components directory from './app/project/components/' folder. To achieve this, use the below commands:
+    ch5-shell-cli export:components --all
+
+You could also use `yarn` or `npm run` to export components. The following are the commands:
+    yarn export:components --all
+    npm run export:components -- --all
+    yarn exp:c --all
+    npm run exp:c -- --all
+
+Export selected components from './app/project/components/' folder. In this case, the file names are mandatory in the command-prompt. The filename must follow the complete path starting from './app/project/components/....'. Only file names can be provided here (no folder paths). Multiple file names can be provided in the command-prompt. All the file names must be .html files only. To achieve this, use the below commands:
+    ch5-shell-cli export:components -l ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
+    ch5-shell-cli export:components --list ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
+    ch5-shell-cli exp:c -l ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
+
+You could also use `yarn` or `npm run` to export components. The following are the commands:
+    yarn export:components -l ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
+    npm run export:components -- -l ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
+
+    yarn export:components --list ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
+    npm run export:components -- --list ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
+
+    yarn exp:c -l ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
+    npm run exp:c -- -l ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html

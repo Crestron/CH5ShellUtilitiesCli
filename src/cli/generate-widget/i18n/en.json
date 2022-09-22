@@ -1,0 +1,23 @@
+{
+  "SUCCESS_MESSAGE": "Congratulations! The widget '{0}' has been created at the location '{1}'. The widget has been added to the project-config.json file.",
+  "SUCCESS_MESSAGE_CONCLUSION": "If web server (ex: npm script ‘start’) is running, please restart to load the new widget.",
+  "ERRORS": {
+    "SOMETHING_WENT_WRONG": "Something went wrong. Either input values are missing/incorrect, or the program stopped intentionally/accidentally. Please try again.",
+    "ERROR_IN_FOLDER_PATH": "Something went wrong with the input values for Folder Path. Please check the folder path and try again.",
+    "PROGRAM_STOPPED_OR_UNKNOWN_ERROR": "Either input values are missing/incorrect, or the program stopped intentionally/accidentally.",
+    "WIDGET_NAME_LENGTH": "Widget Name is mandatory and must be a minimum of {0} characters and a maximum of {1} characters.",
+    "WIDGET_NAME_MANDATORY": "Widget Name is mandatory, must start with a letter, and can contain letters, numbers, spaces, underscore(s), and hyphen(s).",
+    "WIDGET_EXISTS_IN_PROJECT_CONFIG_JSON": "Widget already exists in the project-config.json file. Please enter a new widget name.",
+    "PAGE_EXISTS_IN_PROJECT_CONFIG_JSON": "Page name already exists for a widget in the 'project' folder. Please enter a new widget name.",
+    "WIDGET_CANNOT_START_WITH": "Widget name cannot start with {0}.",
+    "WIDGET_DISALLOWED_KEYWORDS": "Page / Widget / Module file already exists in the 'template' folder. Please enter a new widget name.",
+    "WIDGET_NAME_EMPTY_IN_REQUEST": "Widget name is empty. Widget Name is mandatory, must start with a letter, and can contain letters, numbers, spaces, underscore(s), and hyphen(s).\n",
+    "WIDGET_NAME_INVALID_ENTRY": "Widget name does not meet the expected criterion. {0}\n",
+    "MESSAGE_TITLE": "Following error(s) were found in the command line statement:\n {0}",
+    "TAB_DELIMITER": "-   ",
+    "HTML_FILE_EXISTS": "File with the name '{0}' already exists in the path '{1}'. No Widget Created."
+  },
+  "VALIDATIONS": {
+    "GET_WIDGET_NAME": "Please enter Widget Name"
+  }
+}

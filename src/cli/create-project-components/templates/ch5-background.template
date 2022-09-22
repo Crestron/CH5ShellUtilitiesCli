@@ -1,0 +1,4 @@
+
+<div style="height: 320px;">
+    <ch5-background <%attributes%>></ch5-background>
+</div>

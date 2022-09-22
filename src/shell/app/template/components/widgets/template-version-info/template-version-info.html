@@ -1,0 +1,68 @@
+<!-- 
+    Copyright (C) 2022 to the present, Crestron Electronics, Inc.
+    All rights reserved.
+    No part of this software may be reproduced in any form, machine
+    or natural, without the express written consent of Crestron Electronics.
+    Use of this source code is subject to the terms of the Crestron Software License Agreement 
+    under which you licensed this source code.
+-->
+<section id="template-version-info-page" aria-labelledby="Version Information">
+    <ch5-button id="infobtn" shape="circle" size="small" iconClass="material-icons md-info"
+        sendEventOnClick="infoBtn.clicked" role="button" aria-label="Open Version Information" aria-pressed="false">
+    </ch5-button>
+    <ch5-modal-dialog receiveStateShowPulse="infoBtn.clicked" closable closeIcon="fa fa-window-close"
+        hideOkButton="true" hideCancelButton="true" title="-+header.info.title+-" customclass="project-info-dialog">
+        <div id="tab-wrapper">
+            <button id="version-tab" class="selected" data-ch5-i18n="-+header.info.tab.version+-"></button>
+            <button id="webxpanel-tab" data-ch5-i18n="-+header.info.tab.webxpanel+-"></button>
+            <button id="diagnostics-tab" data-ch5-i18n="-+header.info.tab.diagnostics+-"></button>
+        </div>
+        <div class="spacer"></div>
+        <div id="version-tab-content">
+            <table>
+                <tbody id="versionTableBody">
+                    <tr>
+                        <th data-ch5-i18n="-+header.info.version.header.package+-"></th>
+                        <th data-ch5-i18n="-+header.info.version.header.version+-"></th>
+                        <!-- <th data-ch5-i18n="-+header.info.version.header.date+-"></th> -->
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="webxpanel-tab-content" style="display: none">
+            <div class="connection">
+                <h4 data-ch5-i18n="-+header.info.webxpanel.connection+-"></h4>
+                <span class="info-row status" data-ch5-i18n="-+header.info.webxpanel.status+-"></span>
+                <span class="info-row cs" data-ch5-i18n="-+header.info.webxpanel.cs+-"></span>
+                <span class="info-row ipid" data-ch5-i18n="-+header.info.webxpanel.ipid+-"></span>
+                <span class="info-row roomid" data-ch5-i18n="-+header.info.webxpanel.roomid+-"></span>
+            </div>
+            <div class="license">
+                <h4 data-ch5-i18n="-+header.info.webxpanel.license+-"></h4>
+                <span class="info-row lic" id="lic"></span>
+            </div>
+        </div>
+        <div id="diagnostics-tab-content" style="display: none">
+            <div id="diagnostics-info">
+                <span id="totalComponents"></span>
+                <span id="currentComponents"></span>
+                <span id="totalDom"></span>
+                <span id="pageCount"></span>
+                <span id="totalSubscribers"></span>
+                <span id="totalSignals"></span>
+            </div>
+            <button id="subscribeLogButton" data-ch5-i18n="-+header.info.diagnostics.logs+-"></button>
+            <table>
+                <tbody id="diagnosticsTableElement">
+                    <tr id="diagnosticPageHeaderElement">
+                        <th data-ch5-i18n="-+header.info.diagnostics.pages.header.name+-"></th>
+                        <th data-ch5-i18n="-+header.info.diagnostics.pages.header.ch5count+-"></th>
+                        <th data-ch5-i18n="-+header.info.diagnostics.pages.header.preload+-"></th>
+                        <th data-ch5-i18n="-+header.info.diagnostics.pages.header.cached+-"></th>
+                        <th data-ch5-i18n="-+header.info.diagnostics.pages.header.nodes+-"></th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </ch5-modal-dialog>
+</section>
