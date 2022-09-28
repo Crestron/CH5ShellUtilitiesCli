@@ -10,7 +10,6 @@ const templatePageModule = (() => {
 	let totalPreloadPage = 0;
 	let preloadPageLoaded = 0;
 	let _isPageLoaded = false;
-	let allPagesLoaded = false;
 	let firstLoad = false;
 	let pageLoadTimeout = 2000;
 	let isWebXPanelInitialized = false; // avoid calling connection method multiple times
@@ -180,7 +179,6 @@ const templatePageModule = (() => {
 
 			projectConfigModule.projectConfigData().then((projectConfigResponse) => {
 				translateModule.initializeDefaultLanguage().then(() => {
-					templateAppLoaderModule.initializePageDuration();
 					featureModule.changeTheme();
 					/* Note: You can uncomment below line to enable remote logger.
 					* Refer below documentation link to know more about remote logger.
@@ -555,28 +553,15 @@ const templatePageModule = (() => {
 	 */
 	function hideLoading(pageObject) {
 		if (totalPreloadPage === preloadPageLoaded) {
-			allPagesLoaded = true;
-			let endDuration = new Date().getTime();
-			templateAppLoaderModule.endPageLoad(pageObject, endDuration);
-			if (!firstLoad) {
+			if (!firstLoad && totalPreloadPage !== 0) {
 				firstLoad = true;
-				if (totalPreloadPage === 0) {
-					document.getElementById("loader").style.display = "none";
-				} else {
-					const hideLoaderTimeout = setInterval(() => {
-						clearInterval(hideLoaderTimeout);
-						const listOfPages = projectConfigModule.getNavigationPages();
-						listOfPages.forEach(page => {
-							if (page.preloadPage) { templateVersionInfoModule.updateDiagnosticsOnPageChange(page) }
-						})
-						document.getElementById("loader").style.display = "none";
-					}, pageLoadTimeout);
-				}
-			} else {
-				document.getElementById("loader").style.display = "none";
+				const listOfPages = projectConfigModule.getNavigationPages();
+				setTimeout(() => {
+					listOfPages.forEach((page) => page.preloadPage ? setTimeout(() => navigationModule.updateDiagnosticsOnPageChange(page.pageName)) : '');
+				}, pageLoadTimeout);
 			}
-
-		} else if (!allPagesLoaded) {
+			document.getElementById("loader").style.display = "none";
+		} else {
 			setTimeout(() => {
 				hideLoading(pageObject);
 			}, 500);
