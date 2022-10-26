@@ -77,9 +77,9 @@ const navigationModule = (() => {
 		document.getElementById('currentComponents').innerHTML = templateVersionInfoModule.translateModuleHelper('currentcomp', currentCh5ComponentsCount);
 
 		// Updating Table Count for Add Log
-		templateVersionInfoModule.tableCount.totalDomCount = totalDomCount;
-		templateVersionInfoModule.tableCount.totalComponentsCount = totalComponentsCount;
-		templateVersionInfoModule.tableCount.currentCh5Components = currentCh5ComponentsCount;
+		templateVersionInfoModule.componentCount.totalDomCount = totalDomCount;
+		templateVersionInfoModule.componentCount.totalComponentsCount = totalComponentsCount;
+		templateVersionInfoModule.componentCount.currentCh5Components = currentCh5ComponentsCount;
 		templateVersionInfoModule.updateSubscriptions();
 	}
 	return {

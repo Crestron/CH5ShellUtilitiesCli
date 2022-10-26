@@ -12,6 +12,7 @@ const templateVersionInfoModule = (() => {
 
 	let projectConfig;
 	const tableCount = {};
+	const componentCount = {};
 	/**
 	 * Initialize Method
 	 */
@@ -90,12 +91,13 @@ const templateVersionInfoModule = (() => {
 	function logSubscriptionsCount(event, signalValue) {
 		const signals = updateSubscriptions();
 		const ch5components = {
-			...tableCount,
+			ch5ComponentsPageWise: { ...tableCount },
+			...componentCount,
 			totalCh5ComponentsCurrentlyLoaded: CrComLib.countNumberOfCh5Components(document.getElementsByTagName('body')[0]).total
 		}
 
-		const signalNames = document.getElementById('totalSubscribers').textContent;
-		const subscriptions = document.getElementById('totalSignals').textContent;
+		const signalNames = document.getElementById('totalSignals').textContent.split(':')[1].trim();
+		const subscriptions = document.getElementById('totalSubscribers').textContent.split(':')[1].trim();
 		if ((signalValue !== undefined && signalValue === true) || signalValue === undefined) {
 			console.log({ signals, ch5components, signalNames, subscriptions });
 		}
@@ -150,6 +152,7 @@ const templateVersionInfoModule = (() => {
 		translateModuleHelper,
 		updateSubscriptions,
 		tableCount,
+		componentCount,
 		logSubscriptionsCount
 	};
 })();
