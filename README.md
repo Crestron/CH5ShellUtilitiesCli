@@ -7,14 +7,15 @@
 > Archiving and distribution utilities from the ch5-shell-cli library wrapped as CLI commands.
 
 ## Table of Contents
-
 - [Background](#background)
 
-
 ## Background
-
 The purpose of the library is to expose the [ch5-shell-cli](https://www.npmjs.com/package/@crestron/ch5-shell-cli) commands.
 
+### Troubleshoot
+Error 'ts-node' is not recognized as an internal or external command, operable program or batch file.
+
+Execute `npm install -g ts-node`
 
 ### Copyright
 
