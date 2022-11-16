@@ -12,7 +12,10 @@
   },
   "types": "build/@types/index.d.ts",
   "scripts": {
+    "start": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts",
+    "build:dev": "tsc -p tsconfig.dev.json && node build dev",
     "build:prod": "tsc -p tsconfig.prod.json && node build prod",
+    "build:test": "tsc -p tsconfig.test.json && node build dev",
     "build": "npm run build:prod",
     "ch5-utils": "./build/index.js",
     "clean": "rimraf build",

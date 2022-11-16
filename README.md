@@ -12,11 +12,6 @@
 ## Background
 The purpose of the library is to expose the [ch5-shell-cli](https://www.npmjs.com/package/@crestron/ch5-shell-cli) commands.
 
-### Troubleshoot
-Error 'ts-node' is not recognized as an internal or external command, operable program or batch file.
-
-Execute `npm install -g ts-node`
-
 ### Copyright
 
 Copyright (C) 2022 to the present, Crestron Electronics, Inc.
