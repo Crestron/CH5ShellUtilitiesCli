@@ -39,7 +39,7 @@ Run `npm run build:archive` to create .ch5z file which supports TSW device. The 
 
 ## Rename archive
 
-Run `npm run rename:archive` to create .ch5z file which supports TSW device. The build artifacts will be stored in the `dist/` directory.
+Run `npm run rename:archive` to rename .ch5z file which supports TSW device. The build artifacts will be stored in the `dist/` directory.
 
 ## Deploy the project in TSW device
 
