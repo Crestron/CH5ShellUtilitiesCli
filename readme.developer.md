@@ -63,7 +63,11 @@ Please replace ${USERNAME} with your username on /Users/${USERNAME}/Downloads. T
 
 ### Rename Archive
 
-"rename:archive": `npx ch5-cli archive -p my-project-v1.0.0 --source-archive ./shell-template.ch5z -o ./ `
+"rename:archive": `npx ch5-cli archive -p my-project-v1.0.0 -d ./ -o /Users/mruanova-hurtado/git/CH5ShellUtilitiesCli/src/shell/dist/prod -s shell-template.ch5z`,
+
+project name is optional, if not provided then it will read the name in the package JSON file
+
+"rename:archive": `npx ch5-cli archive -d ./ -o /Users/mruanova-hurtado/git/CH5ShellUtilitiesCli/src/shell/dist/prod -s shell-template.ch5z`
 
 ## License
 

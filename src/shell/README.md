@@ -37,6 +37,10 @@ Run `npm run build:prod` to build the project in production mode. The build arti
 
 Run `npm run build:archive` to create .ch5z file which supports TSW device. The build artifacts will be stored in the `dist/` directory.
 
+## Rename archive
+
+Run `npm run rename:archive` to create .ch5z file which supports TSW device. The build artifacts will be stored in the `dist/` directory.
+
 ## Deploy the project in TSW device
 
 Run `npm run build:deploy` to deploy the project in TSW device.
