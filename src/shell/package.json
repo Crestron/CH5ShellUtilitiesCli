@@ -41,7 +41,7 @@
         "imp:l": "npx ch5-shell-cli imp:l", 
         "validate:projectconfig": "npx ch5-shell-cli validate:project-config", 
         "val:pc": "npx ch5-shell-cli val:pc", 
-        "rename:archive": "npx ch5-cli archive -p my-project-v1.0.0 -d ./ -o /Users/${USERNAME}/git/CH5UtilitiesCli -s shell-template.ch5z",
+        "rename:archive": "npx ch5-cli archive -p my-project-v1.0.0 -d ./ -o /dist/prod",
         "update:project": "npx ch5-shell-cli update:project"
     }, 
     "devDependencies": {
