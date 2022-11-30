@@ -7,14 +7,10 @@
 > Archiving and distribution utilities from the ch5-shell-cli library wrapped as CLI commands.
 
 ## Table of Contents
-
 - [Background](#background)
 
-
 ## Background
-
 The purpose of the library is to expose the [ch5-shell-cli](https://www.npmjs.com/package/@crestron/ch5-shell-cli) commands.
-
 
 ### Copyright
 

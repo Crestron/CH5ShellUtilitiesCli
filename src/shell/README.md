@@ -1,6 +1,6 @@
 # Shell Template
 
-The shell template uses CH5 library and Vanilla javascript which helps to kick-start your project to build fast, robust, and adaptable web apps with little changes. The project can be deployed on TSW Panels, Android and iOS devices.
+The shell template uses CH5 library and Vanilla Javascript which helps to kick-start your project to build fast, robust, and adaptable web apps with little changes. The project can be deployed on TSW Panels, Android and iOS devices.
  
 ## See www.crestron.com/developer for documentation
 
@@ -36,6 +36,10 @@ Run `npm run build:prod` to build the project in production mode. The build arti
 ## Create archive
 
 Run `npm run build:archive` to create .ch5z file which supports TSW device. The build artifacts will be stored in the `dist/` directory.
+
+## Rename archive
+
+Run `npm run rename:archive` to rename .ch5z file which supports TSW device. The build artifacts will be stored in the `dist/` directory.
 
 ## Deploy the project in TSW device
 
