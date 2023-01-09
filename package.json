@@ -17,7 +17,7 @@
         "LICENSE.txt", 
         "readme.md"
     ], 
-    "version": "2.1.0", 
+    "version": "2.2.0", 
     "dependencies": {
         "zip-lib": "^0.7.2", 
         "edit-json-file": "^1.7.0", 
