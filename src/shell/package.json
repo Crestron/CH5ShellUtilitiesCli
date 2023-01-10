@@ -45,7 +45,7 @@
     }, 
     "devDependencies": {
         "@crestron/ch5-shell-utilities-cli": "^2.2.0", 
-        "@crestron/ch5-utilities-cli": "^2.2.0", 
+        "@crestron/ch5-utilities-cli": "^2.0.0", 
         "browser-sync": "^2.27.5", 
         "browser-sync-webpack-plugin": "^2.3.0", 
         "copy-webpack-plugin": "^5.0.4", 
@@ -72,7 +72,7 @@
     "dependencies": {
         "@crestron/ch5-crcomlib": "^2.2.0", 
         "@crestron/ch5-theme": "^2.2.0", 
-        "@crestron/ch5-webxpanel": "^2.2.0", 
+        "@crestron/ch5-webxpanel": "^2.0.0", 
         "@material-icons/font": "^1.0.25"
     }, 
     "files": [
