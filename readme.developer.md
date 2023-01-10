@@ -12,23 +12,23 @@
 
 ## Background
 
-The purpose of the library is to expose the [ch5-shell-utilities](./../ch5-shell-utilities/readme.md) archive and distribute functionality.
+The purpose of the library is to expose the [ch5-shell-utilities](https://github.com/Crestron/CH5ShellUtilitiesCli) archive and distribute functionality.
 
 ## Setup
 
 Build the library.
 ```
-yarn build
+npm run build
 ```
 
 Publish the ch5-shell-utilities-cli library for local usage.
 ```
-yarn link
+npm link
 ```
 
 ## Commands
 
-#### yarn publish:local
+### npm run publish:local
 
 After the initial setup, you can use this command to rebuild and publish changes in the library.
 
@@ -36,19 +36,39 @@ After the initial setup, you can use this command to rebuild and publish changes
 
 ### Testing Scripts
 
-1. create project
+Please replace ${USERNAME} with your username on /Users/${USERNAME}/Downloads. This path should work for Windows and Mac.
 
-rm -rf * &&  ch5-shell-cli create:project --projectName 'shell-template' && cd shell-template && npm install && npm run gen:p -- --name 'page-2' -m Y && cd .. &&  mkdir tt1 && cd tt1 && ch5-shell-cli create:project --config /Users/rdabbir/Downloads/tt/shell-template/app/project-config.json && cd ..
+1. Create Project
 
-rm -rf * &&  ch5-shell-cli create:project --projectName 'shell-template' && cd shell-template && npm install && npm run gen:w -- --name 'widget-2' && cd .. &&  mkdir tt1 && cd tt1 && ch5-shell-cli create:project --config /Users/rdabbir/Downloads/tt/shell-template/app/project-config.json && cd ..
+1.1. Page-2
 
-2. update project
+`rm -rf * && ch5-shell-cli create:project --projectName 'shell-template' && cd shell-template && npm install && npm run gen:p -- --name 'page-2' -m Y && cd .. && mkdir tt1 && cd tt1 && ch5-shell-cli create:project --config /Users/${USERNAME}/Downloads/tt/shell-template/app/project-config.json && cd ..`
 
-rm -rf * &&  ch5-shell-cli create:project --projectName 'shell-template' && cd shell-template && npm install && npm run gen:p -- --name 'page-2' -m Y && cd .. && mkdir tt1 && cd tt1 && ch5-shell-cli create:project --projectName 'shell-template' && cd 'shell-template' && ch5-shell-cli update:project --config /Users/rdabbir/Downloads/tt/shell-template/app/project-config.json && cd ..
+1.2. Widget-2
 
-rm -rf * &&  ch5-shell-cli create:project --projectName 'shell-template' && cd shell-template && npm install && npm run gen:w -- --name 'widget-2' && cd .. &&  mkdir tt1 && cd tt1 && ch5-shell-cli create:project --projectName 'shell-template' && cd 'shell-template' &&  ch5-shell-cli update:project --config /Users/rdabbir/Downloads/tt/shell-template/app/project-config.json && cd ..
+`rm -rf * && ch5-shell-cli create:project --projectName 'shell-template' && cd shell-template && npm install && npm run gen:w -- --name 'widget-2' && cd .. && mkdir tt1 && cd tt1 && ch5-shell-cli create:project --config /Users/${USERNAME}/Downloads/tt/shell-template/app/project-config.json && cd ..`
 
-### How to use config.jso
+2. Update Project
+
+2.1. Page-2
+
+`rm -rf * && ch5-shell-cli create:project --projectName 'shell-template' && cd shell-template && npm install && npm run gen:p -- --name 'page-2' -m Y && cd .. && mkdir tt1 && cd tt1 && ch5-shell-cli create:project --projectName 'shell-template' && cd 'shell-template' && ch5-shell-cli update:project --config /Users/${USERNAME}/Downloads/tt/shell-template/app/project-config.json && cd ..`
+
+2.2. Widget-2
+
+`rm -rf * && ch5-shell-cli create:project --projectName 'shell-template' && cd shell-template && npm install && npm run gen:w -- --name 'widget-2' && cd .. && mkdir tt1 && cd tt1 && ch5-shell-cli create:project --projectName 'shell-template' && cd 'shell-template' && ch5-shell-cli update:project --config /Users/${USERNAME}/Downloads/tt/shell-template/app/project-config.json && cd ..`
+
+### setup local
+`npm run setup:local`
+
+### Rename Archive
+
+"rename:archive": `npx ch5-cli archive -p my-project-v1.0.0 -d ./ -o /Users/mruanova-hurtado/git/CH5ShellUtilitiesCli/src/shell/dist/prod -s shell-template.ch5z`,
+
+project name is optional, if not provided then it will read the name in the package JSON file
+
+"rename:archive": `npx ch5-cli archive -d ./ -o /Users/mruanova-hurtado/git/CH5ShellUtilitiesCli/src/shell/dist/prod -s shell-template.ch5z`
+
 ## License
 
 Copyright (C) 2022 to the present, Crestron Electronics, Inc.
