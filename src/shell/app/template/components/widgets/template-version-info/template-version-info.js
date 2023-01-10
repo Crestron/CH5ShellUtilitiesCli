@@ -11,12 +11,8 @@ const templateVersionInfoModule = (() => {
 	'use strict';
 
 	let projectConfig;
-	const processedPage = new Set();
-	const tableCount = {
-		ch5Count: 0,
-		domCount: 0,
-		ch5ComponentsPageWise: {}
-	};
+	const tableCount = {};
+	const componentCount = {};
 	/**
 	 * Initialize Method
 	 */
@@ -74,7 +70,7 @@ const templateVersionInfoModule = (() => {
 			const newTableEntry = createTableRow({ name: processedPageName, count: '', preload: page.preloadPage ? 'Y' : 'N', cached: page.cachePage ? 'Y' : 'N', nodes: '' });
 			newTableEntry.setAttribute('id', 'diagnostics-table-' + page.pageName);
 			diagnosticsTableElement.appendChild(newTableEntry);
-			tableCount.ch5ComponentsPageWise[`${page.pageName}`] = {};
+			tableCount[`${page.pageName}`] = {};
 		}
 	}
 	function setTabsListeners() {
@@ -95,72 +91,19 @@ const templateVersionInfoModule = (() => {
 	function logSubscriptionsCount(event, signalValue) {
 		const signals = updateSubscriptions();
 		const ch5components = {
-			...tableCount,
-			currentCh5Components: +currentComponents.textContent,
+			ch5ComponentsPageWise: { ...tableCount },
+			...componentCount,
 			totalCh5ComponentsCurrentlyLoaded: CrComLib.countNumberOfCh5Components(document.getElementsByTagName('body')[0]).total
 		}
 
-		const signalNames = document.getElementById('totalSubscribers').textContent;
-		const subscriptions = document.getElementById('totalSignals').textContent;
+		const signalNames = document.getElementById('totalSignals').textContent.split(':')[1].trim();
+		const subscriptions = document.getElementById('totalSubscribers').textContent.split(':')[1].trim();
 		if ((signalValue !== undefined && signalValue === true) || signalValue === undefined) {
 			console.log({ signals, ch5components, signalNames, subscriptions });
 		}
 	}
 	function translateModuleHelper(fieldName, fieldValue) {
-		return translateModule.translateInstant(`header.info.diagnostics.${fieldName}`) + fieldValue;
-	}
-
-	function updateDiagnosticsOnPageChange(pageConfiguration) {
-		setTimeout(() => {
-			const listOfNavigationButtons = document.querySelectorAll('ch5-button[id*=menu-list-id-');
-			if (!projectConfig.header.displayInfo) {
-				listOfNavigationButtons.forEach(e => e.children[0].style.pointerEvents = "auto");
-				return;
-			}
-			setTimeout(() => {
-				if (!processedPage.has(pageConfiguration.pageName)) {
-					processedPage.add(pageConfiguration.pageName);
-					diagnosticsTable(pageConfiguration.pageName);
-				}
-				getCurrentCh5Components();
-				updateSubscriptions();
-				listOfNavigationButtons.forEach(e => e.children[0].style.pointerEvents = "auto");
-			}, 150);
-		});
-	}
-	function getCurrentCh5Components() {
-		const listOfPages = projectConfigModule.getNavigationPages();
-		let currentCh5ComponentsCount = 0;
-		listOfPages.forEach(page => {
-			const pageImporterElement = document.getElementById(page.pageName + '-import-page');
-			if (pageImporterElement) currentCh5ComponentsCount += CrComLib.countNumberOfCh5Components(pageImporterElement).total;
-		});
-		const currentComponents = document.getElementById('currentComponents');
-		currentComponents.textContent = translateModuleHelper('currentcomp', currentCh5ComponentsCount);
-	}
-
-	function diagnosticsTable(pageName) {
-		const pageImporterElement = document.getElementById(pageName + '-import-page');
-
-		// Current Page Table Row Updation
-		const currentPageTableRow = document.getElementById('diagnostics-table-' + pageName);
-		const domNodesOnPage = pageImporterElement.getElementsByTagName('*').length;
-
-		let currentCh5ComponentsCount = CrComLib.countNumberOfCh5Components(pageImporterElement).total;
-		currentPageTableRow.childNodes[1].textContent = currentCh5ComponentsCount;
-		currentPageTableRow.childNodes[4].textContent = domNodesOnPage;
-
-		// Diagnostic Table Count Updation
-		tableCount.ch5ComponentsPageWise[`${pageName}`] = CrComLib.countNumberOfCh5Components(pageImporterElement);
-		tableCount.ch5Count += currentCh5ComponentsCount;
-		tableCount.domCount += domNodesOnPage;
-
-		// Diagnostic Info Count Updation
-		const totalComponents = document.getElementById('totalComponents');
-		const totalDom = document.getElementById('totalDom');
-
-		totalComponents.innerHTML = translateModuleHelper('totalcomponents', tableCount.ch5Count);;
-		totalDom.innerHTML = translateModuleHelper('totalnodes', tableCount.domCount);
+		return translateModule.translateInstant(`header.info.diagnostics.${fieldName}`) + " " + fieldValue;
 	}
 
 	function updateSubscriptions() {
@@ -206,7 +149,10 @@ const templateVersionInfoModule = (() => {
 	 * All public method and properties are exported here
 	 */
 	return {
-		updateDiagnosticsOnPageChange,
+		translateModuleHelper,
+		updateSubscriptions,
+		tableCount,
+		componentCount,
 		logSubscriptionsCount
 	};
 })();

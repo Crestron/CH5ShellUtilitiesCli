@@ -4,12 +4,27 @@
   display: flex;
   align-items: center;
 }
+
 .footer-page {
   font-size: 14px;
 }
 
+// CH5C - 1519 frome line number 12-24 is iphone design css it will be uncommented  once crestron one app fixes it
+// css is specific for iphone notch design
+// .navbar-brand {
+//   padding-left: env(safe-area-inset-left);
+//   padding-right: env(safe-area-inset-right);
+
+//   @supports(padding: max(0px)) {
+//     .navbar-brand {
+//       padding-left: max(12px, env(safe-area-inset-left));
+//       padding-right: max(12px, env(safe-area-inset-right));
+//     }
+//   }
+// }
+
 #template-index-import-page,
-#template-index-import-page > div {
+#template-index-import-page>div {
   max-height: 100%;
   height: 100%;
 }
@@ -22,7 +37,7 @@
 }
 
 #template-page-import-page,
-#template-page-import-page > div {
+#template-page-import-page>div {
   max-height: 100%;
   height: 100%;
   display: flex;
@@ -31,6 +46,7 @@
 
 #header-index-page {
   height: $header-height;
+
   @include media-breakpoint-down(sm) {
     height: $header-height-sm;
   }
@@ -38,8 +54,9 @@
 
 #content-index-page {
   flex: 1;
-  overflow-y: auto;
+  overflow-y: hidden;
   overflow-x: hidden;
+
   &div {
     height: 100%;
   }
@@ -47,19 +64,38 @@
 
 #footer-page {
   padding: 10px;
+  // CH5C - 1519 frome line number 68-71 is iphone design css it will be uncommented  once crestron one app fixes it
+  // padding-top: 10px;
+  // padding-bottom: 10px;
+  // padding-left: max(10px, env(safe-area-inset-left));
+  // padding-right: max(10px, env(safe-area-inset-right));
 }
 
 #template-content-page-wrapper,
 #template-content-page-content {
-  display: flex; /* use the flex model */
+  display: flex;
+  /* use the flex model */
   max-height: 100%;
   height: 100%;
-  flex-direction: column; /* learn more: http://philipwalton.github.io/solved-by-flexbox/demos/sticky-footer/ */
+  flex-direction: column;
+  /* learn more: http://philipwalton.github.io/solved-by-flexbox/demos/sticky-footer/ */
 }
 
 #content-index-body {
   flex: 1;
   overflow-y: auto;
+  // CH5C - 1519 frome line number 90-98 is iphone design css it will be uncommented  once crestron one app fixes it
+  // css is specific for iphone notch design (CH5C-1519)
+  /* learn more about iphone notch design: https://webkit.org/blog/7929/designing-websites-for-iphone-x/ */
+  // padding-left: env(safe-area-inset-left);
+  // padding-right: env(safe-area-inset-right);
+
+  // @supports(padding: max(0px)) {
+  //   #content-index-body {
+  //     padding-left: max(12px, env(safe-area-inset-left));
+  //     padding-right: max(12px, env(safe-area-inset-right));
+  //   }
+  // }
 
   .swiper-wrapper {
     height: 100%;
@@ -72,11 +108,12 @@
     margin: 0;
     transform: translate3d(0px, 0px, 0px);
 
-    ch5-import-htmlsnippet > div {
+    ch5-import-htmlsnippet>div {
       height: 100%;
     }
   }
 }
+
 #brandLogo {
   max-width: 100%;
   // height: auto;
@@ -134,6 +171,7 @@ div#pageStatusIdentifier {
 
   &.hide {
     display: none;
+
     &::before {
       content: none !important;
     }
@@ -177,6 +215,7 @@ div#pageStatusIdentifier {
 // Content page
 .horizontal-menu {
   @include size(100%);
+
   @include media-breakpoint-maxheight(460px) {
     .thumb-action {
       display: block;
@@ -186,11 +225,13 @@ div#pageStatusIdentifier {
       margin-left: -16px;
       animation: floating 15s infinite ease-in-out;
       z-index: $zindex-fixed;
+
       svg {
         @include size(32px);
         transform: rotate(90deg);
       }
     }
+
     .swiper-thumb {
       position: fixed;
       left: 0;
@@ -200,11 +241,13 @@ div#pageStatusIdentifier {
       -webkit-transform: none;
       transform: none;
       z-index: ($zindex-fixed - 2);
+
       &.open {
         transition: transform 300ms ease-out;
         -webkit-transform: translateY(-100%);
         transform: translateY(-100%);
-        & + .thumb-action {
+
+        &+.thumb-action {
           display: none;
           animation: none;
         }
@@ -212,45 +255,67 @@ div#pageStatusIdentifier {
     }
   }
 }
+
 .horizontal-footer-menu {
   line-height: 1.2;
 
   // thumbnail swiper
   .swiper-thumb {
     width: 100%;
+
     .ch5-list-horizontal {
       display: flex;
       justify-content: space-between;
       text-align: center;
+
       @media (min-width: 410px) {
         transform: translate3d(0px, 0px, 0px);
       }
+
+      // CH5C - 1519 frome line number 276-285 is iphone design css it will be uncommented  once crestron one app fixes it
+      // css is specific for iphone notch design
+      // padding-left: env(safe-area-inset-left);
+      // padding-right: env(safe-area-inset-right);
+
+      // @supports(padding: max(0px)) {
+      //   .ch5-list-horizontal {
+      //     padding-left: max(12px, env(safe-area-inset-left));
+      //     padding-right: max(12px, env(safe-area-inset-right));
+      //   }
+      // }
     }
+
     .list-item {
       width: 100%;
+
       .horizontal-list-item {
         min-height: 100px;
         border-radius: 0;
         flex: 1;
         min-width: 125px;
         padding: 10px 0 10px 10px;
+
         ch5-button {
-          > div {
+          >div {
             min-height: 100px;
           }
+
           .ch5-button {
             opacity: 0.35;
             border: 0;
             border-radius: 0;
             justify-content: center;
+
             &.ch5-button--selected {
               opacity: 1;
             }
+
             .cb-btn {
               width: 125px !important;
             }
           }
         }
+
         .ch5-button--label {
           font-size: rem-calc(20px);
           text-transform: uppercase;
@@ -260,12 +325,14 @@ div#pageStatusIdentifier {
           margin: 0;
           @include text-truncate;
         }
+
         .ch5-button--img {
           margin: 0 auto;
           margin-top: 2px;
           margin-bottom: 2px;
           @include size(63px);
         }
+
         .material-icons.ch5-button--icon,
         .material-icons-outline.ch5-button--icon,
         .material-icons-round.ch5-button--icon,
@@ -280,6 +347,7 @@ div#pageStatusIdentifier {
           font-size: 55px;
         }
       }
+
       &:last-child {
         .horizontal-list-item {
           min-width: 130px;
@@ -287,21 +355,25 @@ div#pageStatusIdentifier {
         }
       }
     }
+
     @include media-breakpoint-down(sm) {
       .list-item {
         .horizontal-list-item {
           min-height: 100px;
+
           ch5-button {
-            > div {
+            >div {
               min-height: 100px;
             }
           }
+
           .ch5-button--img {
             margin-top: 2px;
             margin-bottom: 2px;
             @include size(63px);
           }
         }
+
         &:last-child {
           .horizontal-list-item {
             padding-right: 6px;
@@ -310,9 +382,11 @@ div#pageStatusIdentifier {
       }
     }
   }
+
   .thumb-action {
     display: none;
   }
+
   @include media-breakpoint-maxheight(460px) {
     .thumb-action {
       display: block;
@@ -322,11 +396,13 @@ div#pageStatusIdentifier {
       margin-left: -16px;
       animation: floating 15s infinite ease-in-out;
       z-index: $zindex-fixed;
+
       svg {
         @include size(32px);
         transform: rotate(90deg);
       }
     }
+
     .swiper-thumb {
       position: fixed;
       left: 0;
@@ -336,11 +412,13 @@ div#pageStatusIdentifier {
       -webkit-transform: none;
       transform: none;
       z-index: ($zindex-fixed - 2);
+
       &.open {
         transition: transform 300ms ease-out;
         -webkit-transform: translateY(-100%);
         transform: translateY(-100%);
-        & + .thumb-action {
+
+        &+.thumb-action {
           display: none;
           animation: none;
         }
@@ -348,12 +426,14 @@ div#pageStatusIdentifier {
     }
   }
 }
+
 .no-menu {
   @include size(100%);
 }
 
 .vertical-menu {
   @include size(100%);
+
   .vertical-menu-cols {
     position: relative;
     flex-wrap: nowrap;
@@ -362,18 +442,22 @@ div#pageStatusIdentifier {
     flex-direction: row;
     display: flex;
   }
+
   .vertical-menu-child-col {
     max-width: calc(100% - 60px);
     display: flex;
     flex-grow: 2;
   }
+
   // thumbnail swiper
   .nav-panel {
     position: relative;
+
     @include media-breakpoint-up(md) {
       width: 60px;
     }
   }
+
   .height-for-list-menu {
     height: 100%;
     background-color: #cacaca;
@@ -392,29 +476,35 @@ div#pageStatusIdentifier {
     width: 100%;
     z-index: 9;
     max-width: none !important;
+
     .list-item {
       height: auto;
 
       .vertical-list-item {
         padding-left: 2px;
+
         ch5-button {
           display: block;
+
           .ch5-button {
             padding-left: 7px;
             opacity: 0.35;
             border: 0;
             border-radius: 0;
             @include size(100%, 54px);
+
             .cb-btn {
               text-align: left;
               justify-content: flex-start;
               @include size(100%);
             }
+
             &.ch5-button--selected {
               opacity: 1;
             }
           }
         }
+
         .ch5-button--label {
           font-size: rem-calc(20px);
           text-transform: uppercase;
@@ -424,12 +514,14 @@ div#pageStatusIdentifier {
           margin: 0 0 0 10px;
           @include text-truncate;
         }
+
         .ch5-button--img {
           text-shadow: 1px 1px 1px #777;
           min-width: 36px;
           min-height: 36px;
           width: 36px;
         }
+
         .material-icons.ch5-button--icon,
         .material-icons-outline.ch5-button--icon,
         .material-icons-round.ch5-button--icon,
@@ -443,6 +535,7 @@ div#pageStatusIdentifier {
         .fab {
           font-size: 36px;
         }
+
         .ch5-button--icon {
           font-size: 36px;
           min-width: 36px;
@@ -450,26 +543,32 @@ div#pageStatusIdentifier {
           width: 36px;
         }
       }
+
       &:last-child {
         .vertical-list-item {
           padding-bottom: 4px;
         }
       }
     }
+
     &.open {
       width: 256px !important;
       left: 0;
     }
+
     @include media-breakpoint-down(sm) {
       left: -10px;
+
       .list-item .svgImg {
         @include size(36px);
       }
+
       &.open {
         width: 200px !important;
       }
     }
   }
+
   .trigger-view-col {
     flex-basis: 0;
     flex-grow: 1;
