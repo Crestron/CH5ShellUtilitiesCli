@@ -433,7 +433,7 @@ const templatePageModule = (() => {
 						});
 					}
 
-					CrComLib.subscribeState('s', 'Csig.Ip_Address_fb', (deviceSpecificData) => {
+					CrComLib.subscribeState('s', 'Csig.Csig.Ip_Address_fb', (deviceSpecificData) => {
 						hardButtonsModule.initialize(deviceSpecificData).then(hardButtonResponse => {
 							let responseArrayForNavPages = projectConfigModule.getNavigationPages();
 							if (projectConfigResponse.menuOrientation === "horizontal") {
