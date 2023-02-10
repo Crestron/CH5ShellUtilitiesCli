@@ -4,6 +4,8 @@
 const navigationModule = (() => {
 	'use strict';
 
+	let _pageName = "";
+
 	function goToPage(pageName) {
 		const navigationPages = projectConfigModule.getAllPages();
 		const pageObject = navigationPages.find(page => page.pageName === pageName);
@@ -27,8 +29,9 @@ const navigationModule = (() => {
 			}
 			// LOADING INDICATOR - Uncomment the below line along with code in template-page.js file to enable loading indicator
 			// CrComLib.publishEvent('b', routeId + '-show-app-loader', false);
-			templatePageModule.hideLoading(pageObject); // TODO - check - fix with mutations called in callbakcforhideloading
+			templatePageModule.hideLoading(pageObject); // TODO - check - fix with mutations called in callbackforhideloading
 
+			_pageName = pageName;
 			// Allow components and pages to be transitioned
 			let loadedSubId = CrComLib.subscribeState('o', 'ch5-import-htmlsnippet:' + pageObject.pageName + '-import-page', (value) => {
 				if (value['loaded']) {
@@ -45,9 +48,12 @@ const navigationModule = (() => {
 				}
 			});
 		}, 50);
-
-
 	}
+
+	function selectedPage() {
+		return _pageName;
+	}
+
 	function updateDiagnosticsOnPageChange(pageName) {
 		const pageImporterElement = document.getElementById(pageName + '-import-page');
 		if (!pageImporterElement) return;
@@ -82,8 +88,10 @@ const navigationModule = (() => {
 		templateVersionInfoModule.componentCount.currentCh5Components = currentCh5ComponentsCount;
 		templateVersionInfoModule.updateSubscriptions();
 	}
+
 	return {
 		goToPage,
+		selectedPage,
 		updateDiagnosticsOnPageChange
 	};
 

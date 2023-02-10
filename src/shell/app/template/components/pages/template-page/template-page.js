@@ -1,5 +1,5 @@
 /*jslint es6 */
-/*global CrComLib, webXPanelModule, templateVersionInfoModule, projectConfigModule, featureModule, templateAppLoaderModule, translateModule, serviceModule, utilsModule, navigationModule */
+/*global CrComLib, webXPanelModule, hardButtonsModule, templateVersionInfoModule, projectConfigModule, featureModule, templateAppLoaderModule, translateModule, serviceModule, utilsModule, navigationModule */
 
 const templatePageModule = (() => {
 	'use strict';
@@ -433,38 +433,43 @@ const templatePageModule = (() => {
 						});
 					}
 
-					let responseArrayForNavPages = projectConfigModule.getNavigationPages();
-					if (projectConfigResponse.menuOrientation === "horizontal") {
+					CrComLib.subscribeState('s', 'Csig.Ip_Address_fb', (deviceSpecificData) => {
+						hardButtonsModule.initialize(deviceSpecificData).then(hardButtonResponse => {
+							let responseArrayForNavPages = projectConfigModule.getNavigationPages();
+							if (projectConfigResponse.menuOrientation === "horizontal") {
 
-						// window.customElements.whenDefined('horizontal-menu-swiper-thumb').then(()=>{
+								// window.customElements.whenDefined('horizontal-menu-swiper-thumb').then(()=>{
 
-						let loadListCh5 = CrComLib.subscribeState('o', 'ch5-list', (value) => {
-							if (value['loaded'] && (value['id'] === "horizontal-menu-swiper-thumb")) {
-								loadCh5ListForMenu(projectConfigResponse, responseArrayForNavPages);
+								let loadListCh5 = CrComLib.subscribeState('o', 'ch5-list', (value) => {
+									if (value['loaded'] && (value['id'] === "horizontal-menu-swiper-thumb")) {
+										loadCh5ListForMenu(projectConfigResponse, responseArrayForNavPages);
+										connectToWebXPanel(projectConfigResponse);
+										navigateToFirstPage(projectConfigResponse, responseArrayForNavPages);
+										setTimeout(() => {
+											CrComLib.unsubscribeState('o', 'ch5-list', loadListCh5);
+											loadListCh5 = null;
+										});
+									}
+								});
+							} else if (projectConfigResponse.menuOrientation === "vertical") {
+								let loadListCh5 = CrComLib.subscribeState('o', 'ch5-list', (value) => {
+									if (value['loaded'] && (value['id'] === "vertical-menu-swiper-thumb")) {
+										loadCh5ListForMenu(projectConfigResponse, responseArrayForNavPages);
+										connectToWebXPanel(projectConfigResponse);
+										navigateToFirstPage(projectConfigResponse, responseArrayForNavPages);
+										setTimeout(() => {
+											CrComLib.unsubscribeState('o', 'ch5-list', loadListCh5);
+											loadListCh5 = null;
+										});
+									}
+								});
+							} else {
 								connectToWebXPanel(projectConfigResponse);
 								navigateToFirstPage(projectConfigResponse, responseArrayForNavPages);
-								setTimeout(() => {
-									CrComLib.unsubscribeState('o', 'ch5-list', loadListCh5);
-									loadListCh5 = null;
-								});
 							}
 						});
-					} else if (projectConfigResponse.menuOrientation === "vertical") {
-						let loadListCh5 = CrComLib.subscribeState('o', 'ch5-list', (value) => {
-							if (value['loaded'] && (value['id'] === "vertical-menu-swiper-thumb")) {
-								loadCh5ListForMenu(projectConfigResponse, responseArrayForNavPages);
-								connectToWebXPanel(projectConfigResponse);
-								navigateToFirstPage(projectConfigResponse, responseArrayForNavPages);
-								setTimeout(() => {
-									CrComLib.unsubscribeState('o', 'ch5-list', loadListCh5);
-									loadListCh5 = null;
-								});
-							}
-						});
-					} else {
-						connectToWebXPanel(projectConfigResponse);
-						navigateToFirstPage(projectConfigResponse, responseArrayForNavPages);
-					}
+					});
+
 				});
 			});
 

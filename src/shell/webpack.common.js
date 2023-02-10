@@ -34,6 +34,11 @@ function getConfig(envPath) {
       from: `${srcRoot}/project-config.json`,
       context: "app/assets/data"
     },
+    hardButtons: {
+      to: `${distPath}/assets/data`,
+      from: `${srcRoot}/hard-buttons.json`,
+      context: "app/assets/data"
+    },
     webXPanelContract: {
       to: `${distPath}/config/`,
       from: `./config/*.cse2j`
