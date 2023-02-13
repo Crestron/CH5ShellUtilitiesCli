@@ -1,0 +1,127 @@
+{
+  "project": {
+    "signals": [
+      {
+        "hardButtonSignal": "Csig.Hard_Button_1.Press",
+        "digitalJoin": "",
+        "navigationPageName": ""
+      },
+      {
+        "hardButtonSignal": "Csig.Hard_Button_2.Press",
+        "digitalJoin": "",
+        "navigationPageName": ""
+      },
+      {
+        "hardButtonSignal": "Csig.Hard_Button_3.Press",
+        "digitalJoin": "",
+        "navigationPageName": ""
+      },
+      {
+        "hardButtonSignal": "Csig.Hard_Button_4.Press",
+        "digitalJoin": "",
+        "navigationPageName": ""
+      },
+      {
+        "hardButtonSignal": "Csig.Hard_Button_5.Press",
+        "digitalJoin": "",
+        "navigationPageName": ""
+      }
+    ],
+    "pages": [
+      {
+        "pageName": "page1",
+        "signals": [
+          {
+            "hardButtonSignal": "Csig.Hard_Button_1.Press",
+            "digitalJoin": "",
+            "navigationPageName": ""
+          },
+          {
+            "hardButtonSignal": "Csig.Hard_Button_2.Press",
+            "digitalJoin": "",
+            "navigationPageName": ""
+          },
+          {
+            "hardButtonSignal": "Csig.Hard_Button_3.Press",
+            "digitalJoin": "",
+            "navigationPageName": ""
+          },
+          {
+            "hardButtonSignal": "Csig.Hard_Button_4.Press",
+            "digitalJoin": "",
+            "navigationPageName": ""
+          },
+          {
+            "hardButtonSignal": "Csig.Hard_Button_5.Press",
+            "digitalJoin": "",
+            "navigationPageName": ""
+          }
+        ]
+      }      
+    ],
+    "devices": [
+      {
+        "deviceName": "TSW-1070",
+        "signals": [
+          {
+            "hardButtonSignal": "Csig.Hard_Button_1.Press",
+            "digitalJoin": "",
+            "navigationPageName": ""
+          },
+          {
+            "hardButtonSignal": "Csig.Hard_Button_2.Press",
+            "digitalJoin": "",
+            "navigationPageName": ""
+          },
+          {
+            "hardButtonSignal": "Csig.Hard_Button_3.Press",
+            "digitalJoin": "",
+            "navigationPageName": ""
+          },
+          {
+            "hardButtonSignal": "Csig.Hard_Button_4.Press",
+            "digitalJoin": "",
+            "navigationPageName": ""
+          },
+          {
+            "hardButtonSignal": "Csig.Hard_Button_5.Press",
+            "digitalJoin": "",
+            "navigationPageName": ""
+          }
+        ],
+        "pages": [
+          {
+            "pageName": "page1",
+            "signals": [
+              {
+                "hardButtonSignal": "Csig.Hard_Button_1.Press",
+                "digitalJoin": "",
+                "navigationPageName": ""
+              },
+              {
+                "hardButtonSignal": "Csig.Hard_Button_2.Press",
+                "digitalJoin": "",
+                "navigationPageName": ""
+              },
+              {
+                "hardButtonSignal": "Csig.Hard_Button_3.Press",
+                "digitalJoin": "",
+                "navigationPageName": ""
+              },
+              {
+                "hardButtonSignal": "Csig.Hard_Button_4.Press",
+                "digitalJoin": "",
+                "navigationPageName": ""
+              },
+              {
+                "hardButtonSignal": "Csig.Hard_Button_5.Press",
+                "digitalJoin": "",
+                "navigationPageName": ""
+              }
+            ]
+          }          
+        ]
+      }
+    ]
+  }
+}
