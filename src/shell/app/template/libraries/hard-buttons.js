@@ -8,8 +8,8 @@ const hardButtonsModule = (() => {
 	const REPEAT_DIGITAL_PERIOD = 200;
 	const MAX_REPEAT_DIGITALS = 30000 / REPEAT_DIGITAL_PERIOD;
 
-	let currentDevice = "TSW-1070"; // "";
-	let currentPage = "page1"; // "";
+	let currentDevice = "";
+	let currentPage = "";
 
 	/* 
 	1. Find all unique signal names
@@ -190,10 +190,11 @@ const hardButtonsModule = (() => {
 				CrComLib.publishEvent('b', signalValue, response);
 				repeatDigitalInterval = window.setInterval(() => {
 					log("Prioritized signal name: ", signalValue, ' for response ', response);
+					CrComLib.publishEvent('b', signalValue, response);
 					if (++numRepeatDigitals >= MAX_REPEAT_DIGITALS) {
 						console.warn("Hard Button MAXIMUM Repeat digitals sent");
 						window.clearInterval(repeatDigitalInterval);
-						CrComLib.publishEvent('b', signalValue, response);
+						CrComLib.publishEvent('b', signalValue, !response);
 						if (repeatDigitalInterval !== null) {
 							window.clearInterval(repeatDigitalInterval);
 						}
