@@ -123,7 +123,8 @@ const hardButtonsModule = (() => {
 			if (selectedSignal.hardButtonSignal === signal) {
 				if (selectedSignal.navigationPageName !== "") {
 					navigationPageName = selectedSignal.navigationPageName;
-				} else if (selectedSignal.digitalJoin !== "") {
+				}
+				if (selectedSignal.digitalJoin !== "") {
 					signalValue = selectedSignal.digitalJoin;
 				}
 			}
@@ -136,7 +137,8 @@ const hardButtonsModule = (() => {
 					if (selectedSignal.hardButtonSignal === signal) {
 						if (selectedSignal.navigationPageName !== "") {
 							navigationPageName = selectedSignal.navigationPageName;
-						} else if (selectedSignal.digitalJoin !== "") {
+						}
+						if (selectedSignal.digitalJoin !== "") {
 							signalValue = selectedSignal.digitalJoin;
 						}
 					}
@@ -151,7 +153,8 @@ const hardButtonsModule = (() => {
 					if (selectedSignal.hardButtonSignal === signal) {
 						if (selectedSignal.navigationPageName !== "") {
 							navigationPageName = selectedSignal.navigationPageName;
-						} else if (selectedSignal.digitalJoin !== "") {
+						}
+						if (selectedSignal.digitalJoin !== "") {
 							signalValue = selectedSignal.digitalJoin;
 						}
 					}
@@ -164,7 +167,8 @@ const hardButtonsModule = (() => {
 							if (selectedSignal.hardButtonSignal === signal) {
 								if (selectedSignal.navigationPageName !== "") {
 									navigationPageName = selectedSignal.navigationPageName;
-								} else if (selectedSignal.digitalJoin !== "") {
+								}
+								if (selectedSignal.digitalJoin !== "") {
 									signalValue = selectedSignal.digitalJoin;
 								}
 							}
@@ -177,14 +181,15 @@ const hardButtonsModule = (() => {
 		log("signalValue: ", signalValue);
 		log("navigationPageName: ", navigationPageName);
 		if (navigationPageName !== "") {
-			if (response === false) {
+			if (response === true) {
 				log("currentPage.toLowerCase().trim(): ", currentPage.toLowerCase().trim());
 				log("navigationPageName.toLowerCase().trim(): ", navigationPageName.toLowerCase().trim());
 				if (currentPage.toLowerCase().trim() !== navigationPageName.toLowerCase().trim()) {
 					templatePageModule.navigateTriggerViewByPageName(navigationPageName);
 				}
 			}
-		} else if (signalValue != "") {
+		}
+		if (signalValue != "") {
 			if (response === true) {
 				let numRepeatDigitals = 0;
 				CrComLib.publishEvent('b', signalValue, response);
