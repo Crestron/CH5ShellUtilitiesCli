@@ -89,7 +89,6 @@ const hardButtonsModule = (() => {
 							}
 							hardButtonClicked(hardButtonData, iteratedSignal.signalName, response);
 						}
-						// iteratedSignal.isReady = true; // Required for first time to ensure that subscribe is called and nothing should happen
 					});
 				}
 				resolve(true);
