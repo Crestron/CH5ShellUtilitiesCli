@@ -1,5 +1,5 @@
 /*jslint es6 */
-/*global CrComLib, projectConfigModule, templatePageModule, translateModule, serviceModule, utilsModule, templateAppLoaderModule, templateVersionInfoModule */
+/*global CrComLib, projectConfigModule, navigationModule, templatePageModule, translateModule, serviceModule, utilsModule, templateAppLoaderModule, templateVersionInfoModule */
 
 const hardButtonsModule = (() => {
 	'use strict';
@@ -10,6 +10,7 @@ const hardButtonsModule = (() => {
 
 	let currentDevice = "";
 	let currentPage = "";
+	let clickedOnPage = "";
 
 	/* 
 	1. Find all unique signal names
@@ -81,11 +82,14 @@ const hardButtonsModule = (() => {
 				for (let i = 0; i < signalNames.length; i++) {
 					const iteratedSignal = signalNames[i];
 					CrComLib.subscribeState('b', iteratedSignal.signalName, (response) => {
-						log("CrComLib.subscribeState: ", iteratedSignal.signalName, response);
-						if (iteratedSignal.isReady === true) {
+						log("CrComLib.subscribeState: ", iteratedSignal.signalName, response, clickedOnPage);
+						if (clickedOnPage !== "" || response === true) {
+							if (response === true) {
+								clickedOnPage = navigationModule.selectedPage();
+							}
 							hardButtonClicked(hardButtonData, iteratedSignal.signalName, response);
 						}
-						iteratedSignal.isReady = true; // Required for first time to ensure that subscribe is called and nothing should happen
+						// iteratedSignal.isReady = true; // Required for first time to ensure that subscribe is called and nothing should happen
 					});
 				}
 				resolve(true);
@@ -131,7 +135,7 @@ const hardButtonsModule = (() => {
 		}
 		for (let j = 0; j < hardButtonsArray.project.pages.length; j++) {
 			const selectedPage = hardButtonsArray.project.pages[j];
-			if (selectedPage.pageName === currentPage) {
+			if (selectedPage.pageName === clickedOnPage) {
 				for (let i = 0; i < selectedPage.signals.length; i++) {
 					const selectedSignal = selectedPage.signals[i];
 					if (selectedSignal.hardButtonSignal === signal) {
@@ -161,7 +165,7 @@ const hardButtonsModule = (() => {
 				}
 				for (let j = 0; j < selectedDevice.pages.length; j++) {
 					const selectedPage = selectedDevice.pages[j];
-					if (selectedPage.pageName === currentPage) {
+					if (selectedPage.pageName === clickedOnPage) {
 						for (let i = 0; i < selectedPage.signals.length; i++) {
 							const selectedSignal = selectedPage.signals[i];
 							if (selectedSignal.hardButtonSignal === signal) {
