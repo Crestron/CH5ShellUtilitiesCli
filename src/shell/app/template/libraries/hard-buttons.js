@@ -194,8 +194,11 @@ const hardButtonsModule = (() => {
 		}
 		if (signalValue != "") {
 			if (response === true) {
-				let numRepeatDigitals = 0;
 				CrComLib.publishEvent('b', signalValue, response);
+				if (repeatDigitalInterval !== null) {
+					window.clearInterval(repeatDigitalInterval);
+				}
+				let numRepeatDigitals = 0;
 				repeatDigitalInterval = window.setInterval(() => {
 					log("Prioritized signal name: ", signalValue, ' for response ', response);
 					CrComLib.publishEvent('b', signalValue, response);
