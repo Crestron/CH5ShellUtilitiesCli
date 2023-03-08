@@ -93,7 +93,11 @@
           "type": "string",
           "title": "data-ch5-noshow-type",
           "description": "The 'data-ch5-noshow-type' custom attribute is related to the HTML custom attribute 'data-ch5-show' and overrides the way in which a Component is made invisible. The Crestron Components library will default the 'noshow' type based upon the element type.",
-          "pattern": "^[a-zA-Z0-9_.-]{1,100}$"
+          "enum": [
+            "visibility",
+            "display",
+            "remove"
+          ]
         },
         "data-ch5-appendclass": {
           "type": "string",
@@ -675,7 +679,7 @@
                     "type": "string",
                     "title": "Page Name",
                     "description": "A page name for the HTML page.",
-                    "pattern": "^[a-zA-Z][a-zA-Z0-9-_$]*$"
+                    "pattern": "^[a-zA-Z][a-zA-Z0-9-_ $]*$"
                   },
                   "fullPath": {
                     "type": "string",
@@ -855,7 +859,7 @@
                     "default": "",
                     "description": "A name for the widget.",
                     "title": "widgetName",
-                    "pattern": "^[a-zA-Z][a-zA-Z0-9-_$]*$"
+                    "pattern": "^[a-zA-Z][a-zA-Z0-9-_.$]*$"
                   },
                   "fullPath": {
                     "description": "Adds a full path for the widget.",
