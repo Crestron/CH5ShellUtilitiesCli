@@ -13,13 +13,13 @@
           "type": "string",
           "title": "customClass",
           "description": "The signal can contain one or more custom CSS classes separated by spaces.",
-          "pattern": "^[a-zA-Z0-9_]{1,100}$"
+          "pattern": "^[a-zA-Z0-9_.-]{1,100}$"
         },
         "customStyle": {
           "type": "string",
           "title": "customStyle",
           "description": "The signal can contain a list of space-delimited style classes applied on the component.",
-          "pattern": "^[a-zA-Z0-9_]{1,100}$"
+          "pattern": "^[a-zA-Z0-9_.-]{1,100}$"
         },
         "debug": {
           "type": "boolean",
@@ -45,103 +45,103 @@
           "type": "string",
           "title": "receiveStateCustomClass",
           "description": "The value of this signal will be applied as an equivalent property on 'customClass'. This change will remove the prior value and apply the new value.",
-          "pattern": "^[a-zA-Z0-9_]{1,100}$"
+          "pattern": "^[a-zA-Z0-9_.-]{1,100}$"
         },
         "receiveStateCustomStyle": {
           "type": "string",
           "title": "receiveStateCustomStyle",
           "description": "The value of this signal will be applied as an equivalent property on 'styleClass'. This change will remove the prior value and apply the new value.",
-          "pattern": "^[a-zA-Z0-9_]{1,100}$"
+          "pattern": "^[a-zA-Z0-9_.-]{1,100}$"
         },
         "receiveStateEnable": {
           "type": "string",
           "title": "receiveStateEnable",
           "description": "When true, the Boolean value of the signal determines if the component is enabled. Note that the signal name is provided, and the value of the signal has the opposite convention of the 'disabled' attribute. This is to provide consistency with current programming practices.",
-          "pattern": "^[a-zA-Z0-9_]{1,100}$"
+          "pattern": "^[a-zA-Z0-9_.-]{1,100}$"
         },
         "receiveStateShow": {
           "type": "string",
           "title": "receiveStateShow",
           "description": "When true, the Boolean value of the signal determines if the component is visible.",
-          "pattern": "^[a-zA-Z0-9_]{1,100}$"
+          "pattern": "^[a-zA-Z0-9_.-]{1,100}$"
         },
         "receiveStateShowPulse": {
           "type": "string",
           "title": "receiveStateShowPulse",
           "description": "On transition from false to true, this signal directs the component to become visible.",
-          "pattern": "^[a-zA-Z0-9_]{1,100}$"
+          "pattern": "^[a-zA-Z0-9_.-]{1,100}$"
         },
         "receiveStateHidePulse": {
           "type": "string",
           "title": "receiveStateHidePulse",
           "description": "On transition from false to true, this signal will direct if the component is no longer visible.",
-          "pattern": "^[a-zA-Z0-9_]{1,100}$"
+          "pattern": "^[a-zA-Z0-9_.-]{1,100}$"
         },
         "sendEventOnShow": {
           "type": "string",
           "title": "sendEventOnShow",
           "description": "This has a Boolean value of true when the component is visible and false when not visible. Note that even if component is completely covered by other visible elements, it is still considered visible.",
-          "pattern": "^[a-zA-Z0-9_]{1,100}$"
+          "pattern": "^[a-zA-Z0-9_.-]{1,100}$"
         },
         "data-ch5-show": {
           "type": "string",
           "title": "data-ch5-show",
           "description": "Specifies whether or not an element is visible based upon the value of the state. Works with standard HTML elements. The data-ch5-noshow-type attribute can be supplied to set how an HTML element will be hidden from view.",
-          "pattern": "^[a-zA-Z0-9_]{1,100}$"
+          "pattern": "^[a-zA-Z0-9_.-]{1,100}$"
         },
         "data-ch5-noshow-type": {
           "type": "string",
           "title": "data-ch5-noshow-type",
           "description": "The 'data-ch5-noshow-type' custom attribute is related to the HTML custom attribute 'data-ch5-show' and overrides the way in which a Component is made invisible. The Crestron Components library will default the 'noshow' type based upon the element type.",
-          "pattern": "^[a-zA-Z0-9_]{1,100}$"
+          "pattern": "^[a-zA-Z0-9_.-]{1,100}$"
         },
         "data-ch5-appendclass": {
           "type": "string",
           "title": "data-ch5-appendclass",
           "description": "The 'data-ch5-appendclass' custom HTML attribute appends the value of a signal to the 'class' attribute on a standard HTML element. A change in signal value will remove the prior value of the signal and append the new value.",
-          "pattern": "^[a-zA-Z0-9_]{1,100}$"
+          "pattern": "^[a-zA-Z0-9_.-]{1,100}$"
         },
         "data-ch5-innerhtml": {
           "type": "string",
           "title": "data-ch5-innerhtml",
           "description": "The 'data-ch5-innerhtml' custom HTML attribute allows for dynamic HTML content to be applied to standard HTML elements such as <div>. This is a very powerful construct that, when used incorrecly, can lead to functional and performance issues if used to inject badly-formed HTML. The attribute value is signalScript as described in the ch5.subscribeStateScript utility function description.",
-          "pattern": "^[a-zA-Z0-9_]{1,100}$"
+          "pattern": "^[a-zA-Z0-9_.-]{1,100}$"
         },
         "data-ch5-showpulse": {
           "type": "string",
           "title": "data-ch5-showpulse",
           "description": "Works similarly to data-ch5-show, but does not offer toggle functionality (can only make the elements visible). Works with standard HTML elements. The data-ch5-noshow-type attribute can be supplied to set how an HTML element will be hidden from view.",
-          "pattern": "^[a-zA-Z0-9_]{1,100}$"
+          "pattern": "^[a-zA-Z0-9_.-]{1,100}$"
         },
         "data-ch5-textcontent": {
           "type": "string",
           "title": "data-ch5-textcontent",
           "description": "The 'data-ch5-textcontent' custom HTML attribute allows for dynamic text content to be applied to standard HTML elements such as <p> and <h1-6>. The attribute value is signalScript as described in the ch5.subscribeStateScript utility function description.",
-          "pattern": "^[a-zA-Z0-9_]{1,100}$"
+          "pattern": "^[a-zA-Z0-9_.-]{1,100}$"
         },
         "data-ch5-appendstyle": {
           "type": "string",
           "title": "data-ch5-appendstyle",
           "description": "The 'data-ch5-appendstyle' custom HTML attribute appends the value of a signal to the 'style' attribute on a standard HTML element. A signal value change will remove the prior value of the signal and append the new value.",
-          "pattern": "^[a-zA-Z0-9_]{1,100}$"
+          "pattern": "^[a-zA-Z0-9_.-]{1,100}$"
         },
         "data-ch5-hidepulse": {
           "type": "string",
           "title": "data-ch5-hidepulse",
           "description": "Works similarly to data-ch5-show, but does not offer toggle functionality (can only hide the elements). Works with standard HTML elements. The data-ch5-noshow-type attribute can be supplied to set how an HTML element will be hidden from view.",
-          "pattern": "^[a-zA-Z0-9_]{1,100}$"
+          "pattern": "^[a-zA-Z0-9_.-]{1,100}$"
         },
         "data-ch5-keep-sig-subscription": {
           "type": "string",
           "title": "data-ch5-keep-sig-subscription",
           "description": "Keeps the state subscription key generated by hidepulse, showpulse, or show custom attributes.",
-          "pattern": "^[a-zA-Z0-9_]{1,100}$"
+          "pattern": "^[a-zA-Z0-9_.-]{1,100}$"
         },
         "data-ch5-i18n": {
           "type": "string",
           "title": "data-ch5-i18n",
           "description": "The 'data-ch5-i18n' custom HTML attribute allows for text content translation to be applied to standard HTML elements.",
-          "pattern": "^[a-zA-Z0-9_]{1,100}$"
+          "pattern": "^[a-zA-Z0-9_.-]{1,100}$"
         }
       }
     }
