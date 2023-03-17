@@ -574,16 +574,6 @@ const templatePageModule = (() => {
 		}
 	}
 
-	function callDiagnosticOnPageChange(page) {
-		projectConfigModule.projectConfigData().then((projectConfigResponse) => {
-			if (projectConfigResponse.header.display === true && projectConfigResponse.header.displayInfo === true) {
-				setTimeout(() => {
-					navigationModule.updateDiagnosticsOnPageChange(page.pageName)
-				});
-			}
-		});
-	}
-
 	window.addEventListener("orientationchange", function () {
 		try {
 			templatePageModule.setMenuActive();
