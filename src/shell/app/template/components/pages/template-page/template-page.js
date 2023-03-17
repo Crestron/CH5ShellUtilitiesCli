@@ -562,7 +562,7 @@ const templatePageModule = (() => {
 				firstLoad = true;
 				const listOfPages = projectConfigModule.getNavigationPages();
 				setTimeout(() => {
-					listOfPages.forEach((page) => page.preloadPage ? callDiagnosticOnPageChange(page) : '');
+					listOfPages.forEach((page) => page.preloadPage ? navigationModule.updateDiagnosticsOnPageChange(page.pageName) : '');
 				}, pageLoadTimeout);
 
 			}
@@ -576,7 +576,7 @@ const templatePageModule = (() => {
 
 	function callDiagnosticOnPageChange(page) {
 		projectConfigModule.projectConfigData().then((projectConfigResponse) => {
-			if (projectConfigResponse.header.displayInfo) {
+			if (projectConfigResponse.header.display === true && projectConfigResponse.header.displayInfo === true) {
 				setTimeout(() => {
 					navigationModule.updateDiagnosticsOnPageChange(page.pageName)
 				});
