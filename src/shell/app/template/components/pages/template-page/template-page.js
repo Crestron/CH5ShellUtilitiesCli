@@ -511,9 +511,9 @@ const templatePageModule = (() => {
 		for (let i = 0; i < responseArrayForNavPages.length; i++) {
 			const menu = document.getElementById("menu-list-id-" + i);
 			if (menu) {
-				if (responseArrayForNavPages[i].navigation.iconUrl !== "") {
+				if (responseArrayForNavPages[i].navigation.iconUrl && responseArrayForNavPages[i].navigation.iconUrl !== "") {
 					menu.setAttribute("iconUrl", responseArrayForNavPages[i].navigation.iconUrl);
-				} else if (responseArrayForNavPages[i].navigation.iconClass !== "") {
+				} else if (responseArrayForNavPages[i].navigation.iconClass && responseArrayForNavPages[i].navigation.iconClass !== "") {
 					menu.setAttribute("iconClass", responseArrayForNavPages[i].navigation.iconClass);
 				}
 				if (responseArrayForNavPages[i].navigation.isI18nLabel === true) {
@@ -562,8 +562,9 @@ const templatePageModule = (() => {
 				firstLoad = true;
 				const listOfPages = projectConfigModule.getNavigationPages();
 				setTimeout(() => {
-					listOfPages.forEach((page) => page.preloadPage ? setTimeout(() => navigationModule.updateDiagnosticsOnPageChange(page.pageName)) : '');
+					listOfPages.forEach((page) => page.preloadPage ? callDiagnosticOnPageChange(page) : '');
 				}, pageLoadTimeout);
+
 			}
 			document.getElementById("loader").style.display = "none";
 		} else {
@@ -571,7 +572,16 @@ const templatePageModule = (() => {
 				hideLoading(pageObject);
 			}, 500);
 		}
+	}
 
+	function callDiagnosticOnPageChange(page) {
+		projectConfigModule.projectConfigData().then((projectConfigResponse) => {
+			if (projectConfigResponse.header.displayInfo) {
+				setTimeout(() => {
+					navigationModule.updateDiagnosticsOnPageChange(page.pageName)
+				});
+			}
+		});
 	}
 
 	window.addEventListener("orientationchange", function () {
