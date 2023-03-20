@@ -52,7 +52,7 @@ const navigationModule = (() => {
 
 	function updateDiagnosticsOnPageChange(pageName) {
 		projectConfigModule.projectConfigData().then((projectConfigResponse) => {
-			if (projectConfigResponse.header.display === true && projectConfigResponse.header.displayInfo === true && projectConfigResponse.header.component === ""){
+			if (projectConfigResponse.header.display === true && projectConfigResponse.header.displayInfo === true && projectConfigResponse.header.$component === ""){
 				const pageImporterElement = document.getElementById(pageName + '-import-page');
 				if (!pageImporterElement) return;
 
