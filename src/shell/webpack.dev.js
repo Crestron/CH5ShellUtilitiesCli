@@ -64,7 +64,7 @@ module.exports = merge(common("dev"), {
         match: ["./app/project-config.json"], fn: function (event, file) {
           const reset = "\x1b[0m";
           const fgMagenta = "\x1b[35m";
-          console.warn(`${fgMagenta}[npm run start / yarn start] Detected ${event} to ${file}.  Please Restart.${reset}`);
+          console.warn(`${fgMagenta}[npm run start] Detected ${event} to ${file}.  Please Restart.${reset}`);
           process.exit(0);
         }
       }

@@ -1,5 +1,5 @@
 /*jslint es6 */
-/*global CrComLib, webXPanelModule, templateVersionInfoModule, projectConfigModule, featureModule, templateAppLoaderModule, translateModule, serviceModule, utilsModule, navigationModule */
+/*global CrComLib, webXPanelModule, hardButtonsModule, templateVersionInfoModule, projectConfigModule, featureModule, templateAppLoaderModule, translateModule, serviceModule, utilsModule, navigationModule */
 
 const templatePageModule = (() => {
 	'use strict';
@@ -433,38 +433,43 @@ const templatePageModule = (() => {
 						});
 					}
 
-					let responseArrayForNavPages = projectConfigModule.getNavigationPages();
-					if (projectConfigResponse.menuOrientation === "horizontal") {
+					CrComLib.subscribeState('s', 'Csig.Product_Name_Text_Join_fb', (deviceSpecificData) => {
+						hardButtonsModule.initialize(deviceSpecificData).then(hardButtonResponse => {
+							let responseArrayForNavPages = projectConfigModule.getNavigationPages();
+							if (projectConfigResponse.menuOrientation === "horizontal") {
 
-						// window.customElements.whenDefined('horizontal-menu-swiper-thumb').then(()=>{
+								// window.customElements.whenDefined('horizontal-menu-swiper-thumb').then(()=>{
 
-						let loadListCh5 = CrComLib.subscribeState('o', 'ch5-list', (value) => {
-							if (value['loaded'] && (value['id'] === "horizontal-menu-swiper-thumb")) {
-								loadCh5ListForMenu(projectConfigResponse, responseArrayForNavPages);
+								let loadListCh5 = CrComLib.subscribeState('o', 'ch5-list', (value) => {
+									if (value['loaded'] && (value['id'] === "horizontal-menu-swiper-thumb")) {
+										loadCh5ListForMenu(projectConfigResponse, responseArrayForNavPages);
+										connectToWebXPanel(projectConfigResponse);
+										navigateToFirstPage(projectConfigResponse, responseArrayForNavPages);
+										setTimeout(() => {
+											CrComLib.unsubscribeState('o', 'ch5-list', loadListCh5);
+											loadListCh5 = null;
+										});
+									}
+								});
+							} else if (projectConfigResponse.menuOrientation === "vertical") {
+								let loadListCh5 = CrComLib.subscribeState('o', 'ch5-list', (value) => {
+									if (value['loaded'] && (value['id'] === "vertical-menu-swiper-thumb")) {
+										loadCh5ListForMenu(projectConfigResponse, responseArrayForNavPages);
+										connectToWebXPanel(projectConfigResponse);
+										navigateToFirstPage(projectConfigResponse, responseArrayForNavPages);
+										setTimeout(() => {
+											CrComLib.unsubscribeState('o', 'ch5-list', loadListCh5);
+											loadListCh5 = null;
+										});
+									}
+								});
+							} else {
 								connectToWebXPanel(projectConfigResponse);
 								navigateToFirstPage(projectConfigResponse, responseArrayForNavPages);
-								setTimeout(() => {
-									CrComLib.unsubscribeState('o', 'ch5-list', loadListCh5);
-									loadListCh5 = null;
-								});
 							}
 						});
-					} else if (projectConfigResponse.menuOrientation === "vertical") {
-						let loadListCh5 = CrComLib.subscribeState('o', 'ch5-list', (value) => {
-							if (value['loaded'] && (value['id'] === "vertical-menu-swiper-thumb")) {
-								loadCh5ListForMenu(projectConfigResponse, responseArrayForNavPages);
-								connectToWebXPanel(projectConfigResponse);
-								navigateToFirstPage(projectConfigResponse, responseArrayForNavPages);
-								setTimeout(() => {
-									CrComLib.unsubscribeState('o', 'ch5-list', loadListCh5);
-									loadListCh5 = null;
-								});
-							}
-						});
-					} else {
-						connectToWebXPanel(projectConfigResponse);
-						navigateToFirstPage(projectConfigResponse, responseArrayForNavPages);
-					}
+					});
+
 				});
 			});
 
@@ -506,9 +511,9 @@ const templatePageModule = (() => {
 		for (let i = 0; i < responseArrayForNavPages.length; i++) {
 			const menu = document.getElementById("menu-list-id-" + i);
 			if (menu) {
-				if (responseArrayForNavPages[i].navigation.iconUrl !== "") {
+				if (responseArrayForNavPages[i].navigation.iconUrl && responseArrayForNavPages[i].navigation.iconUrl !== "") {
 					menu.setAttribute("iconUrl", responseArrayForNavPages[i].navigation.iconUrl);
-				} else if (responseArrayForNavPages[i].navigation.iconClass !== "") {
+				} else if (responseArrayForNavPages[i].navigation.iconClass && responseArrayForNavPages[i].navigation.iconClass !== "") {
 					menu.setAttribute("iconClass", responseArrayForNavPages[i].navigation.iconClass);
 				}
 				if (responseArrayForNavPages[i].navigation.isI18nLabel === true) {
@@ -557,8 +562,9 @@ const templatePageModule = (() => {
 				firstLoad = true;
 				const listOfPages = projectConfigModule.getNavigationPages();
 				setTimeout(() => {
-					listOfPages.forEach((page) => page.preloadPage ? setTimeout(() => navigationModule.updateDiagnosticsOnPageChange(page.pageName)) : '');
+					listOfPages.forEach((page) => page.preloadPage ? navigationModule.updateDiagnosticsOnPageChange(page.pageName) : '');
 				}, pageLoadTimeout);
+
 			}
 			document.getElementById("loader").style.display = "none";
 		} else {
@@ -566,7 +572,6 @@ const templatePageModule = (() => {
 				hideLoading(pageObject);
 			}, 500);
 		}
-
 	}
 
 	window.addEventListener("orientationchange", function () {
