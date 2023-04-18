@@ -14,6 +14,11 @@ const srcTemplateRoot = appConfig.srcTemplateRoot;
 const srcProjectRoot = appConfig.srcProjectRoot;
 const fontAwesomeCssBasePath = appConfig.fontAwesomeCssBasePath;
 const materialIconsCssBasePath = appConfig.materialIconsCssBasePath;
+const sgCssBasePath = appConfig.sgCssBasePath;
+const sgIconsBasePath = appConfig.sgIconsBasePath;
+const sgMediaTransportAccent = appConfig.sgMediaTransportAccent;
+const sgMediaTransportDark = appConfig.sgMediaTransportDark;
+const sgMediaTransportLight = appConfig.sgMediaTransportLight;
 const baseThemePath = appConfig.baseThemePath;
 
 function getConfig(envPath) {
@@ -28,6 +33,26 @@ function getConfig(envPath) {
     layoutCss: {
       to: `${distPath}/assets/css`,
       from: `${baseThemePath}`,
+    },
+    sgCss: {
+      to: `${distPath}/assets/css/sg.css`,
+      from: `${sgCssBasePath}`,
+    },
+    sgIcons: {
+      to: `${distPath}/assets/svgs/icons`,
+      from: `${sgIconsBasePath}`,
+    },
+    sgMediaAccents: {
+      to: `${distPath}/assets/svgs/media-transports/accents`,
+      from: `${sgMediaTransportAccent}`,
+    },
+    sgMediaDark: {
+      to: `${distPath}/assets/svgs/media-transports/dark`,
+      from: `${sgMediaTransportDark}`,
+    },
+    sgMediaLight: {
+      to: `${distPath}/assets/svgs/media-transports/light`,
+      from: `${sgMediaTransportLight}`,
     },
     projectConfig: {
       to: `${distPath}/assets/data`,
