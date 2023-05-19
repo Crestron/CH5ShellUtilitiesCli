@@ -204,6 +204,15 @@
                             }
                           },
                           "additionalProperties": false
+                        },
+                        "offset": {
+                          "$id": "#/properties/cues/items/anyOf/0/properties/actions/items/anyOf/0/properties/offset",
+                          "type": "number",
+                          "title": "The offset field",
+                          "description": "The offset field reads the current value of the analog and adds or substracts the offset value",
+                          "examples": [
+                            0, 1, 5, -1, -6
+                          ]
                         }
                       },
                       "additionalProperties": false
