@@ -80,7 +80,12 @@
           "title": "sendEventOnShow",
           "description": "This has a Boolean value of true when the component is visible and false when not visible. Note that even if component is completely covered by other visible elements, it is still considered visible.",
           "pattern": "^[a-zA-Z0-9_.-]{1,100}$"
-        },
+        }
+      }
+    },
+    "data-ch5-*": {
+      "type": "object",
+      "properties": {
         "data-ch5-show": {
           "type": "string",
           "title": "data-ch5-show",

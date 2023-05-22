@@ -287,6 +287,7 @@ div#pageStatusIdentifier {
 
     .list-item {
       width: 100%;
+      min-width: 125px;
 
       .horizontal-list-item {
         min-height: 100px;
@@ -311,7 +312,7 @@ div#pageStatusIdentifier {
             }
 
             .cb-btn {
-              width: 125px !important;
+              // width: 125px !important;
             }
           }
         }

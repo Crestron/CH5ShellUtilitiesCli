@@ -19,6 +19,11 @@ const srcTemplateRoot = `./app/template`;
 const srcProjectRoot = `./app/project`;
 const fontAwesomeCssBasePath = `${nodeModules}@fortawesome/fontawesome-free/css`;
 const materialIconsCssBasePath = `${nodeModules}@material-icons/font/css`;
+const sgCssBasePath = `${nodeModules}@crestron/ch5-theme/output/themes/sg-icons/css/all.css`;
+const sgIconsBasePath = `${nodeModules}@crestron/ch5-theme/output/themes/sg-icons/svgs/icons`;
+const sgMediaTransportAccent = `${nodeModules}@crestron/ch5-theme/output/themes/sg-icons/svgs/media-transports/accents`;
+const sgMediaTransportDark = `${nodeModules}@crestron/ch5-theme/output/themes/sg-icons/svgs/media-transports/dark`;
+const sgMediaTransportLight = `${nodeModules}@crestron/ch5-theme/output/themes/sg-icons/svgs/media-transports/light`;
 const baseThemePath = `${nodeModules}@crestron/ch5-theme/output/themes/${getBaseTheme()}.css`;
 const crLib = glob.sync(`${nodeModules}/@crestron/ch5-crcomlib/build_bundles/umd/cr-com-lib.js`);
 const webXPanel = glob.sync(`${nodeModules}/@crestron/ch5-webxpanel/dist/umd/index.js`);
@@ -46,7 +51,12 @@ module.exports = {
   srcProjectRoot,
   srcRoot,
   srcTemplateRoot,
-  webXPanel
+  webXPanel,
+  sgCssBasePath,
+  sgIconsBasePath,
+  sgMediaTransportAccent,
+  sgMediaTransportDark,
+  sgMediaTransportLight
 };
 
 function getBaseTheme() {
