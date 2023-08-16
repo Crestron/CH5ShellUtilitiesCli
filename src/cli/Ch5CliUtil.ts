@@ -107,8 +107,10 @@ export class Ch5CliUtil {
       return true;
     } else if (typeof input === 'string') {
       if (input && input.trim() !== "") {
+        // console.log("inside if true-->", input);
         return true;
       } else {
+        // console.log("inside else false-->", input);
         return false;
       }
     } else if (typeof input === 'boolean') {
@@ -219,23 +221,15 @@ export class Ch5CliUtil {
     if (this.isValidInput(input)) {
       const str = String(input);
       switch (str.toLowerCase().trim()) {
-        case "true": case "1": case "y": return true;
-        case "false": case "0": case "n": case null: return false;
+        case "true": case "1": case "y": case "Y": return true;
+        case "false": case "0": case "n": case "N": case null: return false;
         case "":
-          if (isEmptyValueEqualToTrue === true) {
-            return true;
-          } else {
-            return false;
-          }
+          return isEmptyValueEqualToTrue;
         default:
           return false;
       }
     } else {
-      if (isEmptyValueEqualToTrue === true) {
-        return true;
-      } else {
-        return false;
-      }
+      return isEmptyValueEqualToTrue;
     }
   }
 

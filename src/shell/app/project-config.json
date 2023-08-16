@@ -5,6 +5,7 @@
   "menuOrientation": "horizontal",
   "selectedTheme": "light-theme",
   "useWebXPanel": true,
+  "forceDeviceXPanel": false,
   "themes": [
     {
       "name": "light-theme",

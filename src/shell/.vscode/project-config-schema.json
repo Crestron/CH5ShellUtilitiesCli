@@ -163,6 +163,7 @@
     "faviconPath",
     "menuOrientation",
     "selectedTheme",
+    "forceDeviceXPanel",
     "useWebXPanel",
     "themes",
     "header",
@@ -209,8 +210,14 @@
     "useWebXPanel": {
       "default": false,
       "type": "boolean",
-      "description": "Use WebXPanel in the CH5 Project to connect with the CS.",
+      "description": "Use useWebXPanel in the CH5 Project to connect with the CS.",
       "title": "Use WebXPanel"
+    },
+    "forceDeviceXPanel": {
+      "default": false,
+      "type": "boolean",
+      "description": "Use forceDeviceXPanel in the CH5 Project to connect with the CS as a browser based WebXPanel project.",
+      "title": "Force Device XPanel"
     },
     "themes": {
       "default": [],

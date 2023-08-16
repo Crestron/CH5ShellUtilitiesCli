@@ -1,11 +1,11 @@
-// Copyright (C) 2022 to the present, Crestron Electronics, Inc.
+// Copyright (C) 2023 to the present, Crestron Electronics, Inc.
 // All rights reserved.
 // No part of this software may be reproduced in any form, machine
 // or natural, without the express written consent of Crestron Electronics.
 // Use of this source code is subject to the terms of the Crestron Software License Agreement
 // under which you licensed this source code.
 
-import { Ch5BaseClassForCliNew } from "../Ch5BaseClassForCliNew";
+import { Ch5BaseClassForCliCreate } from "../Ch5BaseClassForCliCreate";
 import { Ch5DeleteComponentsCli } from "../delete-components/Ch5DeleteComponentsCli";
 import { Ch5ExportProjectCli } from "../export-project/Ch5ExportProjectCli";
 import { Ch5GeneratePageCli } from "../generate-page/Ch5GeneratePageCli";
@@ -15,28 +15,42 @@ import { ICh5CliNew } from "../ICh5Cli";
 const path = require('path');
 const fsExtra = require("fs-extra");
 
-export class Ch5UpdateProjectCli extends Ch5BaseClassForCliNew implements ICh5CliNew {
+export class Ch5UpdateProjectCli extends Ch5BaseClassForCliCreate implements ICh5CliNew {
 
-  private readonly SHELL_FOLDER: string = path.normalize(path.join(__dirname, "../../", "shell"));
-  private readonly PROJECT_CONFIG_JSON_PATH: string = path.normalize("./app/project-config.json");
-  private readonly VSCODE_SCHEMA_JSON_PATH: string = path.normalize(path.join(".vscode", "project-config-schema.json"));
+  private readonly SHELL_FOLDER: string =  path.resolve(path.normalize(path.join(__dirname, "../../", "shell")));
+  private readonly TEMPLATES_SHELL_FOLDER: string = path.resolve(path.normalize(path.join(__dirname, "../../", "project-templates", "shell-template")));
+  private readonly TEMPLATES_ZOOM_ROOM_CONTROL_FOLDER: string = path.resolve(path.normalize(path.join(__dirname, "../../", "project-templates", "ZoomRoomControl")));
+  private readonly PROJECT_CONFIG_JSON_PATH: string =path.normalize("/app/project-config.json");
+  private readonly VSCODE_SCHEMA_JSON_PATH: string =path.join(".vscode", "project-config-schema.json");
+
+  private _outputResponse: any = null;
 
   /**
    * Constructor
    */
   public constructor(public showOutputMessages: boolean = true) {
-    super("update-project");
+    super(); // This processes the input arguments in the parent class.
   }
 
   /**
    * Initialize process
    */
-  async initialize() {
+  initialize(): any {
     this.logger.start("initialize");
-    this.outputResponse.data.updateInputs = [];
-    this.outputResponse.data.projectName = "";
-    this.outputResponse.data.backupFolder = "";
-    if (this.inputArgs["config"].argsValue !== "") {
+    this._outputResponse = {
+      askConfirmation: false,
+      result: false,
+      errorMessage: "",
+      warningMessage: "",
+      successMessage: "",
+      backupFolder: "",
+      data: {
+        updatedInputs: [],
+        projectName: "",
+        projectType: ""
+      }
+    };
+    if (this.inputArgs["config"].inputValue !== "") {
       // Do nothing
     } else {
       const getAllThemeNames = this.projectConfig.getAllThemeNames();
@@ -53,56 +67,58 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
    */
   async verifyInputParams() {
     this.logger.start("verifyInputParams");
+    this.logger.log("verifyInputParams - this.inputArgs: ", this.inputArgs);
     // Step 0: Check if json in the project to be updated is valid or not
     if (!(await this.isConfigFileValid(this.PROJECT_CONFIG_JSON_PATH, path.join(this.SHELL_FOLDER, this.VSCODE_SCHEMA_JSON_PATH)))) {
       throw new Error(this.getText("VERIFY_INPUT_PARAMS.INVALID_PROJECT_CONFIG_JSON"));
     }
 
-    if (this.inputArgs["config"].argsValue !== "") {
+    if (this.inputArgs["config"].inputValue !== "") {
       // Step 1: Check file extension for json, valid input for 'config' argument, and config file existence
-      if (!(this.utils.isValidInput(this.inputArgs["config"].argsValue) && this.isConfigFileExist(this.inputArgs["config"].argsValue))) {
+      if (!(this.utils.isValidInput(this.inputArgs["config"].inputValue) && this.isConfigFileExist(this.inputArgs["config"].inputValue))) {
         throw new Error(this.getText("VERIFY_INPUT_PARAMS.INVALID_CONFIG_INPUT"));
       }
       // Step 2: Check if json is as per its schema (.vscode is hidden folder)
-      if (!(await this.isConfigFileValid(this.inputArgs["config"].argsValue, path.join(this.SHELL_FOLDER, this.VSCODE_SCHEMA_JSON_PATH), true))) {
+      if (!(await this.isConfigFileValid(this.inputArgs["config"].inputValue, path.join(this.SHELL_FOLDER, this.VSCODE_SCHEMA_JSON_PATH), true))) {
         throw new Error(this.getText("VERIFY_INPUT_PARAMS.INVALID_CONFIG_FILE"));
       }
     } else {
-      this.logger.log("Update project without json file");
+      this.logger.log("Project without config json file");
 
       Object.entries(this.inputArgs).forEach(([key, value]: any) => {
         if (value.isSpecialArgument === false) {
           const inputUpdate = {
             ...value,
+            argsValue: null,
             "warning": ""
           };
-          if (value.inputReceived === true) {
-            if (this.utils.isValidInput(value.argsValue)) {
-              const validationResponse: any = this.validateCLIInputArgument(value, value.key, value.argsValue, this.getText("VERIFY_INPUT_PARAMS.INVALID_INPUT", value.key));
-              this.logger.log("validationResponse", validationResponse);
-              if (validationResponse.warning === "") {
-                inputUpdate.argsValue = validationResponse.value;
-              } else {
-                inputUpdate.argsValue = null;
-                inputUpdate.warning = validationResponse.warning;
-              }
+          this.logger.log("value is ", value);
+
+          if (this.utils.isValidInput(value.inputValue)) {
+            const validationResponse: any = this.validateCLIInputArgument(value, value.key, value.inputValue);
+            this.logger.log("validationResponse is ", validationResponse);
+            if (validationResponse.warning === "") {
+              inputUpdate.argsValue = validationResponse.value;
+            } else {
+              inputUpdate.warning = validationResponse.warning;
             }
-            this.outputResponse.data.updateInputs.push(inputUpdate);
           }
+          this._outputResponse.data.updatedInputs.push(inputUpdate);
         }
       });
-      this.logger.log("this.outputResponse.data.updateInputs: ", this.outputResponse.data.updateInputs);
+
+      this.logger.log("this._outputResponse.data.updatedInputs: ", this._outputResponse.data.updatedInputs);
 
       // To Check if atleast 1 input is provided
-      if (this.outputResponse.data.updateInputs.length === 0) {
+      if (this._outputResponse.data.updatedInputs.length === 0) {
         throw new Error(this.getText("VERIFY_INPUT_PARAMS.MISSING_INPUTS_NEED_ATlEAST_ONE_DATA"));
       }
 
       const tabDisplayText = this.getText("COMMON.HYPHEN_DELIMITER");
       let warningMessage: string = "";
-      for (let i: number = 0; i < this.outputResponse.data.updateInputs.length; i++) {
-        if (this.utils.isValidInput(this.outputResponse.data.updateInputs[i].warning)) {
-          warningMessage += tabDisplayText + this.outputResponse.data.updateInputs[i].key + ": " + this.outputResponse.data.updateInputs[i].warning;
+      for (let i: number = 0; i < this._outputResponse.data.updatedInputs.length; i++) {
+        if (this.utils.isValidInput(this._outputResponse.data.updatedInputs[i].warning)) {
+          warningMessage += tabDisplayText + this._outputResponse.data.updatedInputs[i].key + ": " + this._outputResponse.data.updatedInputs[i].warning;
         }
       }
       if (warningMessage !== "") {
@@ -140,49 +156,49 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
           throw new Error(this.getText("ERRORS.DO_NOT_UPDATE_PROJECT"));
         });
       }
-      this.outputResponse.askConfirmation = this.utils.toBoolean(askConfirmation);
+      this._outputResponse.askConfirmation = this.utils.toBoolean(askConfirmation);
     } else {
-      for (let i: number = 0; i < this.outputResponse.data.updateInputs.length; i++) {
-        if (this.outputResponse.data.updateInputs[i].inputReceived === true && !this.utils.isValidInput(this.outputResponse.data.updateInputs[i].argsValue)) {
-          if (this.outputResponse.data.updateInputs[i].type === "enum" || this.outputResponse.data.updateInputs[i].type === "boolean") {
-            const choicesList = this.outputResponse.data.updateInputs[i].allowedValues;
+      for (let i: number = 0; i < this._outputResponse.data.updatedInputs.length; i++) {
+        if (this._outputResponse.data.updatedInputs[i].inputReceived === true && !this.utils.isValidInput(this._outputResponse.data.updatedInputs[i].argsValue)) {
+          if (this._outputResponse.data.updatedInputs[i].type === "enum" || this._outputResponse.data.updatedInputs[i].type === "boolean") {
+            const choicesList = this._outputResponse.data.updatedInputs[i].allowedValues;
             const componentsQuery = new this.getSelect({
-              name: this.outputResponse.data.updateInputs[i].key,
-              message: this.getText(this.outputResponse.data.updateInputs[i].question, this.outputResponse.data.updateInputs[i].key),
+              name: this._outputResponse.data.updatedInputs[i].key,
+              message: this.getText(this._outputResponse.data.updatedInputs[i].question, this._outputResponse.data.updatedInputs[i].key),
               choices: choicesList
             });
 
-            this.outputResponse.data.updateInputs[i].argsValue = await componentsQuery.run()
+            this._outputResponse.data.updatedInputs[i].argsValue = await componentsQuery.run()
               .then((selectedMenu: any) => { return selectedMenu; })
               .catch((error: any) => { throw new Error(this.getText("ERRORS.DO_NOT_UPDATE_PROJECT")); });
-            if (this.outputResponse.data.updateInputs[i].type === "boolean") {
-              this.outputResponse.data.updateInputs[i].argsValue = this.toBoolean(this.outputResponse.data.updateInputs[i].argsValue);
+            if (this._outputResponse.data.updatedInputs[i].type === "boolean") {
+              this._outputResponse.data.updatedInputs[i].argsValue = this.toBoolean(this._outputResponse.data.updatedInputs[i].argsValue);
             }
 
-            this.logger.log(this.outputResponse.data.updateInputs[i].key + ": ", this.outputResponse.data.updateInputs[i].argsValue);
-          } else if (this.outputResponse.data.updateInputs[i].type === "string") {
+            this.logger.log(this._outputResponse.data.updatedInputs[i].key + ": ", this._outputResponse.data.updatedInputs[i].argsValue);
+          } else if (this._outputResponse.data.updatedInputs[i].type === "string") {
             const question = {
-              name: this.outputResponse.data.updateInputs[i].key,
-              message: this.getText(this.outputResponse.data.updateInputs[i].question, this.outputResponse.data.updateInputs[i].key),
+              name: this._outputResponse.data.updatedInputs[i].key,
+              message: this.getText(this._outputResponse.data.updatedInputs[i].question, this._outputResponse.data.updatedInputs[i].key),
               type: 'input'
             };
-            this.outputResponse.data.updateInputs[i].argsValue = await this.getPrompt(question)
+            this._outputResponse.data.updatedInputs[i].argsValue = await this.getPrompt(question)
               .then((answer: any) => { 
-                if(this.outputResponse.data.updateInputs[i].key==="projectName"){
-                return answer[this.outputResponse.data.updateInputs[i].key].toLowerCase();
+                if(this._outputResponse.data.updatedInputs[i].key==="projectName"){
+                return answer[this._outputResponse.data.updatedInputs[i].key].toLowerCase();
               }
                 else {
-                return answer[this.outputResponse.data.updateInputs[i].key];}
+                return answer[this._outputResponse.data.updatedInputs[i].key];}
                }
                )
               .catch((error: any) => { throw new Error(this.getText("ERRORS.DO_NOT_UPDATE_PROJECT")); });
 
-            this.logger.log(this.outputResponse.data.updateInputs[i].key + ": ", this.outputResponse.data.updateInputs[i].argsValue);
+            this.logger.log(this._outputResponse.data.updatedInputs[i].key + ": ", this._outputResponse.data.updatedInputs[i].argsValue);
           }
         }
       }
 
-      this.outputResponse.askConfirmation = true;
+      this._outputResponse.askConfirmation = true;
     }
     this.logger.end();
   }
@@ -192,11 +208,11 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
    */
   async processRequest() {
     this.logger.start("processRequest");
-    if (this.outputResponse.askConfirmation === true) {
+    if (this._outputResponse.askConfirmation === true) {
       if (this.inputArgs["config"].argsValue !== "") {
 
         const folderNameForBackup: string = this.getFolderName();
-        this.outputResponse.data.backupFolder = path.normalize(path.join(this.getConfigNode("backupFolder"), folderNameForBackup));
+        this._outputResponse.data.backupFolder = path.normalize(path.join(this.getConfigNode("backupFolder"), folderNameForBackup));
         // Step 3: Take back up of existing json and project
         fsExtra.copySync(this.inputArgs["config"].argsValue, path.join(this.getConfigNode("backupFolder"), folderNameForBackup, "project-config.json"));
 
@@ -331,22 +347,176 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
         }
 
         // Step 7: Show proper messages  
-        this.outputResponse.result = true;
-        this.outputResponse.successMessage = this.getText("LOG_OUTPUT.SUCCESS_MESSAGE_WITH_BACKUP", this.outputResponse.data.backupFolder);
+        this._outputResponse.result = true;
+        this._outputResponse.successMessage = this.getText("LOG_OUTPUT.SUCCESS_MESSAGE_WITH_BACKUP", this._outputResponse.data.backupFolder);
 
       } else {
         // Change project config
-        for (let i: number = 0; i < this.outputResponse.data.updateInputs.length; i++) {
-          this.logger.log("Changed Values", this.outputResponse.data.updateInputs[i].key, this.outputResponse.data.updateInputs[i].argsValue)
-          this.projectConfig.changeNodeValues(this.outputResponse.data.updateInputs[i].key, this.outputResponse.data.updateInputs[i].argsValue);
+        for (let i: number = 0; i < this._outputResponse.data.updatedInputs.length; i++) {
+          this.logger.log("Changed Values", this._outputResponse.data.updatedInputs[i].key, this._outputResponse.data.updatedInputs[i].argsValue)
+          this.projectConfig.changeNodeValues(this._outputResponse.data.updatedInputs[i].key, this._outputResponse.data.updatedInputs[i].argsValue);
         }
-        this.outputResponse.result = true;
-        this.outputResponse.successMessage = this.getText("LOG_OUTPUT.SUCCESS_MESSAGE");
+        this._outputResponse.result = true;
+        this._outputResponse.successMessage = this.getText("LOG_OUTPUT.SUCCESS_MESSAGE");
       }
-    } else if (this.outputResponse.askConfirmation === false) {
+    } else if (this._outputResponse.askConfirmation === false) {
       throw new Error(this.getText("ERRORS.DO_NOT_UPDATE_PROJECT"));
     } else {
       throw new Error(this.getText("ERRORS.PROGRAM_STOPPED_OR_UNKNOWN_ERROR"));
+    }
+  }
+ protected validateCLIInputArgument(inputObj: any, key: string, value: string) {
+    this.logger.log("validateCLIInputArgument: " + key + " - " + value, inputObj);
+    value = String(value).trim().toLowerCase();
+    if (inputObj) {
+      if (inputObj.allowedAliases && inputObj.allowedAliases.length > 0 && inputObj.allowedAliases.includes(value)) {
+        if (inputObj.type === "boolean") {
+          if (value) {
+            const val: boolean = this.utils.toBoolean(value);
+            return {
+              value: val,
+              warning: ""
+            };
+          } else {
+            return {
+              value: value,
+              warning: ""
+            };
+          }
+        } else if (inputObj.type === "enum") {
+          if (inputObj.validation !== "") {
+            if (inputObj.validation === "validateProjectType") {
+              const valOutput: any = this.validateProjectType(inputObj.allowedValues, value);
+              return {
+                value: valOutput.value,
+                warning: ""
+              }
+            }
+            return {
+              value: value,
+              warning: ""
+            };
+          } else {
+            return {
+              value: value,
+              warning: ""
+            };
+          }
+        }
+      } else {
+        if (inputObj.type === "enum" && inputObj.validation !== "" && inputObj.validation === "validateProjectType") {
+          const valOutput: any = this.validateProjectType(inputObj.allowedValues, value);
+          return {
+            value: valOutput.value,
+            warning: ""
+          }
+        } else if (inputObj.type === "string") {
+          if (inputObj.validation !== "") {
+            if (inputObj.validation === "validatePackageJsonProjectName") {
+              const valOutput: any = this.validatePackageJsonProjectName(value);
+              if (valOutput.isValid === false) {
+                return {
+                  value: null,
+                  warning: valOutput.warning
+                };
+              } else {
+                return {
+                  value: value,
+                  warning: ""
+                };
+              }
+            }
+            return {
+              value: value,
+              warning: ""
+            };
+          } else {
+            return {
+              value: value,
+              warning: ""
+            };
+          }
+        }
+      }
+      return {
+        value: value,
+        warning: ""
+      };
+    }
+    return {
+      value: "",
+      warning: this.getText("VERIFY_INPUT_PARAMS.INVALID_INPUT", key)
+    };
+  }
+
+  private validateProjectType(templateProjectTypes: string[], projectType: string) {
+    /*
+     - projectType must be "zoomroomcontrol" or "shell-template", and it is case-insensitive.
+    */
+    if (projectType && projectType.trim().length > 0) {
+      projectType = projectType.trim().toLowerCase();
+
+      const indexForProjectType = templateProjectTypes.findIndex((element: string) => {
+        return element.toLowerCase() === projectType.toLowerCase();
+      });
+
+      if (indexForProjectType === -1) {
+        this.logger.warn("projectType: " + projectType + " is invalid.");
+        return {
+          value: "shell-template",
+          isValid: true,
+          error: ""
+        };
+      } else {
+        return {
+          value: projectType,
+          isValid: true,
+          error: ""
+        };
+      }
+    } else {
+      this.logger.log("projectType: " + projectType + " is empty.");
+      return {
+        value: "shell-template",
+        isValid: false,
+        error: ""
+      };
+    }
+  }
+
+  private validatePackageJsonProjectName(packageName: string) {
+    /*
+      - project name length should be greater than zero and cannot exceed 214
+      - project name characters must be lowercase i.e., no uppercase or mixed case names are allowed
+      - project name can consist of hyphens and numbers, and can only begin with alphabets
+      - project name must not contain any non-url-safe characters (since name ends up being part of a URL)
+      - project name should not contain any spaces or any of the following characters: ~)('!*
+    */
+    if (packageName && packageName.trim().length > 0) {
+      packageName = packageName.trim().toLowerCase();
+      packageName = packageName.substring(0, 213);
+      //  const packageNameValidity = new RegExp(/^[a-z][a-z0-9-._$]*$/).test(packageName);
+      const regexValue = /^(?:@[a-z0-9-*~][a-z0-9-*._~]*\/)?[a-z0-9-~][a-z0-9-._~]*$/; // /^[a-z][a-z0-9-._$]*$/
+      const packageNameValidity = new RegExp(regexValue).test(packageName);
+      if (packageNameValidity === false) {
+        return {
+          value: null,
+          isValid: false,
+          error: this.getText("COMMON.VALIDATIONS.PROJECT_NAME")
+        };
+      } else {
+        return {
+          value: packageName,
+          isValid: true,
+          error: ""
+        };
+      }
+    } else {
+      return {
+        value: "",
+        isValid: false,
+        error: this.getText("COMMON.VALIDATIONS.PROJECT_NAME")
+      };
     }
   }
 
@@ -360,14 +530,6 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
       return "0" + String(input);
     }
     return String(input);
-  }
-  /**
-   * Clean up
-   */
-  async cleanUp() {
-    if (this.inputArgs["config"].argsValue !== "") {
-      // Step 7: Clean up
-    }
   }
 
   private toBoolean(val: any, isEmptyValueEqualToTrue = false): boolean {
@@ -386,4 +548,12 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForCliNew implements ICh5Cl
     }
   }
 
+  public getOutputResponse(): any {
+    return this._outputResponse;
+  }
+
+  public getFolderPath(): any {
+    // This method needs to be available here in order to get the current working directory
+    return __dirname;
+  }
 }

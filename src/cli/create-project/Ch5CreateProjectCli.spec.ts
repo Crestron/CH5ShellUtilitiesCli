@@ -5,10 +5,10 @@ import mock from 'mock-fs';
 import { Ch5CliLogger } from "../Ch5CliLogger";
 import { SinonStub } from "sinon";
 
-const createProject = new Ch5CreateProjectCli();
-
 describe('Create Project >>>>>>>> ', () => {
 
+  const createProject = new Ch5CreateProjectCli();
+     
   before(() => {
     mock();
   });
@@ -29,8 +29,21 @@ describe('Create Project >>>>>>>> ', () => {
   describe('Test Functions >>>>>>>> ', () => {
 
     it('Expect to fail if page name already exists in project-config', () => {
-      createProject.checkVersionToExecute();
-      // expect(response).to.equal(false);
+      const response = createProject.getFolderPath();
+      expect(response).to.equal(__dirname);
+    });
+
+  });
+
+  describe('Test Workflow >>>>>>>> ', () => {
+
+    it('Check Initial Constructor response',  async (done) => {
+      // const createProject = new Ch5CreateProjectCli();
+      await createProject.initialize();
+      const response = createProject.getOutputResponse();
+      console.log(response);
+      expect(response).to.equal(__dirname);
+      done();
     });
 
   });

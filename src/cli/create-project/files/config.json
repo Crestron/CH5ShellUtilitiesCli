@@ -34,9 +34,79 @@
       "validation": "validatePackageJsonProjectName",
       "question": "CHECK_PROMPT_QUESTIONS.QUESTIONS.PROJECT_NAME",
       "isSpecialArgument": false
+    },
+    {
+      "key": "projectType",
+      "description": "This will add ZRC SDK “ch5-zoom-lib.js” to the template project packages and all required modules to the shell template project",
+      "type": "enum",
+      "default": "shell-template",
+      "valueIfNotFound": "shell-template",
+      "alias": [
+        "--projectType"
+      ],
+      "allowedValues": [
+        "zoomroomcontrol",
+        "shell-template"
+      ],
+      "allowedAliases": [
+        "zoomroomcontrol",
+        "shell-template"
+      ],
+      "validation": "validateProjectType",
+      "question": "",
+      "isSpecialArgument": false
+    },
+    {
+      "key": "forceDeviceXPanel",
+      "description": "Use forceDeviceXPanel in the CH5 Project to connect with the CS as a browser based WebXPanel project. (valid input values are 'Y', 'y', 'N', 'n', 'true', 'false'",
+      "type": "boolean",
+      "default": "N",
+      "valueIfNotFound": "N",
+      "alias": [
+        "--forceDeviceXPanel"
+      ],
+      "allowedValues": [],
+      "allowedAliases": [],
+      "validation": "",
+      "question": "",
+      "isSpecialArgument": false
     }
   ],
   "backupFolder": "./dist/",
+  "custom": {
+    "templates": {
+      "shell-template": {
+        "customFolders": [
+          "app/template/assets/fonts"
+        ],
+        "customFiles": [
+          "app/template/libraries/utils.js",
+          "app/template/libraries/webxpanel.js",
+          "app/template/assets/scss/custom/_fonts.scss",
+          "app/template/assets/scss/custom/_variables.scss",
+          "app/index.html",
+          "app.config.js",
+          "webpack.dev.js",
+          "webpack.prod.js"
+        ]
+      },
+      "zoomroomcontrol": {
+        "customFolders": [
+          "app/template/assets/fonts"
+        ],
+        "customFiles": [
+          "app/template/libraries/utils.js",
+          "app/template/libraries/webxpanel.js",
+          "app/template/assets/scss/custom/_fonts.scss",
+          "app/template/assets/scss/custom/_variables.scss",
+          "app/index.html",
+          "app.config.js",
+          "webpack.dev.js",
+          "webpack.prod.js"
+        ]
+      }
+    }
+  },
   "additionalHelp": true,
   "automatedTests": {
     "enable": true,

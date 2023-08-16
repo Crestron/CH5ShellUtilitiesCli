@@ -176,6 +176,7 @@ export abstract class Ch5BaseClassForCliNew {
       }
     }
     this._inputArgs = JSON.parse(JSON.stringify(output));
+    // console.log("output--->", this._inputArgs)
     return output;
   }
 
@@ -226,13 +227,33 @@ export abstract class Ch5BaseClassForCliNew {
             };
           }
         } else if (inputObj.type === "enum") {
-          return {
-            value: value,
-            warning: ""
-          };
+          if (inputObj.validation !== "") {
+            if (inputObj.validation === "validateProjectType") {
+              const valOutput: any = this.validateProjectType(value);
+              return {
+                value: valOutput.value,
+                warning: ""
+              }
+            }
+            return {
+              value: value,
+              warning: ""
+            };
+          } else {
+            return {
+              value: value,
+              warning: ""
+            };
+          }
         }
       } else {
-        if (inputObj.type === "string") {
+        if (inputObj.type === "enum" && inputObj.validation !== "" && inputObj.validation === "validateProjectType") {
+          const valOutput: any = this.validateProjectType(value);
+          return {
+            value: valOutput.value,
+            warning: ""
+          }
+        } else if (inputObj.type === "string") {
           if (inputObj.validation !== "") {
             if (inputObj.validation === "validatePackageJsonProjectName") {
               const valOutput: any = this.validatePackageJsonProjectName(value);
@@ -271,6 +292,40 @@ export abstract class Ch5BaseClassForCliNew {
     };
   }
 
+  private validateProjectType(projectType: string) {
+    /*
+     - projectType must be "zoomroomcontrol" or "default", it is case-insensitive.
+    */
+    const TEMPLATES = [
+      'zoomroomcontrol',
+      'default'
+    ];
+    if (projectType && projectType.trim().length > 0) {
+      projectType = projectType.trim().toLowerCase();
+      if (!TEMPLATES.includes(projectType)) {
+        this.logger.warn("projectType: " + projectType + " is invalid.");
+        return {
+          value: "default",
+          isValid: true,
+          error: ""
+        };
+      } else {
+        return {
+          value: projectType,
+          isValid: true,
+          error: ""
+        };
+      }
+    } else {
+      this.logger.log("projectType: " + projectType + " is empty.");
+      return {
+        value: "default",
+        isValid: false,
+        error: ""
+      };
+    }
+  }
+
   /**
    *
    * @param program
@@ -291,7 +346,6 @@ export abstract class Ch5BaseClassForCliNew {
       if (this.CONFIG_FILE.aliases && this.CONFIG_FILE.aliases.length > 0) {
         programObject = programObject.aliases(this.CONFIG_FILE.aliases);
       }
-
       if (this.CONFIG_FILE.additionalHelp === true) {
         const contentForHelp: string = await this.utils.readFileContent(path.join(__dirname, this._folderPath, "files", "help.txt"));
         programObject = programObject.addHelpText('after', contentForHelp);
