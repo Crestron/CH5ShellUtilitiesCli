@@ -292,12 +292,8 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForCliCreate implements ICh
       this.logger.log("processRequest - this._outputResponse.data", this._outputResponse.data);
       // Step 4: Make changes to project-config.json stepwise
       const projectConfigJSON: any = JSON.parse(this.utils.readFileContentSync(path.normalize(path.join(this.SHELL_FOLDER, this.PROJECT_CONFIG_JSON_PATH))));
-      if (this._outputResponse.data.projectType === "zoomroomcontrol") {
-        projectConfigJSON.projectName = this._outputResponse.data.projectType;
-      } else {
-        projectConfigJSON.projectName = this._outputResponse.data.projectName;
-      }
-
+      projectConfigJSON.projectName = this._outputResponse.data.projectName;
+      
       const pathToCreateProject: string = path.resolve(path.join("./", projectConfigJSON.projectName));
       // Check if current folder is empty.
       try {

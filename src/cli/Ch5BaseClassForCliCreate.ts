@@ -134,12 +134,12 @@ export abstract class Ch5BaseClassForCliCreate {
         }
       } else {
         if (arrayKey != null) {
-          if (arrayParam === "enum") {
+          if (arrayParam === "array") {
             if (!output[arrayKey]["inputValue"]) {
               output[arrayKey]["inputValue"] = [];
             }
             output[arrayKey]["inputValue"].push(val);
-          } else if (arrayParam === "boolean" || arrayParam === "string" || arrayParam === "number") {
+          } else if (arrayParam === "enum" || arrayParam === "boolean" || arrayParam === "string" || arrayParam === "number") {
             if (continueProcess === true) {
               output[arrayKey]["inputValue"] = val;
               continueProcess = false;

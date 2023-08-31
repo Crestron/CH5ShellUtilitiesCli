@@ -1,10 +1,10 @@
 {
-  "projectName": "shell-template",
-  "projectType": "shell-template",
+  "projectName": "zoomroomcontrol",
+  "projectType": "ZoomRoomControl",
   "version": "0.0.1",
   "faviconPath": "favicon.ico",
-  "menuOrientation": "horizontal",
-  "selectedTheme": "light-theme",
+  "menuOrientation": "none",
+  "selectedTheme": "zoom-light-theme",
   "useWebXPanel": true,
   "forceDeviceXPanel": false,
   "themes": [
@@ -25,6 +25,34 @@
     {
       "name": "dark-theme",
       "extends": "dark-theme",
+      "brandLogo": {
+        "url": "./app/template/assets/img/ch5-logo-dark.svg",
+        "alt": "Crestron Logo",
+        "receiveStateUrl": ""
+      },
+      "backgroundProperties": {
+        "backgroundColor": [
+          "#1a1a1a"
+        ]
+      }
+    },
+    {
+      "name": "zoom-light-theme",
+      "extends": "zoom-light-theme",
+      "brandLogo": {
+        "url": "./app/template/assets/img/ch5-logo-light.svg",
+        "alt": "Crestron Logo",
+        "receiveStateUrl": ""
+      },
+      "backgroundProperties": {
+        "backgroundColor": [
+          "#f8f8f8"
+        ]
+      }
+    },
+    {
+      "name": "zoom-dark-theme",
+      "extends": "zoom-dark-theme",
       "brandLogo": {
         "url": "./app/template/assets/img/ch5-logo-dark.svg",
         "alt": "Crestron Logo",
