@@ -27,7 +27,6 @@ var webXPanelModule = (function () {
     loading: 'loading'
   };
 
-  var WARN_DAYS_BEFORE = 0;
   var status;
   var pcConfig = config;
   var urlConfig = config;
@@ -61,9 +60,6 @@ var webXPanelModule = (function () {
       pcConfig.ipId = projectConfig.config.controlSystem.ipId || config.ipId;
       pcConfig.tokenSource = projectConfig.config.controlSystem.tokenSource || config.tokenSource;
       pcConfig.tokenUrl = projectConfig.config.controlSystem.tokenUrl || config.tokenUrl;
-
-      // if undefined, assign 60 days as default
-      WARN_DAYS_BEFORE = projectConfig.config.controlSystem.licenseExpirationWarning || 60;
     }
   }
 
@@ -157,59 +153,6 @@ var webXPanelModule = (function () {
       }
     });
 
-    // Display License errors
-    WebXPanel.default.addEventListener(WebXPanel.WebXPanelEvents.LICENSE_WS, ({ detail }) => {
-      updateDialogLicenseInfo(detail);
-    });
-
-
-    function updateDialogLicenseInfo(detail) {
-      const controlSystemSupportsLicense = detail.controlSystemSupportsLicense;  // boolean
-      const licenseApplied = detail.licenseApplied; // optional boolean
-      const licenseDaysRemaining = detail.licenseDaysRemaining; // optional number
-      const licenseHasExpiry = detail.licenseHasExpiry; // optional boolean
-      const trialPeriod = detail.trialPeriod; // optional boolean
-      const trialPeriodDaysRemaining = detail.trialPeriodDaysRemaining; // optional number
-      const resourceAvailable = detail.resourceAvailable; // boolean
-      const licenseNotRequired = detail.licenseNotRequired; // optional boolean
-
-      let licenseMessage = "";
-
-      if (!controlSystemSupportsLicense) {
-        licenseMessage = translateModule.translateInstant("app.webxpanel.license.csmobilitysupport");
-      } else if (!resourceAvailable) {
-        licenseMessage = translateModule.translateInstant("app.webxpanel.license.mobilitylicenserequired");
-      } else if (licenseApplied) {
-        if (!licenseHasExpiry) {
-          licenseMessage = translateModule.translateInstant("app.webxpanel.license.mobilitylicensevalid");
-        } else {
-          // Display warning
-          displayLicenseWarning(WARN_DAYS_BEFORE, licenseDaysRemaining);
-
-          licenseMessage = translateModule.translateInstant("app.webxpanel.license.mobilitylicensewarning", { licenseDaysRemaining });
-          const updatedDetail = detail;
-          updatedDetail.licenseDaysRemaining = licenseDaysRemaining - 1;
-          setTimeout(updateDialogLicenseInfo, 24 * 60 * 60 * 1000, updatedDetail);
-        }
-      } else if (trialPeriod) {
-        licenseMessage = translateModule.translateInstant("app.webxpanel.license.mobilitylicensetrial", { trialPeriodDaysRemaining });
-
-        // Display warning
-        displayLicenseWarning(WARN_DAYS_BEFORE, trialPeriodDaysRemaining);
-
-        const updatedDetail = detail;
-        updatedDetail.trialPeriodDaysRemaining = trialPeriodDaysRemaining - 1;
-        setTimeout(updateDialogLicenseInfo, 24 * 60 * 60 * 1000, updatedDetail);
-      } else if (licenseNotRequired) {
-        licenseMessage = translateModule.translateInstant("app.webxpanel.license.mobilitylicensenotrequired");
-      }
-
-      if (isVersionInfoDisplayed()) {
-        const licenseText = document.getElementById("lic");
-        licenseText.textContent = licenseMessage;
-      }
-    }
-
     // Authorization
     WebXPanel.default.addEventListener(WebXPanel.WebXPanelEvents.NOT_AUTHORIZED, ({ detail }) => {
       const redirectURL = detail.redirectTo;
@@ -266,27 +209,6 @@ var webXPanelModule = (function () {
     let classArr = document.getElementById("infobtn").classList;
     if (classArr) {
       classArr.remove("warn");
-    }
-  }
-
-  /**
-   * Show the badge on the info icon for license expiry warning.
-   */
-  function displayLicenseWarning(warnDays, remainingDays) {
-    if (!isVersionInfoDisplayed()) {
-      return;
-    }
-
-    // 0 means no license warning messages
-    if (WARN_DAYS_BEFORE !== 0) {
-      if (warnDays >= remainingDays) {
-        let classArr = document.getElementById("infobtn").classList;
-        if (classArr) {
-          classArr.add("warn");
-        }
-      } else {
-        return false;
-      }
     }
   }
 

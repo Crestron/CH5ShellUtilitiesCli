@@ -69,8 +69,7 @@
         "status": "Status:",
         "cs": "CS:",
         "ipid": "IPID:",
-        "roomid": "Room ID:",
-        "license": "License"
+        "roomid": "Room ID:"
       },
       "diagnostics": {
         "logs": "Add Log",

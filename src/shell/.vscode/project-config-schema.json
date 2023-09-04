@@ -407,8 +407,7 @@
           "roomId": "",
           "ipId": "",
           "tokenSource": "",
-          "tokenUrl": "",
-          "licenseExpirationWarning": 60
+          "tokenUrl": ""
         }
       },
       "properties": {
@@ -419,8 +418,7 @@
             "roomId": "",
             "ipId": "",
             "tokenSource": "",
-            "tokenUrl": "",
-            "licenseExpirationWarning": 60
+            "tokenUrl": ""
           },
           "description": "The details of Control system to connect.",
           "title": "ControlSystem",
@@ -467,12 +465,6 @@
               "title": "tokenSource",
               "description": "Crestron provided code of the identity provider that provides security token",
               "pattern": "^(?!\\s*$).+"
-            },
-            "licenseExpirationWarning": {
-              "default": 60,
-              "type": "integer",
-              "title": "licenseExpirationWarning",
-              "description": "Show a warning that a license will expire a set number of days prior to expiration. Set to 0 to avoid showing a warning. The default value is 60 days."
             }
           },
           "additionalProperties": false
