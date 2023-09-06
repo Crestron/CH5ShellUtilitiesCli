@@ -24,7 +24,7 @@ const fs = require("fs");
 const jsonSchema = require('jsonschema');
 const child_process = require('child_process');
 
-export abstract class Ch5BaseClassForCliNew {
+export abstract class Ch5BaseClassForCliUpgrade {
   private readonly _cliUtil: Ch5CliUtil;
   private readonly _cliLogger: Ch5CliLogger;
   private readonly _cliConfigFileReader: Ch5CliConfigFileReader;

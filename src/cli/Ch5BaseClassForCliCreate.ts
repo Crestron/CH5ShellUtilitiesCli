@@ -23,10 +23,11 @@ const path = require('path');
 const fs = require("fs");
 const jsonSchema = require('jsonschema');
 const child_process = require('child_process');
+const process = require('process');
 
 export abstract class Ch5BaseClassForCliCreate {
   protected CONFIG_FILE: ICh5CliConfigFile;
-  
+
   private readonly _cliUtil: Ch5CliUtil;
   private readonly _cliLogger: Ch5CliLogger;
   private readonly _cliConfigFileReader: Ch5CliConfigFileReader;
@@ -85,7 +86,7 @@ export abstract class Ch5BaseClassForCliCreate {
   }
 
   public constructor() {
-    this._folderPath = this.getFolderPath();
+    this._folderPath = this.getCLIExecutionPath();
     this._cliUtil = new Ch5CliUtil();
     this._cliNamingHelper = new Ch5CliNamingHelper();
     this._cliProjectConfig = new Ch5CliProjectConfig();
@@ -379,7 +380,7 @@ export abstract class Ch5BaseClassForCliCreate {
   async processRequest() { }
   getOutputResponse(): any { }
   async cleanUp() { }
-  getFolderPath(): any { }
+  getCLIExecutionPath(): any { }
 
   private showOutput() {
     const outputResponse: any = this.getOutputResponse();
@@ -447,6 +448,10 @@ export abstract class Ch5BaseClassForCliCreate {
     return (errorsFound.length === 0);
   }
 
+  protected getFullPath(...pathValue: any) {
+    return path.resolve(path.normalize(path.join(...pathValue)));
+  }
+
   protected isConfigFileExist(fileName: string) {
     if (fs.existsSync(fileName)) {
       const checkFileOrFolder = fs.statSync(fileName);
@@ -459,4 +464,7 @@ export abstract class Ch5BaseClassForCliCreate {
     return false;
   }
 
+  protected getCurrentWorkingDirectory() {
+    return process.cwd();
+  }
 }

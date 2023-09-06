@@ -29,7 +29,7 @@ describe('Create Project >>>>>>>> ', () => {
   describe('Test Functions >>>>>>>> ', () => {
 
     it('Expect to fail if page name already exists in project-config', () => {
-      const response = createProject.getFolderPath();
+      const response = createProject.getCLIExecutionPath();
       expect(response).to.equal(__dirname);
     });
 

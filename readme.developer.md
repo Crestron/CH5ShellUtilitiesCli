@@ -57,42 +57,6 @@ After the initial setup, you can use this command to rebuild and publish changes
       "validation": "fileAvailableAtLocation",
       "question": "CHECK_PROMPT_QUESTIONS.QUESTIONS.CONFIG_FILE",
       "isSpecialArgument": "Boolean: Indicates special arguments that are not passed parameters like help or verbose or config "
-    },
-    {
-      "key": "projectName",
-      "description": "Set the name of the Project in package.json and project-config.json",
-      "type": "string",
-      "default": "",
-      "valueIfNotFound": "",
-      "alias": [
-        "--projectName"
-      ],
-      "allowedValues": [],
-      "allowedAliases": [],
-      "validation": "validatePackageJsonProjectName",
-      "question": "CHECK_PROMPT_QUESTIONS.QUESTIONS.PROJECT_NAME",
-      "isSpecialArgument": false
-    },
-    {
-      "key": "projectType",
-      "description": "This will add ZRC SDK “ch5-zoom-lib.js” to the template project packages and all required modules to the shell template project",
-      "type": "enum",
-      "default": "",
-      "valueIfNotFound": "",
-      "alias": [
-        "--projectType"
-      ],
-      "allowedValues": [
-        "ZoomRoomControl",
-        "default"
-      ],
-      "allowedAliases": [
-        "ZoomRoomControl",
-        "default"
-      ],
-      "validation": "validateProjectType",
-      "question": "",
-      "isSpecialArgument": false
     }
   ],
   "backupFolder": "./dist/",

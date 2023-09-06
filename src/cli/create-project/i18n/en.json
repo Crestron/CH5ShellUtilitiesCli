@@ -24,6 +24,6 @@
   },
   "ERRORS": {
     "PROGRAM_STOPPED_OR_UNKNOWN_ERROR": "Either the program has been cancelled or an unknown error occurred. Please try again.",
-    "DO_NOT_UPDATE_PROJECT": "Project update cancelled."
+    "DO_NOT_MODIFY_PROJECT": "Project creation cancelled."
   }
 }
