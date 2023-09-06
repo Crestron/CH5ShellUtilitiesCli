@@ -280,20 +280,6 @@ var webXPanelModule = (function () {
    * Initialize WebXPanel
    */
   function connect(projectConfig) {
-
-    // if (forceXPanel === true) {
-    //   // Always Connect as WebX and not Native
-    //   // Send this value to Virtual Panel to ignore the check for Crestron device
-    // } else {
-    //     // Check if Crestron Device
-    //     if (crestronDevice === true) {
-    //       // Connect as Native
-    //     } else {
-    //       if (useWebXPanel === true) {
-    //         // Connect as WebX
-    //       }   
-    //     }
-    // }
     // Connect only in browser environment
     if (typeof WebXPanel !== "undefined" && WebXPanel.isActive) {
       connectWebXPanel(projectConfig);
@@ -302,11 +288,17 @@ var webXPanelModule = (function () {
     }
   }
 
+  function getWebXPanel(isBrowser) {
+    const Panel = WebXPanel.getWebXPanel(isBrowser);
+    WebXPanel = { ...Panel, default: Panel.WebXPanel }
+  }
+
   /**
    * All public method and properties exporting here
    */
   return {
-    connect
+    connect,
+    getWebXPanel
   };
 
 })();

@@ -488,6 +488,18 @@ const templatePageModule = (() => {
 	}
 
 	function connectToWebXPanel(projectConfigResponse) {
+		if (projectConfigResponse.forceDeviceXPanel === true) {
+			webXPanelModule.getWebXPanel(true); // Always Connect as WebX and not Native
+		} else {
+			// Check if Crestron Device
+			if (WebXPanel.runsInContainerApp() === true) {
+				webXPanelModule.getWebXPanel(false); // Connect as Native
+			} else {
+				if (projectConfigResponse.useWebXPanel === true) {
+					webXPanelModule.getWebXPanel(true);
+				}
+			}
+		}
 		if (projectConfigResponse.useWebXPanel && !isWebXPanelInitialized) {
 			if (projectConfigResponse.header.display && projectConfigResponse.header.displayInfo && projectConfigResponse.header.$component.trim() === "") {
 				let loadListCh5 = CrComLib.subscribeState('o', 'ch5-import-htmlsnippet:template-version-info-import-page', (value) => {
