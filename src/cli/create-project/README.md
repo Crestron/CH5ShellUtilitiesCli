@@ -27,9 +27,17 @@ If the projectName argument is not provided, then the user will be prompted to a
 Validation for projectName argument are as follows:
     - project name length should be greater than zero and cannot exceed 214
     - project name characters must be lowercase i.e., no uppercase or mixed case names are allowed
-    - project name can consist of hyphens and numbers, and can only begin with alphabets
+    - project name can consist of hyphens, numbers, and alphabets
     - project name must not contain any non-url-safe characters (since name ends up being part of a URL)
     - project name should not contain any spaces or any of the following characters: ~)('!*
+
+Other inputs that can be passed are: 
+    --projectType
+    --forceDeviceXPanel
+
+Validation for other arguments (these are optional and need not be added for creating a project) are as follows:
+    - projectType: must be either shell-template or ZoomRoomControl.
+    - forceDeviceXPanel: must be either Y or N or true or false.
 
 To access help, execute `ch5-shell-cli create:project --help`.
 
@@ -37,7 +45,7 @@ If config file is added as an argument along with other parameters to the create
 
 ### Copyright
 
-Copyright (C) 2022 to the present, Crestron Electronics, Inc.
+Copyright (C) 2023 to the present, Crestron Electronics, Inc.
 
 All rights reserved.
 

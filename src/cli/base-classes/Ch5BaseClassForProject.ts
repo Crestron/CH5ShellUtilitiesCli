@@ -191,7 +191,7 @@ export class Ch5BaseClassForProject extends Ch5BaseClassForCliCreate {
     /*
       - project name length should be greater than zero and cannot exceed 214
       - project name characters must be lowercase i.e., no uppercase or mixed case names are allowed
-      - project name can consist of hyphens and numbers, and can only begin with alphabets
+      - project name can consist of hyphens, numbers, and alphabets
       - project name must not contain any non-url-safe characters (since name ends up being part of a URL)
       - project name should not contain any spaces or any of the following characters: ~)('!*
     */

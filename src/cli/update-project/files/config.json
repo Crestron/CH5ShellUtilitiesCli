@@ -38,6 +38,53 @@
         "name": "CHECK_PROMPT_QUESTIONS.QUESTIONS.PROJECT_NAME"
       },
       "isSpecialArgument": false
+    },{
+      "key": "projectType",
+      "description": "Sets the type of project. Applicable values are shell-template and zoomroomcontrol.",
+      "type": "enum",
+      "default": "shell-template",
+      "valueIfNotFound": "shell-template",
+      "alias": [
+        "--projectType"
+      ],
+      "allowedValues": [
+        "zoomroomcontrol",
+        "shell-template"
+      ],
+      "allowedAliases": [
+        "zoomroomcontrol",
+        "shell-template"
+      ],
+      "validation": "validateProjectType",
+      "question": {
+        "name": ""
+      },
+      "isSpecialArgument": false
+    },
+    {
+      "key": "forceDeviceXPanel",
+      "description": "Use forceDeviceXPanel in the CH5 Project to connect with the CS as a browser based WebXPanel project. (valid input values are 'Y', 'y', 'N', 'n', 'true', 'false'",
+      "type": "boolean",
+      "default": "N",
+      "valueIfNotFound": "N",
+      "alias": [
+        "--forceDeviceXPanel"
+      ],
+      "allowedValues": [
+        "true",
+        "false"
+      ],
+      "allowedAliases": [
+        "true",
+        "false",
+        "y",
+        "n"
+      ],
+      "validation": "",
+      "question": {
+        "name": ""
+      },
+      "isSpecialArgument": false
     },
     {
       "key": "version",
