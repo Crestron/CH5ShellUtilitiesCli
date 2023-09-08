@@ -568,9 +568,23 @@ const templatePageModule = (() => {
 	/**
 	 * Loader method is for spinner
 	 */
-	function hideLoading() {
-		cleanup();
-		document.getElementById("loader").style.display = "none";
+	function hideLoading(pageObject) {
+		if (totalPreloadPage === preloadPageLoaded) {
+			if (!firstLoad && totalPreloadPage !== 0) {
+				firstLoad = true;
+				const listOfPages = projectConfigModule.getNavigationPages();
+				setTimeout(() => {
+					listOfPages.forEach((page) => page.preloadPage ? navigationModule.updateDiagnosticsOnPageChange(page.pageName) : '');
+				}, pageLoadTimeout);
+
+			}
+			cleanup();
+			document.getElementById("loader").style.display = "none";
+		} else {
+			setTimeout(() => {
+				hideLoading(pageObject);
+			}, 500);
+		}
 	}
 	function cleanup() {
 		document.getElementById("header-section-page-template1")?.remove();
@@ -581,13 +595,13 @@ const templatePageModule = (() => {
 		document.getElementById("footer-section-page-template1")?.remove();
 		document.getElementById("footer-section-page-template2")?.remove();
 		document.getElementById("header-section-page-template1-set1")?.remove();
-		featureModule.loggerInitialized === false && document.getElementById('template-remote-logger-settings-import-page').remove();
+		featureModule.loggerInitialized === false && document.getElementById('template-remote-logger-settings-import-page')?.remove();
 		projectConfigModule.projectConfigData().then(data => {
 			if (data.header.displayInfo === false) {
 				document.getElementById('header-section-page-set1')?.remove();
 			}
-			if (data.useWebXPanel === false) {
-				document.getElementById('pageStatusIdentifier')?.remove();
+			if (data.menuOrientation === "vertical" || data.menuOrientation === "none") {
+				document.getElementById('template-content-index-footer')?.remove();
 			}
 		});
 

@@ -13,22 +13,40 @@ const templateVersionInfoModule = (() => {
 	let projectConfig;
 	const tableCount = {};
 	const componentCount = {};
+	const webXTab = {
+		status: '',
+		cs: '',
+		ipId: '',
+		roomId: ''
+	};
+
 	/**
 	 * Initialize Method
 	 */
 	function onInit() {
 		CrComLib.subscribeState('b', 'infoBtn.clicked', (value) => {
-			if (value) {
+			if (value.repeatdigital === true) {
 				projectConfigModule.projectConfigData().then(projectConfigResponse => {
 					projectConfig = projectConfigResponse;
 					if (projectConfig.header.displayInfo) {
 						updateSubscriptions();
 						setTabs();
+						setWebXStatus();
 					}
 				});
 			}
 		});
+		CrComLib.subscribeState('b', 'infoModal.opened', (value) => {
+			if (value === true) {
+				document.getElementById('infobtn').children[0].style.pointerEvents = "none";
+			} else {
+				document.getElementById('infobtn').children[0].removeAttribute('style');
+			}
+		});
+
+
 	}
+
 	function setTabs() {
 		if (!projectConfig.useWebXPanel) document.getElementById('webxpanel-tab').style.display = 'none';
 		updateVersionTabHTML();
@@ -39,6 +57,7 @@ const templateVersionInfoModule = (() => {
 	function updateVersionTabHTML() {
 		serviceModule.loadJSON('./assets/data/version.json', (packages) => {
 			if (!packages) return console.log("FILE NOT FOUND");
+			const versionTableBody = document.getElementById('versionTableBody');
 			versionTableBody.innerHTML = "";
 			Array.from(JSON.parse(packages)).forEach((e) => versionTableBody.appendChild(createTableRow(e)))
 		})
@@ -72,17 +91,22 @@ const templateVersionInfoModule = (() => {
 		diagnosticPageHeaderElement.children[2].textContent = `Preload (${listOfPages.filter(page => page.preloadPage).length})`;
 		diagnosticPageHeaderElement.children[3].textContent = `	Cached (${listOfPages.filter(page => page.cachePage).length})`;
 		for (const page of listOfPages) {
-			let count = tableCount[page.pageName].total ?? '';
-			let nodes = tableCount[page.pageName].domNodes ?? '';
+			let count = tableCount[page.pageName]?.total ?? '';
+			let nodes = tableCount[page.pageName]?.domNodes ?? '';
 			if (tableCount.hasOwnProperty(page.pageName) === false) {
 				const pageImporterElement = document.getElementById(page.pageName + '-import-page');
 				if (!pageImporterElement) return;
 
-				tableCount[`${page.pageName}`] = CrComLib.countNumberOfCh5Components(pageImporterElement);
-				tableCount[`${page.pageName}`].domNodes = pageImporterElement.getElementsByTagName('*').length;
-				count = tableCount[`${page.pageName}`].total;
-				nodes = tableCount[`${page.pageName}`].domNodes;
+				tableCount[page.pageName] = CrComLib.countNumberOfCh5Components(pageImporterElement);
+				tableCount[page.pageName].domNodes = pageImporterElement.getElementsByTagName('*').length;
+				if (tableCount[page.pageName].domNodes === 1) {
+					tableCount[page.pageName].total = "";
+					tableCount[page.pageName].domNodes = "";
+				}
+				count = tableCount[page.pageName].total;
+				nodes = tableCount[page.pageName].domNodes;
 			}
+
 			const processedPageName = page.navigation.isI18nLabel ? translateModule.translateInstant(page.navigation.label) : page.navigation.label;
 			const newTableEntry = createTableRow({ name: processedPageName, count, preload: page.preloadPage ? 'Y' : 'N', cached: page.cachePage ? 'Y' : 'N', nodes });
 			newTableEntry.setAttribute('id', 'diagnostics-table-' + page.pageName);
@@ -165,6 +189,14 @@ const templateVersionInfoModule = (() => {
 			});
 		}
 	});
+	function setWebXStatus() {
+		setTimeout(() => {
+			document.querySelector('#webxpanel-tab-content .connection .status').innerHTML = webXTab.status;
+			document.querySelector('#webxpanel-tab-content .connection .cs').innerHTML = webXTab.cs;
+			document.querySelector('#webxpanel-tab-content .connection .ipid').innerHTML = webXTab.ipId;
+			document.querySelector('#webxpanel-tab-content .connection .roomid').innerHTML = webXTab.roomId;
+		});
+	}
 
 	/**
 	 * All public method and properties are exported here
@@ -174,6 +206,7 @@ const templateVersionInfoModule = (() => {
 		updateSubscriptions,
 		tableCount,
 		componentCount,
-		logSubscriptionsCount
+		logSubscriptionsCount,
+		webXTab
 	};
 })();

@@ -57,8 +57,8 @@ const navigationModule = (() => {
 				if (!pageImporterElement) return;
 
 				// Table Count Updation
-				templateVersionInfoModule.tableCount[`${pageName}`] = CrComLib.countNumberOfCh5Components(pageImporterElement);
-				templateVersionInfoModule.tableCount[`${pageName}`].domNodes = pageImporterElement.getElementsByTagName('*').length;
+				templateVersionInfoModule.tableCount[pageName] = CrComLib.countNumberOfCh5Components(pageImporterElement);
+				templateVersionInfoModule.tableCount[pageName].domNodes = pageImporterElement.getElementsByTagName('*').length;
 
 				// Current Page Table Row Updation
 
@@ -67,11 +67,11 @@ const navigationModule = (() => {
 				let totalComponentsCount = 0;
 				let currentCh5ComponentsCount = 0;
 				const listOfPages = projectConfigModule.getNavigationPages();
-				listOfPages.forEach((page) => totalDomCount += templateVersionInfoModule.tableCount[`${page.pageName}`].domNodes || 0);
-				listOfPages.forEach((page) => totalComponentsCount += templateVersionInfoModule.tableCount[`${page.pageName}`].total || 0);
+				listOfPages.forEach((page) => totalDomCount += templateVersionInfoModule.tableCount[`${page.pageName}`]?.domNodes || 0);
+				listOfPages.forEach((page) => totalComponentsCount += templateVersionInfoModule.tableCount[`${page.pageName}`]?.total || 0);
 				listOfPages.forEach(page => {
 					const pageImporterElement = document.getElementById(page.pageName + '-import-page');
-					if (pageImporterElement) currentCh5ComponentsCount += CrComLib.countNumberOfCh5Components(pageImporterElement).total;
+					if (pageImporterElement) currentCh5ComponentsCount += CrComLib.countNumberOfCh5Components(pageImporterElement)?.total || 0;
 				});
 
 				// Updating Table Count for Add Log

@@ -127,7 +127,11 @@ var webXPanelModule = (function () {
     WebXPanel.default.addEventListener(WebXPanel.WebXPanelEvents.FETCH_TOKEN_FAILED, (msg) => {
       if (msg.detail && msg.status) {
         let statusMsgPrefix = translateModule.translateInstant("app.webxpanel.statusmessageprefix");
-        status.innerHTML = statusMsgPrefix + msg.detail.status + " " + msg.detail.statusText;
+        const status = document.querySelector('#webxpanel-tab-content .connection .status');
+        if (status !== null) {
+          status.innerHTML = statusMsgPrefix + msg.detail.status + " " + msg.detail.statusText;
+        }
+        templateVersionInfoModule.webXTab['status'] = statusMsgPrefix + msg.detail.status + " " + msg.detail.statusText;
       } else {
         updateInfoStatus("app.webxpanel.status.FETCH_TOKEN_FAILED");
       }
@@ -145,11 +149,16 @@ var webXPanelModule = (function () {
       updateInfoStatus("app.webxpanel.status.CONNECT_CIP");
 
       if (isVersionInfoDisplayed()) {
-        document.querySelector('#webxpanel-tab-content .connection .cs').textContent = `CS: wss://${connectParams.host}:${connectParams.port}`;
-        document.querySelector('#webxpanel-tab-content .connection .ipid').textContent = `IPID: ${urlConfig.ipId}`;
-        if (msg.detail.roomId !== "") {
-          document.querySelector('#webxpanel-tab-content .connection .roomid').textContent = `Room Id: ${msg.detail.roomId}`;
-        }
+        const cs = document.querySelector('#webxpanel-tab-content .connection .cs');
+        const ipId = document.querySelector('#webxpanel-tab-content .connection .ipid');
+        const roomId = document.querySelector('#webxpanel-tab-content .connection .roomid');
+        if (cs !== null) { cs.textContent = `CS: wss://${connectParams.host}:${connectParams.port}`; }
+        if (ipId !== null) { ipId.textContent = `IPID: ${urlConfig.ipId}`; }
+        if (roomId !== null && msg.detail.roomId !== "") { ipId.textContent = `Room Id: ${msg.detail.roomId}`; }
+        templateVersionInfoModule.webXTab.cs = `CS: wss://${connectParams.host}:${connectParams.port}`;
+        templateVersionInfoModule.webXTab.ipId = `IPID: ${urlConfig.ipId}`;
+        templateVersionInfoModule.webXTab.roomId = `Room Id: ${msg.detail.roomId}`;
+
       }
     });
 
@@ -174,7 +183,11 @@ var webXPanelModule = (function () {
     if (statusMessage) {
       let sMsg = statusMsgPrefix + statusMessage;
       if (isVersionInfoDisplayed()) {
-        status.innerHTML = sMsg;
+        const status = document.querySelector('#webxpanel-tab-content .connection .status');
+        if (status !== null) {
+          status.innerHTML = sMsg;
+        }
+        templateVersionInfoModule.webXTab['status'] = sMsg;
       } else {
         console.log(sMsg);
       }
@@ -261,14 +274,20 @@ var webXPanelModule = (function () {
     updateInfoStatus("app.webxpanel.status.CONNECT_WS");
 
     if (isVersionInfoDisplayed()) {
+      const cs = document.querySelector('#webxpanel-tab-content .connection .cs');
+      const ipId = document.querySelector('#webxpanel-tab-content .connection .ipid');
+      const roomId = document.querySelector('#webxpanel-tab-content .connection .roomid');
       if (connectParams.host !== "") {
-        document.querySelector('#webxpanel-tab-content .connection .cs').textContent = `CS: wss://${connectParams.host}:${connectParams.port}`;
+        if (cs !== null) { cs.textContent = `CS: wss://${connectParams.host}:${connectParams.port}`; }
+        templateVersionInfoModule.webXTab.cs = `CS: wss://${connectParams.host}:${connectParams.port}`;
       }
       if (connectParams.ipId !== "") {
-        document.querySelector('#webxpanel-tab-content .connection .ipid').textContent = `IPID: ${Number(connectParams.ipId).toString(16)}`;
+        if (ipId !== null) { ipId.textContent = `IPID: ${Number(connectParams.ipId).toString(16)}`; }
+        templateVersionInfoModule.webXTab.ipId = `IPID: ${Number(connectParams.ipId).toString(16)}`;
       }
       if (connectParams.roomId !== "") {
-        document.querySelector('#webxpanel-tab-content .connection .roomid').textContent = `Room Id: ${connectParams.roomId}`;
+        if (roomId !== null) { ipId.textContent = `Room Id: ${connectParams.roomId}`; }
+        templateVersionInfoModule.webXTab.roomId = `Room Id: ${connectParams.roomId}`;;
       }
     }
 
