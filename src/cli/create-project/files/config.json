@@ -43,7 +43,7 @@
     },
     {
       "key": "projectType",
-      "description": "This will add ZRC SDK “ch5-zoom-lib.js” to the template project packages and all required modules to the shell template project",
+      "description": "Sets the type of project. Applicable values are shell-template and zoomroomcontrol.",
       "type": "enum",
       "default": "shell-template",
       "valueIfNotFound": "shell-template",

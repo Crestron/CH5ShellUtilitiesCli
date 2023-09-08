@@ -73,7 +73,7 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForProject implements ICh5C
     this.copyShellFolderContentsToProjectFolder();
 
     this.updateTemplateFiles();
-    
+
     if (this.isCreateOrUpdateBasedOnConfigJson()) {
       const inputConfigJSON: any = JSON.parse(this.utils.readFileContentSync(this.getConfigJsonFilePath()));
 
@@ -88,6 +88,10 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForProject implements ICh5C
             this.projectConfig.changeNodeValues(k, templateConfigJSON[k]);
           }
         }
+      }
+
+      if (this.getOutputResponse().data.projectType.toLowerCase() === "zoomroomcontrol") {
+        this.projectConfig.changeNodeValues("forceDeviceXPanel", true);
       }
 
       // 2. Themes
@@ -157,9 +161,16 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForProject implements ICh5C
       // Step 4: Make changes to project-config.json stepwise
       const templateConfigJSON: any = JSON.parse(this.utils.readFileContentSync(this.getShellTemplateProjectConfigPath()));
 
-      const forceDeviceXPanelObject = this.getOutputResponse().data.updatedInputs.find((objValue: any) => objValue.key === "forceDeviceXPanel");
-      templateConfigJSON["forceDeviceXPanel"] = forceDeviceXPanelObject.argsValue;
-      this.projectConfig.changeNodeValues("forceDeviceXPanel", templateConfigJSON["forceDeviceXPanel"]);
+      if (this.getOutputResponse().data.projectType.toLowerCase() === "zoomroomcontrol") {
+        this.projectConfig.changeNodeValues("forceDeviceXPanel", true);
+      } else {
+        const forceDeviceXPanelObject = this.getOutputResponse().data.updatedInputs.find((objValue: any) => objValue.key === "forceDeviceXPanel");
+        templateConfigJSON["forceDeviceXPanel"] = forceDeviceXPanelObject.argsValue;
+        this.projectConfig.changeNodeValues("forceDeviceXPanel", templateConfigJSON["forceDeviceXPanel"]);
+      }
+
+      this.projectConfig.changeNodeValues("projectName", this.getOutputResponse().data.projectName);
+      this.projectConfig.changeNodeValues("projectType", this.getOutputResponse().data.projectType);
 
       const defaultPageName = "page1";
       const defaultPageMenuValue = "Y";

@@ -17,10 +17,15 @@ const templateVersionInfoModule = (() => {
 	 * Initialize Method
 	 */
 	function onInit() {
-		projectConfigModule.projectConfigData().then(projectConfigResponse => {
-			projectConfig = projectConfigResponse;
-			if (projectConfig.header.displayInfo) {
-				setTabs();
+		CrComLib.subscribeState('b', 'infoBtn.clicked', (value) => {
+			if (value) {
+				projectConfigModule.projectConfigData().then(projectConfigResponse => {
+					projectConfig = projectConfigResponse;
+					if (projectConfig.header.displayInfo) {
+						updateSubscriptions();
+						setTabs();
+					}
+				});
 			}
 		});
 	}
@@ -34,6 +39,7 @@ const templateVersionInfoModule = (() => {
 	function updateVersionTabHTML() {
 		serviceModule.loadJSON('./assets/data/version.json', (packages) => {
 			if (!packages) return console.log("FILE NOT FOUND");
+			versionTableBody.innerHTML = "";
 			Array.from(JSON.parse(packages)).forEach((e) => versionTableBody.appendChild(createTableRow(e)))
 		})
 	}
@@ -58,20 +64,35 @@ const templateVersionInfoModule = (() => {
 	}
 	function updatePageCount() {
 		const diagnosticsTableElement = document.getElementById('diagnosticsTableElement');
+		diagnosticsTableElement.innerHTML = "";
 		const diagnosticPageHeaderElement = document.getElementById('diagnosticPageHeaderElement');
 		const listOfPages = projectConfigModule.getNavigationPages();
-		const pageCount = document.getElementById('pageCount');
 
-		pageCount.textContent = translateModuleHelper('pagecount', listOfPages.length);
-		diagnosticPageHeaderElement.children[2].textContent += ` (${listOfPages.filter(page => page.preloadPage).length})`;
-		diagnosticPageHeaderElement.children[3].textContent += ` (${listOfPages.filter(page => page.cachePage).length})`;
+		document.getElementById('pageCount').textContent = translateModuleHelper('pagecount', listOfPages.length);
+		diagnosticPageHeaderElement.children[2].textContent = `Preload (${listOfPages.filter(page => page.preloadPage).length})`;
+		diagnosticPageHeaderElement.children[3].textContent = `	Cached (${listOfPages.filter(page => page.cachePage).length})`;
 		for (const page of listOfPages) {
+			let count = tableCount[page.pageName].total ?? '';
+			let nodes = tableCount[page.pageName].domNodes ?? '';
+			if (tableCount.hasOwnProperty(page.pageName) === false) {
+				const pageImporterElement = document.getElementById(page.pageName + '-import-page');
+				if (!pageImporterElement) return;
+
+				tableCount[`${page.pageName}`] = CrComLib.countNumberOfCh5Components(pageImporterElement);
+				tableCount[`${page.pageName}`].domNodes = pageImporterElement.getElementsByTagName('*').length;
+				count = tableCount[`${page.pageName}`].total;
+				nodes = tableCount[`${page.pageName}`].domNodes;
+			}
 			const processedPageName = page.navigation.isI18nLabel ? translateModule.translateInstant(page.navigation.label) : page.navigation.label;
-			const newTableEntry = createTableRow({ name: processedPageName, count: '', preload: page.preloadPage ? 'Y' : 'N', cached: page.cachePage ? 'Y' : 'N', nodes: '' });
+			const newTableEntry = createTableRow({ name: processedPageName, count, preload: page.preloadPage ? 'Y' : 'N', cached: page.cachePage ? 'Y' : 'N', nodes });
 			newTableEntry.setAttribute('id', 'diagnostics-table-' + page.pageName);
 			diagnosticsTableElement.appendChild(newTableEntry);
-			tableCount[`${page.pageName}`] = {};
 		}
+
+		document.getElementById('totalDom').innerHTML = templateVersionInfoModule.translateModuleHelper('totalnodes', componentCount.totalDomCount);
+		document.getElementById('totalComponents').innerHTML = templateVersionInfoModule.translateModuleHelper('totalcomponents', componentCount.totalComponentsCount);;
+		document.getElementById('currentComponents').innerHTML = templateVersionInfoModule.translateModuleHelper('currentcomp', componentCount.currentCh5Components);
+
 	}
 	function setTabsListeners() {
 		const tabs = ['version-tab', 'webxpanel-tab', 'diagnostics-tab'];

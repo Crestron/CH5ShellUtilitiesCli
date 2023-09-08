@@ -54,7 +54,7 @@ export class Ch5BaseClassForProject extends Ch5BaseClassForCliCreate {
 
   protected validateCLIInputArgument(inputObj: any, key: string, value: string) {
     this.logger.log("validateCLIInputArgument: " + key + " - " + value, inputObj);
-    value = String(value).trim().toLowerCase();
+    value = String(value).trim(); //.toLowerCase();
     if (inputObj) {
       if (inputObj.allowedAliases && inputObj.allowedAliases.length > 0 && inputObj.allowedAliases.includes(value)) {
         if (inputObj.type === "boolean") {
@@ -164,17 +164,17 @@ export class Ch5BaseClassForProject extends Ch5BaseClassForCliCreate {
       });
 
       if (indexForProjectType === -1) {
-        this.logger.warn("projectType: " + projectType + " is invalid.");
+        this.logger.warn("projectType: " + projectType + " is invalid. Setting it to 'shell-template'");
         return {
           value: "shell-template",
           isValid: true,
-          error: ""
+          warning: ""
         };
       } else {
         return {
           value: projectType,
           isValid: true,
-          error: ""
+          warning: ""
         };
       }
     } else {
@@ -182,7 +182,7 @@ export class Ch5BaseClassForProject extends Ch5BaseClassForCliCreate {
       return {
         value: "shell-template",
         isValid: false,
-        error: ""
+        warning: ""
       };
     }
   }
@@ -196,29 +196,37 @@ export class Ch5BaseClassForProject extends Ch5BaseClassForCliCreate {
       - project name should not contain any spaces or any of the following characters: ~)('!*
     */
     if (packageName && packageName.trim().length > 0) {
-      packageName = packageName.trim().toLowerCase();
-      packageName = packageName.substring(0, 213);
+      packageName = packageName.trim(); //.toLowerCase();
+      // packageName = packageName.substring(0, 213);
       //  const packageNameValidity = new RegExp(/^[a-z][a-z0-9-._$]*$/).test(packageName);
-      const regexValue = /^(?:@[a-z0-9-*~][a-z0-9-*._~]*\/)?[a-z0-9-~][a-z0-9-._~]*$/; // /^[a-z][a-z0-9-._$]*$/
+      const regexValue = /^(?:@(?:[a-z0-9-*~][a-z0-9-*._~]*)?\/)?[a-z0-9-~][a-z0-9-._~]*$/;
       const packageNameValidity = new RegExp(regexValue).test(packageName);
       if (packageNameValidity === false) {
         return {
           value: null,
           isValid: false,
-          error: this.getText("COMMON.VALIDATIONS.PROJECT_NAME")
+          warning: this.getText("COMMON.VALIDATIONS.PROJECT_NAME")
         };
       } else {
-        return {
-          value: packageName,
-          isValid: true,
-          error: ""
-        };
+        if (packageName.length > 214) {
+          return {
+            value: null,
+            isValid: false,
+            warning: this.getText("COMMON.VALIDATIONS.PROJECT_NAME")
+          };
+        } else {
+          return {
+            value: packageName,
+            isValid: true,
+            warning: ""
+          };
+        }
       }
     } else {
       return {
         value: "",
         isValid: false,
-        error: this.getText("COMMON.VALIDATIONS.PROJECT_NAME")
+        warning: this.getText("COMMON.VALIDATIONS.PROJECT_NAME")
       };
     }
   }
@@ -310,7 +318,7 @@ export class Ch5BaseClassForProject extends Ch5BaseClassForCliCreate {
               throw new Error(this.getText("COMMON.SOMETHING_WENT_WRONG"));
             }
 
-            outputResponse.data.updatedInputs[i].argsValue = response.projectName.toLowerCase();
+            outputResponse.data.updatedInputs[i].argsValue = response.projectName; //.toLowerCase();
             this.logger.log(outputResponse.data.updatedInputs[i].key + ": ", outputResponse.data.updatedInputs[i].argsValue);
           } else if (outputResponse.data.updatedInputs[i].type === "boolean") {
             const choicesList = outputResponse.data.updatedInputs[i].allowedValues;
@@ -333,11 +341,11 @@ export class Ch5BaseClassForProject extends Ch5BaseClassForCliCreate {
   protected getProjectName() {
     if (this.isCreateOrUpdateBasedOnConfigJson()) {
       const inputConfigJSON: any = JSON.parse(this.utils.readFileContentSync(this.getConfigJsonFilePath()));
-      this._outputResponse.data.projectName = inputConfigJSON.projectName.toLowerCase();
+      this._outputResponse.data.projectName = inputConfigJSON.projectName; // .toLowerCase();
       this._outputResponse.data.projectType = inputConfigJSON.projectType.toLowerCase();
     } else {
       const projectNameObject = this._outputResponse.data.updatedInputs.find((objValue: any) => objValue.key === "projectName");
-      this._outputResponse.data.projectName = projectNameObject.argsValue.toLowerCase();
+      this._outputResponse.data.projectName = projectNameObject.argsValue; // .toLowerCase();
       const projectTypeObject = this._outputResponse.data.updatedInputs.find((objValue: any) => objValue.key === "projectType");
       this._outputResponse.data.projectType = projectTypeObject.argsValue.toLowerCase();
     }

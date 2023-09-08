@@ -52,7 +52,7 @@ const navigationModule = (() => {
 
 	function updateDiagnosticsOnPageChange(pageName) {
 		projectConfigModule.projectConfigData().then((projectConfigResponse) => {
-			if (projectConfigResponse.header.display === true && projectConfigResponse.header.displayInfo === true && projectConfigResponse.header.$component === ""){
+			if (projectConfigResponse.header.display === true && projectConfigResponse.header.displayInfo === true && projectConfigResponse.header.$component === "") {
 				const pageImporterElement = document.getElementById(pageName + '-import-page');
 				if (!pageImporterElement) return;
 
@@ -61,9 +61,6 @@ const navigationModule = (() => {
 				templateVersionInfoModule.tableCount[`${pageName}`].domNodes = pageImporterElement.getElementsByTagName('*').length;
 
 				// Current Page Table Row Updation
-				const currentPageTableRow = document.getElementById('diagnostics-table-' + pageName);
-				currentPageTableRow.childNodes[1].textContent = templateVersionInfoModule.tableCount[`${pageName}`].total;
-				currentPageTableRow.childNodes[4].textContent = templateVersionInfoModule.tableCount[`${pageName}`].domNodes;
 
 				// Diagnostic Info Count Updation
 				let totalDomCount = 0;
@@ -76,15 +73,11 @@ const navigationModule = (() => {
 					const pageImporterElement = document.getElementById(page.pageName + '-import-page');
 					if (pageImporterElement) currentCh5ComponentsCount += CrComLib.countNumberOfCh5Components(pageImporterElement).total;
 				});
-				document.getElementById('totalDom').innerHTML = templateVersionInfoModule.translateModuleHelper('totalnodes', totalDomCount);
-				document.getElementById('totalComponents').innerHTML = templateVersionInfoModule.translateModuleHelper('totalcomponents', totalComponentsCount);;
-				document.getElementById('currentComponents').innerHTML = templateVersionInfoModule.translateModuleHelper('currentcomp', currentCh5ComponentsCount);
 
 				// Updating Table Count for Add Log
 				templateVersionInfoModule.componentCount.totalDomCount = totalDomCount;
 				templateVersionInfoModule.componentCount.totalComponentsCount = totalComponentsCount;
 				templateVersionInfoModule.componentCount.currentCh5Components = currentCh5ComponentsCount;
-				templateVersionInfoModule.updateSubscriptions();
 			}
 		});
 	}

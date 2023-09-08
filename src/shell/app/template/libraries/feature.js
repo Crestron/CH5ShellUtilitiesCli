@@ -5,6 +5,7 @@ const featureModule = (() => {
   'use strict';
 
   let themeTimer = null;
+  let loggerInitialized = false;
 
   /**
    * This is public method to change the theme
@@ -42,6 +43,7 @@ const featureModule = (() => {
    */
   function initializeLogger(hostName, portNumber) {
     setTimeout(() => {
+      loggerInitialized = true;
       loggerService.setRemoteLoggerConfig(hostName, portNumber);
     });
   }
@@ -74,6 +76,7 @@ const featureModule = (() => {
    */
   return {
     changeTheme,
+    loggerInitialized,
     initializeLogger,
     logDiagnostics
   };
