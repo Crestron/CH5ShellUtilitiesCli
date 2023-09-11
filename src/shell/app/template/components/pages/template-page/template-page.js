@@ -443,7 +443,7 @@ const templatePageModule = (() => {
 								let loadListCh5 = CrComLib.subscribeState('o', 'ch5-list', (value) => {
 									if (value['loaded'] && (value['id'] === "horizontal-menu-swiper-thumb")) {
 										loadCh5ListForMenu(projectConfigResponse, responseArrayForNavPages);
-										connectToWebXPanel(projectConfigResponse);
+										configureWebXPanel(projectConfigResponse);
 										navigateToFirstPage(projectConfigResponse, responseArrayForNavPages);
 										setTimeout(() => {
 											CrComLib.unsubscribeState('o', 'ch5-list', loadListCh5);
@@ -455,7 +455,7 @@ const templatePageModule = (() => {
 								let loadListCh5 = CrComLib.subscribeState('o', 'ch5-list', (value) => {
 									if (value['loaded'] && (value['id'] === "vertical-menu-swiper-thumb")) {
 										loadCh5ListForMenu(projectConfigResponse, responseArrayForNavPages);
-										connectToWebXPanel(projectConfigResponse);
+										configureWebXPanel(projectConfigResponse);
 										navigateToFirstPage(projectConfigResponse, responseArrayForNavPages);
 										setTimeout(() => {
 											CrComLib.unsubscribeState('o', 'ch5-list', loadListCh5);
@@ -464,7 +464,7 @@ const templatePageModule = (() => {
 									}
 								});
 							} else {
-								connectToWebXPanel(projectConfigResponse);
+								configureWebXPanel(projectConfigResponse);
 								navigateToFirstPage(projectConfigResponse, responseArrayForNavPages);
 							}
 						});
@@ -487,20 +487,30 @@ const templatePageModule = (() => {
 		}
 	}
 
-	function connectToWebXPanel(projectConfigResponse) {
+	function configureWebXPanel(projectConfigResponse) {
+		if (projectConfigResponse.useWebXPanel === false && projectConfigResponse.forceDeviceXPanel === false) {
+			return;
+		}
+
 		if (projectConfigResponse.forceDeviceXPanel === true) {
 			webXPanelModule.getWebXPanel(true); // Always Connect as WebX and not Native
+			connectToWebXPanel(projectConfigResponse);
 		} else {
 			// Check if Crestron Device
 			if (WebXPanel.runsInContainerApp() === true) {
 				webXPanelModule.getWebXPanel(false); // Connect as Native
+				connectToWebXPanel(projectConfigResponse);
 			} else {
 				if (projectConfigResponse.useWebXPanel === true) {
 					webXPanelModule.getWebXPanel(true);
+					connectToWebXPanel(projectConfigResponse);
 				}
 			}
 		}
-		if (projectConfigResponse.useWebXPanel && !isWebXPanelInitialized) {
+	}
+
+	function connectToWebXPanel(projectConfigResponse) {
+		if (!isWebXPanelInitialized) {
 			if (projectConfigResponse.header.display && projectConfigResponse.header.displayInfo && projectConfigResponse.header.$component.trim() === "") {
 				let loadListCh5 = CrComLib.subscribeState('o', 'ch5-import-htmlsnippet:template-version-info-import-page', (value) => {
 					if (value['loaded']) {

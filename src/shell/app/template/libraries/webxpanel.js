@@ -309,7 +309,7 @@ var webXPanelModule = (function () {
 
   function getWebXPanel(isBrowser) {
     const Panel = WebXPanel.getWebXPanel(isBrowser);
-    WebXPanel = { ...Panel, default: Panel.WebXPanel }
+    WebXPanel = { ...Panel, default: Panel.WebXPanel };
   }
 
   /**
