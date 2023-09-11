@@ -19,11 +19,16 @@ const templateVersionInfoModule = (() => {
 		ipId: '',
 		roomId: ''
 	};
+	let versionData = [];
 
 	/**
 	 * Initialize Method
 	 */
 	function onInit() {
+		serviceModule.loadJSON('./assets/data/version.json', (packages) => {
+			if (!packages) return console.log("FILE NOT FOUND");
+			versionData = packages;
+		})
 		CrComLib.subscribeState('b', 'infoBtn.clicked', (value) => {
 			if (value.repeatdigital === true) {
 				projectConfigModule.projectConfigData().then(projectConfigResponse => {
@@ -55,12 +60,9 @@ const templateVersionInfoModule = (() => {
 		setLogButtonListener();
 	}
 	function updateVersionTabHTML() {
-		serviceModule.loadJSON('./assets/data/version.json', (packages) => {
-			if (!packages) return console.log("FILE NOT FOUND");
-			const versionTableBody = document.getElementById('versionTableBody');
-			versionTableBody.innerHTML = "";
-			Array.from(JSON.parse(packages)).forEach((e) => versionTableBody.appendChild(createTableRow(e)))
-		})
+		const versionTableBody = document.getElementById('versionTableBody');
+		versionTableBody.innerHTML = "";
+		Array.from(JSON.parse(versionData)).forEach((e) => versionTableBody.appendChild(createTableRow(e)))
 	}
 	function createTableRow(data) {
 		const tableRow = document.createElement('tr');
@@ -194,7 +196,7 @@ const templateVersionInfoModule = (() => {
 			document.querySelector('#webxpanel-tab-content .connection .status').innerHTML = webXTab.status;
 			document.querySelector('#webxpanel-tab-content .connection .cs').innerHTML = webXTab.cs;
 			document.querySelector('#webxpanel-tab-content .connection .ipid').innerHTML = webXTab.ipId;
-			document.querySelector('#webxpanel-tab-content .connection .roomid').innerHTML = webXTab.roomId;
+			document.querySelector('#webxpanel-tab-content .connection .roomid').innerHTML = webXTab.roomId || 'Room Id: ';
 		});
 	}
 
