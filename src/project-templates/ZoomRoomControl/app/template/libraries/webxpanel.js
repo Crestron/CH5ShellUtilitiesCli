@@ -267,11 +267,12 @@ var webXPanelModule = (function () {
     // Assign the combined configuration
     connectParams = urlConfig;
 
-    if (ch5zoomsdk.default) {
-      ch5zoomsdk.default.initialize(CrComLib, WebXPanel).then(() => finishConnectingWebXPanel());
-    } else {
+    // commented code for zoomsdk, uncommented once zoom library is avilable.
+    // if (ch5zoomsdk.default) {
+      // ch5zoomsdk.default.initialize(CrComLib, WebXPanel).then(() => finishConnectingWebXPanel());
+    // } else {
       finishConnectingWebXPanel();
-    }
+    // }
   }
 
   function finishConnectingWebXPanel() {
