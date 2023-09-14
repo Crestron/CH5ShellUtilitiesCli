@@ -209,4 +209,3 @@ const utilsModule = (() => {
   };
 })();
 
-let zoommngr = ch5zoomsdk.default;
