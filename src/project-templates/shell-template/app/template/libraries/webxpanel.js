@@ -16,7 +16,8 @@ var webXPanelModule = (function () {
     "roomId": "",
     "ipId": "0x03",
     "tokenSource": "",
-    "tokenUrl": ""
+    "tokenUrl": "",
+    "forceDeviceXPanel": ""
   };
 
   const RENDER_STATUS = {
@@ -53,13 +54,15 @@ var webXPanelModule = (function () {
    * Get WebXPanel configuration present in project-config.json
    */
   function getWebXPanelConfiguration(projectConfig) {
-    if (projectConfig.config && projectConfig.config.controlSystem) {
+    if ((projectConfig.config && projectConfig.config.controlSystem) || projectConfig.forceDeviceXPanel) {
       pcConfig.host = projectConfig.config.controlSystem.host || config.host;
       pcConfig.port = projectConfig.config.controlSystem.port || config.port;
       pcConfig.roomId = projectConfig.config.controlSystem.roomId || config.roomId;
       pcConfig.ipId = projectConfig.config.controlSystem.ipId || config.ipId;
       pcConfig.tokenSource = projectConfig.config.controlSystem.tokenSource || config.tokenSource;
       pcConfig.tokenUrl = projectConfig.config.controlSystem.tokenUrl || config.tokenUrl;
+      pcConfig.forceDeviceXPanel = projectConfig.forceDeviceXPanel || config.forceDeviceXPanel;
+      return pcConfig;
     }
   }
 
@@ -93,6 +96,8 @@ var webXPanelModule = (function () {
     urlConfig.ipId = entries["ipid"] || pcConfig.ipId;
     urlConfig.tokenSource = entries["tokensource"] || pcConfig.tokenSource;
     urlConfig.tokenUrl = entries["tokenurl"] || pcConfig.tokenUrl;
+    urlConfig.forceDeviceXPanel = entries["forcedevicexpanel"] || pcConfig.forceDeviceXPanel;
+    return urlConfig;
   }
 
   /**
@@ -179,17 +184,18 @@ var webXPanelModule = (function () {
   function updateInfoStatus(statusMessageKey) {
     let statusMsgPrefix = translateModule.translateInstant("app.webxpanel.statusmessageprefix");
     let statusMessage = translateModule.translateInstant(statusMessageKey);
-    let sMsg = statusMsgPrefix + statusMessage;
-    if (isVersionInfoDisplayed()) {
-      const status = document.querySelector('#webxpanel-tab-content .connection .status');
-      if (status !== null) {
-        status.innerHTML = sMsg;
+    if (statusMessage) {
+      let sMsg = statusMsgPrefix + statusMessage;
+      if (isVersionInfoDisplayed()) {
+        const status = document.querySelector('#webxpanel-tab-content .connection .status');
+        if (status !== null) {
+          status.innerHTML = sMsg;
+        }
+        templateVersionInfoModule.webXTab['status'] = sMsg;
+      } else {
+        console.log(sMsg);
       }
-      templateVersionInfoModule.webXTab['status'] = sMsg;
-    } else {
-      console.log(sMsg);
     }
-
   }
 
   function isVersionInfoDisplayed() {
@@ -260,10 +266,6 @@ var webXPanelModule = (function () {
 
     webXPanelConnectionStatus();
 
-    // Merge the configuration params, params of the URL takes precedence
-    getWebXPanelConfiguration(projectConfig);
-    getWebXPanelUrlParams();
-
     // Assign the combined configuration
     connectParams = urlConfig;
 
@@ -315,7 +317,9 @@ var webXPanelModule = (function () {
    */
   return {
     connect,
-    getWebXPanel
+    getWebXPanel,
+    getWebXPanelConfiguration,
+    getWebXPanelUrlParams
   };
 
 })();

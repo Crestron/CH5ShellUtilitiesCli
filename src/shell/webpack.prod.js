@@ -16,7 +16,7 @@ const mainTemplateJs = appConfig.mainTemplateJs;
 const componentsTemplateJs = appConfig.componentsTemplateJs;
 const mainProjectJs = appConfig.mainProjectJs;
 const componentsProjectJs = appConfig.componentsProjectJs;
-const jsList = projectConfig.useWebXPanel || projectConfig.forceDeviceXPanel ? [...webXPanel, ...crLib] : [...crLib];
+const jsList = [...webXPanel, ...crLib];
 const componentsList = [...mainTemplateJs, ...mainProjectJs, ...componentsTemplateJs, ...componentsProjectJs];
 
 // app version

@@ -488,11 +488,13 @@ const templatePageModule = (() => {
 	}
 
 	function configureWebXPanel(projectConfigResponse) {
-		if (projectConfigResponse.useWebXPanel === false && projectConfigResponse.forceDeviceXPanel === false) {
+		const pcConfig = webXPanelModule.getWebXPanelConfiguration(projectConfigResponse);
+		const urlConfig = webXPanelModule.getWebXPanelUrlParams();
+		if (projectConfigResponse.useWebXPanel === false && projectConfigResponse.forceDeviceXPanel === false && urlConfig.forceDeviceXPanel === "false") {
 			return;
 		}
 
-		if (projectConfigResponse.forceDeviceXPanel === true) {
+		if (pcConfig.forceDeviceXPanel === true || urlConfig.forceDeviceXPanel === "true") {
 			webXPanelModule.getWebXPanel(true); // Always Connect as WebX and not Native
 			connectToWebXPanel(projectConfigResponse);
 		} else {
