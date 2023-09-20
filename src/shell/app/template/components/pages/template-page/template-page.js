@@ -13,6 +13,8 @@ const templatePageModule = (() => {
 	let firstLoad = false;
 	let pageLoadTimeout = 2000;
 	let isWebXPanelInitialized = false; // avoid calling connection method multiple times
+	let projectThemes = [];
+	let selectedTheme = "";
 
 	const effects = {
 		"fadeOutUpBig": ["animate__animated", "animate__fadeOutUpBig"],
@@ -179,7 +181,10 @@ const templatePageModule = (() => {
 
 			projectConfigModule.projectConfigData().then((projectConfigResponse) => {
 				translateModule.initializeDefaultLanguage().then(() => {
-					featureModule.changeTheme();
+					projectThemes = projectConfigResponse.themes;
+					featureModule.setProjectThemes(projectThemes);
+					featureModule.changeTheme(projectConfigResponse.selectedTheme);
+
 					/* Note: You can uncomment below line to enable remote logger.
 					* Refer below documentation link to know more about remote logger.
 					* https://sdkcon78221.crestron.com/sdk/Crestron_HTML5UI/Content/Topics/UI-Remote-Logger.htm
@@ -190,12 +195,24 @@ const templatePageModule = (() => {
 					featureModule.logDiagnostics(projectConfigResponse.header.diagnostics.logs.logDiagnostics);
 
 					// Changes for index.html - Start
+					const cacheBustVersion = "?v=" + (new Date()).getTime();
 					document.getElementById("favicon").setAttribute("href", projectConfigResponse.faviconPath);
 					const getSelectedTheme = projectConfigResponse.themes.find(themeName => themeName.name === projectConfigResponse.selectedTheme);
 					if (getSelectedTheme) {
-						document.getElementById("selectedThemeCss").setAttribute("href", "./assets/css/" + getSelectedTheme.extends + ".css");
+						document.getElementById("shellTemplateSelectedThemeCss").setAttribute("href", "./assets/css/" + getSelectedTheme.extends + ".css" + cacheBustVersion);
 					}
-
+					// document.getElementById("shellTemplateExternalCss").setAttribute("href", "./assets/css/external.css" + cacheBustVersion);
+					// document.getElementById("shellTemplateMainCss").setAttribute("href", "./assets/css/main.css" + cacheBustVersion);
+					// document.getElementById("shellTemplateSgCss").setAttribute("href", "./assets/css/sg.css" + cacheBustVersion);
+					// document.getElementById("shellTemplateTemplateComponentsCss").setAttribute("href", "./assets/css/templatecomponents.css" + cacheBustVersion);
+					// document.getElementById("shellTemplateProjectComponentsCss").setAttribute("href", "./assets/css/projectcomponents.css" + cacheBustVersion);
+					
+					// document.getElementById("shellTemplateCrComLibJs").setAttribute("src", "./libraries/cr-com-lib.js" + cacheBustVersion);
+					// document.getElementById("shellTemplateComponentJs").setAttribute("src", "./libraries/component.js" + cacheBustVersion);
+					
+					if (projectConfigResponse.projectType.toLowerCase() === "zoomroomcontrol") {
+						document.getElementById("shellTemplateZoomCh5LibJs").setAttribute("src", "./libraries/ch5-zoom-lib.js" + cacheBustVersion);
+					}
 					const widgetsAndStandalonePages = document.getElementById("widgets-and-standalone-pages");
 					const widgets = projectConfigResponse.content.widgets;
 					for (let i = 0; i < widgets.length; i++) {
@@ -244,22 +261,6 @@ const templatePageModule = (() => {
 							}
 						}
 
-						if (document.getElementById("brandLogo")) {
-							const sTheme = projectConfigResponse.selectedTheme;
-							const themes = projectConfigResponse.themes;
-							themes.forEach((elem) => {
-								if (sTheme === elem.name) {
-									if (elem.brandLogo !== "undefined") {
-										for (var prop in elem.brandLogo) {
-											if (elem.brandLogo[prop] !== "") {
-												document.getElementById("brandLogo").setAttribute(prop, elem.brandLogo[prop]);
-											}
-										}
-									}
-								}
-							});
-						}
-
 						if (projectConfigResponse.header.displayInfo === true) {
 							if (projectConfigResponse.header.$component === "") {
 								const headerSectionPageSet1 = document.getElementById('header-section-page-set1');
@@ -281,34 +282,6 @@ const templatePageModule = (() => {
 						data = document.getElementById("template-content-page-section-none").innerHTML;
 					}
 
-					const templateContentBackground = document.getElementById("template-content-background");
-					if (templateContentBackground) {
-						const sTheme = projectConfigResponse.selectedTheme;
-						const themes = projectConfigResponse.themes;
-						themes.forEach((elem) => {
-							if (sTheme === elem.name) {
-								if (elem.backgroundProperties !== "undefined") {
-									for (let prop in elem.backgroundProperties) {
-
-										if (prop === "url") {
-											if (typeof elem.backgroundProperties.url === "object") {
-												elem.backgroundProperties.url = elem.backgroundProperties.url.join(" | ");
-											}
-										}
-										if (prop === "backgroundColor") {
-											if (typeof elem.backgroundProperties.backgroundColor === "object") {
-												elem.backgroundProperties.backgroundColor = elem.backgroundProperties.backgroundColor.join(' | ');
-											}
-										}
-
-										if (elem.backgroundProperties[prop] !== "") {
-											templateContentBackground.setAttribute(prop, elem.backgroundProperties[prop]);
-										}
-									}
-								}
-							}
-						});
-					}
 					const mergedJsonContent = utilsModule.mergeJSON(projectConfigResponse, {});
 					app.innerHTML += utilsModule.replacePlaceHolders(data, mergedJsonContent);
 
@@ -498,6 +471,7 @@ const templatePageModule = (() => {
 			webXPanelModule.getWebXPanel(true); // Always Connect as WebX and not Native
 			connectToWebXPanel(projectConfigResponse);
 		} else {
+
 			// Check if Crestron Device
 			if (WebXPanel.runsInContainerApp() === true) {
 				webXPanelModule.getWebXPanel(false); // Connect as Native

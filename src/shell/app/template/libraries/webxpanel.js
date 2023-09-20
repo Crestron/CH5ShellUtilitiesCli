@@ -163,7 +163,6 @@ var webXPanelModule = (function () {
         templateVersionInfoModule.webXTab.cs = `CS: wss://${connectParams.host}:${connectParams.port}`;
         templateVersionInfoModule.webXTab.ipId = `IPID: ${urlConfig.ipId}`;
         templateVersionInfoModule.webXTab.roomId = `Room Id: ${msg.detail.roomId}`;
-
       }
     });
 
@@ -266,7 +265,9 @@ var webXPanelModule = (function () {
     }
 
     webXPanelConnectionStatus();
-
+    // Merge the configuration params, params of the URL takes precedence
+    // getWebXPanelConfiguration(projectConfig);
+    // getWebXPanelUrlParams();
 
     // Assign the combined configuration
     connectParams = urlConfig;

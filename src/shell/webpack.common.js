@@ -2,8 +2,8 @@ const path = require("path");
 const fs = require("fs");
 const glob = require("glob");
 
+const RemoveEmptyScriptsPlugin = require('webpack-remove-empty-scripts');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 const CreateFileWebpack = require('create-file-webpack');
 const appConfig = require("./app.config");
@@ -32,11 +32,7 @@ function getConfig(envPath) {
     },
     layoutCss: {
       to: `${distPath}/assets/css`,
-      from: `${baseThemePath}`,
-    },
-    sgCss: {
-      to: `${distPath}/assets/css/sg.css`,
-      from: `${sgCssBasePath}`,
+      from: `${appConfig.getAllThemes}`,
     },
     sgIcons: {
       to: `${distPath}/assets/svgs/icons`,
@@ -137,6 +133,7 @@ function getConfig(envPath) {
     } else {
       listObj.flatten = true;
     }
+    console.log("listObj", listObj);
     copyToDest.push(listObj);
   });
 
@@ -174,17 +171,17 @@ function getConfig(envPath) {
 module.exports = (env) => {
   return {
     entry: {
-      main: path.resolve(basePath, `${srcTemplateRoot}/assets/scss/main.scss`),
       external: [
         path.resolve(basePath, `${fontAwesomeCssBasePath}/all.css`),
         path.resolve(basePath, `${materialIconsCssBasePath}/all.css`)
       ],
+      main: path.resolve(basePath, `${srcTemplateRoot}/assets/scss/main.scss`),
+      sg: path.resolve(basePath, `${sgCssBasePath}`),
       templatecomponents: glob.sync(`${srcTemplateRoot}/components/**/*.scss`),
       projectcomponents: glob.sync(`${srcProjectRoot}/components/**/*.scss`),
     },
     output: {
-      libraryTarget: "umd",
-      filename: "[name].js",
+      filename: "[name].[contenthash].js",
       path: path.resolve(basePath, appConfigDistPath[env]),
     },
     resolve: {
@@ -204,7 +201,7 @@ module.exports = (env) => {
           test: /\.(png|jpg|svg)$/,
           type: 'asset/resource',
           generator: {
-            filename: './app/template/assets/img/[name][ext]', // trans-bg.png
+            filename: './app/template/assets/img/[name][ext]',
           },
         },
         {
@@ -236,24 +233,15 @@ module.exports = (env) => {
             "css-loader",
             "sass-loader",
           ]
-        },
-        {
-          test: /\.(html)$/,
-          use: [{
-            loader: "html-loader",
-            options: {
-              minimize: false,
-            }
-          }]
         }
       ]
     },
     plugins: [
+      new RemoveEmptyScriptsPlugin(),
       new MiniCssExtractPlugin({
-        filename: "assets/css/[name].css",
+        filename: "assets/css/[name].[contenthash].css",
       }),
       new CopyPlugin(getConfig(env)),
-      new HtmlWebpackPlugin(),
       new CreateFileWebpack({
         path: './',
         fileName: 'copyright.txt',

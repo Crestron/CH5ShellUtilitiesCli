@@ -1,7 +1,7 @@
 const merge = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const GenerateJsonPlugin = require('generate-json-webpack-plugin');
-const WebpackConcatPlugin = require('webpack-concat-files-plugin');
+const WebpackConcatPlugin = require('@mcler/webpack-concat-plugin');
 const common = require('./webpack.common.js');
 const pkg = require('./package.json');
 const appConfig = require('./app.config');
@@ -28,26 +28,31 @@ module.exports = merge(common("prod"), {
   mode: 'production',
   plugins: [
     new WebpackConcatPlugin({
-      bundles: [
-        {
-          dest: './dist/prod/Shell/libraries/cr-com-lib.js',
-          src: jsList,
-        },
-      ],
+      name: 'component',
+      outputPath: './libraries/',
+      fileName: '[name].[hash:8].js',
+      filesToConcat: componentsList,
+      attributes: {
+        async: false,
+        defer: false
+      }
     }),
     new WebpackConcatPlugin({
-      bundles: [
-        {
-          dest: './dist/prod/Shell/libraries/component.js',
-          src: componentsList,
-        },
-      ],
+      name: 'cr-com-lib',
+      outputPath: './libraries/',
+      fileName: '[name].[hash:8].js',
+      filesToConcat: jsList,
+      attributes: {
+        async: false,
+        defer: false
+      }
     }),
     new GenerateJsonPlugin('assets/data/app.manifest.json', appVersionInfo),
     new HtmlWebpackPlugin({
-      filename: 'index.html',
-      inject: false,
-      template: './app/index.html'
+      filename: './index.html',
+      template: './app/index.html',
+      hash: true,
+      inject: false
     })
   ]
 });

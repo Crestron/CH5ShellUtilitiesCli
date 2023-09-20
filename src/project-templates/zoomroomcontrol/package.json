@@ -72,7 +72,8 @@
     "dependencies": {
         "@crestron/ch5-crcomlib": "^2.4.1", 
         "@crestron/ch5-theme": "^2.4.1", 
-        "@crestron/ch5-webxpanel": "^2.0.0"
+        "@crestron/ch5-webxpanel": "^2.0.0",
+        "@crestron/ch5-zoom-lib": "https://linux3-dev.crestron.crestron.com/UC-CH5ZoomLib/dev/crestron-ch5-zoom-lib-1.0.0.tgz"
     }, 
     "files": [
         "copyright.txt", 

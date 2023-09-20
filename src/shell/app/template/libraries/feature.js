@@ -4,35 +4,64 @@
 const featureModule = (() => {
   'use strict';
 
-  let themeTimer = null;
   let loggerInitialized = false;
+  let projectThemes = [];
 
+  function setProjectThemes(projectThemesInput) {
+    projectThemes = projectThemesInput;
+  }
   /**
    * This is public method to change the theme
    * @param {string} theme pass theme type like 'light-theme', 'dark-theme'
    */
   function changeTheme(theme) {
-    clearTimeout(themeTimer);
-    themeTimer = setTimeout(() => {
-      projectConfigModule.projectConfigData().then((response) => {
-        let selectedTheme;
-        let body = document.body;
-        for (let i = 0; i < response.themes.length; i++) {
-          body.classList.remove(response.themes[i].name);
-        }
-        let selectedThemeName = "";
-        if (theme && theme !== "") {
-          selectedThemeName = theme.trim();
-        } else {
-          selectedThemeName = response.selectedTheme.trim();
-        }
-        body.classList.add(selectedThemeName);
-        selectedTheme = response.themes.find((tempObj) => tempObj.name.trim().toLowerCase() === selectedThemeName.trim().toLowerCase());
+    setTimeout(() => {
+      let body = document.body;
+      for (let i = 0; i < projectThemes.length; i++) {
+        body.classList.remove(projectThemes[i].name);
+      }
+      let selectedThemeName = theme.trim();
+      body.classList.add(selectedThemeName);
+      let selectedTheme = projectThemes.find((tempObj) => tempObj.name.trim().toLowerCase() === selectedThemeName.toLowerCase());
+      const cacheBustVersion = "?v=" + (new Date()).getTime();
+      document.getElementById("shellTemplateSelectedThemeCss").setAttribute("href", "./assets/css/" + selectedTheme.extends + ".css" + cacheBustVersion);
 
-        if (document.getElementById("brandLogo")) {
-          document.getElementById("brandLogo").setAttribute("url", selectedTheme.brandLogo.url);
+      // if (document.getElementById("brandLogo")) {
+      //   document.getElementById("brandLogo").setAttribute("url", selectedTheme.brandLogo.url);
+      // }
+
+      if (document.getElementById("brandLogo")) {
+        if (selectedTheme.brandLogo !== "undefined") {
+          for (var prop in selectedTheme.brandLogo) {
+            if (selectedTheme.brandLogo[prop] !== "") {
+              document.getElementById("brandLogo").setAttribute(prop, selectedTheme.brandLogo[prop]);
+            }
+          }
         }
-      });
+      }
+
+      const templateContentBackground = document.getElementById("template-content-background");
+      if (templateContentBackground) {
+        if (selectedTheme.backgroundProperties !== "undefined") {
+          for (let prop in selectedTheme.backgroundProperties) {
+
+            if (prop === "url") {
+              if (typeof selectedTheme.backgroundProperties.url === "object") {
+                selectedTheme.backgroundProperties.url = selectedTheme.backgroundProperties.url.join(" | ");
+              }
+            }
+            if (prop === "backgroundColor") {
+              if (typeof selectedTheme.backgroundProperties.backgroundColor === "object") {
+                selectedTheme.backgroundProperties.backgroundColor = selectedTheme.backgroundProperties.backgroundColor.join(' | ');
+              }
+            }
+
+            if (selectedTheme.backgroundProperties[prop] !== "") {
+              templateContentBackground.setAttribute(prop, selectedTheme.backgroundProperties[prop]);
+            }
+          }
+        }
+      }
     }, 500);
   }
 
@@ -76,6 +105,7 @@ const featureModule = (() => {
    */
   return {
     changeTheme,
+    setProjectThemes,
     loggerInitialized,
     initializeLogger,
     logDiagnostics
