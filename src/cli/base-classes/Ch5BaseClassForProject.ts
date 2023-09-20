@@ -254,6 +254,30 @@ export class Ch5BaseClassForProject extends Ch5BaseClassForCliCreate {
     this._outputResponse.data.updatedInputs.push(inputUpdateValue);
   }
 
+  protected validateAndSetReceivedInputValuesForFirstTime() {
+    Object.entries(this.inputArgs).forEach(([key, value]: any) => {
+      if (value.isSpecialArgument === false) {
+        const inputUpdate = {
+          ...value,
+          argsValue: null,
+          warning: ""
+        };
+        if (!(value.validation === "validatePackageJsonProjectName" && value.inputValue === "")) { // This will validate if we want to display warning on empty project name for the first time in create project
+          this.logger.log("inputUpdate is ", inputUpdate);
+          const validationResponse: any = this.validateCLIInputArgument(value, value.key, value.inputValue);
+          this.logger.log("validationResponse is ", validationResponse);
+          if (validationResponse.warning === "") {
+            inputUpdate.argsValue = validationResponse.value;
+          } else {
+            inputUpdate.warning = validationResponse.warning;
+          }
+        }
+        this.addUpdatedInputs(inputUpdate);
+      }
+    });
+    this.logger.log("validateAndSetReceivedInputValuesForFirstTime - outputResponse.data.updatedInputs: ", this.getOutputResponse().data.updatedInputs);
+  }
+
   protected validateAndSetReceivedInputValues() {
     Object.entries(this.inputArgs).forEach(([key, value]: any) => {
       if (value.isSpecialArgument === false) {

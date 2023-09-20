@@ -38,7 +38,7 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForProject implements ICh5C
     } else {
       this.logger.log("Project that does not use config json file");
 
-      this.validateAndSetReceivedInputValues();
+      this.validateAndSetReceivedInputValuesForFirstTime();
       this.printWarningsOnVerifiedInputs();
     }
     this.logger.end();
