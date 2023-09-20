@@ -133,7 +133,6 @@ function getConfig(envPath) {
     } else {
       listObj.flatten = true;
     }
-    console.log("listObj", listObj);
     copyToDest.push(listObj);
   });
 

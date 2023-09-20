@@ -32,7 +32,7 @@ const mainTemplateJs = glob.sync(`${srcTemplateRoot}/libraries/*.js`);
 const mainProjectJs = glob.sync(`${srcProjectRoot}/libraries/*.js`);
 const componentsTemplateJs = glob.sync(`${srcTemplateRoot}/components/**/*.js`);
 const componentsProjectJs = glob.sync(`${srcProjectRoot}/components/**/*.js`);
-const zoomMngr = glob.sync(`${nodeModules}/ch5-zoom-lib/dist/index.js`);
+const zoomMngr = glob.sync(`${nodeModules}/@crestron/ch5-zoom-lib/dist/index.js`);
 
 module.exports = {
   appName,
