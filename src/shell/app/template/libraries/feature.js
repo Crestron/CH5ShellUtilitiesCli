@@ -4,7 +4,6 @@
 const featureModule = (() => {
   'use strict';
 
-  let loggerInitialized = false;
   let projectThemes = [];
 
   function setProjectThemes(projectThemesInput) {
@@ -72,7 +71,6 @@ const featureModule = (() => {
    */
   function initializeLogger(hostName, portNumber) {
     setTimeout(() => {
-      loggerInitialized = true;
       loggerService.setRemoteLoggerConfig(hostName, portNumber);
     });
   }
@@ -106,7 +104,6 @@ const featureModule = (() => {
   return {
     changeTheme,
     setProjectThemes,
-    loggerInitialized,
     initializeLogger,
     logDiagnostics
   };
