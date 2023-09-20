@@ -2,11 +2,10 @@
  * copy css unminified files into destination folder
  */
 
-const webpack = require('webpack');
 const merge = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const GenerateJsonPlugin = require('generate-json-webpack-plugin');
-const WebpackConcatPlugin = require('webpack-concat-files-plugin');
+const WebpackConcatPlugin = require('@mcler/webpack-concat-plugin');
 const common = require('./webpack.common.js');
 const pkg = require('./package.json');
 const BrowserSyncPlugin = require("browser-sync-webpack-plugin");
@@ -35,26 +34,31 @@ module.exports = merge(common("dev"), {
   watch: true,
   plugins: [
     new WebpackConcatPlugin({
-      bundles: [
-        {
-          dest: './dist/dev/Shell/libraries/cr-com-lib.js',
-          src: jsList,
-        },
-      ],
+      name: 'component',
+      outputPath: './libraries/',
+      fileName: '[name].[hash:8].js',
+      filesToConcat: componentsList,
+      attributes: {
+        async: false,
+        defer: false
+      }
     }),
     new WebpackConcatPlugin({
-      bundles: [
-        {
-          dest: './dist/dev/Shell/libraries/component.js',
-          src: componentsList,
-        },
-      ],
+      name: 'cr-com-lib',
+      outputPath: './libraries/',
+      fileName: '[name].[hash:8].js',
+      filesToConcat: jsList,
+      attributes: {
+        async: false,
+        defer: false
+      }
     }),
     new GenerateJsonPlugin('assets/data/app.manifest.json', appVersionInfo),
     new HtmlWebpackPlugin({
-      filename: 'index.html',
-      inject: false,
-      template: './app/index.html'
+      filename: './index.html',
+      template: './app/index.html',
+      hash: true,
+      inject: false
     }),
     new BrowserSyncPlugin({
       host: "localhost",
@@ -76,12 +80,3 @@ module.exports = merge(common("dev"), {
     })
   ]
 });
-
-function copyright() {
-  return "Copyright (C) " + ((new Date()).getFullYear()) + " to the present, Crestron Electronics, Inc.\n" +
-    "All rights reserved.\n" +
-    "No part of this software may be reproduced in any form, machine\n" +
-    "or natural, without the express written consent of Crestron Electronics.\n" +
-    "Use of this source code is subject to the terms of the Crestron Software License Agreement\n" +
-    "under which you licensed this source code.";
-}

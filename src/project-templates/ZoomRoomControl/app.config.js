@@ -25,6 +25,7 @@ const sgMediaTransportAccent = `${nodeModules}@crestron/ch5-theme/output/themes/
 const sgMediaTransportDark = `${nodeModules}@crestron/ch5-theme/output/themes/sg-icons/svgs/media-transports/dark`;
 const sgMediaTransportLight = `${nodeModules}@crestron/ch5-theme/output/themes/sg-icons/svgs/media-transports/light`;
 const baseThemePath = `${nodeModules}@crestron/ch5-theme/output/themes/${getBaseTheme()}.css`;
+const getAllThemes = `${nodeModules}@crestron/ch5-theme/output/themes/*-theme.css`;
 const crLib = glob.sync(`${nodeModules}/@crestron/ch5-crcomlib/build_bundles/umd/cr-com-lib.js`);
 const webXPanel = glob.sync(`${nodeModules}/@crestron/ch5-webxpanel/dist/umd/index.js`);
 const mainTemplateJs = glob.sync(`${srcTemplateRoot}/libraries/*.js`);
@@ -49,6 +50,7 @@ module.exports = {
   mainTemplateJs,
   nodeModules,
   baseThemePath,
+  getAllThemes,
   srcProjectRoot,
   srcRoot,
   srcTemplateRoot,

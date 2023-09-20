@@ -184,17 +184,18 @@ var webXPanelModule = (function () {
   function updateInfoStatus(statusMessageKey) {
     let statusMsgPrefix = translateModule.translateInstant("app.webxpanel.statusmessageprefix");
     let statusMessage = translateModule.translateInstant(statusMessageKey);
-    let sMsg = statusMsgPrefix + statusMessage;
-    if (isVersionInfoDisplayed()) {
-      const status = document.querySelector('#webxpanel-tab-content .connection .status');
-      if (status !== null) {
-        status.innerHTML = sMsg;
+    if (statusMessage) {
+      let sMsg = statusMsgPrefix + statusMessage;
+      if (isVersionInfoDisplayed()) {
+        const status = document.querySelector('#webxpanel-tab-content .connection .status');
+        if (status !== null) {
+          status.innerHTML = sMsg;
+        }
+        templateVersionInfoModule.webXTab['status'] = sMsg;
+      } else {
+        console.log(sMsg);
       }
-      templateVersionInfoModule.webXTab['status'] = sMsg;
-    } else {
-      console.log(sMsg);
     }
-
   }
 
   function isVersionInfoDisplayed() {
@@ -264,17 +265,18 @@ var webXPanelModule = (function () {
     }
 
     webXPanelConnectionStatus();
-
+    // Merge the configuration params, params of the URL takes precedence
+    // getWebXPanelConfiguration(projectConfig);
+    // getWebXPanelUrlParams();
 
     // Assign the combined configuration
     connectParams = urlConfig;
 
-    // commented code for zoomsdk, uncommented once zoom library is avilable.
-    // if (ch5zoomsdk.default) {
-    // ch5zoomsdk.default.initialize(CrComLib, WebXPanel).then(() => finishConnectingWebXPanel());
-    // } else {
-    finishConnectingWebXPanel();
-    // }
+    if (ch5zoomsdk.default) {
+       ch5zoomsdk.default.initialize(CrComLib, WebXPanel).then(() => finishConnectingWebXPanel());
+    } else {
+       finishConnectingWebXPanel();
+    }
   }
 
   function finishConnectingWebXPanel() {

@@ -265,6 +265,9 @@ var webXPanelModule = (function () {
     }
 
     webXPanelConnectionStatus();
+    // Merge the configuration params, params of the URL takes precedence
+    // getWebXPanelConfiguration(projectConfig);
+    // getWebXPanelUrlParams();
 
     // Assign the combined configuration
     connectParams = urlConfig;
