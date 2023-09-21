@@ -108,13 +108,6 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForProject implements ICh5C
     if (this.getOutputResponse().askConfirmation === false) {
       throw new Error(this.getText("ERRORS.DO_NOT_MODIFY_PROJECT"));
     }
-    try {
-      await this.traverseAndValidateProjectFolderAndVariables();
-    } catch (e: any) {
-      throw new Error(e.message);
-    }
-
-    this.copyShellFolderContentsToProjectFolder();
 
     this.updateTemplateFiles();
 
@@ -251,8 +244,10 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForProject implements ICh5C
       // Change project config
       const outputResponse = this.getOutputResponse();
       for (let i: number = 0; i < outputResponse.data.updatedInputs.length; i++) {
-        this.logger.log("Changed Values", outputResponse.data.updatedInputs[i].key, outputResponse.data.updatedInputs[i].argsValue)
-        this.projectConfig.changeNodeValues(outputResponse.data.updatedInputs[i].key, outputResponse.data.updatedInputs[i].argsValue);
+        if (outputResponse.data.updatedInputs[i].inputReceived === true) {
+          this.logger.log("Changed Values", outputResponse.data.updatedInputs[i].key, outputResponse.data.updatedInputs[i].argsValue)
+          this.projectConfig.changeNodeValues(outputResponse.data.updatedInputs[i].key, outputResponse.data.updatedInputs[i].argsValue);
+        }
       }
     }
 

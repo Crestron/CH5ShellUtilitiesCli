@@ -235,7 +235,7 @@ export class Ch5BaseClassForProject extends Ch5BaseClassForCliCreate {
     const tabDisplayText = this.getText("COMMON.HYPHEN_DELIMITER");
     let warningMessage: string = "";
     for (let i: number = 0; i < this._outputResponse.data.updatedInputs.length; i++) {
-      if (this.utils.isValidInput(this._outputResponse.data.updatedInputs[i].warning)) {
+      if (this.utils.isValidInput(this._outputResponse.data.updatedInputs[i].warning) && this._outputResponse.data.updatedInputs[i].inputReceived === true) {
         warningMessage += tabDisplayText + this._outputResponse.data.updatedInputs[i].key + ": " + this._outputResponse.data.updatedInputs[i].warning;
       }
     }
@@ -408,18 +408,23 @@ export class Ch5BaseClassForProject extends Ch5BaseClassForCliCreate {
   }
 
   protected async traverseAndValidateProjectFolderAndVariables() {
-    const pathToCreateProject: string = path.resolve("./", this.getProjectName());
-    this.makeDirectoryForCreateProject(pathToCreateProject);
-    process.chdir(pathToCreateProject);
-    this.logger.log("1. current working directory: " + pathToCreateProject);
-    try {
-      const isFolder = await this.utils.readdirAsync(pathToCreateProject);
-      if ((isFolder && isFolder.length > 0)) {
+    // protected async traverseAndValidateProjectFolderAndVariables(taskType: string) {
+      // if (taskType === "create") {
+      const pathToCreateProject: string = path.resolve("./", this.getProjectName());
+      this.makeDirectoryForCreateProject(pathToCreateProject);
+      process.chdir(pathToCreateProject);
+      this.logger.log("1. current working directory: " + pathToCreateProject);
+      try {
+        const isFolder = await this.utils.readdirAsync(pathToCreateProject);
+        if ((isFolder && isFolder.length > 0)) {
+          throw new Error(this.getText("PROCESS_REQUEST.FOLDER_CONTAINS_FILES", pathToCreateProject));
+        }
+      } catch (e) {
         throw new Error(this.getText("PROCESS_REQUEST.FOLDER_CONTAINS_FILES", pathToCreateProject));
-      }
-    } catch (e) {
-      throw new Error(this.getText("PROCESS_REQUEST.FOLDER_CONTAINS_FILES", pathToCreateProject));
-    }
+      }  
+    // } else if (taskType === "update") {
+
+    // }
   }
 
   protected removeFolderInProject(folderName: string) {
