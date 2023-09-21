@@ -278,6 +278,30 @@ export class Ch5BaseClassForProject extends Ch5BaseClassForCliCreate {
     this.logger.log("validateAndSetReceivedInputValuesForFirstTime - outputResponse.data.updatedInputs: ", this.getOutputResponse().data.updatedInputs);
   }
 
+  protected validateAndSetReceivedInputValuesForUpdate() {
+    Object.entries(this.inputArgs).forEach(([key, value]: any) => {
+      if (value.isSpecialArgument === false) {
+        const inputUpdate = {
+          ...value,
+          argsValue: null,
+          warning: ""
+        };
+        if (!(value.validation === "validatePackageJsonProjectName" && value.inputValue === "")) { // This will validate if we want to display warning on empty project name for the first time in create project
+          this.logger.log("inputUpdate is ", inputUpdate);
+          const validationResponse: any = this.validateCLIInputArgument(value, value.key, value.inputValue);
+          this.logger.log("validationResponse is ", validationResponse);
+          if (validationResponse.warning === "") {
+            inputUpdate.argsValue = validationResponse.value;
+          } else {
+            inputUpdate.warning = validationResponse.warning;
+          }
+        }
+        this.addUpdatedInputs(inputUpdate);
+      }
+    });
+    this.logger.log("validateAndSetReceivedInputValuesForFirstTime - outputResponse.data.updatedInputs: ", this.getOutputResponse().data.updatedInputs);
+  }
+
   protected validateAndSetReceivedInputValues() {
     Object.entries(this.inputArgs).forEach(([key, value]: any) => {
       if (value.isSpecialArgument === false) {
@@ -301,12 +325,18 @@ export class Ch5BaseClassForProject extends Ch5BaseClassForCliCreate {
     this.logger.log("validateAndSetReceivedInputValues - outputResponse.data.updatedInputs: ", this.getOutputResponse().data.updatedInputs);
   }
 
-  protected async askQuestionsToUser() {
+  protected async askQuestionsToUser(taskType: string) {
     const outputResponse = this.getOutputResponse();
     this.logger.log("checkPromptQuestions - outputResponse.data.updatedInputs", outputResponse.data.updatedInputs);
 
     for (let i: number = 0; i < outputResponse.data.updatedInputs.length; i++) {
-      if (outputResponse.data.updatedInputs[i].question.name !== "") {
+      let isValidToAskQuestion: boolean = false
+      if (taskType === "create") {
+        isValidToAskQuestion = (outputResponse.data.updatedInputs[i].question.name !== "");
+      } else if (taskType === "update") {
+        isValidToAskQuestion = (outputResponse.data.updatedInputs[i].question.name !== "") && (outputResponse.data.updatedInputs[i].inputReceived === true);
+      }
+      if (isValidToAskQuestion) {
         if (!this.utils.isValidInput(outputResponse.data.updatedInputs[i].argsValue)) {
           if (outputResponse.data.updatedInputs[i].type === "enum") {
             const choicesList = outputResponse.data.updatedInputs[i].allowedValues;

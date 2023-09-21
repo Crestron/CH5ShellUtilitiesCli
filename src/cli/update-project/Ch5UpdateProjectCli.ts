@@ -69,7 +69,7 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForProject implements ICh5C
 
       this.getOutputResponse().askConfirmation = this.utils.toBoolean(await this.getConfirmation());
     } else {
-      await this.askQuestionsToUser();
+      await this.askQuestionsToUser("update");
 
       this.getOutputResponse().askConfirmation = true;
 
@@ -117,7 +117,7 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForProject implements ICh5C
     this.copyShellFolderContentsToProjectFolder();
 
     this.updateTemplateFiles();
-    
+
     if (this.isCreateOrUpdateBasedOnConfigJson()) {
       await this.createBackupForExistingProject();
 
@@ -134,6 +134,10 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForProject implements ICh5C
             this.projectConfig.changeNodeValues(k, templateConfigJSON[k]);
           }
         }
+      }
+
+      if (this.getOutputResponse().data.projectType.toLowerCase() === "zoomroomcontrol") {
+        this.projectConfig.changeNodeValues("forceDeviceXPanel", true);
       }
 
       // 2. Themes

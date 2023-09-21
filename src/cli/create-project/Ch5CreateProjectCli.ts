@@ -52,7 +52,7 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForProject implements ICh5C
     if (this.isCreateOrUpdateBasedOnConfigJson()) {
       // Do Nothing
     } else {
-      await this.askQuestionsToUser();
+      await this.askQuestionsToUser("create");
     }
     this.logger.end();
   }

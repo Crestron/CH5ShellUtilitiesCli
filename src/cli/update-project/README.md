@@ -47,7 +47,7 @@ Since the json file is not provided, user will need to atleast 1 argument. Multi
 
 ### Copyright
 
-Copyright (C) 2022 to the present, Crestron Electronics, Inc.
+Copyright (C) 2023 to the present, Crestron Electronics, Inc.
 
 All rights reserved.
 

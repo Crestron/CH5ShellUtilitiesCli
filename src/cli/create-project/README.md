@@ -36,8 +36,8 @@ Other inputs that can be passed are:
     --forceDeviceXPanel
 
 Validation for other arguments (these are optional and need not be added for creating a project) are as follows:
-    - projectType: must be either shell-template or ZoomRoomControl.
-    - forceDeviceXPanel: must be either Y or N or true or false.
+    - projectType: must be either shell-template or ZoomRoomControl. Default value is 'shell-template' if either projectType is not provided or is invalid.
+    - forceDeviceXPanel: must be either Y or N or true or false. Default value is false, if either forceDeviceXPanel is not provided or is invalid. If projectType is ZoomRoomControl, then the value of forceDeviceXPanel is always set to true.
 
 To access help, execute `ch5-shell-cli create:project --help`.
 
