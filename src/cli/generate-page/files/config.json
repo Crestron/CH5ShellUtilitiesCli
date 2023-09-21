@@ -9,7 +9,7 @@
   "options": [
     {
       "key": "menu",
-      "description": "Allow the page navigation to be added to Menu (valid input values are 'Y', 'y', 'N', 'n'",
+      "description": "Allow the page navigation to be added to Menu (valid input values are 'Y', 'y', 'N', 'n')",
       "type": "string",
       "default": "",
       "valueIfNotFound": "",

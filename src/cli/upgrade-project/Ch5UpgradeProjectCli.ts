@@ -5,7 +5,7 @@
 // Use of this source code is subject to the terms of the Crestron Software License Agreement
 // under which you licensed this source code.
 
-import { Ch5BaseClassForCliNew } from "../Ch5BaseClassForCliNew";
+import { Ch5BaseClassForCliUpgrade } from "../Ch5BaseClassForCliUpgrade";
 import { Ch5CliProjectConfig } from '../Ch5CliProjectConfig';
 import { ICh5CliNew } from "../ICh5Cli";
 
@@ -16,7 +16,7 @@ const fs = require("fs");
 const fsExtra = require("fs-extra");
 const editJsonFile = require("edit-json-file");
 
-export class Ch5UpgradeProjectCli extends Ch5BaseClassForCliNew implements ICh5CliNew {
+export class Ch5UpgradeProjectCli extends Ch5BaseClassForCliUpgrade implements ICh5CliNew {
 	private readonly SHELL_FOLDER: string = path.normalize(path.join(__dirname, "../../", "shell"));
 	private readonly PROJECT_CONFIG_JSON_PATH: string = path.normalize("/app/project-config.json");
 	private readonly cliProjectConfig: Ch5CliProjectConfig;

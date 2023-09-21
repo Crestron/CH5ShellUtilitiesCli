@@ -4,7 +4,7 @@
  
 # CH5 Shell Utilities CLI - Getting Started
 
-> Archiving and distribution utilities from the ch5-shell-cli library wrapped as CLI commands.
+> Shell Project creation utilities from the ch5-shell-cli library wrapped as CLI commands.
 
 ## Table of Contents
 - [Background](#background)
@@ -14,7 +14,7 @@ The purpose of the library is to expose the [ch5-shell-cli](https://www.npmjs.co
 
 ### Copyright
 
-Copyright (C) 2022 to the present, Crestron Electronics, Inc.
+Copyright (C) 2023 to the present, Crestron Electronics, Inc.
 
 All rights reserved.
 

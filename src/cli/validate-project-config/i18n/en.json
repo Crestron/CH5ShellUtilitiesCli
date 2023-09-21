@@ -17,6 +17,10 @@
       "HEADER": "Page names repeated in project-config.json",
       "MESSAGE": "Page name '{0}' is repeated."
     },
+    "FORCE_DEVICE_XPANEL": {
+      "HEADER": "Incorrect value for forceDeviceXPanel",
+      "MESSAGE": "forceDeviceXPanel must be set to true for ZoomRoomControl project."
+    },
     "INVALID_PAGE_NAMES": {
       "HEADER": "Invalid Page Names",
       "MESSAGE": "Page name '{0}' not matching with its corresponding file name '{1}'."

@@ -22,7 +22,6 @@ import { Ch5ImportAllCli } from "./import-all/Ch5ImportAllCli";
 import { Ch5ValidateProjectConfigCli } from "./validate-project-config/Ch5ValidateProjectConfigJsonCli";
 import { Ch5UpdateProjectCli } from "./update-project/Ch5UpdateProjectCli";
 import { Ch5CreateProjectCli } from "./create-project/Ch5CreateProjectCli";
-import { Ch5CreateProjectCliCustom } from "./create-project-components/Ch5CreateProjectCliComponents";
 import { Ch5UpgradeProjectCli } from "./upgrade-project/Ch5UpgradeProjectCli";
 
 const packageJson = require('../../package.json');
@@ -30,7 +29,6 @@ const buildVersion = packageJson.version || 'VERSION_NOT_READ';
 
 export class Ch5ShellCli {
   private readonly createProject: Ch5CreateProjectCli;
-  private readonly createProjectCustom: Ch5CreateProjectCliCustom;
   private readonly deleteComponents: Ch5DeleteComponentsCli;
   private readonly exportAll: Ch5ExportAllCli;
   private readonly exportAssets: Ch5ExportAssetsCli;
@@ -49,7 +47,6 @@ export class Ch5ShellCli {
 
   public constructor() {
     this.createProject = new Ch5CreateProjectCli();
-    this.createProjectCustom = new Ch5CreateProjectCliCustom();
     this.deleteComponents = new Ch5DeleteComponentsCli();
     this.exportAll = new Ch5ExportAllCli();
     this.exportAssets = new Ch5ExportAssetsCli();
@@ -85,9 +82,8 @@ export class Ch5ShellCli {
     //     figlet.textSync('ch5-shell-cli', { horizontalLayout: 'controlled smushing' })
     //   )
     // );
-
+    
     await this.createProject.setupCommand(program);
-    await this.createProjectCustom.setupCommand(program);
     await this.deleteComponents.setupCommand(program);
     await this.exportAll.setupCommand(program);
     await this.exportAssets.setupCommand(program);
