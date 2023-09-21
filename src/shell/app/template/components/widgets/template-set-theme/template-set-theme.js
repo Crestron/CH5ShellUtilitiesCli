@@ -28,17 +28,17 @@ const templateSetThemeModule = (() => {
   /**
  * private method for page class initialization
  */
-  let loadedImportSnippet = CrComLib.subscribeState('o', 'ch5-import-htmlsnippet:template-set-theme-import-page', (value) => {
-    if (value['loaded']) {
-      setTimeout(() => {
-        onInit();
-      }, 5000);
-      setTimeout(() => {
-        CrComLib.unsubscribeState('o', 'ch5-import-htmlsnippet:template-set-theme-import-page', loadedImportSnippet);
-        loadedImportSnippet = null;
-      });
-    }
-  });
+  // let loadedImportSnippet = CrComLib.subscribeState('o', 'ch5-import-htmlsnippet:template-set-theme-import-page', (value) => {
+  //   if (value['loaded']) {
+  //     setTimeout(() => {
+  //       onInit();
+  //     }, 5000);
+  //     setTimeout(() => {
+  //       CrComLib.unsubscribeState('o', 'ch5-import-htmlsnippet:template-set-theme-import-page', loadedImportSnippet);
+  //       loadedImportSnippet = null;
+  //     });
+  //   }
+  // });
 
   /**
    * All public method and properties are exported here
