@@ -532,6 +532,7 @@ export class Ch5BaseClassForProject extends Ch5BaseClassForCliCreate {
         throw new Error(this.getText("ERRORS.PROGRAM_STOPPED_OR_UNKNOWN_ERROR"));
       });
     }
+    return askConfirmation;
   }
   protected doubleDigit(input: number): string {
     if (input < 10) {

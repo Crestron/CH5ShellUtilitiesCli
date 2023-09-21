@@ -66,34 +66,11 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForProject implements ICh5C
       // Identify changes
       // const newCheck = new CompareJSON();
       // this.logger.log(newCheck.map(oldProjectConfigJSON, newProjectConfigJSON));
-
       this.getOutputResponse().askConfirmation = this.utils.toBoolean(await this.getConfirmation());
     } else {
       await this.askQuestionsToUser("update");
 
       this.getOutputResponse().askConfirmation = true;
-
-      /*
-         const question = {
-                name: outputResponse.data.updatedInputs[i].key,
-                message: this.getText(outputResponse.data.updatedInputs[i].question, outputResponse.data.updatedInputs[i].key),
-                type: 'input'
-              };
-              outputResponse.data.updatedInputs[i].argsValue = await this.getPrompt(question)
-                .then((answer: any) => {
-                  if (outputResponse.data.updatedInputs[i].key === "projectName") {
-                    return answer[outputResponse.data.updatedInputs[i].key].toLowerCase();
-                  }
-                  else {
-                    return answer[outputResponse.data.updatedInputs[i].key];
-                  }
-                }
-                )
-                .catch((error: any) => { throw new Error(this.getText("ERRORS.DO_NOT_MODIFY_PROJECT")); });
-
-                */
-      // ERRORS.DO_NOT_MODIFY_PROJECT
-      // COMMON.SOMETHING_WENT_WRONG
     }
     this.logger.end();
   }
@@ -117,7 +94,7 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForProject implements ICh5C
       const inputConfigJSON: any = JSON.parse(this.utils.readFileContentSync(this.getConfigJsonFilePath()));
 
       // Step 4: Make changes to project-config.json stepwise
-      const templateConfigJSON: any = JSON.parse(this.utils.readFileContentSync(this.getShellTemplateProjectConfigPath()));
+      const templateConfigJSON: any = JSON.parse(this.utils.readFileContentSync(this.getCreatedOrUpdateProjectPathProjectConfigJsonFile()));
 
       // 1. Project Data
       for (const k in inputConfigJSON) {
@@ -160,7 +137,7 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForProject implements ICh5C
       const pagesToBeUpdated: any[] = [];
       const pagesToBeDeleted: any[] = [];
       for (let i: number = 0; i < templateConfigJSON["content"]["pages"].length; i++) {
-        let pageObj = templateConfigJSON["content"]["pages"][i];
+        let pageObj = templateConfigJSON["content"]["pages"][i];        
         const pageInNewSet = inputConfigJSON["content"]["pages"].find((page: any) => page.pageName.toString().toLowerCase() === pageObj.pageName.toString().toLowerCase());
         if (pageInNewSet) {
           pagesToBeUpdated.push(pageInNewSet);
@@ -201,6 +178,8 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForProject implements ICh5C
           widgetsToBeCreated.push(widgetObj);
         }
       }
+
+      this.setValueInPackageJson("name", templateConfigJSON.projectName);
 
       for (let i: number = 0; i < pagesToBeDeleted.length; i++) {
         const delPage: Ch5DeleteComponentsCli = new Ch5DeleteComponentsCli(false);
@@ -247,6 +226,10 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForProject implements ICh5C
         if (outputResponse.data.updatedInputs[i].inputReceived === true) {
           this.logger.log("Changed Values", outputResponse.data.updatedInputs[i].key, outputResponse.data.updatedInputs[i].argsValue)
           this.projectConfig.changeNodeValues(outputResponse.data.updatedInputs[i].key, outputResponse.data.updatedInputs[i].argsValue);
+
+          if (outputResponse.data.updatedInputs[i].key === "projectName") {
+            this.setValueInPackageJson("name", outputResponse.data.updatedInputs[i].argsValue);
+          }
         }
       }
     }

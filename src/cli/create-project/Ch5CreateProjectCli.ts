@@ -172,6 +172,8 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForProject implements ICh5C
       this.projectConfig.changeNodeValues("projectName", this.getOutputResponse().data.projectName);
       this.projectConfig.changeNodeValues("projectType", this.getOutputResponse().data.projectType);
 
+      this.setValueInPackageJson("name", this.getOutputResponse().data.projectName);
+      
       const defaultPageName = "page1";
       const defaultPageMenuValue = "Y";
       const genPage: Ch5GeneratePageCli = new Ch5GeneratePageCli(false);
