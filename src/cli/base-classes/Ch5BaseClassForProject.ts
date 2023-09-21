@@ -486,7 +486,7 @@ export class Ch5BaseClassForProject extends Ch5BaseClassForCliCreate {
   }
 
   protected isCreateOrUpdateBasedOnConfigJson(): boolean {
-    return this.getConfigJsonFilePath() !== "";
+    return this.inputArgs["config"].inputValue !== "";
   }
 
   protected getConfigJsonFilePath(): string {
