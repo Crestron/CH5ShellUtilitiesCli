@@ -23,6 +23,7 @@ export class Ch5BaseClassForProject extends Ch5BaseClassForCliCreate {
   private readonly VSCODE_SCHEMA_JSON_PATH: string = path.join(".vscode", "project-config-schema.json");
 
   private _outputResponse: any = null;
+  private _configFilePath: string = "";
 
   /**
    * Constructor
@@ -189,11 +190,12 @@ export class Ch5BaseClassForProject extends Ch5BaseClassForCliCreate {
 
   private validatePackageJsonProjectName(packageName: string) {
     /*
-      - project name length should be greater than zero and cannot exceed 214
-      - project name characters must be lowercase i.e., no uppercase or mixed case names are allowed
-      - project name can consist of hyphens, numbers, and alphabets
-      - project name must not contain any non-url-safe characters (since name ends up being part of a URL)
-      - project name should not contain any spaces or any of the following characters: ~)('!*
+    - project name length should be greater than zero and cannot exceed 214
+    - project name characters must be lowercase i.e., no uppercase or mixed case names are allowed
+    - project name can consist of hyphens, tilde, numbers and alphabets
+    - project name can consist of underscore and dot but these cannot start with these characters
+    - project name must not contain any non-url-safe characters (since name ends up being part of a URL)
+    - project name should not contain any spaces or any of the following characters: ! @ # $ % ^ & * ( ) + = [ { } ] | \ : ; " ' < , > ? /
     */
     if (packageName && packageName.trim().length > 0) {
       packageName = packageName.trim(); //.toLowerCase();
@@ -214,6 +216,12 @@ export class Ch5BaseClassForProject extends Ch5BaseClassForCliCreate {
             isValid: false,
             warning: this.getText("COMMON.VALIDATIONS.PROJECT_NAME")
           };
+        } else if (this.checkSpecialCharsInProjectName(packageName)) {
+          return {
+            value: null,
+            isValid: false,
+            warning: this.getText("COMMON.VALIDATIONS.PROJECT_NAME")
+          };
         } else {
           return {
             value: packageName,
@@ -229,6 +237,17 @@ export class Ch5BaseClassForProject extends Ch5BaseClassForCliCreate {
         warning: this.getText("COMMON.VALIDATIONS.PROJECT_NAME")
       };
     }
+  }
+
+  private checkSpecialCharsInProjectName(packageName: string): boolean {
+    // Allowed characters for first and any position ~ - a-z 0-9
+    // Not allowed special characters at any position ! @ # $ % ^ & * ( ) + = [ { } ] | \ : ; " ' < , > ? / 
+    // _ and . will work only if project name start from alphabets or any other allowed  characters 
+    const invalidCharsArray = ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '+', '=', '[', '{', '}', ']', '|', '\\', ':', ';', '<', ',', '>', '?', '/', '\'', '\"'];
+    if (invalidCharsArray.includes(packageName.charAt(packageName.length - 1)) || invalidCharsArray.includes(packageName.charAt(0))) {
+      return true;
+    }
+    return false;
   }
 
   protected printWarningsOnVerifiedInputs() {
@@ -252,54 +271,6 @@ export class Ch5BaseClassForProject extends Ch5BaseClassForCliCreate {
 
   protected addUpdatedInputs(inputUpdateValue: any) {
     this._outputResponse.data.updatedInputs.push(inputUpdateValue);
-  }
-
-  protected validateAndSetReceivedInputValuesForFirstTime() {
-    Object.entries(this.inputArgs).forEach(([key, value]: any) => {
-      if (value.isSpecialArgument === false) {
-        const inputUpdate = {
-          ...value,
-          argsValue: null,
-          warning: ""
-        };
-        if (!(value.validation === "validatePackageJsonProjectName" && value.inputValue === "")) { // This will validate if we want to display warning on empty project name for the first time in create project
-          this.logger.log("inputUpdate is ", inputUpdate);
-          const validationResponse: any = this.validateCLIInputArgument(value, value.key, value.inputValue);
-          this.logger.log("validationResponse is ", validationResponse);
-          if (validationResponse.warning === "") {
-            inputUpdate.argsValue = validationResponse.value;
-          } else {
-            inputUpdate.warning = validationResponse.warning;
-          }
-        }
-        this.addUpdatedInputs(inputUpdate);
-      }
-    });
-    this.logger.log("validateAndSetReceivedInputValuesForFirstTime - outputResponse.data.updatedInputs: ", this.getOutputResponse().data.updatedInputs);
-  }
-
-  protected validateAndSetReceivedInputValuesForUpdate() {
-    Object.entries(this.inputArgs).forEach(([key, value]: any) => {
-      if (value.isSpecialArgument === false) {
-        const inputUpdate = {
-          ...value,
-          argsValue: null,
-          warning: ""
-        };
-        if (!(value.validation === "validatePackageJsonProjectName" && value.inputValue === "")) { // This will validate if we want to display warning on empty project name for the first time in create project
-          this.logger.log("inputUpdate is ", inputUpdate);
-          const validationResponse: any = this.validateCLIInputArgument(value, value.key, value.inputValue);
-          this.logger.log("validationResponse is ", validationResponse);
-          if (validationResponse.warning === "") {
-            inputUpdate.argsValue = validationResponse.value;
-          } else {
-            inputUpdate.warning = validationResponse.warning;
-          }
-        }
-        this.addUpdatedInputs(inputUpdate);
-      }
-    });
-    this.logger.log("validateAndSetReceivedInputValuesForFirstTime - outputResponse.data.updatedInputs: ", this.getOutputResponse().data.updatedInputs);
   }
 
   protected validateAndSetReceivedInputValues() {
@@ -408,23 +379,18 @@ export class Ch5BaseClassForProject extends Ch5BaseClassForCliCreate {
   }
 
   protected async traverseAndValidateProjectFolderAndVariables() {
-    // protected async traverseAndValidateProjectFolderAndVariables(taskType: string) {
-      // if (taskType === "create") {
-      const pathToCreateProject: string = path.resolve("./", this.getProjectName());
-      this.makeDirectoryForCreateProject(pathToCreateProject);
-      process.chdir(pathToCreateProject);
-      this.logger.log("1. current working directory: " + pathToCreateProject);
-      try {
-        const isFolder = await this.utils.readdirAsync(pathToCreateProject);
-        if ((isFolder && isFolder.length > 0)) {
-          throw new Error(this.getText("PROCESS_REQUEST.FOLDER_CONTAINS_FILES", pathToCreateProject));
-        }
-      } catch (e) {
+    const pathToCreateProject: string = path.resolve("./", this.getProjectName());
+    this.makeDirectoryForCreateProject(pathToCreateProject);
+    process.chdir(pathToCreateProject);
+    this.logger.log("1. current working directory: " + pathToCreateProject);
+    try {
+      const isFolder = await this.utils.readdirAsync(pathToCreateProject);
+      if ((isFolder && isFolder.length > 0)) {
         throw new Error(this.getText("PROCESS_REQUEST.FOLDER_CONTAINS_FILES", pathToCreateProject));
-      }  
-    // } else if (taskType === "update") {
-
-    // }
+      }
+    } catch (e) {
+      throw new Error(this.getText("PROCESS_REQUEST.FOLDER_CONTAINS_FILES", pathToCreateProject));
+    }
   }
 
   protected removeFolderInProject(folderName: string) {
@@ -524,7 +490,10 @@ export class Ch5BaseClassForProject extends Ch5BaseClassForCliCreate {
   }
 
   protected getConfigJsonFilePath(): string {
-    return this.inputArgs["config"].inputValue;
+    if (this._configFilePath === "") {
+      this._configFilePath = path.resolve(this.inputArgs["config"].inputValue); // This is needed becos folder path can change in process
+    }
+    return this._configFilePath;
   }
 
   public getOutputResponse(): any {

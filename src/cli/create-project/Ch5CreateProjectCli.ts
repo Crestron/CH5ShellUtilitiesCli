@@ -39,7 +39,6 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForProject implements ICh5C
       this.logger.log("Project that does not use config json file");
 
       this.validateAndSetReceivedInputValues();
-      // this.validateAndSetReceivedInputValuesForFirstTime();
       this.printWarningsOnVerifiedInputs();
     }
     this.logger.end();
@@ -139,7 +138,7 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForProject implements ICh5C
       }
 
       this.setValueInPackageJson("name", templateConfigJSON.projectName);
-
+      
       // Step 5: Save Project-config
       for (let i: number = 0; i < pagesToBeCreated.length; i++) {
         const genPage: Ch5GeneratePageCli = new Ch5GeneratePageCli(false);
