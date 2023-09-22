@@ -44,6 +44,7 @@
       "type": "enum",
       "default": "shell-template",
       "valueIfNotFound": "shell-template",
+      "valueIfInvalid": "shell-template",
       "alias": [
         "--projectType"
       ],
@@ -67,6 +68,7 @@
       "type": "boolean",
       "default": "N",
       "valueIfNotFound": "N",
+      "valueIfInvalid": "N",
       "alias": [
         "--forceDeviceXPanel"
       ],
@@ -78,9 +80,11 @@
         "true",
         "false",
         "y",
-        "n"
+        "n",
+        "Y",
+        "N"
       ],
-      "validation": "",
+        "validation": "",
       "question": {
         "name": ""
       },
@@ -165,7 +169,7 @@
       "description": "Use WebXPanel",
       "type": "boolean",
       "default": true,
-      "valueIfNotFound": null,
+      "valueIfNotFound": true,
       "alias": [
         "--useWebXPanel"
       ],
@@ -177,7 +181,9 @@
         "true",
         "false",
         "y",
-        "n"
+        "n",
+        "Y",
+        "N"
       ],
       "question": {
         "name": "CHECK_PROMPT_QUESTIONS.QUESTIONS.USE_WEBXPANEL"
@@ -194,8 +200,18 @@
         "-f",
         "--force"
       ],
-      "allowedValues": [],
-      "allowedAliases": [],
+      "allowedValues": [
+        "true",
+        "false"
+      ],
+      "allowedAliases": [
+        "true",
+        "false",
+        "y",
+        "n",
+        "Y",
+        "N"
+      ],
       "question": {
         "name": "VALIDATIONS.FORCE"
       },

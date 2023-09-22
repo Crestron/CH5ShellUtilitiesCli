@@ -55,7 +55,9 @@
 					<ch5-list id="vertical-menu-swiper-thumb" class="swiper-thumb" orientation="vertical" itemHeight="50px" maxHeight="auto" indexId="idx" itemWidth="100%">
 						<template>
 							<div class="vertical-list-item">
-								<ch5-button id="menu-list-id-{{idx}}" type="text" shape="rectangle" hAlignLabel="left" receiveStateSelected="active_state_class_{{idx}}" onRelease="templatePageModule.navMenu({{idx}})"></ch5-button>
+								<ch5-button id="menu-list-id-{{idx}}" type="text" shape="rectangle" hAlignLabel="left" 
+									receiveStateSelected="active_state_class_{{idx}}" 
+									onRelease="templatePageModule.navMenu({{idx}})"></ch5-button>
 							</div>
 						</template>
 					</ch5-list>
@@ -79,13 +81,13 @@
 </template>
 </div>
 
-
 <!-- footer -->
 <div class="horizontal-footer-menu" id="template-content-index-footer">
 	<ch5-list id="horizontal-menu-swiper-thumb" receiveStateScrollTo="scrollToMenu" scrollbar="false" class="swiper-thumb" orientation="horizontal" maxHeight="auto" indexId="idx" itemHeight="100%">
 		<template>
 			<div class="horizontal-list-item">
-				<ch5-button id="menu-list-id-{{idx}}" type="text" shape="rectangle" stretch="both" receiveStateSelected="active_state_class_{{idx}}" onRelease="templatePageModule.navMenu({{idx}})"></ch5-button>
+				<ch5-button id="menu-list-id-{{idx}}" type="text" shape="rectangle" stretch="both" 
+					receiveStateSelected="active_state_class_{{idx}}" onRelease="templatePageModule.navMenu({{idx}})"></ch5-button>
 			</div>
 		</template>
 	</ch5-list>

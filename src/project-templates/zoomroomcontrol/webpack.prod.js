@@ -5,7 +5,6 @@ const WebpackConcatPlugin = require('@mcler/webpack-concat-plugin');
 const common = require('./webpack.common.js');
 const pkg = require('./package.json');
 const appConfig = require('./app.config.js');
-const projectConfig = require("./app/project-config.json");
 
 const appName = appConfig.appName;
 const appVersion = pkg.version;

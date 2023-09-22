@@ -57,6 +57,118 @@ export class Ch5BaseClassForProject extends Ch5BaseClassForCliCreate {
     this.logger.log("validateCLIInputArgument: " + key + " - " + value, inputObj);
     value = String(value).trim(); //.toLowerCase();
     if (inputObj) {
+      if (inputObj.validation !== "") {
+        if (inputObj.validation === "validateProjectType") {
+          const valOutput: any = this.validateProjectType(inputObj.allowedValues, value);
+          return {
+            value: valOutput.value,
+            warning: ""
+          }
+        } else if (inputObj.validation === "validatePackageJsonProjectName") {
+          const valOutput: any = this.validatePackageJsonProjectName(value);
+          if (valOutput.isValid === false) {
+            return {
+              value: null,
+              warning: valOutput.warning
+            };
+          } else {
+            return {
+              value: value,
+              warning: ""
+            };
+          }
+        }
+      } else {
+        if (inputObj.type === "boolean") {
+          if (inputObj.allowedAliases && inputObj.allowedAliases.length > 0 && inputObj.allowedAliases.includes(value)) {
+            const val: boolean = this.utils.toBoolean(value);
+            return {
+              value: val,
+              warning: ""
+            };
+          } else {
+            console.log("A");
+            if (!this.utils.isValidInput(value)) {
+              console.log("B");
+              // If no value is entered - null, empty, undefined
+              const val: boolean = this.utils.toBoolean(inputObj.default);
+              return {
+                value: val,
+                warning: ""
+              };
+            } else {
+              if ((this.utils.isValidInput(inputObj.valueIfInvalid))) {
+                // If no value is entered - null, empty, undefined
+                const val: boolean = this.utils.toBoolean(inputObj.valueIfInvalid);
+                return {
+                  value: val,
+                  warning: ""
+                };
+              }
+            }
+          }
+        } else if (inputObj.type === "enum") {
+          if (inputObj.allowedAliases && inputObj.allowedAliases.length > 0 && inputObj.allowedAliases.includes(value)) {
+            return {
+              value: value,
+              warning: ""
+            };
+          } else {
+            if (!this.utils.isValidInput(value)) {
+              // If no value is entered - null, empty, undefined
+              return {
+                value: inputObj.default,
+                warning: ""
+              };
+            } else {
+              if ((this.utils.isValidInput(inputObj.valueIfInvalid))) {
+                // If no value is entered - null, empty, undefined
+                return {
+                  value: inputObj.valueIfInvalid,
+                  warning: ""
+                };
+              }
+            }
+          }
+        } else if (inputObj.type === "string") {
+          if (inputObj.validation !== "") {
+            if (inputObj.validation === "validatePackageJsonProjectName") {
+              const valOutput: any = this.validatePackageJsonProjectName(value);
+              if (valOutput.isValid === false) {
+                return {
+                  value: null,
+                  warning: valOutput.warning
+                };
+              } else {
+                return {
+                  value: value,
+                  warning: ""
+                };
+              }
+            }
+            return {
+              value: value,
+              warning: ""
+            };
+          } else {
+            return {
+              value: value,
+              warning: ""
+            };
+          }
+        }
+      }
+    }
+    return {
+      value: "",
+      warning: this.getText("VERIFY_INPUT_PARAMS.INVALID_INPUT", key)
+    };
+  }
+
+  protected validateCLIInputArgument1(inputObj: any, key: string, value: string) {
+    this.logger.log("validateCLIInputArgument: " + key + " - " + value, inputObj);
+    value = String(value).trim(); //.toLowerCase();
+    if (inputObj) {
       if (inputObj.allowedAliases && inputObj.allowedAliases.length > 0 && inputObj.allowedAliases.includes(value)) {
         if (inputObj.type === "boolean") {
           if (value) {
