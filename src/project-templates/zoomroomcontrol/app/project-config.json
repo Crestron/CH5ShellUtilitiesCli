@@ -1,0 +1,138 @@
+{
+  "projectName": "zoomroomcontrol",
+  "projectType": "ZoomRoomControl",
+  "version": "0.0.1",
+  "faviconPath": "favicon.ico",
+  "menuOrientation": "none",
+  "selectedTheme": "zoom-light-theme",
+  "useWebXPanel": true,
+  "forceDeviceXPanel": false,
+  "themes": [
+    {
+      "name": "light-theme",
+      "extends": "light-theme",
+      "brandLogo": {
+        "url": "./app/template/assets/img/ch5-logo-light.svg",
+        "alt": "Crestron Logo",
+        "receiveStateUrl": ""
+      },
+      "backgroundProperties": {
+        "backgroundColor": [
+          "#f8f8f8"
+        ]
+      }
+    },
+    {
+      "name": "dark-theme",
+      "extends": "dark-theme",
+      "brandLogo": {
+        "url": "./app/template/assets/img/ch5-logo-dark.svg",
+        "alt": "Crestron Logo",
+        "receiveStateUrl": ""
+      },
+      "backgroundProperties": {
+        "backgroundColor": [
+          "#1a1a1a"
+        ]
+      }
+    },
+    {
+      "name": "zoom-light-theme",
+      "extends": "zoom-light-theme",
+      "brandLogo": {
+        "url": "./app/template/assets/img/ch5-logo-light.svg",
+        "alt": "Crestron Logo",
+        "receiveStateUrl": ""
+      },
+      "backgroundProperties": {
+        "backgroundColor": [
+          "#ffffff"
+        ]
+      }
+    },
+    {
+      "name": "zoom-dark-theme",
+      "extends": "zoom-dark-theme",
+      "brandLogo": {
+        "url": "./app/template/assets/img/ch5-logo-dark.svg",
+        "alt": "Crestron Logo",
+        "receiveStateUrl": ""
+      },
+      "backgroundProperties": {
+        "backgroundColor": [
+          "#242424"
+        ]
+      }
+    },
+    {
+      "name": "project-light-theme",
+      "extends": "light-theme",
+      "brandLogo": {
+        "url": "./app/template/assets/img/ch5-logo-light.svg",
+        "alt": "Crestron Logo",
+        "receiveStateUrl": ""
+      },
+      "backgroundProperties": {
+        "backgroundColor": [
+          "#f8f8f8"
+        ]
+      }
+    },
+    {
+      "name": "project-dark-theme",
+      "extends": "dark-theme",
+      "brandLogo": {
+        "url": "./app/template/assets/img/ch5-logo-dark.svg",
+        "alt": "Crestron Logo",
+        "receiveStateUrl": ""
+      },
+      "backgroundProperties": {
+        "backgroundColor": [
+          "#1a1a1a"
+        ]
+      }
+    },
+    {
+      "name": "project-custom-theme",
+      "extends": "light-theme",
+      "brandLogo": {
+        "url": "./app/template/assets/img/ch5-logo-light.svg",
+        "alt": "Crestron Logo",
+        "receiveStateUrl": ""
+      },
+      "backgroundProperties": {
+        "backgroundColor": [
+          "#f8f8f8"
+        ]
+      }
+    }
+  ],
+  "config": {
+    "controlSystem": {}
+  },
+  "header": {
+    "display": true,
+    "displayInfo": true,
+    "diagnostics": {
+      "logs": {
+        "logAfterProjectLoad": true,
+        "receiveStateLogDiagnostics": "",
+        "logDiagnostics": "none"
+      }
+    },
+    "$component": ""
+  },
+  "footer": {
+    "display": true,
+    "$component": ""
+  },
+  "content": {
+    "$defaultView": "",
+    "triggerViewProperties": {
+      "gestureable": false,
+      "disableAnimation": true
+    },
+    "pages": [],
+    "widgets": []
+  }
+}

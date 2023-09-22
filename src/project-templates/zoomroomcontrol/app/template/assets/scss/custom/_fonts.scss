@@ -1,0 +1,33 @@
+// Copyright (C) 2023 to the present, Crestron Electronics, Inc.
+// All rights reserved.
+// No part of this software may be reproduced in any form, machine
+// or natural, without the express written consent of Crestron Electronics.
+// Use of this source code is subject to the terms of the Crestron Software License Agreement 
+// under which you licensed this source code.
+
+/* Inter-Regular */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  src: url('#{$font-path}Inter-Regular.eot'); /* IE9 Compat Modes */
+  src: local(''),
+       url('#{$font-path}Inter-Regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('#{$font-path}Inter-Regular.woff2') format('woff2'), /* Super Modern Browsers */
+       url('#{$font-path}Inter-Regular.woff') format('woff'), /* Modern Browsers */
+       url('#{$font-path}Inter-Regular.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('#{$font-path}Inter-Regular.svg#Inter') format('svg'); /* Legacy iOS */
+}
+/* Inter-Bold */
+@font-face {
+  font-family: 'Inter';
+  font-style: bold;
+  font-weight: 600;
+  src: url('#{$font-path}Inter-Bold.eot'); /* IE9 Compat Modes */
+  src: local(''),
+       url('#{$font-path}Inter-Bold.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('#{$font-path}Inter-Bold.woff2') format('woff2'), /* Super Modern Browsers */
+       url('#{$font-path}Inter-Bold.woff') format('woff'), /* Modern Browsers */
+       url('#{$font-path}Inter-Bold.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('#{$font-path}Inter-Bold.svg#Inter') format('svg'); /* Legacy iOS */
+}
