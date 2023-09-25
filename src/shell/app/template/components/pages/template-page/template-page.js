@@ -206,10 +206,10 @@ const templatePageModule = (() => {
 					// document.getElementById("shellTemplateSgCss").setAttribute("href", "./assets/css/sg.css" + cacheBustVersion);
 					// document.getElementById("shellTemplateTemplateComponentsCss").setAttribute("href", "./assets/css/templatecomponents.css" + cacheBustVersion);
 					// document.getElementById("shellTemplateProjectComponentsCss").setAttribute("href", "./assets/css/projectcomponents.css" + cacheBustVersion);
-					
+
 					// document.getElementById("shellTemplateCrComLibJs").setAttribute("src", "./libraries/cr-com-lib.js" + cacheBustVersion);
 					// document.getElementById("shellTemplateComponentJs").setAttribute("src", "./libraries/component.js" + cacheBustVersion);
-					
+
 					if (projectConfigResponse.projectType.toLowerCase() === "zoomroomcontrol") {
 						document.getElementById("shellTemplateZoomCh5LibJs").setAttribute("src", "./libraries/ch5-zoom-lib.js" + cacheBustVersion);
 					}
@@ -461,13 +461,14 @@ const templatePageModule = (() => {
 	}
 
 	function configureWebXPanel(projectConfigResponse) {
-		const pcConfig = webXPanelModule.getWebXPanelConfiguration(projectConfigResponse);
-		const urlConfig = webXPanelModule.getWebXPanelUrlParams();
-		if (projectConfigResponse.useWebXPanel === false && projectConfigResponse.forceDeviceXPanel === false && urlConfig.forceDeviceXPanel === "false") {
-			return;
+		const entries = webXPanelModule.paramsToObject();
+		let isForceDeviceXPanel = projectConfigResponse.forceDeviceXPanel;
+		if (entries["forcedevicexpanel"] === "true") {
+			isForceDeviceXPanel = true;
+		} else if (entries["forcedevicexpanel"] === "false") {
+			isForceDeviceXPanel = false;
 		}
-
-		if (pcConfig.forceDeviceXPanel === true || urlConfig.forceDeviceXPanel === "true") {
+		if (isForceDeviceXPanel === true) {
 			webXPanelModule.getWebXPanel(true); // Always Connect as WebX and not Native
 			connectToWebXPanel(projectConfigResponse);
 		} else {
@@ -581,7 +582,7 @@ const templatePageModule = (() => {
 		document.getElementById("footer-section-page-template1")?.remove();
 		document.getElementById("footer-section-page-template2")?.remove();
 		document.getElementById("header-section-page-template1-set1")?.remove();
-		
+
 		projectConfigModule.projectConfigData().then(data => {
 			if (data.header.displayInfo === false) {
 				document.getElementById('header-section-page-set1')?.remove();
