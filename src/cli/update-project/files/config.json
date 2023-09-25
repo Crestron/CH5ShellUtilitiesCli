@@ -59,7 +59,7 @@
       ],
       "validation": "validateProjectType",
       "question": {
-        "name": "CHECK_PROMPT_QUESTIONS.QUESTIONS.PROJECT_TYPE"
+        "name": ""
       },
       "isSpecialArgument": false
     },
@@ -87,7 +87,7 @@
       ],
       "validation": "",
       "question": {
-        "name": "CHECK_PROMPT_QUESTIONS.QUESTIONS.FORCE_DEVICE_XPANEL"
+        "name": ""
       },
       "isSpecialArgument": false
     },
@@ -147,6 +147,7 @@
       "question": {
         "name": "CHECK_PROMPT_QUESTIONS.QUESTIONS.MENU_ORIENTATION"
       },
+      "validation": "",      
       "isSpecialArgument": false
     },
     {
@@ -163,6 +164,7 @@
       "question": {
         "name": "CHECK_PROMPT_QUESTIONS.QUESTIONS.SELECTED_THEME"
       },
+      "validation": "",      
       "isSpecialArgument": false
     },
     {
@@ -189,6 +191,7 @@
       "question": {
         "name": "CHECK_PROMPT_QUESTIONS.QUESTIONS.USE_WEBXPANEL"
       },
+      "validation": "",      
       "isSpecialArgument": false
     },
     {

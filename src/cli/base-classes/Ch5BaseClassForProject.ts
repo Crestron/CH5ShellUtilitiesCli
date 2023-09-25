@@ -50,24 +50,22 @@ export class Ch5BaseClassForProject extends Ch5BaseClassForCliCreate {
         projectType: ""
       }
     };
-    this.logger.log("before", this.inputArgs);
     if (this.isCreateOrUpdateBasedOnConfigJson() === false) {
+      // Applicable only for update
       if (this.inputArgs["selectedTheme"]) {
         const getAllThemeNames = this.projectConfig.getAllThemeNames();
-        this.logger.log("getAllThemeNames", getAllThemeNames);
-          this.inputArgs["selectedTheme"].allowedValues = getAllThemeNames;
+        this.inputArgs["selectedTheme"].allowedValues = getAllThemeNames;
         this.inputArgs["selectedTheme"].allowedAliases = getAllThemeNames;
       }
     }
-    this.logger.log("after", this.inputArgs);
     this.logger.end();
   }
 
   protected validateCLIInputArgument(inputObj: any, key: string, value: string) {
     this.logger.log("validateCLIInputArgument: " + key + " - " + value, inputObj);
-    value = String(value).trim(); //.toLowerCase();
+    value = String(value).trim();
     if (inputObj) {
-      if (inputObj.validation !== "") {
+      if (inputObj.validation && inputObj.validation !== "") {
         if (inputObj.validation === "validateProjectType") {
           const valOutput: any = this.validateProjectType(inputObj.allowedValues, value);
           return {
