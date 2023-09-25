@@ -97,21 +97,42 @@ describe.only('Create Project >>>>>>>> ', () => {
     });
 
     it('Create: Case 1', async function () {
-      const output = await createProject("Case1", "shell-template");
+      const args = [
+        {
+          "key": "projectName",
+          "value": "shell-template"
+        }
+      ];
+      const output = await createProject("Case1", args);
       // Reason to have.string is because the lastOutput will contain color coding for message
       expect(String(output.actual)).to.have.string(output.expected);
     });
 
     it('Create: Case 2', async function () {
-      const output = await createProject("Case2", "abc123");
+      const args = [
+        {
+          "key": "projectName",
+          "value": "abc123"
+        }
+      ];
+      const output = await createProject("Case2", args);
       // Reason to have.string is because the lastOutput will contain color coding for message
       expect(String(output.actual)).to.have.string(output.expected);
     });
 
-    async function createProject(createInFolderName: string, projectName: string) {
+    async function createProject(createInFolderName: string, args: any[]) {
       const pathToExecute = await changeDirectory(createInFolderName);
       process.chdir(pathToExecute);
-      const { lastOutput } = await run('ch5-shell-cli create:project --projectName ' + projectName, []);
+      let argumentString = "";
+      let projectName = "";
+      for (let i = 0; i < args.length; i++) {
+        argumentString += "--" + args[i].key + " " + args[i].value + " ";
+        if (args[i].key.toLowerCase() === "projectname") {
+          projectName = args[i].value;
+        }
+      }
+      // if (projectName )
+      const { lastOutput } = await run('ch5-shell-cli create:project ' + argumentString, []);
       const expectedResponse = createProjectCli.getText("LOG_OUTPUT.SUCCESS_MESSAGE", projectName, protoCreateProjectCli.getCurrentWorkingDirectory());
       return { expected: expectedResponse, actual: lastOutput };
     }

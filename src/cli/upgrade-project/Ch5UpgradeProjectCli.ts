@@ -55,13 +55,15 @@ export class Ch5UpgradeProjectCli extends Ch5BaseClassForCliUpgrade implements I
 
 		try {
 			// STEP 1: Update new project-config.json
+			this.processProjectConfig();
+
 			this.processThemesDifferences();
 
 			this.processHeaderDifferences();
 
 			this.processPagesDifferences();
-			// STEP 2: update directories
 
+			// STEP 2: update directories
 			await this.processDirectories();
 			this.logger.printSuccess(this.getText('SUCCESS_MESSAGE'));
 		} catch (err: any) {
@@ -100,6 +102,16 @@ export class Ch5UpgradeProjectCli extends Ch5BaseClassForCliUpgrade implements I
 				})
 			})
 		})
+	}
+
+	processProjectConfig() {
+		const jsonProjectConfig = this.cliProjectConfig.getJson();
+		if (!jsonProjectConfig.projectType) {
+			this.cliProjectConfig.saveOverrideAttributeToJSON("projectType", "shell-template");
+		}
+		if (!jsonProjectConfig.forceDeviceXPanel) {
+			this.cliProjectConfig.saveOverrideAttributeToJSON("forceDeviceXPanel", false);
+		}
 	}
 
 	processDirectories() {
@@ -178,7 +190,9 @@ export class Ch5UpgradeProjectCli extends Ch5BaseClassForCliUpgrade implements I
 		const oldThemes = this.cliProjectConfig.getAllThemes();
 
 		for (const oldTheme of oldThemes) {
-			oldTheme.extends = oldTheme.name;
+			if (!oldTheme.extends) {
+				oldTheme.extends = oldTheme.name;
+			}
 		}
 
 		this.cliProjectConfig.saveOverrideAttributeToJSON('themes', oldThemes);
