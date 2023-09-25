@@ -219,6 +219,42 @@
     }
   ],
   "backupFolder": "./dist/backup/",
+  "custom": {
+    "templates": {
+      "shell-template": {
+        "customFolders": [
+          "app/template/assets/fonts"
+        ],
+        "customFiles": [
+          "app/template/libraries/utils.js",
+          "app/template/libraries/webxpanel.js",
+          "app/template/assets/scss/custom/_fonts.scss",
+          "app/template/assets/scss/custom/_variables.scss",
+          "app.config.js",
+          "package.json",
+          "packagelock.json",
+          "webpack.dev.js",
+          "webpack.prod.js"
+        ]
+      },
+      "zoomroomcontrol": {
+        "customFolders": [
+          "app/template/assets/fonts"
+        ],
+        "customFiles": [
+          "app/template/libraries/utils.js",
+          "app/template/libraries/webxpanel.js",
+          "app/template/assets/scss/custom/_fonts.scss",
+          "app/template/assets/scss/custom/_variables.scss",
+          "app.config.js",
+          "package.json",
+          "packagelock.json",
+          "webpack.dev.js",
+          "webpack.prod.js"
+        ]
+      }
+    }
+  },
   "additionalHelp": true,
   "automatedTests": {
     "enable": true,

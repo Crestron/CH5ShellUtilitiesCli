@@ -497,6 +497,31 @@ export class Ch5BaseClassForProject extends Ch5BaseClassForCliCreate {
     return this._outputResponse.data.projectName;
   }
 
+  protected setProjectVariables() {
+    if (this.isCreateOrUpdateBasedOnConfigJson()) {
+      const inputConfigJSON: any = JSON.parse(this.utils.readFileContentSync(this.getConfigJsonFilePath()));
+      this._outputResponse.data.projectName = inputConfigJSON.projectName;
+      this._outputResponse.data.projectType = inputConfigJSON.projectType.toLowerCase();
+    } else {
+      const projectNameObject = this._outputResponse.data.updatedInputs.find((objValue: any) => objValue.key === "projectName");
+      if (projectNameObject.inputReceived === false) {
+        const inputConfigJSON: any = JSON.parse(this.utils.readFileContentSync(this.getCreatedOrUpdateProjectPathProjectConfigJsonFile()));
+        this._outputResponse.data.projectName = inputConfigJSON.projectName;
+      } else {
+        this._outputResponse.data.projectName = projectNameObject.argsValue;
+      }
+      const projectTypeObject = this._outputResponse.data.updatedInputs.find((objValue: any) => objValue.key === "projectType");
+      if (projectTypeObject.inputReceived === false) {
+        const inputConfigJSON: any = JSON.parse(this.utils.readFileContentSync(this.getCreatedOrUpdateProjectPathProjectConfigJsonFile()));
+        this._outputResponse.data.projectType = inputConfigJSON.projectType.toLowerCase();
+      } else {
+        this._outputResponse.data.projectType = projectTypeObject.argsValue.toLowerCase();
+      }
+    }
+    this.logger.log("this._outputResponse.data.projectName value is ", this._outputResponse.data.projectName);
+    return this._outputResponse.data.projectName;
+  }
+
   protected async traverseAndValidateProjectFolderAndVariables() {
     const pathToCreateProject: string = path.resolve("./", this.getProjectName());
     this.makeDirectoryForCreateProject(pathToCreateProject);
@@ -561,7 +586,6 @@ export class Ch5BaseClassForProject extends Ch5BaseClassForCliCreate {
   protected updateTemplateFiles() {
     const outputResponse = this.getOutputResponse();
     if (outputResponse.data.projectType === "zoomroomcontrol") {
-
       // Remove folders from shell-template
       for (let i = 0; i < this.CONFIG_FILE.custom.templates["shell-template"].customFolders.length; i++) {
         this.removeFolderInProject(this.CONFIG_FILE.custom.templates["shell-template"].customFolders[i]);
@@ -653,7 +677,7 @@ export class Ch5BaseClassForProject extends Ch5BaseClassForCliCreate {
     }
     return askConfirmation;
   }
-  
+
   protected doubleDigit(input: number): string {
     if (input < 10) {
       return "0" + String(input);

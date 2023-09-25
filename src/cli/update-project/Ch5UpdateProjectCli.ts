@@ -86,6 +86,7 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForProject implements ICh5C
       throw new Error(this.getText("ERRORS.DO_NOT_MODIFY_PROJECT"));
     }
 
+    this.setProjectVariables();
     this.updateTemplateFiles();
 
     if (this.isCreateOrUpdateBasedOnConfigJson()) {
