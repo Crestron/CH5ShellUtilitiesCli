@@ -359,4 +359,9 @@ export class Ch5CliProjectConfig {
     file.save();
   }
 
+  getNodeByKey(key:string) {
+    let projectConfigObject = this.getJson();
+    return projectConfigObject[key];
+  }
+
 }
