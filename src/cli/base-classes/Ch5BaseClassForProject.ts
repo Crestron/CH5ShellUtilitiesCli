@@ -87,9 +87,7 @@ export class Ch5BaseClassForProject extends Ch5BaseClassForCliCreate {
               warning: ""
             };
           } else {
-            console.log("A");
             if (!this.utils.isValidInput(value)) {
-              console.log("B");
               // If no value is entered - null, empty, undefined
               const val: boolean = this.utils.toBoolean(inputObj.default);
               return {
@@ -165,105 +163,105 @@ export class Ch5BaseClassForProject extends Ch5BaseClassForCliCreate {
     };
   }
 
-  protected validateCLIInputArgument1(inputObj: any, key: string, value: string) {
-    this.logger.log("validateCLIInputArgument: " + key + " - " + value, inputObj);
-    value = String(value).trim(); //.toLowerCase();
-    if (inputObj) {
-      if (inputObj.allowedAliases && inputObj.allowedAliases.length > 0 && inputObj.allowedAliases.includes(value)) {
-        if (inputObj.type === "boolean") {
-          if (value) {
-            const val: boolean = this.utils.toBoolean(value);
-            return {
-              value: val,
-              warning: ""
-            };
-          } else {
-            return {
-              value: value,
-              warning: ""
-            };
-          }
-        } else if (inputObj.type === "enum") {
-          if (inputObj.validation !== "") {
-            if (inputObj.validation === "validateProjectType") {
-              const valOutput: any = this.validateProjectType(inputObj.allowedValues, value);
-              return {
-                value: valOutput.value,
-                warning: ""
-              }
-            }
-            return {
-              value: value,
-              warning: ""
-            };
-          } else {
-            return {
-              value: value,
-              warning: ""
-            };
-          }
-        }
-      } else {
-        if (inputObj.type === "enum" && inputObj.validation !== "" && inputObj.validation === "validateProjectType") {
-          const valOutput: any = this.validateProjectType(inputObj.allowedValues, value);
-          return {
-            value: valOutput.value,
-            warning: ""
-          }
-        } else if (inputObj.type === "string") {
-          if (inputObj.validation !== "") {
-            if (inputObj.validation === "validatePackageJsonProjectName") {
-              const valOutput: any = this.validatePackageJsonProjectName(value);
-              if (valOutput.isValid === false) {
-                return {
-                  value: null,
-                  warning: valOutput.warning
-                };
-              } else {
-                return {
-                  value: value,
-                  warning: ""
-                };
-              }
-            }
-            return {
-              value: value,
-              warning: ""
-            };
-          } else {
-            return {
-              value: value,
-              warning: ""
-            };
-          }
-        } else if (inputObj.type === "boolean") {
-          this.logger.log("boolean", value);
-          if (this.utils.isValidInput(value)) {
-            const val: boolean = this.utils.toBoolean(value);
-            this.logger.log("boolean val", val);
-            return {
-              value: val,
-              warning: ""
-            };
-          } else {
-            this.logger.log("boolean 2 val", this.utils.toBoolean(inputObj.default));
-            return {
-              value: this.utils.toBoolean(inputObj.default),
-              warning: ""
-            };
-          }
-        }
-      }
-      return {
-        value: value,
-        warning: ""
-      };
-    }
-    return {
-      value: "",
-      warning: this.getText("VERIFY_INPUT_PARAMS.INVALID_INPUT", key)
-    };
-  }
+  // protected validateCLIInputArgument1(inputObj: any, key: string, value: string) {
+  //   this.logger.log("validateCLIInputArgument: " + key + " - " + value, inputObj);
+  //   value = String(value).trim(); //.toLowerCase();
+  //   if (inputObj) {
+  //     if (inputObj.allowedAliases && inputObj.allowedAliases.length > 0 && inputObj.allowedAliases.includes(value)) {
+  //       if (inputObj.type === "boolean") {
+  //         if (value) {
+  //           const val: boolean = this.utils.toBoolean(value);
+  //           return {
+  //             value: val,
+  //             warning: ""
+  //           };
+  //         } else {
+  //           return {
+  //             value: value,
+  //             warning: ""
+  //           };
+  //         }
+  //       } else if (inputObj.type === "enum") {
+  //         if (inputObj.validation !== "") {
+  //           if (inputObj.validation === "validateProjectType") {
+  //             const valOutput: any = this.validateProjectType(inputObj.allowedValues, value);
+  //             return {
+  //               value: valOutput.value,
+  //               warning: ""
+  //             }
+  //           }
+  //           return {
+  //             value: value,
+  //             warning: ""
+  //           };
+  //         } else {
+  //           return {
+  //             value: value,
+  //             warning: ""
+  //           };
+  //         }
+  //       }
+  //     } else {
+  //       if (inputObj.type === "enum" && inputObj.validation !== "" && inputObj.validation === "validateProjectType") {
+  //         const valOutput: any = this.validateProjectType(inputObj.allowedValues, value);
+  //         return {
+  //           value: valOutput.value,
+  //           warning: ""
+  //         }
+  //       } else if (inputObj.type === "string") {
+  //         if (inputObj.validation !== "") {
+  //           if (inputObj.validation === "validatePackageJsonProjectName") {
+  //             const valOutput: any = this.validatePackageJsonProjectName(value);
+  //             if (valOutput.isValid === false) {
+  //               return {
+  //                 value: null,
+  //                 warning: valOutput.warning
+  //               };
+  //             } else {
+  //               return {
+  //                 value: value,
+  //                 warning: ""
+  //               };
+  //             }
+  //           }
+  //           return {
+  //             value: value,
+  //             warning: ""
+  //           };
+  //         } else {
+  //           return {
+  //             value: value,
+  //             warning: ""
+  //           };
+  //         }
+  //       } else if (inputObj.type === "boolean") {
+  //         this.logger.log("boolean", value);
+  //         if (this.utils.isValidInput(value)) {
+  //           const val: boolean = this.utils.toBoolean(value);
+  //           this.logger.log("boolean val", val);
+  //           return {
+  //             value: val,
+  //             warning: ""
+  //           };
+  //         } else {
+  //           this.logger.log("boolean 2 val", this.utils.toBoolean(inputObj.default));
+  //           return {
+  //             value: this.utils.toBoolean(inputObj.default),
+  //             warning: ""
+  //           };
+  //         }
+  //       }
+  //     }
+  //     return {
+  //       value: value,
+  //       warning: ""
+  //     };
+  //   }
+  //   return {
+  //     value: "",
+  //     warning: this.getText("VERIFY_INPUT_PARAMS.INVALID_INPUT", key)
+  //   };
+  // }
 
   private validateProjectType(templateProjectTypes: string[], projectType: string) {
     /*
@@ -328,7 +326,7 @@ export class Ch5BaseClassForProject extends Ch5BaseClassForCliCreate {
             isValid: false,
             warning: this.getText("COMMON.VALIDATIONS.PROJECT_NAME")
           };
-        } else if (this.checkSpecialCharsInProjectName(packageName)) {
+        } else if (this.containsSpecialCharsInPackageName(packageName)) {
           return {
             value: null,
             isValid: false,
@@ -351,13 +349,22 @@ export class Ch5BaseClassForProject extends Ch5BaseClassForCliCreate {
     }
   }
 
-  private checkSpecialCharsInProjectName(packageName: string): boolean {
-    // Allowed characters for first and any position ~ - a-z 0-9
+  private containsSpecialCharsInPackageName(packageName: string): boolean {
+    // Allowed characters for any position ~ - a-z 0-9
     // Not allowed special characters at any position ! @ # $ % ^ & * ( ) + = [ { } ] | \ : ; " ' < , > ? / 
-    // _ and . will work only if project name start from alphabets or any other allowed  characters 
+    // _ and . will work only if project name start from alphabets or any other allowed characters 
     const invalidCharsArray = ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '+', '=', '[', '{', '}', ']', '|', '\\', ':', ';', '<', ',', '>', '?', '/', '\'', '\"'];
-    if (invalidCharsArray.includes(packageName.charAt(packageName.length - 1)) || invalidCharsArray.includes(packageName.charAt(0))) {
-      return true;
+    for (let i = 0; i < invalidCharsArray.length; i++) {
+      if (packageName.includes(invalidCharsArray[i])) {
+        return true;
+      }
+    }
+
+    const specialArray1 = ["_", "."];
+    for (let i = 0; i < specialArray1.length; i++) {
+      if (packageName.charAt(0) === specialArray1[i]) {
+        return true;
+      }
     }
     return false;
   }
@@ -646,6 +653,7 @@ export class Ch5BaseClassForProject extends Ch5BaseClassForCliCreate {
     }
     return askConfirmation;
   }
+  
   protected doubleDigit(input: number): string {
     if (input < 10) {
       return "0" + String(input);
@@ -653,8 +661,4 @@ export class Ch5BaseClassForProject extends Ch5BaseClassForCliCreate {
     return String(input);
   }
 
-  public getCLIExecutionPath(): any {
-    // This method needs to be available here in order to get the current working directory
-    return __dirname;
-  }
 }

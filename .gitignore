@@ -3,3 +3,4 @@ build
 dist
 *.tgz
 .vscode/settings.json
+.nyc_output

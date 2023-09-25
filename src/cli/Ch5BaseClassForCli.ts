@@ -12,7 +12,6 @@ import { Ch5CliLogger } from "./Ch5CliLogger";
 import { Ch5CliNamingHelper } from "./Ch5CliNamingHelper";
 import { Ch5CliProjectConfig } from "./Ch5CliProjectConfig";
 import { Ch5CliConfigFileReader } from "./Ch5CliConfigFileReader";
-import { ICh5CliConfigFile } from "./ICh5CliConfigFile";
 import { Ch5CliError } from "./Ch5CliError";
 
 const { Select, Confirm, prompt } = require('enquirer');

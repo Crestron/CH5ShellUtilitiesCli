@@ -126,7 +126,7 @@
     },
     {
       "key": "menuOrientation",
-      "description": "Set the menu orientation for the project level triggerview",
+      "description": "Set the menu orientation for the project",
       "type": "enum",
       "default": "horizontal",
       "valueIfNotFound": null,
