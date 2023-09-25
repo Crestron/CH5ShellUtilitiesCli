@@ -38,7 +38,8 @@
         "name": "CHECK_PROMPT_QUESTIONS.QUESTIONS.PROJECT_NAME"
       },
       "isSpecialArgument": false
-    },{
+    },
+    {
       "key": "projectType",
       "description": "Sets the type of project. Applicable values are shell-template and zoomroomcontrol.",
       "type": "enum",
@@ -58,7 +59,7 @@
       ],
       "validation": "validateProjectType",
       "question": {
-        "name": ""
+        "name": "CHECK_PROMPT_QUESTIONS.QUESTIONS.PROJECT_TYPE"
       },
       "isSpecialArgument": false
     },
@@ -84,9 +85,9 @@
         "Y",
         "N"
       ],
-        "validation": "",
+      "validation": "",
       "question": {
-        "name": ""
+        "name": "CHECK_PROMPT_QUESTIONS.QUESTIONS.FORCE_DEVICE_XPANEL"
       },
       "isSpecialArgument": false
     },

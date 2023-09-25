@@ -50,6 +50,16 @@ export class Ch5BaseClassForProject extends Ch5BaseClassForCliCreate {
         projectType: ""
       }
     };
+    this.logger.log("before", this.inputArgs);
+    if (this.isCreateOrUpdateBasedOnConfigJson() === false) {
+      if (this.inputArgs["selectedTheme"]) {
+        const getAllThemeNames = this.projectConfig.getAllThemeNames();
+        this.logger.log("getAllThemeNames", getAllThemeNames);
+          this.inputArgs["selectedTheme"].allowedValues = getAllThemeNames;
+        this.inputArgs["selectedTheme"].allowedAliases = getAllThemeNames;
+      }
+    }
+    this.logger.log("after", this.inputArgs);
     this.logger.end();
   }
 
@@ -538,28 +548,18 @@ export class Ch5BaseClassForProject extends Ch5BaseClassForCliCreate {
   }
 
   protected removeFolderInProject(folderName: string) {
-    // const location = path.resolve(PROJECT_CREATION_FOLDER, this.CONFIG_FILE.custom.templates["shell-template"].customFolders[i]);
-    // this.logger.log("shell-template customFolders-" + i + ": ", location);
-    // fsExtra.removeSync(path.resolve(PROJECT_CREATION_FOLDER, location));
     const location = path.resolve(folderName);
     this.logger.log("shell-template removeFolderInProject: ", location);
     fsExtra.removeSync(path.resolve(location));
   }
 
   protected removeFileInProject(fileName: string) {
-    // const location = path.resolve(PROJECT_CREATION_FOLDER, this.CONFIG_FILE.custom.templates["shell-template"].customFolders[i]);
-    // this.logger.log("shell-template customFolders-" + i + ": ", location);
-    // fsExtra.removeSync(path.resolve(PROJECT_CREATION_FOLDER, location));
     const location = path.resolve(fileName);
     this.logger.log("shell-template removeFileInProject: ", fileName);
     fsExtra.removeSync(path.resolve(location));
   }
 
   protected copyZoomFolderToProject(folderName: string) {
-    // const fromLocation = path.resolve(this.CLI_TEMPLATES_ZOOM_ROOM_CONTROL_FOLDER, this.CONFIG_FILE.custom.templates["zoomroomcontrol"].customFolders[i]);
-    // const toLocation = path.resolve(PROJECT_CREATION_FOLDER, this.CONFIG_FILE.custom.templates["zoomroomcontrol"].customFolders[i]);
-    // this.logger.log("zoomroomcontrol customFolders-" + i + ": copy from " + fromLocation + " to " + toLocation);
-    // fsExtra.copySync(fromLocation, toLocation);
     const fromLocation = path.resolve(this.CLI_TEMPLATES_ZOOM_ROOM_CONTROL_FOLDER, folderName);
     const toLocation = path.resolve(folderName);
     this.logger.log("zoomroomcontrol copyZoomFolderToProject: copy from " + fromLocation + " to " + toLocation);
@@ -567,13 +567,23 @@ export class Ch5BaseClassForProject extends Ch5BaseClassForCliCreate {
   }
 
   protected copyZoomFileToProject(fileName: string) {
-    // const fromLocation = path.resolve(this.CLI_TEMPLATES_ZOOM_ROOM_CONTROL_FOLDER, this.CONFIG_FILE.custom.templates["zoomroomcontrol"].customFiles[i]);
-    // const toLocation = path.resolve(PROJECT_CREATION_FOLDER, this.CONFIG_FILE.custom.templates["zoomroomcontrol"].customFiles[i]);
-    // this.logger.log("zoomroomcontrol customFolders-" + i + ": copy from " + fromLocation + " to " + toLocation);
-    // fsExtra.copySync(fromLocation, toLocation);
     const fromLocation = path.resolve(this.CLI_TEMPLATES_ZOOM_ROOM_CONTROL_FOLDER, fileName);
     const toLocation = path.resolve(fileName);
     this.logger.log("zoomroomcontrol copyZoomFileToProject: copy from " + fromLocation + " to " + toLocation);
+    fsExtra.copySync(fromLocation, toLocation);
+  }
+
+  protected copyShellFolderToProject(folderName: string) {
+    const fromLocation = path.resolve(this.CLI_TEMPLATES_SHELL_FOLDER, folderName);
+    const toLocation = path.resolve(folderName);
+    this.logger.log("shell-template copyShellFolderToProject: copy from " + fromLocation + " to " + toLocation);
+    fsExtra.copySync(fromLocation, toLocation);
+  }
+
+  protected copyShellFileToProject(fileName: string) {
+    const fromLocation = path.resolve(this.CLI_TEMPLATES_SHELL_FOLDER, fileName);
+    const toLocation = path.resolve(fileName);
+    this.logger.log("shell-template copyShellFileToProject: copy from " + fromLocation + " to " + toLocation);
     fsExtra.copySync(fromLocation, toLocation);
   }
 
@@ -600,6 +610,22 @@ export class Ch5BaseClassForProject extends Ch5BaseClassForCliCreate {
       }
       for (let i = 0; i < this.CONFIG_FILE.custom.templates["zoomroomcontrol"].customFiles.length; i++) {
         this.copyZoomFileToProject(this.CONFIG_FILE.custom.templates["zoomroomcontrol"].customFiles[i]);
+      }
+    } else if (outputResponse.data.projectType === "shell-template") {
+      // Remove folders from zoomroomcontrol
+      for (let i = 0; i < this.CONFIG_FILE.custom.templates["zoomroomcontrol"].customFolders.length; i++) {
+        this.removeFolderInProject(this.CONFIG_FILE.custom.templates["zoomroomcontrol"].customFolders[i]);
+      }
+      for (let i = 0; i < this.CONFIG_FILE.custom.templates["zoomroomcontrol"].customFiles.length; i++) {
+        this.removeFileInProject(this.CONFIG_FILE.custom.templates["zoomroomcontrol"].customFiles[i]);
+      }
+
+      // Copy folders from Shell
+      for (let i = 0; i < this.CONFIG_FILE.custom.templates["shell-template"].customFolders.length; i++) {
+        this.copyShellFolderToProject(this.CONFIG_FILE.custom.templates["shell-template"].customFolders[i]);
+      }
+      for (let i = 0; i < this.CONFIG_FILE.custom.templates["shell-template"].customFiles.length; i++) {
+        this.copyShellFileToProject(this.CONFIG_FILE.custom.templates["shell-template"].customFiles[i]);
       }
     }
   }

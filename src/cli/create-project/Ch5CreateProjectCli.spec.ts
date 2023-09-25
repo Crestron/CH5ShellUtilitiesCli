@@ -77,11 +77,16 @@ describe.only('Create Project >>>>>>>> ', () => {
     let i18nJson: any;
     // Calls to timeout are hierarchical. The problem is that beforeEach has no children. So we need to set timeout globally.
     this.timeout(10000);
+    const DEFAULT_EXECUTION_PATH = path.resolve("./");
 
     before(async () => {
       createProjectCli = new Ch5CreateProjectCli();
       protoCreateProjectCli = Object.getPrototypeOf(createProjectCli);
       i18nJson = await readI18nJson();
+    });
+
+    this.beforeEach(async () => {
+      process.chdir(DEFAULT_EXECUTION_PATH);
     });
 
     it('Help File', async () => {
@@ -93,6 +98,12 @@ describe.only('Create Project >>>>>>>> ', () => {
 
     it('Create: Case 1', async function () {
       const output = await createProject("Case1", "shell-template");
+      // Reason to have.string is because the lastOutput will contain color coding for message
+      expect(String(output.actual)).to.have.string(output.expected);
+    });
+
+    it('Create: Case 2', async function () {
+      const output = await createProject("Case2", "abc123");
       // Reason to have.string is because the lastOutput will contain color coding for message
       expect(String(output.actual)).to.have.string(output.expected);
     });
@@ -116,7 +127,7 @@ async function createFolderForProjectCreation(directoryName: string) {
   let currentDirectory = "./";
   for (let i = 0; i < directories.length; i++) {
     currentDirectory += directories[i] + "/";
-    await run('mkdir ' + currentDirectory, []);
+    await run('mkdir ' + path.resolve(currentDirectory), []);
     await run('cd ' + path.resolve(currentDirectory), []);
   }
 }
