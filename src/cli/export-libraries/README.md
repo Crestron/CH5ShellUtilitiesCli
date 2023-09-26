@@ -5,9 +5,9 @@
 ## How to Use
 
 To export library, go to the command-prompt or terminal of the Shell Template project, and execute `ch5-shell-cli export:library`.
-The package.json has scripts to handle this execution - for yarn, use `yarn export:library` command or npm  `npm run export:library` command. The short hand for it is `yarn exp:l` or `npm run exp:l` within scripts of package.json.
+The package.json has scripts to handle this execution - for npm, use npm  `npm run export:library` command. The short hand for it is `npm run exp:l` within scripts of package.json.
 
-To access help, you need to execute `yarn export:library --help` or `npm run export:library -- --help`.
+To access help, you need to execute `npm run export:library -- --help`.
 
 By default, the zip file is created inside the project 'dist' folder. This file has the naming convention of `exported-library.zip`.
 
@@ -15,15 +15,13 @@ By default, the zip file is created inside the project 'dist' folder. This file 
 Usage: 
     ch5-shell-cli export:library [options]
     
-You could also use `yarn` or `npm run` to export assets. The following are the commands:
-    yarn export:library [options]
+You could also use `npm run` to export assets. The following are the command(s):
     npm run export:library -- [options]
 
 You could use shortcut script `exp:l` with options:
     ch5-shell-cli exp:l [options]
 
-You could use shortcut script `exp:l` with yarn and npm commands as the following:
-    yarn exp:l [options]
+You could use shortcut script `exp:l` with npm command as the following:
     npm run exp:l -- [options]
 
 Options:
@@ -34,10 +32,8 @@ Options:
 Export the complete components directory from './app/project/library/' folder. To achieve this, use the below commands:
     ch5-shell-cli export:library --all
 
-You could also use `yarn` or `npm run` to export components. The following are the commands:
-    yarn export:library --all
+You could also use `npm run` to export components. The following are the command(s):
     npm run export:library -- --all
-    yarn exp:l --all
     npm run exp:l -- --all
 
 Export selected libraries from './app/project/libraries/' folder. In this case, the {fileNames} are mandatory in the command-prompt. The filename must follow the complete path starting from './app/project/libraries/....'. Only file names can be provided here (no folder paths). Multiple file names can be provided in the command-prompt. To achieve this, use the below commands:
@@ -45,12 +41,9 @@ Export selected libraries from './app/project/libraries/' folder. In this case, 
     ch5-shell-cli export:library --list ./app/project/libraries/a.js ./app/project/libraries/b.js
     ch5-shell-cli exp:l -l ./app/project/libraries/a.js ./app/project/libraries/b.js
     
-You could also use `yarn` or `npm run` to export libraries. The following are the commands:    
-    yarn export:library -l ./app/project/libraries/a.js ./app/project/libraries/b.js
+You could also use `npm run` to export libraries. The following are the command(s):    
     npm run export:library -- -l ./app/project/libraries/a.js ./app/project/libraries/b.js
-    yarn export:library --list ./app/project/libraries/a.js ./app/project/libraries/b.js
     npm run export:library -- --list ./app/project/libraries/a.js ./app/project/libraries/b.js
-    yarn exp:l -l ./app/project/libraries/a.js ./app/project/libraries/b.js
     npm run exp:l -- -l ./app/project/libraries/a.js ./app/project/libraries/b.js
 
 ```

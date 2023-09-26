@@ -5,23 +5,21 @@ The 'Delete Components' function is used to remove one or more PAGE or WIDGET - 
 ## How to Use
 
 To delete component(s), go to the command-prompt or terminal of the Shell Template project, and execute `ch5-shell-cli delete:components`.
-The package.json has scripts to handle this execution -for yarn, use `yarn delete:components` command or npm  `npm run delete:components` command. The short hand for it is `yarn del:c` or `npm run del:c` within scripts of package.json.
+The package.json has scripts to handle this execution -for npm  `npm run delete:components` command. The short hand for it is `npm run del:c` within scripts of package.json.
 
-To access help, execute `ch5-shell-cli delete:components --help`. Note that, replacing `ch5-shell-cli` with `yarn` or `npm run` will also execute the script.
+To access help, execute `ch5-shell-cli delete:components --help`. Note that, replacing `ch5-shell-cli` with `npm run` will also execute the script.
 
 ```bash
 Usage: 
     ch5-shell-cli delete:components [options]
 
-You could also use `yarn` or `npm run` to delete components. The following are the commands:
-    yarn delete:components [options]
+You could also use `npm run` to delete components. The following are the command(s):
     npm run delete:components -- [options]
 
 You could use shortcut script `del:c` with options:
     ch5-shell-cli del:c [options]
 
-You could use shortcut script `del:c` with yarn and npm commands as the following:
-    yarn del:c [options]
+You could use shortcut script `del:c` with npm command as the following:
     npm run del:c -- [options]
     
 Options:
@@ -39,15 +37,7 @@ You could use ch5-shell-cli to delete components with additional options. The fo
     ch5-shell-cli del:c --list page6 --force
     ch5-shell-cli del:c -l page6 -f
 
-You could also use `yarn` or `npm run` to delete components. The following are the commands:
-    yarn delete:components --list page6 page5
-    yarn delete:components -l page6
-    yarn delete:components --list page6 --force
-    yarn delete:components -l page6 -f
-    yarn del:c --list page6 page5
-    yarn del:c -l page6
-    yarn del:c --list page6 --force
-    yarn del:c -l page6 -f
+You could also use `npm run` to delete components. The following are the command(s):
     npm run delete:components -- --list page6 page5
     npm run delete:components -- -l page6
     npm run delete:components -- --list page6 --force

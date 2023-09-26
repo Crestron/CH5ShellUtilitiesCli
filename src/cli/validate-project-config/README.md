@@ -5,25 +5,23 @@ To validate the project-config.json file, go to the command-prompt or terminal o
 ## How to Use
 
 To validate projectconfig, go to the command-prompt or terminal of the Shell Template project, and execute `ch5-shell-cli validate:projectconfig`.
-The package.json has scripts to handle this execution - for yarn, use `yarn validate:projectconfig` command or npm  `npm run validate:projectconfig` command. The short hand for it is `yarn val:pc` or `npm run val:pc` within scripts of package.json.
+The package.json has scripts to handle this execution - `npm run validate:projectconfig` command. The short hand for it is `npm run val:pc` within scripts of package.json.
 
 The 'Project Config' is used to validate the project-config.json file using command-line statements.
 
-To access help, execute `ch5-shell-cli validate:projectconfig --help` or `yarn validate:projectconfig --help` or `npm run validate:projectconfig -- --help`.
+To access help, execute `ch5-shell-cli validate:projectconfig --help` or `npm run validate:projectconfig -- --help`.
 
 ```bash
 Usage:
     ch5-shell-cli validate:projectconfig
     
-You could also use `yarn` or `npm run` to import components. The following are the commands
-    yarn validate:projectconfig
+You could also use `npm run` to import components. The following are the command(s)
     npm run validate:projectconfig
 
 You could use shortcut script `val:pc`:
     ch5-shell-cli val:pc
 
-You could use shortcut script `val:pc` with yarn and npm commands as the following:
-    yarn val:pc
+You could use shortcut script `val:pc` with npm command as the following:
     npm run val:pc
 
 Based on the responses, the output is classified into errors and warnings. 

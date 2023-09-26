@@ -5,30 +5,27 @@ The 'Import Components' function imports components to the './app/project/compon
 ## How to Use
 
 To import components, go to the command-prompt or terminal of the Shell Template project, and execute `ch5-shell-cli import:components`.
-The package.json has scripts to handle this execution - for yarn, use `yarn import:components` command or npm  `npm run import:components` command. The short hand for it is `yarn imp:c` or `npm run imp:c` within scripts of package.json.
+The package.json has scripts to handle this execution - `npm run import:components` command. The short hand for it is `npm run imp:c` within scripts of package.json.
 
-To access help, execute `ch5-shell-cli import:components --help` or `yarn import:components --help` or `npm run import:components -- --help`.
+To access help, execute `ch5-shell-cli import:components --help` or `npm run import:components -- --help`.
 
 ```bash
 Usage:
     ch5-shell-cli import:components [options]
     
-You could also use `yarn` or `npm run` to import components. The following are the commands:
-    yarn import:components [options]
+You could also use `npm run` to import components. The following are the command(s):
     npm run import:components -- [options]
 
 You could use `ch5-shell-cli` to import the complete contents of the zip file to './app/project/components/' folder.
     ch5-shell-cli import:components -z {path} --all
 
-You could also use `yarn` or `npm run` to import components. The following are the commands:
-    yarn import:components -z {path} --all
+You could also use `npm run` to import components. The following are the command(s):
     npm run import:components -- -z {path} --all
 
 You could use shortcut script `imp:c` with options:
     ch5-shell-cli imp:c [options]
 
-You could use shortcut script `imp:c` with yarn and npm commands as the following:
-    yarn imp:c [options]
+You could use shortcut script `imp:c` with npm command as the following:
     npm run imp:c -- [options]
 
 Options:
@@ -43,12 +40,9 @@ Import selected components from './app/project/components/' folder. In this case
     ch5-shell-cli import:components -z ./dist/exported-components.zip --list ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
     ch5-shell-cli imp:c -z ./dist/exported-components.zip -l ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
 
-You could also use `yarn` or `npm run` to import selected components from './app/project/components/' folder. The following are the commands:
-    yarn import:components -z ./dist/exported-components.zip -l ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
+You could also use `npm run` to import selected components from './app/project/components/' folder. The following are the command(s):
     npm run import:components -- -z ./dist/exported-components.zip -l ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
-    yarn import:components -z ./dist/exported-components.zip --list ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
     npm run import:components -- -z ./dist/exported-components.zip --list ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
-    yarn imp:c -z ./dist/exported-components.zip -l ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
     npm run imp:c -- -z ./dist/exported-components.zip -l ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
 
 ```

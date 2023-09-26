@@ -5,9 +5,9 @@
 ## How to Use
 
 To export components, go to the command-prompt or terminal of the Shell Template project, and execute `ch5-shell-cli export:components`.
-The package.json has scripts to handle this execution - for yarn, use `yarn export:components` command or npm  `npm run export:components` command. The short hand for it is `yarn exp:c` or `npm run exp:c` within scripts of package.json.
+The package.json has scripts to handle this execution - for npm, use `npm run export:components` command. The short hand for it is `npm run exp:c` within scripts of package.json.
 
-To access help, you need to execute `yarn export:components --help` or `npm run export:components -- --help`.
+To access help, you need to execute `npm run export:components -- --help`.
 
 By default, the zip file is created inside the project 'dist' folder. This file has the naming convention of `exported-components.zip`.
 
@@ -15,15 +15,13 @@ By default, the zip file is created inside the project 'dist' folder. This file 
 Usage: 
     ch5-shell-cli export:components [options]
 
-You could also use `yarn` or `npm run` to export components. The following are the commands:
-    yarn export:components [options]
+You could also use `npm run` to export components. The following are the command(s):
     npm run export:components -- [options]
 
 You could use shortcut script `exp:c` with options:
     ch5-shell-cli exp:c [options]
 
-You could use shortcut script `exp:c` with yarn and npm commands as the following:
-    yarn exp:c [options]
+You could use shortcut script `exp:c` with npm command as the following:
     npm run exp:c -- [options]
 
 Options:
@@ -34,10 +32,8 @@ Options:
 Export the complete components directory from './app/project/components/' folder. To achieve this, use the below commands:
     ch5-shell-cli export:components --all
 
-You could also use `yarn` or `npm run` to export components. The following are the commands:
-    yarn export:components --all
+You could also use `npm run` to export components. The following are the command(s):
     npm run export:components -- --all
-    yarn exp:c --all
     npm run exp:c -- --all
 
 Export selected components from './app/project/components/' folder. In this case, the file names are mandatory in the command-prompt. The filename must follow the complete path starting from './app/project/components/....'. Only file names can be provided here (no folder paths). Multiple file names can be provided in the command-prompt. All the file names must be .html files only. To achieve this, use the below commands:
@@ -45,14 +41,12 @@ Export selected components from './app/project/components/' folder. In this case
     ch5-shell-cli export:components --list ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
     ch5-shell-cli exp:c -l ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
 
-You could also use `yarn` or `npm run` to export components. The following are the commands:
-    yarn export:components -l ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
+You could also use `npm run` to export components. The following are the command(s):
     npm run export:components -- -l ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
 
-    yarn export:components --list ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
+    html
     npm run export:components -- --list ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
 
-    yarn exp:c -l ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
     npm run exp:c -- -l ./app/project/components/pages/page1/page1.html ./app/project/components/widgets/pagedisplay/pagedisplay.html
 
 ```

@@ -1,5 +1,5 @@
     
-Use `ch5-shell-cli` to create a new project. The following is the command:
+Use `ch5-shell-cli` to create a new project. The following are the command(s):
     ch5-shell-cli create:project [options]
 
 There are two ways to create a project using CLI. 
