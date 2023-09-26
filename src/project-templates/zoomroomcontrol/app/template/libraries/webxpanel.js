@@ -16,8 +16,7 @@ var webXPanelModule = (function () {
     "roomId": "",
     "ipId": "0x03",
     "tokenSource": "",
-    "tokenUrl": "",
-    "forceDeviceXPanel": ""
+    "tokenUrl": ""
   };
 
   const RENDER_STATUS = {
@@ -54,15 +53,13 @@ var webXPanelModule = (function () {
    * Get WebXPanel configuration present in project-config.json
    */
   function getWebXPanelConfiguration(projectConfig) {
-    if ((projectConfig.config && projectConfig.config.controlSystem) || projectConfig.forceDeviceXPanel) {
+    if (projectConfig.config && projectConfig.config.controlSystem){
       pcConfig.host = projectConfig.config.controlSystem.host || config.host;
       pcConfig.port = projectConfig.config.controlSystem.port || config.port;
       pcConfig.roomId = projectConfig.config.controlSystem.roomId || config.roomId;
       pcConfig.ipId = projectConfig.config.controlSystem.ipId || config.ipId;
       pcConfig.tokenSource = projectConfig.config.controlSystem.tokenSource || config.tokenSource;
       pcConfig.tokenUrl = projectConfig.config.controlSystem.tokenUrl || config.tokenUrl;
-      pcConfig.forceDeviceXPanel = projectConfig.forceDeviceXPanel || config.forceDeviceXPanel;
-      return pcConfig;
     }
   }
 
@@ -72,9 +69,12 @@ var webXPanelModule = (function () {
    * @param {object} entries
    * @returns
    */
-  function paramsToObject(entries) {
+  function paramsToObject() {
+    const urlString = window.location.href;
+    const urlParams = new URL(urlString);
+    const params = new URLSearchParams(urlParams.search);
     const result = {}
-    for (const [key, value] of entries) {
+    for (const [key, value] of params) {
       result[key.toLowerCase()] = value;
     }
     return result;
@@ -84,10 +84,8 @@ var webXPanelModule = (function () {
    * Get the url params if defined.
    */
   function getWebXPanelUrlParams() {
-    const urlString = window.location.href;
-    const urlParams = new URL(urlString);
-    const params = new URLSearchParams(urlParams.search);
-    const entries = paramsToObject(params);
+
+    const entries = paramsToObject();
 
     // default host should be the IP address of the PC
     urlConfig.host = entries["host"] || pcConfig.host;
@@ -96,8 +94,6 @@ var webXPanelModule = (function () {
     urlConfig.ipId = entries["ipid"] || pcConfig.ipId;
     urlConfig.tokenSource = entries["tokensource"] || pcConfig.tokenSource;
     urlConfig.tokenUrl = entries["tokenurl"] || pcConfig.tokenUrl;
-    urlConfig.forceDeviceXPanel = entries["forcedevicexpanel"] || pcConfig.forceDeviceXPanel;
-    return urlConfig;
   }
 
   /**
@@ -266,8 +262,8 @@ var webXPanelModule = (function () {
 
     webXPanelConnectionStatus();
     // Merge the configuration params, params of the URL takes precedence
-    // getWebXPanelConfiguration(projectConfig);
-    // getWebXPanelUrlParams();
+    getWebXPanelConfiguration(projectConfig);
+    getWebXPanelUrlParams();
 
     // Assign the combined configuration
     connectParams = urlConfig;
@@ -329,8 +325,7 @@ var webXPanelModule = (function () {
   return {
     connect,
     getWebXPanel,
-    getWebXPanelConfiguration,
-    getWebXPanelUrlParams
+    paramsToObject
   };
 
 })();
