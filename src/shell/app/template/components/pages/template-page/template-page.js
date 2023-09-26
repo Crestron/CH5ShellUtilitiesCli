@@ -452,13 +452,14 @@ const templatePageModule = (() => {
 	}
 
 	function configureWebXPanel(projectConfigResponse) {
-		const pcConfig = webXPanelModule.getWebXPanelConfiguration(projectConfigResponse);
-		const urlConfig = webXPanelModule.getWebXPanelUrlParams();
-		if (projectConfigResponse.useWebXPanel === false && projectConfigResponse.forceDeviceXPanel === false && urlConfig.forceDeviceXPanel === "false") {
-			return;
+		const entries = webXPanelModule.paramsToObject();
+		let isForceDeviceXPanel = projectConfigResponse.forceDeviceXPanel;
+		if (entries["forcedevicexpanel"] === "true") {
+			isForceDeviceXPanel = true;
+		} else if (entries["forcedevicexpanel"] === "false") {
+			isForceDeviceXPanel = false;
 		}
-
-		if (pcConfig.forceDeviceXPanel === true || urlConfig.forceDeviceXPanel === "true") {
+		if (isForceDeviceXPanel === true) {
 			webXPanelModule.getWebXPanel(true); // Always Connect as WebX and not Native
 			connectToWebXPanel(projectConfigResponse);
 		} else {
@@ -572,7 +573,7 @@ const templatePageModule = (() => {
 		document.getElementById("footer-section-page-template1")?.remove();
 		document.getElementById("footer-section-page-template2")?.remove();
 		document.getElementById("header-section-page-template1-set1")?.remove();
-		
+
 		projectConfigModule.projectConfigData().then(data => {
 			if (data.header.displayInfo === false) {
 				document.getElementById('header-section-page-set1')?.remove();

@@ -53,7 +53,19 @@ const templateVersionInfoModule = (() => {
 	}
 
 	function setTabs() {
-		if (!projectConfig.useWebXPanel) document.getElementById('webxpanel-tab').style.display = 'none';
+
+		const entries = webXPanelModule.paramsToObject();
+		
+		let isForceDeviceXPanel = projectConfig.forceDeviceXPanel;
+		if (entries["forcedevicexpanel"] === "true") {
+			isForceDeviceXPanel = true;
+		} else if (entries["forcedevicexpanel"] === "false") {
+			isForceDeviceXPanel = false;
+		}
+		
+		if(projectConfig.useWebXPanel === false && isForceDeviceXPanel === false){
+			document.getElementById('webxpanel-tab').style.display = 'none';
+		}
 		updateVersionTabHTML();
 		updatePageCount();
 		setTabsListeners();
