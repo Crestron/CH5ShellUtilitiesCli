@@ -173,7 +173,7 @@ describe.only('Create Project >>>>>>>> ', () => {
     // console.log("After positiveCases", JSON.parse(JSON.stringify(positiveCases)));
     // console.log("positiveCases", positiveCases.length);
 
-    for (let i = 0; i < 1; i++) {
+    for (let i = 0; i < positiveCases.length; i++) {
       // for (let i = 0; i < positiveCases.length; i++) {
       it('Create: Case ' + i, async function () {
         const args = positiveCases[i];
@@ -189,7 +189,7 @@ describe.only('Create Project >>>>>>>> ', () => {
         const projectConfig: any = await readJSONFile(output.pathToExecute, output.projectName, "app", "project-config.json");
         expect(String(projectConfig.projectName)).to.equal(output.projectName);
         expect(String(projectConfig.projectType)).to.equal(output.projectType);
-        expect(String(projectConfig.forceDeviceXPanel)).to.equal(output.forceDeviceXPanel);
+        expect(projectConfig.forceDeviceXPanel).to.equal(output.forceDeviceXPanel);
 
         // Check for availability of files as per template
 
