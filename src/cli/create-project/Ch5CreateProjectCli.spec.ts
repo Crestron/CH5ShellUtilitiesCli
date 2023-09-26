@@ -175,9 +175,8 @@ describe.only('Create Project >>>>>>>> ', () => {
 
     for (let i = 0; i < positiveCases.length; i++) {
       // for (let i = 0; i < positiveCases.length; i++) {
-      it('Create: Case ' + i, async function () {
-        const args = positiveCases[i];
-        const output = await createProject("PositiveCase" + i, args);
+      it('Create: Case ' + i + ": " + JSON.stringify(positiveCases[i]), async function () {
+        const output = await createProject("PositiveCase" + i, positiveCases[i]);
         // Reason to have.string is because the lastOutput will contain color coding for message
         expect(String(output.actual)).to.have.string(output.expected);
 
@@ -209,7 +208,7 @@ describe.only('Create Project >>>>>>>> ', () => {
         if (args[i].key.toLowerCase() === "projectname") {
           projectName = args[i].value;
         } else if (args[i].key.toLowerCase() === "projecttype") {
-          projectType = args[i].value;
+          projectType = args[i].value.toLowerCase();
         } else if (args[i].key.toLowerCase() === "forcedevicexpanel") {
           forceDeviceXPanel = args[i].value;
         }
