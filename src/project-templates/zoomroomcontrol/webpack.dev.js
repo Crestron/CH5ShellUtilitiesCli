@@ -10,7 +10,6 @@ const common = require('./webpack.common.js');
 const pkg = require('./package.json');
 const BrowserSyncPlugin = require("browser-sync-webpack-plugin");
 const appConfig = require('./app.config');
-const projectConfig = require("./app/project-config.json");
 
 const appName = appConfig.appName;
 const appVersion = pkg.version;

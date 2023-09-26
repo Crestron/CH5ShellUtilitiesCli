@@ -38,12 +38,14 @@
         "name": "CHECK_PROMPT_QUESTIONS.QUESTIONS.PROJECT_NAME"
       },
       "isSpecialArgument": false
-    },{
+    },
+    {
       "key": "projectType",
       "description": "Sets the type of project. Applicable values are shell-template and zoomroomcontrol.",
       "type": "enum",
       "default": "shell-template",
       "valueIfNotFound": "shell-template",
+      "valueIfInvalid": "shell-template",
       "alias": [
         "--projectType"
       ],
@@ -67,6 +69,7 @@
       "type": "boolean",
       "default": "N",
       "valueIfNotFound": "N",
+      "valueIfInvalid": "N",
       "alias": [
         "--forceDeviceXPanel"
       ],
@@ -78,7 +81,9 @@
         "true",
         "false",
         "y",
-        "n"
+        "n",
+        "Y",
+        "N"
       ],
       "validation": "",
       "question": {
@@ -122,7 +127,7 @@
     },
     {
       "key": "menuOrientation",
-      "description": "Set the menu orientation for the project level triggerview",
+      "description": "Set the menu orientation for the project",
       "type": "enum",
       "default": "horizontal",
       "valueIfNotFound": null,
@@ -142,6 +147,7 @@
       "question": {
         "name": "CHECK_PROMPT_QUESTIONS.QUESTIONS.MENU_ORIENTATION"
       },
+      "validation": "",      
       "isSpecialArgument": false
     },
     {
@@ -158,6 +164,7 @@
       "question": {
         "name": "CHECK_PROMPT_QUESTIONS.QUESTIONS.SELECTED_THEME"
       },
+      "validation": "",      
       "isSpecialArgument": false
     },
     {
@@ -165,7 +172,7 @@
       "description": "Use WebXPanel",
       "type": "boolean",
       "default": true,
-      "valueIfNotFound": null,
+      "valueIfNotFound": true,
       "alias": [
         "--useWebXPanel"
       ],
@@ -177,11 +184,14 @@
         "true",
         "false",
         "y",
-        "n"
+        "n",
+        "Y",
+        "N"
       ],
       "question": {
         "name": "CHECK_PROMPT_QUESTIONS.QUESTIONS.USE_WEBXPANEL"
       },
+      "validation": "",      
       "isSpecialArgument": false
     },
     {
@@ -194,8 +204,18 @@
         "-f",
         "--force"
       ],
-      "allowedValues": [],
-      "allowedAliases": [],
+      "allowedValues": [
+        "true",
+        "false"
+      ],
+      "allowedAliases": [
+        "true",
+        "false",
+        "y",
+        "n",
+        "Y",
+        "N"
+      ],
       "question": {
         "name": "VALIDATIONS.FORCE"
       },
@@ -203,6 +223,42 @@
     }
   ],
   "backupFolder": "./dist/backup/",
+  "custom": {
+    "templates": {
+      "shell-template": {
+        "customFolders": [
+          "app/template/assets/fonts"
+        ],
+        "customFiles": [
+          "app/template/libraries/utils.js",
+          "app/template/libraries/webxpanel.js",
+          "app/template/assets/scss/custom/_fonts.scss",
+          "app/template/assets/scss/custom/_variables.scss",
+          "app.config.js",
+          "package.json",
+          "packagelock.json",
+          "webpack.dev.js",
+          "webpack.prod.js"
+        ]
+      },
+      "zoomroomcontrol": {
+        "customFolders": [
+          "app/template/assets/fonts"
+        ],
+        "customFiles": [
+          "app/template/libraries/utils.js",
+          "app/template/libraries/webxpanel.js",
+          "app/template/assets/scss/custom/_fonts.scss",
+          "app/template/assets/scss/custom/_variables.scss",
+          "app.config.js",
+          "package.json",
+          "packagelock.json",
+          "webpack.dev.js",
+          "webpack.prod.js"
+        ]
+      }
+    }
+  },
   "additionalHelp": true,
   "automatedTests": {
     "enable": true,

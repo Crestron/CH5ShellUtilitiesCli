@@ -63,6 +63,7 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForProject implements ICh5C
   async processRequest() {
     this.logger.start("processRequest");
     this.logger.log("processRequest - this._outputResponse.data.updatedInputs: ", this.getOutputResponse().data.updatedInputs);
+    const workingDirectory = this.getCurrentWorkingDirectory(); // Keeping this value to ensure that changes to folder can give us the initial working directory
 
     try {
       await this.traverseAndValidateProjectFolderAndVariables();
@@ -190,7 +191,7 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForProject implements ICh5C
 
     // Step 7: Show proper messages  
     this.getOutputResponse().result = true;
-    this.getOutputResponse().successMessage = this.getText("LOG_OUTPUT.SUCCESS_MESSAGE", this.getOutputResponse().data.projectName, this.getCurrentWorkingDirectory());
+    this.getOutputResponse().successMessage = this.getText("LOG_OUTPUT.SUCCESS_MESSAGE", this.getOutputResponse().data.projectName, workingDirectory);
 
     this.logger.end();
   }

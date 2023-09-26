@@ -86,6 +86,7 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForProject implements ICh5C
       throw new Error(this.getText("ERRORS.DO_NOT_MODIFY_PROJECT"));
     }
 
+    this.setProjectVariables();
     this.updateTemplateFiles();
 
     if (this.isCreateOrUpdateBasedOnConfigJson()) {
@@ -104,10 +105,6 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForProject implements ICh5C
             this.projectConfig.changeNodeValues(k, templateConfigJSON[k]);
           }
         }
-      }
-
-      if (this.getOutputResponse().data.projectType.toLowerCase() === "zoomroomcontrol") {
-        this.projectConfig.changeNodeValues("forceDeviceXPanel", true);
       }
 
       // 2. Themes
@@ -137,7 +134,7 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForProject implements ICh5C
       const pagesToBeUpdated: any[] = [];
       const pagesToBeDeleted: any[] = [];
       for (let i: number = 0; i < templateConfigJSON["content"]["pages"].length; i++) {
-        let pageObj = templateConfigJSON["content"]["pages"][i];        
+        let pageObj = templateConfigJSON["content"]["pages"][i];
         const pageInNewSet = inputConfigJSON["content"]["pages"].find((page: any) => page.pageName.toString().toLowerCase() === pageObj.pageName.toString().toLowerCase());
         if (pageInNewSet) {
           pagesToBeUpdated.push(pageInNewSet);
@@ -232,6 +229,10 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForProject implements ICh5C
           }
         }
       }
+    }
+
+    if (this.projectConfig.getNodeByKey("projectType")?.toLowerCase() === "zoomroomcontrol") {
+      this.projectConfig.changeNodeValues("forceDeviceXPanel", true);
     }
 
     // Step 6: Run validate:project-config

@@ -47,6 +47,7 @@
       "type": "enum",
       "default": "shell-template",
       "valueIfNotFound": "shell-template",
+      "valueIfInvalid": "shell-template",
       "alias": [
         "--projectType"
       ],
@@ -70,11 +71,22 @@
       "type": "boolean",
       "default": "N",
       "valueIfNotFound": "N",
+      "valueIfInvalid": "N",
       "alias": [
         "--forceDeviceXPanel"
       ],
-      "allowedValues": [],
-      "allowedAliases": [],
+      "allowedValues": [
+        "true",
+        "false"
+      ],
+      "allowedAliases": [
+        "true",
+        "false",
+        "y",
+        "n",
+        "Y",
+        "N"
+      ],
       "validation": "",
       "question": {
         "name": ""

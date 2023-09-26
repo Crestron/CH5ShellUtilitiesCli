@@ -201,18 +201,9 @@ const templatePageModule = (() => {
 					if (getSelectedTheme) {
 						document.getElementById("shellTemplateSelectedThemeCss").setAttribute("href", "./assets/css/" + getSelectedTheme.extends + ".css" + cacheBustVersion);
 					}
-					// document.getElementById("shellTemplateExternalCss").setAttribute("href", "./assets/css/external.css" + cacheBustVersion);
-					// document.getElementById("shellTemplateMainCss").setAttribute("href", "./assets/css/main.css" + cacheBustVersion);
-					// document.getElementById("shellTemplateSgCss").setAttribute("href", "./assets/css/sg.css" + cacheBustVersion);
-					// document.getElementById("shellTemplateTemplateComponentsCss").setAttribute("href", "./assets/css/templatecomponents.css" + cacheBustVersion);
-					// document.getElementById("shellTemplateProjectComponentsCss").setAttribute("href", "./assets/css/projectcomponents.css" + cacheBustVersion);
-
-					// document.getElementById("shellTemplateCrComLibJs").setAttribute("src", "./libraries/cr-com-lib.js" + cacheBustVersion);
-					// document.getElementById("shellTemplateComponentJs").setAttribute("src", "./libraries/component.js" + cacheBustVersion);
-
-					if (projectConfigResponse.projectType.toLowerCase() === "zoomroomcontrol") {
-						document.getElementById("shellTemplateZoomCh5LibJs").setAttribute("src", "./libraries/ch5-zoom-lib.js" + cacheBustVersion);
-					}
+					// if (projectConfigResponse.projectType.toLowerCase() === "zoomroomcontrol") {
+					// 	document.getElementById("shellTemplateZoomCh5LibJs").setAttribute("src", "./libraries/ch5-zoom-lib.js" + cacheBustVersion);
+					// }
 					const widgetsAndStandalonePages = document.getElementById("widgets-and-standalone-pages");
 					const widgets = projectConfigResponse.content.widgets;
 					for (let i = 0; i < widgets.length; i++) {

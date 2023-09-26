@@ -10,7 +10,7 @@ Usage:
 
 ```
 
-The package.json in the shell template project has scripts to handle this execution - for yarn, use `yarn update:project` command or npm  `npm run update:project` command.
+The package.json in the shell template project has scripts to handle this execution - `npm run update:project` command.
 
 There are two ways to update a project using CLI. 
 

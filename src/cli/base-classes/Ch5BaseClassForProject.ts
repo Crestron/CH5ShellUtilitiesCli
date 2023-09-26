@@ -50,39 +50,34 @@ export class Ch5BaseClassForProject extends Ch5BaseClassForCliCreate {
         projectType: ""
       }
     };
+    if (this.isCreateOrUpdateBasedOnConfigJson() === false) {
+      // Applicable only for update
+      if (this.inputArgs["selectedTheme"]) {
+        const getAllThemeNames = this.projectConfig.getAllThemeNames();
+        this.inputArgs["selectedTheme"].allowedValues = getAllThemeNames;
+        this.inputArgs["selectedTheme"].allowedAliases = getAllThemeNames;
+      }
+    }
     this.logger.end();
   }
 
   protected validateCLIInputArgument(inputObj: any, key: string, value: string) {
     this.logger.log("validateCLIInputArgument: " + key + " - " + value, inputObj);
-    value = String(value).trim(); //.toLowerCase();
+    value = String(value).trim();
     if (inputObj) {
-      if (inputObj.allowedAliases && inputObj.allowedAliases.length > 0 && inputObj.allowedAliases.includes(value)) {
-        if (inputObj.type === "boolean") {
-          if (value) {
-            const val: boolean = this.utils.toBoolean(value);
-            return {
-              value: val,
-              warning: ""
-            };
-          } else {
-            return {
-              value: value,
-              warning: ""
-            };
+      if (inputObj.validation && inputObj.validation !== "") {
+        if (inputObj.validation === "validateProjectType") {
+          const valOutput: any = this.validateProjectType(inputObj.allowedValues, value);
+          return {
+            value: valOutput.value,
+            warning: ""
           }
-        } else if (inputObj.type === "enum") {
-          if (inputObj.validation !== "") {
-            if (inputObj.validation === "validateProjectType") {
-              const valOutput: any = this.validateProjectType(inputObj.allowedValues, value);
-              return {
-                value: valOutput.value,
-                warning: ""
-              }
-            }
+        } else if (inputObj.validation === "validatePackageJsonProjectName") {
+          const valOutput: any = this.validatePackageJsonProjectName(value);
+          if (valOutput.isValid === false) {
             return {
-              value: value,
-              warning: ""
+              value: null,
+              warning: valOutput.warning
             };
           } else {
             return {
@@ -92,11 +87,54 @@ export class Ch5BaseClassForProject extends Ch5BaseClassForCliCreate {
           }
         }
       } else {
-        if (inputObj.type === "enum" && inputObj.validation !== "" && inputObj.validation === "validateProjectType") {
-          const valOutput: any = this.validateProjectType(inputObj.allowedValues, value);
-          return {
-            value: valOutput.value,
-            warning: ""
+        if (inputObj.type === "boolean") {
+          if (inputObj.allowedAliases && inputObj.allowedAliases.length > 0 && inputObj.allowedAliases.includes(value)) {
+            const val: boolean = this.utils.toBoolean(value);
+            return {
+              value: val,
+              warning: ""
+            };
+          } else {
+            if (!this.utils.isValidInput(value)) {
+              // If no value is entered - null, empty, undefined
+              const val: boolean = this.utils.toBoolean(inputObj.default);
+              return {
+                value: val,
+                warning: ""
+              };
+            } else {
+              if ((this.utils.isValidInput(inputObj.valueIfInvalid))) {
+                // If no value is entered - null, empty, undefined
+                const val: boolean = this.utils.toBoolean(inputObj.valueIfInvalid);
+                return {
+                  value: val,
+                  warning: ""
+                };
+              }
+            }
+          }
+        } else if (inputObj.type === "enum") {
+          if (inputObj.allowedAliases && inputObj.allowedAliases.length > 0 && inputObj.allowedAliases.includes(value)) {
+            return {
+              value: value,
+              warning: ""
+            };
+          } else {
+            if (!this.utils.isValidInput(value)) {
+              // If no value is entered - null, empty, undefined
+              return {
+                value: inputObj.default,
+                warning: ""
+              };
+            } else {
+              if ((this.utils.isValidInput(inputObj.valueIfInvalid))) {
+                // If no value is entered - null, empty, undefined
+                return {
+                  value: inputObj.valueIfInvalid,
+                  warning: ""
+                };
+              }
+            }
           }
         } else if (inputObj.type === "string") {
           if (inputObj.validation !== "") {
@@ -124,34 +162,114 @@ export class Ch5BaseClassForProject extends Ch5BaseClassForCliCreate {
               warning: ""
             };
           }
-        } else if (inputObj.type === "boolean") {
-          this.logger.log("boolean", value);
-          if (this.utils.isValidInput(value)) {
-            const val: boolean = this.utils.toBoolean(value);
-            this.logger.log("boolean val", val);
-            return {
-              value: val,
-              warning: ""
-            };
-          } else {
-            this.logger.log("boolean 2 val", this.utils.toBoolean(inputObj.default));
-            return {
-              value: this.utils.toBoolean(inputObj.default),
-              warning: ""
-            };
-          }
         }
       }
-      return {
-        value: value,
-        warning: ""
-      };
     }
     return {
       value: "",
       warning: this.getText("VERIFY_INPUT_PARAMS.INVALID_INPUT", key)
     };
   }
+
+  // protected validateCLIInputArgument1(inputObj: any, key: string, value: string) {
+  //   this.logger.log("validateCLIInputArgument: " + key + " - " + value, inputObj);
+  //   value = String(value).trim(); //.toLowerCase();
+  //   if (inputObj) {
+  //     if (inputObj.allowedAliases && inputObj.allowedAliases.length > 0 && inputObj.allowedAliases.includes(value)) {
+  //       if (inputObj.type === "boolean") {
+  //         if (value) {
+  //           const val: boolean = this.utils.toBoolean(value);
+  //           return {
+  //             value: val,
+  //             warning: ""
+  //           };
+  //         } else {
+  //           return {
+  //             value: value,
+  //             warning: ""
+  //           };
+  //         }
+  //       } else if (inputObj.type === "enum") {
+  //         if (inputObj.validation !== "") {
+  //           if (inputObj.validation === "validateProjectType") {
+  //             const valOutput: any = this.validateProjectType(inputObj.allowedValues, value);
+  //             return {
+  //               value: valOutput.value,
+  //               warning: ""
+  //             }
+  //           }
+  //           return {
+  //             value: value,
+  //             warning: ""
+  //           };
+  //         } else {
+  //           return {
+  //             value: value,
+  //             warning: ""
+  //           };
+  //         }
+  //       }
+  //     } else {
+  //       if (inputObj.type === "enum" && inputObj.validation !== "" && inputObj.validation === "validateProjectType") {
+  //         const valOutput: any = this.validateProjectType(inputObj.allowedValues, value);
+  //         return {
+  //           value: valOutput.value,
+  //           warning: ""
+  //         }
+  //       } else if (inputObj.type === "string") {
+  //         if (inputObj.validation !== "") {
+  //           if (inputObj.validation === "validatePackageJsonProjectName") {
+  //             const valOutput: any = this.validatePackageJsonProjectName(value);
+  //             if (valOutput.isValid === false) {
+  //               return {
+  //                 value: null,
+  //                 warning: valOutput.warning
+  //               };
+  //             } else {
+  //               return {
+  //                 value: value,
+  //                 warning: ""
+  //               };
+  //             }
+  //           }
+  //           return {
+  //             value: value,
+  //             warning: ""
+  //           };
+  //         } else {
+  //           return {
+  //             value: value,
+  //             warning: ""
+  //           };
+  //         }
+  //       } else if (inputObj.type === "boolean") {
+  //         this.logger.log("boolean", value);
+  //         if (this.utils.isValidInput(value)) {
+  //           const val: boolean = this.utils.toBoolean(value);
+  //           this.logger.log("boolean val", val);
+  //           return {
+  //             value: val,
+  //             warning: ""
+  //           };
+  //         } else {
+  //           this.logger.log("boolean 2 val", this.utils.toBoolean(inputObj.default));
+  //           return {
+  //             value: this.utils.toBoolean(inputObj.default),
+  //             warning: ""
+  //           };
+  //         }
+  //       }
+  //     }
+  //     return {
+  //       value: value,
+  //       warning: ""
+  //     };
+  //   }
+  //   return {
+  //     value: "",
+  //     warning: this.getText("VERIFY_INPUT_PARAMS.INVALID_INPUT", key)
+  //   };
+  // }
 
   private validateProjectType(templateProjectTypes: string[], projectType: string) {
     /*
@@ -216,7 +334,7 @@ export class Ch5BaseClassForProject extends Ch5BaseClassForCliCreate {
             isValid: false,
             warning: this.getText("COMMON.VALIDATIONS.PROJECT_NAME")
           };
-        } else if (this.checkSpecialCharsInProjectName(packageName)) {
+        } else if (this.containsSpecialCharsInPackageName(packageName)) {
           return {
             value: null,
             isValid: false,
@@ -239,13 +357,22 @@ export class Ch5BaseClassForProject extends Ch5BaseClassForCliCreate {
     }
   }
 
-  private checkSpecialCharsInProjectName(packageName: string): boolean {
-    // Allowed characters for first and any position ~ - a-z 0-9
+  private containsSpecialCharsInPackageName(packageName: string): boolean {
+    // Allowed characters for any position ~ - a-z 0-9
     // Not allowed special characters at any position ! @ # $ % ^ & * ( ) + = [ { } ] | \ : ; " ' < , > ? / 
-    // _ and . will work only if project name start from alphabets or any other allowed  characters 
+    // _ and . will work only if project name start from alphabets or any other allowed characters 
     const invalidCharsArray = ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '+', '=', '[', '{', '}', ']', '|', '\\', ':', ';', '<', ',', '>', '?', '/', '\'', '\"'];
-    if (invalidCharsArray.includes(packageName.charAt(packageName.length - 1)) || invalidCharsArray.includes(packageName.charAt(0))) {
-      return true;
+    for (let i = 0; i < invalidCharsArray.length; i++) {
+      if (packageName.includes(invalidCharsArray[i])) {
+        return true;
+      }
+    }
+
+    const specialArray1 = ["_", "."];
+    for (let i = 0; i < specialArray1.length; i++) {
+      if (packageName.charAt(0) === specialArray1[i]) {
+        return true;
+      }
     }
     return false;
   }
@@ -378,6 +505,31 @@ export class Ch5BaseClassForProject extends Ch5BaseClassForCliCreate {
     return this._outputResponse.data.projectName;
   }
 
+  protected setProjectVariables() {
+    if (this.isCreateOrUpdateBasedOnConfigJson()) {
+      const inputConfigJSON: any = JSON.parse(this.utils.readFileContentSync(this.getConfigJsonFilePath()));
+      this._outputResponse.data.projectName = inputConfigJSON.projectName;
+      this._outputResponse.data.projectType = inputConfigJSON.projectType.toLowerCase();
+    } else {
+      const projectNameObject = this._outputResponse.data.updatedInputs.find((objValue: any) => objValue.key === "projectName");
+      if (projectNameObject.inputReceived === false) {
+        const inputConfigJSON: any = JSON.parse(this.utils.readFileContentSync(this.getCreatedOrUpdateProjectPathProjectConfigJsonFile()));
+        this._outputResponse.data.projectName = inputConfigJSON.projectName;
+      } else {
+        this._outputResponse.data.projectName = projectNameObject.argsValue;
+      }
+      const projectTypeObject = this._outputResponse.data.updatedInputs.find((objValue: any) => objValue.key === "projectType");
+      if (projectTypeObject.inputReceived === false) {
+        const inputConfigJSON: any = JSON.parse(this.utils.readFileContentSync(this.getCreatedOrUpdateProjectPathProjectConfigJsonFile()));
+        this._outputResponse.data.projectType = inputConfigJSON.projectType.toLowerCase();
+      } else {
+        this._outputResponse.data.projectType = projectTypeObject.argsValue.toLowerCase();
+      }
+    }
+    this.logger.log("this._outputResponse.data.projectName value is ", this._outputResponse.data.projectName);
+    return this._outputResponse.data.projectName;
+  }
+
   protected async traverseAndValidateProjectFolderAndVariables() {
     const pathToCreateProject: string = path.resolve("./", this.getProjectName());
     this.makeDirectoryForCreateProject(pathToCreateProject);
@@ -394,28 +546,18 @@ export class Ch5BaseClassForProject extends Ch5BaseClassForCliCreate {
   }
 
   protected removeFolderInProject(folderName: string) {
-    // const location = path.resolve(PROJECT_CREATION_FOLDER, this.CONFIG_FILE.custom.templates["shell-template"].customFolders[i]);
-    // this.logger.log("shell-template customFolders-" + i + ": ", location);
-    // fsExtra.removeSync(path.resolve(PROJECT_CREATION_FOLDER, location));
     const location = path.resolve(folderName);
     this.logger.log("shell-template removeFolderInProject: ", location);
     fsExtra.removeSync(path.resolve(location));
   }
 
   protected removeFileInProject(fileName: string) {
-    // const location = path.resolve(PROJECT_CREATION_FOLDER, this.CONFIG_FILE.custom.templates["shell-template"].customFolders[i]);
-    // this.logger.log("shell-template customFolders-" + i + ": ", location);
-    // fsExtra.removeSync(path.resolve(PROJECT_CREATION_FOLDER, location));
     const location = path.resolve(fileName);
     this.logger.log("shell-template removeFileInProject: ", fileName);
     fsExtra.removeSync(path.resolve(location));
   }
 
   protected copyZoomFolderToProject(folderName: string) {
-    // const fromLocation = path.resolve(this.CLI_TEMPLATES_ZOOM_ROOM_CONTROL_FOLDER, this.CONFIG_FILE.custom.templates["zoomroomcontrol"].customFolders[i]);
-    // const toLocation = path.resolve(PROJECT_CREATION_FOLDER, this.CONFIG_FILE.custom.templates["zoomroomcontrol"].customFolders[i]);
-    // this.logger.log("zoomroomcontrol customFolders-" + i + ": copy from " + fromLocation + " to " + toLocation);
-    // fsExtra.copySync(fromLocation, toLocation);
     const fromLocation = path.resolve(this.CLI_TEMPLATES_ZOOM_ROOM_CONTROL_FOLDER, folderName);
     const toLocation = path.resolve(folderName);
     this.logger.log("zoomroomcontrol copyZoomFolderToProject: copy from " + fromLocation + " to " + toLocation);
@@ -423,13 +565,23 @@ export class Ch5BaseClassForProject extends Ch5BaseClassForCliCreate {
   }
 
   protected copyZoomFileToProject(fileName: string) {
-    // const fromLocation = path.resolve(this.CLI_TEMPLATES_ZOOM_ROOM_CONTROL_FOLDER, this.CONFIG_FILE.custom.templates["zoomroomcontrol"].customFiles[i]);
-    // const toLocation = path.resolve(PROJECT_CREATION_FOLDER, this.CONFIG_FILE.custom.templates["zoomroomcontrol"].customFiles[i]);
-    // this.logger.log("zoomroomcontrol customFolders-" + i + ": copy from " + fromLocation + " to " + toLocation);
-    // fsExtra.copySync(fromLocation, toLocation);
     const fromLocation = path.resolve(this.CLI_TEMPLATES_ZOOM_ROOM_CONTROL_FOLDER, fileName);
     const toLocation = path.resolve(fileName);
     this.logger.log("zoomroomcontrol copyZoomFileToProject: copy from " + fromLocation + " to " + toLocation);
+    fsExtra.copySync(fromLocation, toLocation);
+  }
+
+  protected copyShellFolderToProject(folderName: string) {
+    const fromLocation = path.resolve(this.CLI_TEMPLATES_SHELL_FOLDER, folderName);
+    const toLocation = path.resolve(folderName);
+    this.logger.log("shell-template copyShellFolderToProject: copy from " + fromLocation + " to " + toLocation);
+    fsExtra.copySync(fromLocation, toLocation);
+  }
+
+  protected copyShellFileToProject(fileName: string) {
+    const fromLocation = path.resolve(this.CLI_TEMPLATES_SHELL_FOLDER, fileName);
+    const toLocation = path.resolve(fileName);
+    this.logger.log("shell-template copyShellFileToProject: copy from " + fromLocation + " to " + toLocation);
     fsExtra.copySync(fromLocation, toLocation);
   }
 
@@ -442,7 +594,6 @@ export class Ch5BaseClassForProject extends Ch5BaseClassForCliCreate {
   protected updateTemplateFiles() {
     const outputResponse = this.getOutputResponse();
     if (outputResponse.data.projectType === "zoomroomcontrol") {
-
       // Remove folders from shell-template
       for (let i = 0; i < this.CONFIG_FILE.custom.templates["shell-template"].customFolders.length; i++) {
         this.removeFolderInProject(this.CONFIG_FILE.custom.templates["shell-template"].customFolders[i]);
@@ -457,6 +608,22 @@ export class Ch5BaseClassForProject extends Ch5BaseClassForCliCreate {
       }
       for (let i = 0; i < this.CONFIG_FILE.custom.templates["zoomroomcontrol"].customFiles.length; i++) {
         this.copyZoomFileToProject(this.CONFIG_FILE.custom.templates["zoomroomcontrol"].customFiles[i]);
+      }
+    } else if (outputResponse.data.projectType === "shell-template") {
+      // Remove folders from zoomroomcontrol
+      for (let i = 0; i < this.CONFIG_FILE.custom.templates["zoomroomcontrol"].customFolders.length; i++) {
+        this.removeFolderInProject(this.CONFIG_FILE.custom.templates["zoomroomcontrol"].customFolders[i]);
+      }
+      for (let i = 0; i < this.CONFIG_FILE.custom.templates["zoomroomcontrol"].customFiles.length; i++) {
+        this.removeFileInProject(this.CONFIG_FILE.custom.templates["zoomroomcontrol"].customFiles[i]);
+      }
+
+      // Copy folders from Shell
+      for (let i = 0; i < this.CONFIG_FILE.custom.templates["shell-template"].customFolders.length; i++) {
+        this.copyShellFolderToProject(this.CONFIG_FILE.custom.templates["shell-template"].customFolders[i]);
+      }
+      for (let i = 0; i < this.CONFIG_FILE.custom.templates["shell-template"].customFiles.length; i++) {
+        this.copyShellFileToProject(this.CONFIG_FILE.custom.templates["shell-template"].customFiles[i]);
       }
     }
   }
@@ -534,6 +701,7 @@ export class Ch5BaseClassForProject extends Ch5BaseClassForCliCreate {
     }
     return askConfirmation;
   }
+
   protected doubleDigit(input: number): string {
     if (input < 10) {
       return "0" + String(input);
@@ -541,8 +709,4 @@ export class Ch5BaseClassForProject extends Ch5BaseClassForCliCreate {
     return String(input);
   }
 
-  public getCLIExecutionPath(): any {
-    // This method needs to be available here in order to get the current working directory
-    return __dirname;
-  }
 }

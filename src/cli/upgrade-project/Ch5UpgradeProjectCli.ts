@@ -38,6 +38,7 @@ export class Ch5UpgradeProjectCli extends Ch5BaseClassForCliUpgrade implements I
 	private readonly webpackProdPath = './webpack.prod.js';
 	private readonly indexHtmlPath = './app/index.html';
 	private readonly oldShellUtilitiesPath = './shell-utilities';
+	private readonly hardButtonsPath = './app/hard-buttons.json';
 
 	/**
 	 * Constructor
@@ -55,13 +56,15 @@ export class Ch5UpgradeProjectCli extends Ch5BaseClassForCliUpgrade implements I
 
 		try {
 			// STEP 1: Update new project-config.json
+			this.processProjectConfig();
+
 			this.processThemesDifferences();
 
 			this.processHeaderDifferences();
 
 			this.processPagesDifferences();
-			// STEP 2: update directories
 
+			// STEP 2: update directories
 			await this.processDirectories();
 			this.logger.printSuccess(this.getText('SUCCESS_MESSAGE'));
 		} catch (err: any) {
@@ -100,6 +103,16 @@ export class Ch5UpgradeProjectCli extends Ch5BaseClassForCliUpgrade implements I
 				})
 			})
 		})
+	}
+
+	processProjectConfig() {
+		const jsonProjectConfig = this.cliProjectConfig.getJson();
+		if (!jsonProjectConfig.projectType) {
+			this.cliProjectConfig.saveOverrideAttributeToJSON("projectType", "shell-template");
+		}
+		if (!jsonProjectConfig.forceDeviceXPanel) {
+			this.cliProjectConfig.saveOverrideAttributeToJSON("forceDeviceXPanel", false);
+		}
 	}
 
 	processDirectories() {
@@ -162,6 +175,10 @@ export class Ch5UpgradeProjectCli extends Ch5BaseClassForCliUpgrade implements I
 			// copy index.html
 			fsExtra.copySync(path.resolve(path.join(this.temporaryPath, "v2", this.indexHtmlPath)), this.indexHtmlPath);
 
+			// if hard-buttons.json exists
+			if (!fs.existsSync(path.resolve(this.hardButtonsPath))) {
+				fsExtra.copySync(path.resolve(path.join(this.temporaryPath, "v2", this.hardButtonsPath)), this.hardButtonsPath);
+			}
 
 			// copy package.json and keep old name from v1
 			const oldPackageName = (fsExtra.readJSONSync(this.packagePath)).name;
@@ -178,7 +195,9 @@ export class Ch5UpgradeProjectCli extends Ch5BaseClassForCliUpgrade implements I
 		const oldThemes = this.cliProjectConfig.getAllThemes();
 
 		for (const oldTheme of oldThemes) {
-			oldTheme.extends = oldTheme.name;
+			if (!oldTheme.extends) {
+				oldTheme.extends = oldTheme.name;
+			}
 		}
 
 		this.cliProjectConfig.saveOverrideAttributeToJSON('themes', oldThemes);
@@ -203,8 +222,16 @@ export class Ch5UpgradeProjectCli extends Ch5BaseClassForCliUpgrade implements I
 		const oldPages = this.cliProjectConfig.getJson().content.pages;
 
 		for (const oldPage of oldPages) {
-			oldPage.cachePage = false;
-			oldPage.preloadPage = true;
+			if (oldPage.preloadPage === false) {
+				oldPage.preloadPage = false;
+			} else {
+				oldPage.preloadPage = true;
+			}
+			if (oldPage.cachePage === true) {
+				oldPage.cachePage = true;
+			} else {
+				oldPage.cachePage = false;
+			}
 			delete oldPage.pageProperties;
 		}
 
@@ -224,7 +251,7 @@ export class Ch5UpgradeProjectCli extends Ch5BaseClassForCliUpgrade implements I
 	 */
 	async cleanUp() {
 		setTimeout(() => {
-			this.utils.deleteFolder(this.temporaryPath);
+			// this.utils.deleteFolder(this.temporaryPath);
 		}, 100);
 	}
 }

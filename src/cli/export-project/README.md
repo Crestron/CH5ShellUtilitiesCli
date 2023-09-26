@@ -5,11 +5,11 @@
 ## How to Use
 
 To export project, go to the command-prompt or terminal of the Shell Template project, and execute `ch5-shell-cli export:project`.
-The package.json has scripts to handle this execution - for yarn, use `yarn export:project` command or npm  `npm run export:project` command. The short hand for it is `yarn exp:p` or `npm run exp:p` within scripts of package.json.
+The package.json has scripts to handle this execution - `npm run export:project` command. The short hand for it is `npm run exp:p` within scripts of package.json.
 
-To export the project, go to the command-prompt / terminal of the Shell Template Project, and execute `yarn export:project` or  `npm run export:project`.
+To export the project, go to the command-prompt / terminal of the Shell Template Project, and execute `npm run export:project`.
 
-To access help, you need to execute `yarn export:project --help` or `npm run export:project -- --help`.
+To access help, you need to execute `npm run export:project -- --help`.
 
 By default, the zip file is created inside the project 'dist' folder. This file has the naming convention of {fileName}.zip
 The file name is picked from 'name' parameter in package.json file
@@ -18,15 +18,13 @@ The file name is picked from 'name' parameter in package.json file
 Usage: 
     ch5-shell-cli export:project
     
-You could also use `yarn` or `npm run` to export project. The following are the commands:
-    yarn export:project
+You could also use `npm run` to export project. The following are the command(s):
     npm run export:project
 
 You could use shortcut script `exp:p` with options:
     ch5-shell-cli exp:p
 
-You could use shortcut script `exp:p` with yarn and npm commands as the following:
-    yarn exp:p
+You could use shortcut script `exp:p` with npm command as the following:
     npm run exp:p
 
 ```

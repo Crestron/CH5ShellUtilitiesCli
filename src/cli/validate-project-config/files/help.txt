@@ -1,13 +1,11 @@
     
-You could also use `yarn` or `npm run` to import components. The following are the commands
-    yarn validate:projectconfig
+You could also use `npm run` to import components. The following are the command(s)
     npm run validate:projectconfig
 
 You could use shortcut script `val:pc`:
     ch5-shell-cli val:pc
 
-You could use shortcut script `val:pc` with yarn and npm commands as the following:
-    yarn val:pc
+You could use shortcut script `val:pc` with npm command as the following:
     npm run val:pc
 
 Based on the responses, the output is classified into errors and warnings. 

@@ -95,5 +95,36 @@ Please replace ${USERNAME} with your username on /Users/${USERNAME}/Downloads. T
 
 `rm -rf * && ch5-shell-cli create:project --projectName 'shell-template' && cd shell-template && npm install && npm run gen:w -- --name 'widget-2' && cd .. && mkdir tt1 && cd tt1 && ch5-shell-cli create:project --projectName 'shell-template' && cd 'shell-template' && ch5-shell-cli update:project --config /Users/${USERNAME}/Downloads/tt/shell-template/app/project-config.json && cd ..`
 
+### Run a single spec file for testing
+RUN A SINGLE SPEC
+Often we're in the test code making changes, and it's easy to make adjustments to what subset of tests you run from here as well. If I want to run a single describe() function, I can add a .only() to the function call, like this:
+
+describe(function () {
+  // these tests will be skipped
+});
+describe.only(function () {
+  // these tests will run
+});
+You can stick the .only() on any describe, no matter if it's first or last in the list of specs.
+
+RUN A SINGLE TEST
+Just as you can with describe, the tests can be specified to exclusively run if you attach .only() to the function call.
+
+it.only(function () {
+  // this test will run
+});
+it(function () {
+  // this test will be skipped
+});
+Update 12 Oct 2015: The following note now does not apply. before, etc hooks are now verified to be run when running a single test.
+
+Note! that by putting the .only() on a test, all other functions in the spec are skipped. This means that your before, beforeEach, after, and afterEach functions are not called. Sometimes it's hard to remember when that matters, so I usually end up running single specs instead of single tests.
+
+SKIP SOMETHING
+If you want to run all the specs/tests that you have minus some subset, effectively commenting out these tests, you can add .skip() to either describe or it function calls.
+
+REMEMBER TO REMOVE
+With the additions of the .only() or .skip() you are altering the actual code of your tests. This is great for your local development process. You'll need to be careful that you don't commit this change -- at least you usually won't want to. Otherwise, you CI process will be running a subset of your tests, just as you are locally, which is no bueno.
+
 ### setup local
 `npm run setup:local`

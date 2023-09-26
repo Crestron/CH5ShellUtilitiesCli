@@ -1,8 +1,8 @@
     
-Use `ch5-shell-cli` to update a new project. The following is the command:
+Use `ch5-shell-cli` to update a new project. The following are the command(s):
     ch5-shell-cli update:project [options]
 
-The package.json in the shell template project has scripts to handle this execution - for yarn, use `yarn update:project` command or npm  `npm run update:project` command.
+The package.json in the shell template project has scripts to handle this execution - `npm run update:project` command.
 
 There are two ways to update a project using CLI. 
 

@@ -23,6 +23,7 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
 
   public static RULES: any = {
     PRE_BUILD_RULES: "PRE_BUILD_RULES",
+    POST_BUILD_RULES: "POST_BUILD_RULES",
     ALL_RULES: "ALL_RULES"
   };
 
@@ -407,7 +408,7 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
   private checkIfForceDeviceXPanelForZoomRoomControl(forceDeviceXPanel: boolean, projectType: string) {
     if (projectType.toLowerCase() === "zoomroomcontrol" && forceDeviceXPanel === false) {
       const errorOrWarningType = this.getText("VALIDATIONS.FORCE_DEVICE_XPANEL.HEADER");
-      this.addError(Ch5ValidateProjectConfigCli.RULES.PRE_BUILD_RULES, errorOrWarningType, this.getText("VALIDATIONS.FORCE_DEVICE_XPANEL.MESSAGE"), "");
+      this.addError(Ch5ValidateProjectConfigCli.RULES.POST_BUILD_RULES, errorOrWarningType, this.getText("VALIDATIONS.FORCE_DEVICE_XPANEL.MESSAGE"), "");
     }
   }
 
