@@ -25,8 +25,8 @@
   },
   "CLEAN_UP": {},
   "LOG_OUTPUT": {    
-    "SUCCESS_MESSAGE_WITH_BACKUP": "Project updated successfully. Backup folder for the previous project files is created at {0}.",
-    "SUCCESS_MESSAGE": "Project updated successfully."
+    "SUCCESS_MESSAGE_WITH_BACKUP": "Project updated successfully. Backup folder for the previous project files is created at {0}.\n\nIf the projectType is updated, please run the command npm install.",
+    "SUCCESS_MESSAGE": "Project updated successfully.\n\nIf the projectType is updated, please run the command npm install."
   },
   "VALIDATIONS": {
     "CONFIRMATION" : {
