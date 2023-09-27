@@ -5,8 +5,8 @@
   "faviconPath": "favicon.ico",
   "menuOrientation": "none",
   "selectedTheme": "zoom-light-theme",
-  "useWebXPanel": true,
-  "forceDeviceXPanel": false,
+  "useWebXPanel": false,
+  "forceDeviceXPanel": true,
   "themes": [
     {
       "name": "light-theme",
@@ -111,7 +111,7 @@
     "controlSystem": {}
   },
   "header": {
-    "display": true,
+    "display": false,
     "displayInfo": true,
     "diagnostics": {
       "logs": {
@@ -123,7 +123,7 @@
     "$component": ""
   },
   "footer": {
-    "display": true,
+    "display": false,
     "$component": ""
   },
   "content": {
