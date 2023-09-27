@@ -233,6 +233,62 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForProject implements ICh5C
 
     if (this.projectConfig.getNodeByKey("projectType")?.toLowerCase() === "zoomroomcontrol") {
       this.projectConfig.changeNodeValues("forceDeviceXPanel", true);
+      const getProjectThemes = this.projectConfig.getNodeByKey("themes");
+      const isZoomLightThemeAvailable = getProjectThemes.filter((theme: any) => theme.name === "zoom-light-theme");
+      if (isZoomLightThemeAvailable.length === 0) {
+        const zoomLightTheme = {
+          "name": "zoom-light-theme",
+          "extends": "zoom-light-theme",
+          "brandLogo": {
+            "url": "./app/template/assets/img/ch5-logo-light.svg",
+            "alt": "Crestron Logo",
+            "receiveStateUrl": ""
+          },
+          "backgroundProperties": {
+            "backgroundColor": [
+              "#ffffff"
+            ]
+          }
+        };
+        getProjectThemes.push(zoomLightTheme);
+        this.projectConfig.changeNodeValues("themes", getProjectThemes);
+      }
+      const isZoomDarkThemeAvailable = getProjectThemes.filter((theme: any) => theme.name === "zoom-dark-theme");
+      if (isZoomDarkThemeAvailable.length === 0) {
+        const zoomDarkTheme = {
+          "name": "zoom-dark-theme",
+            "extends": "zoom-dark-theme",
+              "brandLogo": {
+            "url": "./app/template/assets/img/ch5-logo-dark.svg",
+              "alt": "Crestron Logo",
+                "receiveStateUrl": ""
+          },
+          "backgroundProperties": {
+            "backgroundColor": [
+              "#242424"
+            ]
+          }
+        };
+        getProjectThemes.push(zoomDarkTheme);
+        this.projectConfig.changeNodeValues("themes", getProjectThemes);        
+      }
+      if (this.projectConfig.getNodeByKey("selectedTheme") !== "zoom-light-theme" && this.projectConfig.getNodeByKey("selectedTheme") !== "zoom-dark-theme") {
+        this.projectConfig.changeNodeValues("selectedTheme", "zoom-light-theme");            
+      }
+    } else {
+      let getProjectThemes = this.projectConfig.getNodeByKey("themes");
+      const isZoomLightThemeAvailable = getProjectThemes.filter((theme: any) => theme.name === "zoom-light-theme");
+      if (isZoomLightThemeAvailable.length > 0) {
+        getProjectThemes = getProjectThemes.filter((theme: any) => theme.name !== "zoom-light-theme");
+      }
+      const isZoomDarkThemeAvailable = getProjectThemes.filter((theme: any) => theme.name === "zoom-dark-theme");
+      if (isZoomDarkThemeAvailable.length > 0) {
+        getProjectThemes = getProjectThemes.filter((theme: any) => theme.name !== "zoom-dark-theme");      
+      }
+      this.projectConfig.changeNodeValues("themes", JSON.parse(JSON.stringify(getProjectThemes)));      
+      if (this.projectConfig.getNodeByKey("selectedTheme") === "zoom-light-theme" || this.projectConfig.getNodeByKey("selectedTheme") === "zoom-dark-theme") {
+        this.projectConfig.changeNodeValues("selectedTheme", "light-theme");            
+      }
     }
 
     // Step 6: Run validate:project-config
