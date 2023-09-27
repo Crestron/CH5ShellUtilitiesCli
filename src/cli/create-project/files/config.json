@@ -102,6 +102,7 @@
           "app/template/assets/fonts"
         ],
         "customFiles": [
+          "app/project-config.json",
           "app/template/libraries/utils.js",
           "app/template/libraries/webxpanel.js",
           "app/template/assets/scss/custom/_fonts.scss",
@@ -118,6 +119,7 @@
           "app/template/assets/fonts"
         ],
         "customFiles": [
+          "app/project-config.json",
           "app/template/libraries/utils.js",
           "app/template/libraries/webxpanel.js",
           "app/template/assets/scss/custom/_fonts.scss",
