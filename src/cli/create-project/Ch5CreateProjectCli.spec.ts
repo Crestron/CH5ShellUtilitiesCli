@@ -11,23 +11,24 @@ import { prepareEnvironment } from '@gmrchk/cli-testing-library';
 import CLITestingLibary from '@gmrchk/cli-testing-library';
 const fs = require('fs');
 const path = require('path');
+const dircompare = require('dir-compare');
 
-describe.only('Create Project >>>>>>>> ', () => {
-  it('program runs successfully', async () => {
-    const { execute, cleanup } = await prepareEnvironment();
-    const { code, stdout, stderr } = await execute(
-      'ch5-shell-cli --help',
-      ''
-    );
-    console.log(code); // 0
-    console.log(stdout); // ["Hello world!"]
-    console.log(stderr); // []
+// describe.only('Create Project >>>>>>>> ', () => {
+//   it('program runs successfully', async () => {
+//     const { execute, cleanup } = await prepareEnvironment();
+//     const { code, stdout, stderr } = await execute(
+//       'ch5-shell-cli --help',
+//       ''
+//     );
+//     console.log(code); // 0
+//     console.log(stdout); // ["Hello world!"]
+//     console.log(stderr); // []
 
-    expect(code).to.equal(0);
+//     expect(code).to.equal(0);
 
-    await cleanup();
-  });
-});
+//     await cleanup();
+//   });
+// });
 
 describe('Create Project >>>>>>>> ', () => {
 
@@ -40,7 +41,7 @@ describe('Create Project >>>>>>>> ', () => {
     before(async () => {
       createProjectCli = new Ch5CreateProjectCli();
       protoCreateProjectCli = Object.getPrototypeOf(createProjectCli);
-      i18nJson = await readI18nJson();
+      i18nJson = await readJSONFile("./src/cli/create-project/i18n/en.json");
     });
 
     it('initialize()', () => {
@@ -91,10 +92,23 @@ describe('Create Project >>>>>>>> ', () => {
 
   });
 
-  describe('CLI Tests >>>>>>>> ', function () {
+  describe('Help (-h) >>>>>>>> ', function () {
+    it('Help File', async () => {
+      const { lastOutput } = await run('ch5-shell-cli create:project -h', []);
+      const actualValue = await fs.readFileSync("./src/cli/create-project/files/help.txt", "utf-8");
+      // Reason to have.string is because the lastOutput starts with dynamically created options in the help output
+      expect(String(lastOutput)).to.have.string(String(actualValue));
+    });
+  });
+
+  describe.only('Create Project Tests', function () {
+
     let createProjectCli: Ch5CreateProjectCli;
     let protoCreateProjectCli: any;
     let i18nJson: any;
+    let configJson: any;
+    let repoFolder: any;
+
     // Calls to timeout are hierarchical. The problem is that beforeEach has no children. So we need to set timeout globally.
     this.timeout(10000);
     const DEFAULT_EXECUTION_PATH = path.resolve("./");
@@ -102,85 +116,144 @@ describe('Create Project >>>>>>>> ', () => {
     before(async () => {
       createProjectCli = new Ch5CreateProjectCli();
       protoCreateProjectCli = Object.getPrototypeOf(createProjectCli);
-      i18nJson = await readI18nJson();
+      i18nJson = await readJSONFile("./src/cli/create-project/i18n/en.json");
+      configJson = await readJSONFile("./src/cli/create-project/files/config.json");
+      repoFolder = path.resolve("./");
     });
 
-    this.beforeEach(async () => {
-      process.chdir(DEFAULT_EXECUTION_PATH);
+    describe('Create Project - Positive Tests ', function () {
+      this.beforeEach(async () => {
+        process.chdir(DEFAULT_EXECUTION_PATH);
+      });
+
+      const positiveCases = getAllPositiveTestCases();
+      for (let i = 0; i < positiveCases.length; i++) {
+        it('Create: Positive Case ' + i + ": " + JSON.stringify(positiveCases[i]), async function () {
+          const output = await createProject("PositiveCase" + i, positiveCases[i]);
+          // Reason to have.string is because the lastOutput will contain color coding for message
+          expect(String(output.actual)).to.have.string(output.expected);
+
+          // Read package.json for projectName
+          const packageJSON: any = await readJSONFile(output.pathToExecute, output.projectName, "package.json");
+          expect(String(packageJSON.name)).to.equal(output.projectName);
+
+          // Read project-config.json
+          const projectConfig: any = await readJSONFile(output.pathToExecute, output.projectName, "app", "project-config.json");
+          expect(String(projectConfig.projectName)).to.equal(output.projectName);
+          expect(String(projectConfig.projectType)).to.equal(output.projectType);
+          expect(projectConfig.forceDeviceXPanel).to.equal(output.forceDeviceXPanel);
+
+          // Check for availability of files as per template
+          const pathForTemplate: any = configJson.custom.templates[output.projectType];
+          for (let j = 0; j < pathForTemplate.customFolders.length; j++) {
+            const path1 = path.resolve(repoFolder, "./src/project-templates/" + output.projectType+ "/" + pathForTemplate.customFolders[j]);
+            const path2 = path.resolve(output.pathToExecute + '/' + output.projectName + '/' + pathForTemplate.customFolders[j]);
+            const responseDirCompare = dircompare.compareSync(path1, path2);
+            expect(responseDirCompare.totalFiles).to.equal(responseDirCompare.equalFiles);            
+          }
+          for (let j = 0; j < pathForTemplate.customFiles.length; j++) {
+            if (pathForTemplate.customFiles[j] !== "package.json") {
+              const path1 = path.resolve(repoFolder, "./src/shell/" + pathForTemplate.customFiles[j]);
+              const path2 = path.resolve(output.pathToExecute + '/' + output.projectName + '/' + pathForTemplate.customFiles[j]);
+              const responseDirCompare = dircompare.compareSync(path1, path2);
+              expect(responseDirCompare.totalFiles).to.equal(responseDirCompare.equalFiles);            
+            }
+          }
+
+          // Run val:pc
+        });
+      }
     });
 
-    it('Help File', async () => {
-      const { lastOutput } = await run('ch5-shell-cli create:project -h', []);
-      const actualValue = await fs.readFileSync("./src/cli/create-project/files/help.txt", "utf-8");
-      // Reason to have.string is because the lastOutput starts with dynamically created options in the help output
-      expect(String(lastOutput)).to.have.string(String(actualValue));
+    describe('Create Project - Invalid ProjectType ', function () {
+      this.beforeEach(async () => {
+        process.chdir(DEFAULT_EXECUTION_PATH);
+      });
+
+      const invalidProjectTypeCases = getInvalidProjectTypeCases();
+      for (let i = 0; i < invalidProjectTypeCases.length; i++) {
+        it('Create: Invalid Project Type Case ' + i + ": " + JSON.stringify(invalidProjectTypeCases[i]), async function () {
+          const output = await createProject("invalidProjectTypeCase" + i, invalidProjectTypeCases[i]);
+          // Reason to have.string is because the lastOutput will contain color coding for message
+          expect(String(output.actual)).to.have.string(output.expected);
+
+          // Read package.json for projectName
+          const packageJSON: any = await readJSONFile(output.pathToExecute, output.projectName, "package.json");
+          expect(String(packageJSON.name)).to.equal(output.projectName);
+
+          // Read project-config.json
+          const projectConfig: any = await readJSONFile(output.pathToExecute, output.projectName, "app", "project-config.json");
+          expect(String(projectConfig.projectName)).to.equal(output.projectName);
+          expect(String(projectConfig.projectType)).to.equal(output.projectType);
+          expect(projectConfig.forceDeviceXPanel).to.equal(output.forceDeviceXPanel);
+
+          // Check for availability of files as per template
+          const pathForTemplate: any = configJson.custom.templates[output.projectType];
+          for (let j = 0; j < pathForTemplate.customFolders.length; j++) {
+            const path1 = path.resolve(repoFolder, "./src/project-templates/" + output.projectType+ "/" + pathForTemplate.customFolders[j]);
+            const path2 = path.resolve(output.pathToExecute + '/' + output.projectName + '/' + pathForTemplate.customFolders[j]);
+            const responseDirCompare = dircompare.compareSync(path1, path2);
+            expect(responseDirCompare.totalFiles).to.equal(responseDirCompare.equalFiles);            
+          }
+          for (let j = 0; j < pathForTemplate.customFiles.length; j++) {
+            if (pathForTemplate.customFiles[j] !== "package.json") {
+              const path1 = path.resolve(repoFolder, "./src/shell/" + pathForTemplate.customFiles[j]);
+              const path2 = path.resolve(output.pathToExecute + '/' + output.projectName + '/' + pathForTemplate.customFiles[j]);
+              const responseDirCompare = dircompare.compareSync(path1, path2);
+              expect(responseDirCompare.totalFiles).to.equal(responseDirCompare.equalFiles);            
+            }
+          }
+
+          // Run val:pc
+        });
+      }
     });
 
-    const positiveCases = getAllPositiveTestCases();
-    for (let i = 0; i < positiveCases.length; i++) {
-      it('Create: Positive Case ' + i + ": " + JSON.stringify(positiveCases[i]), async function () {
-        const output = await createProject("PositiveCase" + i, positiveCases[i]);
-        // Reason to have.string is because the lastOutput will contain color coding for message
-        expect(String(output.actual)).to.have.string(output.expected);
+    describe('Create Project - Invalid ForceDeviceXPanel ', function () {
 
-        // Read package.json for projectName
-        const packageJSON: any = await readJSONFile(output.pathToExecute, output.projectName, "package.json");
-        expect(String(packageJSON.name)).to.equal(output.projectName);
-
-        // Read project-config.json
-        const projectConfig: any = await readJSONFile(output.pathToExecute, output.projectName, "app", "project-config.json");
-        expect(String(projectConfig.projectName)).to.equal(output.projectName);
-        expect(String(projectConfig.projectType)).to.equal(output.projectType);
-        expect(projectConfig.forceDeviceXPanel).to.equal(output.forceDeviceXPanel);
-
-        // Check for availability of files as per template
-
+      this.beforeEach(async () => {
+        process.chdir(DEFAULT_EXECUTION_PATH);
       });
-    }
 
-    const invalidProjectTypeCases = getInvalidProjectTypeCases();
-    for (let i = 0; i < invalidProjectTypeCases.length; i++) {
-      it('Create: Invalid Project Type Case ' + i + ": " + JSON.stringify(invalidProjectTypeCases[i]), async function () {
-        const output = await createProject("invalidProjectTypeCase" + i, invalidProjectTypeCases[i]);
-        // Reason to have.string is because the lastOutput will contain color coding for message
-        expect(String(output.actual)).to.have.string(output.expected);
+      const invalidForceDeviceXPanelCases = getInvalidForceDeviceXPanelCases();
+      for (let i = 0; i < invalidForceDeviceXPanelCases.length; i++) {
+        it('Create: Invalid Force Device XPanel Case ' + i + ": " + JSON.stringify(invalidForceDeviceXPanelCases[i]), async function () {
+          const output = await createProject("invalidForceDeviceXPanelCase" + i, invalidForceDeviceXPanelCases[i]);
+          // Reason to have.string is because the lastOutput will contain color coding for message
+          expect(String(output.actual)).to.have.string(output.expected);
 
-        // Read package.json for projectName
-        const packageJSON: any = await readJSONFile(output.pathToExecute, output.projectName, "package.json");
-        expect(String(packageJSON.name)).to.equal(output.projectName);
+          // Read package.json for projectName
+          const packageJSON: any = await readJSONFile(output.pathToExecute, output.projectName, "package.json");
+          expect(String(packageJSON.name)).to.equal(output.projectName);
 
-        // Read project-config.json
-        const projectConfig: any = await readJSONFile(output.pathToExecute, output.projectName, "app", "project-config.json");
-        expect(String(projectConfig.projectName)).to.equal(output.projectName);
-        expect(String(projectConfig.projectType)).to.equal(output.projectType);
-        expect(projectConfig.forceDeviceXPanel).to.equal(output.forceDeviceXPanel);
+          // Read project-config.json
+          const projectConfig: any = await readJSONFile(output.pathToExecute, output.projectName, "app", "project-config.json");
+          expect(String(projectConfig.projectName)).to.equal(output.projectName);
+          expect(String(projectConfig.projectType)).to.equal(output.projectType);
+          expect(projectConfig.forceDeviceXPanel).to.equal(output.forceDeviceXPanel);
+          
+          // Check for availability of files as per template
+          const pathForTemplate: any = configJson.custom.templates[output.projectType];
+          for (let j = 0; j < pathForTemplate.customFolders.length; j++) {
+            const path1 = path.resolve(repoFolder, "./src/project-templates/" + output.projectType+ "/" + pathForTemplate.customFolders[j]);
+            const path2 = path.resolve(output.pathToExecute + '/' + output.projectName + '/' + pathForTemplate.customFolders[j]);
+            const responseDirCompare = dircompare.compareSync(path1, path2);
+            expect(responseDirCompare.totalFiles).to.equal(responseDirCompare.equalFiles);            
+          }
+          for (let j = 0; j < pathForTemplate.customFiles.length; j++) {
+            if (pathForTemplate.customFiles[j] !== "package.json") {
+              const path1 = path.resolve(repoFolder, "./src/shell/" + pathForTemplate.customFiles[j]);
+              const path2 = path.resolve(output.pathToExecute + '/' + output.projectName + '/' + pathForTemplate.customFiles[j]);
+              const responseDirCompare = dircompare.compareSync(path1, path2);
+              expect(responseDirCompare.totalFiles).to.equal(responseDirCompare.equalFiles);            
+            }
+          }
 
-        // Check for availability of files as per template
+          // Run val:pc
+        });
+      }
 
-      });
-    }
-
-    const invalidForceDeviceXPanelCases = getInvalidForceDeviceXPanelCases();
-    for (let i = 0; i < invalidForceDeviceXPanelCases.length; i++) {
-      it('Create: Invalid Force Device XPanel Case ' + i + ": " + JSON.stringify(invalidForceDeviceXPanelCases[i]), async function () {
-        const output = await createProject("invalidForceDeviceXPanelCase" + i, invalidForceDeviceXPanelCases[i]);
-        // Reason to have.string is because the lastOutput will contain color coding for message
-        expect(String(output.actual)).to.have.string(output.expected);
-
-        // Read package.json for projectName
-        const packageJSON: any = await readJSONFile(output.pathToExecute, output.projectName, "package.json");
-        expect(String(packageJSON.name)).to.equal(output.projectName);
-
-        // Read project-config.json
-        const projectConfig: any = await readJSONFile(output.pathToExecute, output.projectName, "app", "project-config.json");
-        expect(String(projectConfig.projectName)).to.equal(output.projectName);
-        expect(String(projectConfig.projectType)).to.equal(output.projectType);
-        expect(projectConfig.forceDeviceXPanel).to.equal(output.forceDeviceXPanel);
-
-        // Check for availability of files as per template
-
-      });
-    }
+    });
 
     async function createProject(createInFolderName: string, args: any[]) {
       const pathToExecute = await changeDirectory(createInFolderName);
@@ -221,7 +294,7 @@ describe('Create Project >>>>>>>> ', () => {
 
       const { lastOutput } = await run('ch5-shell-cli create:project ' + argumentString, []);
       const expectedResponse = createProjectCli.getText("LOG_OUTPUT.SUCCESS_MESSAGE", projectName, protoCreateProjectCli.getCurrentWorkingDirectory());
-      return { expected: expectedResponse, actual: lastOutput, pathToExecute, projectName, projectType, forceDeviceXPanel };
+      return { expected: expectedResponse, actual: lastOutput, pathToExecute, projectName, projectType: projectType.toLowerCase(), forceDeviceXPanel };
     }
 
   });
@@ -415,9 +488,7 @@ async function readJSONFile(...pathName: any) {
   return JSON.parse(data);
 }
 
-async function readI18nJson() {
-  return await readJSONFile("./src/cli/create-project/i18n/en.json");
-}
+
 // describe('Create Project >>>>>>>> ', () => {
 
 //   const createProject = new Ch5CreateProjectCli();

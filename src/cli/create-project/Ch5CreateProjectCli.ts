@@ -92,7 +92,7 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForProject implements ICh5C
       }
 
       if (this.getOutputResponse().data.projectType.toLowerCase() === "zoomroomcontrol") {
-        this.projectConfig.changeNodeValues("forceDeviceXPanel", true);
+        this.makeProjectConfigJsonChangesForZoom();
       }
 
       // 2. Themes
@@ -139,7 +139,7 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForProject implements ICh5C
       }
 
       this.setValueInPackageJson("name", templateConfigJSON.projectName);
-      
+
       // Step 5: Save Project-config
       for (let i: number = 0; i < pagesToBeCreated.length; i++) {
         const genPage: Ch5GeneratePageCli = new Ch5GeneratePageCli(false);
@@ -163,7 +163,7 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForProject implements ICh5C
       const templateConfigJSON: any = JSON.parse(this.utils.readFileContentSync(this.getShellTemplateProjectConfigPath()));
 
       if (this.getOutputResponse().data.projectType.toLowerCase() === "zoomroomcontrol") {
-        this.projectConfig.changeNodeValues("forceDeviceXPanel", true);
+        this.makeProjectConfigJsonChangesForZoom();
       } else {
         const forceDeviceXPanelObject = this.getOutputResponse().data.updatedInputs.find((objValue: any) => objValue.key === "forceDeviceXPanel");
         templateConfigJSON["forceDeviceXPanel"] = forceDeviceXPanelObject.argsValue;
@@ -174,7 +174,7 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForProject implements ICh5C
       this.projectConfig.changeNodeValues("projectType", this.getOutputResponse().data.projectType);
 
       this.setValueInPackageJson("name", this.getOutputResponse().data.projectName);
-      
+
       const defaultPageName = "page1";
       const defaultPageMenuValue = "Y";
       const genPage: Ch5GeneratePageCli = new Ch5GeneratePageCli(false);
@@ -205,4 +205,56 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForProject implements ICh5C
     return __dirname;
   }
 
+  private makeProjectConfigJsonChangesForZoom() {
+    this.projectConfig.changeNodeValues("forceDeviceXPanel", true);
+    this.projectConfig.changeNodeValues("menuOrientation", "none");
+    this.projectConfig.changeNodeValues("selectedTheme", "zoom-light-theme");
+    const getProjectThemes = this.projectConfig.getNodeByKey("themes");
+    const isZoomLightThemeAvailable = getProjectThemes.filter((theme: any) => theme.name === "zoom-light-theme");
+    if (isZoomLightThemeAvailable.length === 0) {
+      const zoomLightTheme = {
+        "name": "zoom-light-theme",
+        "extends": "zoom-light-theme",
+        "brandLogo": {
+          "url": "./app/template/assets/img/ch5-logo-light.svg",
+          "alt": "Crestron Logo",
+          "receiveStateUrl": ""
+        },
+        "backgroundProperties": {
+          "backgroundColor": [
+            "#ffffff"
+          ]
+        }
+      };
+      getProjectThemes.push(zoomLightTheme);
+      this.projectConfig.changeNodeValues("themes", getProjectThemes);
+    }
+    const isZoomDarkThemeAvailable = getProjectThemes.filter((theme: any) => theme.name === "zoom-dark-theme");
+    if (isZoomDarkThemeAvailable.length === 0) {
+      const zoomDarkTheme = {
+        "name": "zoom-dark-theme",
+        "extends": "zoom-dark-theme",
+        "brandLogo": {
+          "url": "./app/template/assets/img/ch5-logo-dark.svg",
+          "alt": "Crestron Logo",
+          "receiveStateUrl": ""
+        },
+        "backgroundProperties": {
+          "backgroundColor": [
+            "#242424"
+          ]
+        }
+      };
+      getProjectThemes.push(zoomDarkTheme);
+      this.projectConfig.changeNodeValues("themes", getProjectThemes);
+    }
+
+    const getHeader: any = this.projectConfig.getNodeByKey("header");
+    getHeader.display = false;
+    this.projectConfig.changeNodeValues("header", getHeader);
+
+    const getFooter: any = this.projectConfig.getNodeByKey("footer");
+    getFooter.display = false;
+    this.projectConfig.changeNodeValues("footer", getFooter);
+  }
 }
