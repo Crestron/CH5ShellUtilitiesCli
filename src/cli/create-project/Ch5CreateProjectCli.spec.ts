@@ -6,10 +6,30 @@ import { Ch5CliLogger } from "../Ch5CliLogger";
 import { SinonStub } from "sinon";
 import { run, UP, DOWN, ENTER, EXIT } from 'cli-mocker';
 import { split } from 'ts-node';
+import { Ch5CliUtil } from '../Ch5CliUtil';
+import { prepareEnvironment } from '@gmrchk/cli-testing-library';
+import CLITestingLibary from '@gmrchk/cli-testing-library';
 const fs = require('fs');
 const path = require('path');
 
 describe.only('Create Project >>>>>>>> ', () => {
+  it('program runs successfully', async () => {
+    const { execute, cleanup } = await prepareEnvironment();
+    const { code, stdout, stderr } = await execute(
+      'ch5-shell-cli --help',
+      ''
+    );
+    console.log(code); // 0
+    console.log(stdout); // ["Hello world!"]
+    console.log(stderr); // []
+
+    expect(code).to.equal(0);
+
+    await cleanup();
+  });
+});
+
+describe('Create Project >>>>>>>> ', () => {
 
   describe('Functions >>>>>>>> ', () => {
 
@@ -96,87 +116,54 @@ describe.only('Create Project >>>>>>>> ', () => {
       expect(String(lastOutput)).to.have.string(String(actualValue));
     });
 
-    const validProjectNames = ["shell-template", "abc123"];
-    const validProjectTypes = ["shell-template", "ZoomRoomControl", "zoomroomcontrol"];
-    const validForceDeviceXPanel = ["true", "false", "Y", "N", "y", "n"];
-
-    // const positiveCases1: any[] = [];
-    // for (let i = 0; i < validProjectNames.length; i++) {
-    //   const projName = { "key": "projectName", "value": validProjectNames[i] };
-    //   const projNameArray: any[] = [];
-    //   projNameArray.push(projName);
-    //   positiveCases1.push(JSON.parse(JSON.stringify(projNameArray)));
-
-    //   for (let j = 0; j < validProjectTypes.length; j++) {
-    //     const projType = { "key": "projectType", "value": validProjectTypes[j] };
-    //     const projTypeArray: any[] = [];
-    //     projTypeArray.push(projType);
-    //     positiveCases1.push(JSON.parse(JSON.stringify(projTypeArray)));
-
-    //     projTypeArray.push(projName);
-    //     positiveCases1.push(JSON.parse(JSON.stringify(projTypeArray)));
-
-    //     for (let k = 0; k < validForceDeviceXPanel.length; k++) {
-    //       const xPanelType = { "key": "forceDeviceXPanel", "value": validForceDeviceXPanel[k] };
-    //       const xPanelTypeArray: any[] = [];
-    //       xPanelTypeArray.push(xPanelType);
-    //       positiveCases1.push(JSON.parse(JSON.stringify(xPanelTypeArray)));  
-    //       xPanelTypeArray.push(projName);
-    //       positiveCases1.push(JSON.parse(JSON.stringify(xPanelTypeArray)));  
-    //       xPanelTypeArray.push(projType);
-    //       positiveCases1.push(JSON.parse(JSON.stringify(xPanelTypeArray)));   
-    //     }
-    //   }
-    // }
-
-    // const validProjectNameCases: any[] = [];
-    // for (let i = 0; i < validProjectNames.length; i++) {
-    //   const projName = { "key": "projectName", "value": JSON.parse(JSON.stringify(validProjectNames[i])) };
-    //   const projNameArray: any[] = [];
-    //   projNameArray.push(JSON.parse(JSON.stringify(projName)));
-    //   validProjectNameCases.push(JSON.parse(JSON.stringify(projNameArray)));
-    // }
-
-    const validProjectTypeCases: any[] = [];
-    for (let j = 0; j < validProjectTypes.length; j++) {
-      const projType = { "key": "projectType", "value": JSON.parse(JSON.stringify(validProjectTypes[j])) };
-      const projTypeArray: any[] = [];
-      projTypeArray.push(JSON.parse(JSON.stringify(projType)));
-      validProjectTypeCases.push(JSON.parse(JSON.stringify(projTypeArray)));
-    }
-
-    const validForceDeviceXPanelCases: any[] = [];
-    for (let k = 0; k < validForceDeviceXPanel.length; k++) {
-      const xPanelType = { "key": "forceDeviceXPanel", "value": JSON.parse(JSON.stringify(validForceDeviceXPanel[k])) };
-      const xPanelTypeArray: any[] = [];
-      xPanelTypeArray.push(JSON.parse(JSON.stringify(xPanelType)));
-      validForceDeviceXPanelCases.push(JSON.parse(JSON.stringify(xPanelTypeArray)));
-
-      for (let i = 0; i < validProjectTypeCases.length; i++) {
-        const tempProjNameArray: any[] = JSON.parse(JSON.stringify(validProjectTypeCases[i]));
-        tempProjNameArray.push(JSON.parse(JSON.stringify(xPanelType)));
-        validForceDeviceXPanelCases.push(JSON.parse(JSON.stringify(tempProjNameArray)));
-      }
-    }
-
-    const projectTypeAndXPanelCases: any[] = JSON.parse(JSON.stringify(validProjectTypeCases.concat(validForceDeviceXPanelCases)));
-    const positiveCases: any[] = [];
-    for (let i = 0; i < projectTypeAndXPanelCases.length; i++) {
-      for (let j = 0; j < validProjectNames.length; j++) {
-        const projName = { "key": "projectName", "value": JSON.parse(JSON.stringify(validProjectNames[j])) };
-        const temporaryArray = JSON.parse(JSON.stringify(projectTypeAndXPanelCases[i]));
-        temporaryArray.push(JSON.parse(JSON.stringify(projName)));
-        positiveCases.push(JSON.parse(JSON.stringify(temporaryArray)));
-      }
-    }
-
-    // console.log("After positiveCases", JSON.parse(JSON.stringify(positiveCases)));
-    // console.log("positiveCases", positiveCases.length);
-
+    const positiveCases = getAllPositiveTestCases();
     for (let i = 0; i < positiveCases.length; i++) {
-      // for (let i = 0; i < positiveCases.length; i++) {
-      it('Create: Case ' + i + ": " + JSON.stringify(positiveCases[i]), async function () {
+      it('Create: Positive Case ' + i + ": " + JSON.stringify(positiveCases[i]), async function () {
         const output = await createProject("PositiveCase" + i, positiveCases[i]);
+        // Reason to have.string is because the lastOutput will contain color coding for message
+        expect(String(output.actual)).to.have.string(output.expected);
+
+        // Read package.json for projectName
+        const packageJSON: any = await readJSONFile(output.pathToExecute, output.projectName, "package.json");
+        expect(String(packageJSON.name)).to.equal(output.projectName);
+
+        // Read project-config.json
+        const projectConfig: any = await readJSONFile(output.pathToExecute, output.projectName, "app", "project-config.json");
+        expect(String(projectConfig.projectName)).to.equal(output.projectName);
+        expect(String(projectConfig.projectType)).to.equal(output.projectType);
+        expect(projectConfig.forceDeviceXPanel).to.equal(output.forceDeviceXPanel);
+
+        // Check for availability of files as per template
+
+      });
+    }
+
+    const invalidProjectTypeCases = getInvalidProjectTypeCases();
+    for (let i = 0; i < invalidProjectTypeCases.length; i++) {
+      it('Create: Invalid Project Type Case ' + i + ": " + JSON.stringify(invalidProjectTypeCases[i]), async function () {
+        const output = await createProject("invalidProjectTypeCase" + i, invalidProjectTypeCases[i]);
+        // Reason to have.string is because the lastOutput will contain color coding for message
+        expect(String(output.actual)).to.have.string(output.expected);
+
+        // Read package.json for projectName
+        const packageJSON: any = await readJSONFile(output.pathToExecute, output.projectName, "package.json");
+        expect(String(packageJSON.name)).to.equal(output.projectName);
+
+        // Read project-config.json
+        const projectConfig: any = await readJSONFile(output.pathToExecute, output.projectName, "app", "project-config.json");
+        expect(String(projectConfig.projectName)).to.equal(output.projectName);
+        expect(String(projectConfig.projectType)).to.equal(output.projectType);
+        expect(projectConfig.forceDeviceXPanel).to.equal(output.forceDeviceXPanel);
+
+        // Check for availability of files as per template
+
+      });
+    }
+
+    const invalidForceDeviceXPanelCases = getInvalidForceDeviceXPanelCases();
+    for (let i = 0; i < invalidForceDeviceXPanelCases.length; i++) {
+      it('Create: Invalid Force Device XPanel Case ' + i + ": " + JSON.stringify(invalidForceDeviceXPanelCases[i]), async function () {
+        const output = await createProject("invalidForceDeviceXPanelCase" + i, invalidForceDeviceXPanelCases[i]);
         // Reason to have.string is because the lastOutput will contain color coding for message
         expect(String(output.actual)).to.have.string(output.expected);
 
@@ -208,19 +195,28 @@ describe.only('Create Project >>>>>>>> ', () => {
         if (args[i].key.toLowerCase() === "projectname") {
           projectName = args[i].value;
         } else if (args[i].key.toLowerCase() === "projecttype") {
-          projectType = args[i].value.toLowerCase();
+          projectType = args[i].value;
         } else if (args[i].key.toLowerCase() === "forcedevicexpanel") {
-          forceDeviceXPanel = args[i].value;
+          if ((['true', 'Y', 'y']).includes(args[i].value)) {
+            forceDeviceXPanel = true;
+          } else if ((['false', 'N', 'n']).includes(args[i].value)) {
+            forceDeviceXPanel = false;
+          }
         }
       }
 
-      if (projectType === "") {
-        projectType = "zoomroomcontrol";
+      if (!projectType || projectType === "" || (projectType.toLowerCase() !== "shell-template" && projectType.toLowerCase() !== "zoomroomcontrol")) {
+        projectType = "shell-template";
       }
+      projectType = projectType.toLowerCase();
       if (projectType === "zoomroomcontrol") {
         forceDeviceXPanel = true;
       } else {
-        forceDeviceXPanel = false;
+        if (!forceDeviceXPanel || forceDeviceXPanel === "") {
+          forceDeviceXPanel = false;
+        } else {
+          forceDeviceXPanel = Boolean(forceDeviceXPanel);
+        }
       }
 
       const { lastOutput } = await run('ch5-shell-cli create:project ' + argumentString, []);
@@ -232,6 +228,166 @@ describe.only('Create Project >>>>>>>> ', () => {
 
 });
 
+function getInvalidProjectTypeCases() {
+  const validProjectNames = ["shell-template"];
+  const inValidProjectTypes = ["", null, undefined, "JUNK"];
+  const validForceDeviceXPanel = ["true", "false", "Y", "N", "y", "n"];
+
+  const validProjectTypeCases: any[] = [];
+  for (let j = 0; j < inValidProjectTypes.length; j++) {
+    const projType = { "key": "projectType", "value": inValidProjectTypes[j] };
+    const projTypeArray: any[] = [];
+    projTypeArray.push(JSON.parse(JSON.stringify(projType)));
+    validProjectTypeCases.push(JSON.parse(JSON.stringify(projTypeArray)));
+  }
+
+  const validForceDeviceXPanelCases: any[] = [];
+  for (let k = 0; k < validForceDeviceXPanel.length; k++) {
+    const xPanelType = { "key": "forceDeviceXPanel", "value": validForceDeviceXPanel[k] };
+    const xPanelTypeArray: any[] = [];
+    xPanelTypeArray.push(JSON.parse(JSON.stringify(xPanelType)));
+    validForceDeviceXPanelCases.push(JSON.parse(JSON.stringify(xPanelTypeArray)));
+
+    for (let i = 0; i < validProjectTypeCases.length; i++) {
+      const tempProjNameArray: any[] = JSON.parse(JSON.stringify(validProjectTypeCases[i]));
+      tempProjNameArray.push(JSON.parse(JSON.stringify(xPanelType)));
+      validForceDeviceXPanelCases.push(JSON.parse(JSON.stringify(tempProjNameArray)));
+    }
+  }
+
+  const projectTypeAndXPanelCases: any[] = JSON.parse(JSON.stringify(validProjectTypeCases.concat(validForceDeviceXPanelCases)));
+  const fullSetOfCases: any[] = [];
+  for (let i = 0; i < projectTypeAndXPanelCases.length; i++) {
+    for (let j = 0; j < validProjectNames.length; j++) {
+      const projName = { "key": "projectName", "value": JSON.parse(JSON.stringify(validProjectNames[j])) };
+      const temporaryArray = JSON.parse(JSON.stringify(projectTypeAndXPanelCases[i]));
+      temporaryArray.push(JSON.parse(JSON.stringify(projName)));
+      fullSetOfCases.push(JSON.parse(JSON.stringify(temporaryArray)));
+    }
+  }
+
+  return fullSetOfCases;
+}
+
+function getInvalidForceDeviceXPanelCases() {
+  const validProjectNames = ["shell-template"];
+  const validProjectTypes = ["shell-template", "zoomroomcontrol"];
+  const invalidForceDeviceXPanel = ["A", "1", "0", 1, 0, null, "", undefined];
+
+  const projectTypeCases: any[] = [];
+  for (let j = 0; j < validProjectTypes.length; j++) {
+    const projType = { "key": "projectType", "value": validProjectTypes[j] };
+    const projTypeArray: any[] = [];
+    projTypeArray.push(JSON.parse(JSON.stringify(projType)));
+    projectTypeCases.push(JSON.parse(JSON.stringify(projTypeArray)));
+  }
+
+  const forceDeviceXPanelCases: any[] = [];
+  for (let k = 0; k < invalidForceDeviceXPanel.length; k++) {
+    const xPanelType = { "key": "forceDeviceXPanel", "value": invalidForceDeviceXPanel[k] };
+    const xPanelTypeArray: any[] = [];
+    xPanelTypeArray.push(JSON.parse(JSON.stringify(xPanelType)));
+    forceDeviceXPanelCases.push(JSON.parse(JSON.stringify(xPanelTypeArray)));
+
+    for (let i = 0; i < projectTypeCases.length; i++) {
+      const tempProjNameArray: any[] = JSON.parse(JSON.stringify(projectTypeCases[i]));
+      tempProjNameArray.push(JSON.parse(JSON.stringify(xPanelType)));
+      forceDeviceXPanelCases.push(JSON.parse(JSON.stringify(tempProjNameArray)));
+    }
+  }
+
+  const projectTypeAndXPanelCases: any[] = JSON.parse(JSON.stringify(projectTypeCases.concat(forceDeviceXPanelCases)));
+  const fullSetOfCases: any[] = [];
+  for (let i = 0; i < projectTypeAndXPanelCases.length; i++) {
+    for (let j = 0; j < validProjectNames.length; j++) {
+      const projName = { "key": "projectName", "value": JSON.parse(JSON.stringify(validProjectNames[j])) };
+      const temporaryArray = JSON.parse(JSON.stringify(projectTypeAndXPanelCases[i]));
+      temporaryArray.push(JSON.parse(JSON.stringify(projName)));
+      fullSetOfCases.push(JSON.parse(JSON.stringify(temporaryArray)));
+    }
+  }
+
+  return fullSetOfCases;
+}
+
+function getAllPositiveTestCases() {
+  const validProjectNames = ["shell-template", "abc123"];
+  const validProjectTypes = ["shell-template", "ZoomRoomControl", "zoomroomcontrol"];
+  const validForceDeviceXPanel = ["true", "false", "Y", "N", "y", "n"];
+
+  // const positiveCases1: any[] = [];
+  // for (let i = 0; i < validProjectNames.length; i++) {
+  //   const projName = { "key": "projectName", "value": validProjectNames[i] };
+  //   const projNameArray: any[] = [];
+  //   projNameArray.push(projName);
+  //   positiveCases1.push(JSON.parse(JSON.stringify(projNameArray)));
+
+  //   for (let j = 0; j < validProjectTypes.length; j++) {
+  //     const projType = { "key": "projectType", "value": validProjectTypes[j] };
+  //     const projTypeArray: any[] = [];
+  //     projTypeArray.push(projType);
+  //     positiveCases1.push(JSON.parse(JSON.stringify(projTypeArray)));
+
+  //     projTypeArray.push(projName);
+  //     positiveCases1.push(JSON.parse(JSON.stringify(projTypeArray)));
+
+  //     for (let k = 0; k < validForceDeviceXPanel.length; k++) {
+  //       const xPanelType = { "key": "forceDeviceXPanel", "value": validForceDeviceXPanel[k] };
+  //       const xPanelTypeArray: any[] = [];
+  //       xPanelTypeArray.push(xPanelType);
+  //       positiveCases1.push(JSON.parse(JSON.stringify(xPanelTypeArray)));  
+  //       xPanelTypeArray.push(projName);
+  //       positiveCases1.push(JSON.parse(JSON.stringify(xPanelTypeArray)));  
+  //       xPanelTypeArray.push(projType);
+  //       positiveCases1.push(JSON.parse(JSON.stringify(xPanelTypeArray)));   
+  //     }
+  //   }
+  // }
+
+  // const validProjectNameCases: any[] = [];
+  // for (let i = 0; i < validProjectNames.length; i++) {
+  //   const projName = { "key": "projectName", "value": JSON.parse(JSON.stringify(validProjectNames[i])) };
+  //   const projNameArray: any[] = [];
+  //   projNameArray.push(JSON.parse(JSON.stringify(projName)));
+  //   validProjectNameCases.push(JSON.parse(JSON.stringify(projNameArray)));
+  // }
+
+  const validProjectTypeCases: any[] = [];
+  for (let j = 0; j < validProjectTypes.length; j++) {
+    const projType = { "key": "projectType", "value": validProjectTypes[j] };
+    const projTypeArray: any[] = [];
+    projTypeArray.push(JSON.parse(JSON.stringify(projType)));
+    validProjectTypeCases.push(JSON.parse(JSON.stringify(projTypeArray)));
+  }
+
+  const validForceDeviceXPanelCases: any[] = [];
+  for (let k = 0; k < validForceDeviceXPanel.length; k++) {
+    const xPanelType = { "key": "forceDeviceXPanel", "value": validForceDeviceXPanel[k] };
+    const xPanelTypeArray: any[] = [];
+    xPanelTypeArray.push(JSON.parse(JSON.stringify(xPanelType)));
+    validForceDeviceXPanelCases.push(JSON.parse(JSON.stringify(xPanelTypeArray)));
+
+    for (let i = 0; i < validProjectTypeCases.length; i++) {
+      const tempProjNameArray: any[] = JSON.parse(JSON.stringify(validProjectTypeCases[i]));
+      tempProjNameArray.push(JSON.parse(JSON.stringify(xPanelType)));
+      validForceDeviceXPanelCases.push(JSON.parse(JSON.stringify(tempProjNameArray)));
+    }
+  }
+
+  const projectTypeAndXPanelCases: any[] = JSON.parse(JSON.stringify(validProjectTypeCases.concat(validForceDeviceXPanelCases)));
+  const positiveCases: any[] = [];
+  for (let i = 0; i < projectTypeAndXPanelCases.length; i++) {
+    for (let j = 0; j < validProjectNames.length; j++) {
+      const projName = { "key": "projectName", "value": JSON.parse(JSON.stringify(validProjectNames[j])) };
+      const temporaryArray = JSON.parse(JSON.stringify(projectTypeAndXPanelCases[i]));
+      temporaryArray.push(JSON.parse(JSON.stringify(projName)));
+      positiveCases.push(JSON.parse(JSON.stringify(temporaryArray)));
+    }
+  }
+
+  // console.log("positiveCases (" + positiveCases.length + "): ", JSON.parse(JSON.stringify(positiveCases)));
+  return positiveCases;
+}
 
 async function createFolderForProjectCreation(directoryName: string) {
   directoryName = replaceAll(directoryName, "\"", "/");
