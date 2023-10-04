@@ -90,6 +90,9 @@ export class Ch5BaseClassForProject extends Ch5BaseClassForCliCreate {
         if (inputObj.type === "boolean") {
           if (inputObj.allowedAliases && inputObj.allowedAliases.length > 0 && inputObj.allowedAliases.includes(value)) {
             const val: boolean = this.utils.toBoolean(value);
+            if (inputObj.key.toLowerCase() === "forcedevicexpanel" && inputObj.inputReceived === true) {
+              this.logger.printSuccess(inputObj.key + " updated successfully. Default value of forcedevicexpanel for projecType 'zoomroomcontrol' is true and if projecType is 'shell-template' it is false.");
+            }
             return {
               value: val,
               warning: ""
@@ -283,7 +286,7 @@ export class Ch5BaseClassForProject extends Ch5BaseClassForCliCreate {
       });
 
       if (indexForProjectType === -1) {
-        this.logger.warn("projectType: " + projectType + " is invalid. Setting it to 'shell-template'");
+        this.logger.printWarning("projectType: " + projectType + " is invalid. The projectType is set to 'shell-template'");
         return {
           value: "shell-template",
           isValid: true,
