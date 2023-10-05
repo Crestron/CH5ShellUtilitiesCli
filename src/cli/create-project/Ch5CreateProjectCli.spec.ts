@@ -103,8 +103,7 @@ describe('Create Project >>>>>>>> ', () => {
     });
   });
 
-  describe.only('Create Project Tests', function () {
-
+  describe('Create Project Tests', function () {
     let createProjectCli: Ch5CreateProjectCli;
     let protoCreateProjectCli: any;
     let i18nJson: any;
@@ -417,7 +416,8 @@ function getInvalidForceDeviceXPanelCases() {
 }
 
 function getAllPositiveTestCases() {
-  const validProjectNames = ["shell-template", "abc123"];
+  const validProjectNames = ["shell-template", "abc123", "b@", "c#", "d$", "a[", "a]", "a|", "a:", "a;", "a'", "a>", "a<", "a,",
+    ".a", "@b", "#c", "$d", "%e", "^a", "&a", "*a", "(a", ")a", "!a", "~a", "`a", "-a", "_a", "=a", "+a", "{a", "}a", "[a", "]a", "|a", ":a", ";a", "'a", ">a", "<a", ",a", "a.b", "b@b", "c#b", "d$b", "e%b", "a^b", "a&b", "a*b", "a(b", "a)b", "a!b", "a~b", "a`b", "a-b", "a_b", "a=b", "a+b", "a{b", "a}b", "a[b", "a]b", "a|b", "a:b", "a;b", "a'b", "a>b", "a<b", "a,b"];
   const validProjectTypes = ["shell-template", "ZoomRoomControl", "zoomroomcontrol"];
   const validForceDeviceXPanel = ["true", "false", "Y", "N", "y", "n"];
 
