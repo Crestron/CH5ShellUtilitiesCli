@@ -87,7 +87,7 @@ export class Ch5UpdateProjectCli extends Ch5BaseClassForProject implements ICh5C
     }
 
     this.setProjectVariables();
-    this.updateTemplateFiles();
+    this.updateFilesAsPerProjectType();
 
     if (this.isCreateOrUpdateBasedOnConfigJson()) {
       await this.createBackupForExistingProject();

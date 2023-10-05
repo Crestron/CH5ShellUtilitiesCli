@@ -29,7 +29,6 @@ Validations and Important points
     - project name must not contain any non-url-safe characters (since name ends up being part of a URL)
     - project name should not contain any spaces or any of the following characters: ! @ # $ % ^ & * ( ) + = [ { } ] | \ : ; " ' < , > ? /
 
-
 2. All argument names like projectName, menuOrientation etc are exactly the same as defined in project-config.json. Only exception is 'version'. To update version, you will need to use `ch5-shell-cli update:project --projectVersion "1.0.0"`
 
 3. Pages / widgets can be added using the configuration file method. If there are newer pages / widgets in the config file (that do not exist in the project), then the new pages / widgets will be added. If the config file does not contain the pages / widgets defined in the project, then these pages will be deleted and cannot be restored. The configuration file values will override the project-config.json file in the project.
@@ -37,3 +36,7 @@ Validations and Important points
 4. if a config file is used to update the project, a confirmation will be requested by the script for updating the project. You can pass --force to override the confirmation.  If config file is added as an argument along with other parameters to the update:project command, then config file takes precedence, and other parameters are ignored.
 
 5. To access help, execute `ch5-shell-cli update:project --help`.
+
+6. projectType must be either shell-template or ZoomRoomControl. Default value is 'shell-template' if either projectType is not provided or is invalid.
+
+7. forceDeviceXPanel must be either Y or N or true or false. Default value is false, if either forceDeviceXPanel is not provided or is invalid. If projectType is ZoomRoomControl, then the value of forceDeviceXPanel is always set to true.

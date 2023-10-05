@@ -84,7 +84,7 @@ describe('Update project >>>>>>>', function () {
     });
   });
 
-  describe.only("CLI tests >>>>>>>", function () {
+  describe("CLI tests >>>>>>>", function () {
     let updateProjectCli: Ch5UpdateProjectCli;
     let protoUpdateProjectCli: any;
     let i18nJson: any;

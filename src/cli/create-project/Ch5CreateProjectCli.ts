@@ -72,8 +72,8 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForProject implements ICh5C
     }
 
     this.copyShellFolderContentsToProjectFolder();
-
-    this.updateTemplateFiles();
+    this.setFilesAsPerProjectType();
+    this.renamePackageJsonFile();
 
     if (this.isCreateOrUpdateBasedOnConfigJson()) {
       const inputConfigJSON: any = JSON.parse(this.utils.readFileContentSync(this.getConfigJsonFilePath()));
