@@ -55,15 +55,15 @@ const templateVersionInfoModule = (() => {
 	function setTabs() {
 
 		const entries = webXPanelModule.paramsToObject();
-		
+
 		let isForceDeviceXPanel = projectConfig.forceDeviceXPanel;
 		if (entries["forcedevicexpanel"] === "true") {
 			isForceDeviceXPanel = true;
 		} else if (entries["forcedevicexpanel"] === "false") {
 			isForceDeviceXPanel = false;
 		}
-		
-		if(projectConfig.useWebXPanel === false && isForceDeviceXPanel === false){
+
+		if (projectConfig.useWebXPanel === false && isForceDeviceXPanel === false) {
 			document.getElementById('webxpanel-tab').style.display = 'none';
 		}
 		updateVersionTabHTML();
@@ -205,10 +205,10 @@ const templateVersionInfoModule = (() => {
 	});
 	function setWebXStatus() {
 		setTimeout(() => {
-			document.querySelector('#webxpanel-tab-content .connection .status').innerHTML = webXTab.status;
-			document.querySelector('#webxpanel-tab-content .connection .cs').innerHTML = webXTab.cs;
-			document.querySelector('#webxpanel-tab-content .connection .ipid').innerHTML = webXTab.ipId;
-			document.querySelector('#webxpanel-tab-content .connection .roomid').innerHTML = webXTab.roomId || 'Room Id: ';
+			document.querySelector('#webxpanel-tab-content .connection .status').innerHTML = webXTab.status || translateModule.translateInstant('header.info.webxpanel.status');
+			document.querySelector('#webxpanel-tab-content .connection .cs').innerHTML = webXTab.cs || translateModule.translateInstant('header.info.webxpanel.cs');
+			document.querySelector('#webxpanel-tab-content .connection .ipid').innerHTML = webXTab.ipId || translateModule.translateInstant('header.info.webxpanel.ipid');
+			document.querySelector('#webxpanel-tab-content .connection .roomid').innerHTML = webXTab.roomId || translateModule.translateInstant('header.info.webxpanel.roomid');
 		});
 	}
 

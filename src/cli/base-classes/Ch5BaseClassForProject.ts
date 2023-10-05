@@ -283,7 +283,7 @@ export class Ch5BaseClassForProject extends Ch5BaseClassForCliCreate {
       });
 
       if (indexForProjectType === -1) {
-        this.logger.warn("projectType: " + projectType + " is invalid. Setting it to 'shell-template'");
+        this.logger.printWarning("projectType: " + projectType + " is invalid. The projectType is set to 'shell-template'");
         return {
           value: "shell-template",
           isValid: true,
@@ -587,11 +587,19 @@ export class Ch5BaseClassForProject extends Ch5BaseClassForCliCreate {
 
   protected copyShellFolderContentsToProjectFolder() {
     fsExtra.copySync(path.resolve(this.CLI_SHELL_FOLDER), "./");
-    // Reason for below: https://docs.npmjs.com/cli/v8/configuring-npm/package-lock-json
-    fs.renameSync(path.join("./", "packagelock.json"), path.join("./", "package-lock.json"));
   }
 
-  protected updateTemplateFiles() {
+  protected renamePackageJsonFile() {
+    // Reason for below: https://docs.npmjs.com/cli/v8/configuring-npm/package-lock-json
+    const fromFile = path.resolve("./", "packagelock.json");
+    const toFile = path.resolve("./", "package-lock.json");
+    fs.renameSync(fromFile, toFile);
+    if (fs.existsSync(fromFile)) {
+      fs.unlinkSync(fromFile);
+    }
+  }
+
+  protected setFilesAsPerProjectType() {
     const outputResponse = this.getOutputResponse();
     if (outputResponse.data.projectType === "zoomroomcontrol") {
       // Remove folders from shell-template
@@ -628,12 +636,95 @@ export class Ch5BaseClassForProject extends Ch5BaseClassForCliCreate {
     }
   }
 
+  protected updateFilesAsPerProjectType() {
+    // Do not pick package.json and packagelock.json - once the project is created, then the files can be updated by user. So replacing makes no sense.
+    const outputResponse = this.getOutputResponse();
+
+    if (outputResponse.data.projectType === "zoomroomcontrol") {
+      let zoomLibraryPackageJson: string = "";
+      // Remove folders from shell-template
+      for (let i = 0; i < this.CONFIG_FILE.custom.templates["shell-template"].customFolders.length; i++) {
+        this.removeFolderInProject(this.CONFIG_FILE.custom.templates["shell-template"].customFolders[i]);
+      }
+      for (let i = 0; i < this.CONFIG_FILE.custom.templates["shell-template"].customFiles.length; i++) {
+        if (!['package.json', 'packagelock.json'].includes(this.CONFIG_FILE.custom.templates["shell-template"].customFiles[i])) {
+          this.removeFileInProject(this.CONFIG_FILE.custom.templates["shell-template"].customFiles[i]);
+        }
+      }
+
+      // Copy folders from Zoom
+      for (let i = 0; i < this.CONFIG_FILE.custom.templates["zoomroomcontrol"].customFolders.length; i++) {
+        this.copyZoomFolderToProject(this.CONFIG_FILE.custom.templates["zoomroomcontrol"].customFolders[i]);
+      }
+      for (let i = 0; i < this.CONFIG_FILE.custom.templates["zoomroomcontrol"].customFiles.length; i++) {
+        if (!['package.json', 'packagelock.json'].includes(this.CONFIG_FILE.custom.templates["zoomroomcontrol"].customFiles[i])) {
+          this.copyZoomFileToProject(this.CONFIG_FILE.custom.templates["zoomroomcontrol"].customFiles[i]);
+        } else if (this.CONFIG_FILE.custom.templates["zoomroomcontrol"].customFiles[i] === "package.json") {
+          zoomLibraryPackageJson = path.resolve(this.CLI_TEMPLATES_ZOOM_ROOM_CONTROL_FOLDER, this.CONFIG_FILE.custom.templates["zoomroomcontrol"].customFiles[i]);
+        }
+      }
+      this.addZoomPackageDependency(zoomLibraryPackageJson);
+    } else if (outputResponse.data.projectType === "shell-template") {
+      // Remove folders from zoomroomcontrol
+      for (let i = 0; i < this.CONFIG_FILE.custom.templates["zoomroomcontrol"].customFolders.length; i++) {
+        this.removeFolderInProject(this.CONFIG_FILE.custom.templates["zoomroomcontrol"].customFolders[i]);
+      }
+      for (let i = 0; i < this.CONFIG_FILE.custom.templates["zoomroomcontrol"].customFiles.length; i++) {
+        if (!['package.json', 'packagelock.json'].includes(this.CONFIG_FILE.custom.templates["zoomroomcontrol"].customFiles[i])) {
+          this.removeFileInProject(this.CONFIG_FILE.custom.templates["zoomroomcontrol"].customFiles[i]);
+        }
+      }
+
+      // Copy folders from Shell
+      for (let i = 0; i < this.CONFIG_FILE.custom.templates["shell-template"].customFolders.length; i++) {
+        this.copyShellFolderToProject(this.CONFIG_FILE.custom.templates["shell-template"].customFolders[i]);
+      }
+      for (let i = 0; i < this.CONFIG_FILE.custom.templates["shell-template"].customFiles.length; i++) {
+        if (!['package.json', 'packagelock.json'].includes(this.CONFIG_FILE.custom.templates["shell-template"].customFiles[i])) {
+          this.copyShellFileToProject(this.CONFIG_FILE.custom.templates["shell-template"].customFiles[i]);
+        }
+      }
+      this.removeZoomPackageDependency();
+    }
+  }
+
   protected getShellTemplateProjectConfigPath() {
     return path.resolve(this.CLI_SHELL_FOLDER, this.PROJECT_CONFIG_JSON_PATH);
   }
 
   protected setValueInPackageJson(key: string, value: any) {
+    this.logger.log("Setting " + key + " in package.json as " + value);
     const packageJsonFile = editJsonFile("./package.json"); // Must be after directory change
+    packageJsonFile.set(key, value);
+    packageJsonFile.save();
+  }
+
+  protected removeZoomPackageDependency() {
+    const packageJsonFile = editJsonFile("./package.json"); // Must be after directory change
+    const getPackageJsonContent: any = packageJsonFile.get();
+    // this.logger.log("removeZoomPackageDependency", getPackageJsonContent.dependencies["@crestron/ch5-zoom-lib"]);
+    const key = "dependencies";
+    const dependencyObject = getPackageJsonContent.dependencies;
+    delete dependencyObject["@crestron/ch5-zoom-lib"];
+    const value = JSON.parse(JSON.stringify(dependencyObject));
+    this.logger.log("Setting " + key + " in package.json as " + value);
+    packageJsonFile.set(key, value);
+    packageJsonFile.save();
+  }
+
+  protected addZoomPackageDependency(filePathZoomPackageJson: string) {
+    const zoomPackageJsonFile = editJsonFile(filePathZoomPackageJson); // Must be after directory change
+    const getZoomPackageJsonContent: any = zoomPackageJsonFile.get();
+    const zoomLibVal = getZoomPackageJsonContent.dependencies["@crestron/ch5-zoom-lib"];
+
+    const packageJsonFile = editJsonFile("./package.json"); // Must be after directory change
+    const getPackageJsonContent: any = packageJsonFile.get();
+    // this.logger.log("addZoomPackageDependency", getPackageJsonContent.dependencies["@crestron/ch5-zoom-lib"]);
+    const key = "dependencies";
+    const dependencyObject = getPackageJsonContent.dependencies;
+    dependencyObject["@crestron/ch5-zoom-lib"] = zoomLibVal;
+    const value = JSON.parse(JSON.stringify(dependencyObject));
+    this.logger.log("Setting " + key + " in package.json as " + value);
     packageJsonFile.set(key, value);
     packageJsonFile.save();
   }

@@ -45,6 +45,10 @@ Since the json file is not provided, user will need to atleast 1 argument. Multi
 
 5. To access help, execute `ch5-shell-cli update:project --help`.
 
+6. projectType must be either shell-template or ZoomRoomControl. Default value is 'shell-template' if either projectType is not provided or is invalid.
+
+7. forceDeviceXPanel must be either Y or N or true or false. Default value is false, if either forceDeviceXPanel is not provided or is invalid. If projectType is ZoomRoomControl, then the value of forceDeviceXPanel is always set to true.
+
 
 ### Copyright
 

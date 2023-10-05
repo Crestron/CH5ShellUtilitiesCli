@@ -13,6 +13,8 @@ const fs = require('fs');
 const path = require('path');
 const dircompare = require('dir-compare');
 
+const { exec } = require('child_process');
+
 // describe.only('Create Project >>>>>>>> ', () => {
 //   it('program runs successfully', async () => {
 //     const { execute, cleanup } = await prepareEnvironment();
@@ -101,8 +103,7 @@ describe('Create Project >>>>>>>> ', () => {
     });
   });
 
-  describe.only('Create Project Tests', function () {
-
+  describe('Create Project Tests', function () {
     let createProjectCli: Ch5CreateProjectCli;
     let protoCreateProjectCli: any;
     let i18nJson: any;
@@ -119,6 +120,37 @@ describe('Create Project >>>>>>>> ', () => {
       i18nJson = await readJSONFile("./src/cli/create-project/i18n/en.json");
       configJson = await readJSONFile("./src/cli/create-project/files/config.json");
       repoFolder = path.resolve("./");
+    });
+
+    describe.only('Create Project - Negative Tests ', function () {
+      this.beforeEach(async () => {
+        process.chdir(DEFAULT_EXECUTION_PATH);
+      });
+
+      exec('ch5-shell-cli create:project --projectName', (error: any, stdout: any, stderr: any) => {
+        if (error) {
+          console.error(`error: ${error.message}`);
+          return;
+        }
+
+        if (stderr) {
+          console.error(`stderr: ${stderr}`);
+          return;
+        }
+
+        console.log(`stdout:\n${stdout}`);
+      });
+
+      // spawn('ch5-shell-cli create:project', ['--projectName', '#abcd'])
+      //   .then(function(result: any){
+      //     console.log("result", result);
+      //     // command was executed
+      //     // write tests here
+      //   })
+      //   .fail(function(err: any){
+      //     console.log("failure", err);
+      //     // maybe 1 last test to make sure there was no test
+      //   });
     });
 
     describe('Create Project - Positive Tests ', function () {
@@ -146,17 +178,17 @@ describe('Create Project >>>>>>>> ', () => {
           // Check for availability of files as per template
           const pathForTemplate: any = configJson.custom.templates[output.projectType];
           for (let j = 0; j < pathForTemplate.customFolders.length; j++) {
-            const path1 = path.resolve(repoFolder, "./src/project-templates/" + output.projectType+ "/" + pathForTemplate.customFolders[j]);
+            const path1 = path.resolve(repoFolder, "./src/project-templates/" + output.projectType + "/" + pathForTemplate.customFolders[j]);
             const path2 = path.resolve(output.pathToExecute + '/' + output.projectName + '/' + pathForTemplate.customFolders[j]);
             const responseDirCompare = dircompare.compareSync(path1, path2);
-            expect(responseDirCompare.totalFiles).to.equal(responseDirCompare.equalFiles);            
+            expect(responseDirCompare.totalFiles).to.equal(responseDirCompare.equalFiles);
           }
           for (let j = 0; j < pathForTemplate.customFiles.length; j++) {
             if (pathForTemplate.customFiles[j] !== "package.json") {
               const path1 = path.resolve(repoFolder, "./src/shell/" + pathForTemplate.customFiles[j]);
               const path2 = path.resolve(output.pathToExecute + '/' + output.projectName + '/' + pathForTemplate.customFiles[j]);
               const responseDirCompare = dircompare.compareSync(path1, path2);
-              expect(responseDirCompare.totalFiles).to.equal(responseDirCompare.equalFiles);            
+              expect(responseDirCompare.totalFiles).to.equal(responseDirCompare.equalFiles);
             }
           }
 
@@ -190,17 +222,17 @@ describe('Create Project >>>>>>>> ', () => {
           // Check for availability of files as per template
           const pathForTemplate: any = configJson.custom.templates[output.projectType];
           for (let j = 0; j < pathForTemplate.customFolders.length; j++) {
-            const path1 = path.resolve(repoFolder, "./src/project-templates/" + output.projectType+ "/" + pathForTemplate.customFolders[j]);
+            const path1 = path.resolve(repoFolder, "./src/project-templates/" + output.projectType + "/" + pathForTemplate.customFolders[j]);
             const path2 = path.resolve(output.pathToExecute + '/' + output.projectName + '/' + pathForTemplate.customFolders[j]);
             const responseDirCompare = dircompare.compareSync(path1, path2);
-            expect(responseDirCompare.totalFiles).to.equal(responseDirCompare.equalFiles);            
+            expect(responseDirCompare.totalFiles).to.equal(responseDirCompare.equalFiles);
           }
           for (let j = 0; j < pathForTemplate.customFiles.length; j++) {
             if (pathForTemplate.customFiles[j] !== "package.json") {
               const path1 = path.resolve(repoFolder, "./src/shell/" + pathForTemplate.customFiles[j]);
               const path2 = path.resolve(output.pathToExecute + '/' + output.projectName + '/' + pathForTemplate.customFiles[j]);
               const responseDirCompare = dircompare.compareSync(path1, path2);
-              expect(responseDirCompare.totalFiles).to.equal(responseDirCompare.equalFiles);            
+              expect(responseDirCompare.totalFiles).to.equal(responseDirCompare.equalFiles);
             }
           }
 
@@ -231,21 +263,21 @@ describe('Create Project >>>>>>>> ', () => {
           expect(String(projectConfig.projectName)).to.equal(output.projectName);
           expect(String(projectConfig.projectType)).to.equal(output.projectType);
           expect(projectConfig.forceDeviceXPanel).to.equal(output.forceDeviceXPanel);
-          
+
           // Check for availability of files as per template
           const pathForTemplate: any = configJson.custom.templates[output.projectType];
           for (let j = 0; j < pathForTemplate.customFolders.length; j++) {
-            const path1 = path.resolve(repoFolder, "./src/project-templates/" + output.projectType+ "/" + pathForTemplate.customFolders[j]);
+            const path1 = path.resolve(repoFolder, "./src/project-templates/" + output.projectType + "/" + pathForTemplate.customFolders[j]);
             const path2 = path.resolve(output.pathToExecute + '/' + output.projectName + '/' + pathForTemplate.customFolders[j]);
             const responseDirCompare = dircompare.compareSync(path1, path2);
-            expect(responseDirCompare.totalFiles).to.equal(responseDirCompare.equalFiles);            
+            expect(responseDirCompare.totalFiles).to.equal(responseDirCompare.equalFiles);
           }
           for (let j = 0; j < pathForTemplate.customFiles.length; j++) {
             if (pathForTemplate.customFiles[j] !== "package.json") {
               const path1 = path.resolve(repoFolder, "./src/shell/" + pathForTemplate.customFiles[j]);
               const path2 = path.resolve(output.pathToExecute + '/' + output.projectName + '/' + pathForTemplate.customFiles[j]);
               const responseDirCompare = dircompare.compareSync(path1, path2);
-              expect(responseDirCompare.totalFiles).to.equal(responseDirCompare.equalFiles);            
+              expect(responseDirCompare.totalFiles).to.equal(responseDirCompare.equalFiles);
             }
           }
 
@@ -384,7 +416,8 @@ function getInvalidForceDeviceXPanelCases() {
 }
 
 function getAllPositiveTestCases() {
-  const validProjectNames = ["shell-template", "abc123"];
+  const validProjectNames = ["shell-template", "abc123", "b@", "c#", "d$", "a[", "a]", "a|", "a:", "a;", "a'", "a>", "a<", "a,",
+    ".a", "@b", "#c", "$d", "%e", "^a", "&a", "*a", "(a", ")a", "!a", "~a", "`a", "-a", "_a", "=a", "+a", "{a", "}a", "[a", "]a", "|a", ":a", ";a", "'a", ">a", "<a", ",a", "a.b", "b@b", "c#b", "d$b", "e%b", "a^b", "a&b", "a*b", "a(b", "a)b", "a!b", "a~b", "a`b", "a-b", "a_b", "a=b", "a+b", "a{b", "a}b", "a[b", "a]b", "a|b", "a:b", "a;b", "a'b", "a>b", "a<b", "a,b"];
   const validProjectTypes = ["shell-template", "ZoomRoomControl", "zoomroomcontrol"];
   const validForceDeviceXPanel = ["true", "false", "Y", "N", "y", "n"];
 
