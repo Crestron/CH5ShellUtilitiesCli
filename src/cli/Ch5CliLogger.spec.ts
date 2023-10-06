@@ -1,11 +1,14 @@
 import { Ch5CliLogger, LOG_LEVELS } from "./Ch5CliLogger";
 import { expect } from 'chai';
+import { stderr } from "process";
 import * as sinon from "sinon";
 import { SinonStub } from "sinon";
 
 export const shouldCheckLoggerByLevelAndEnable = (logLevel: any, enabled: boolean) => {
 
   let ch5CliLoggerObject: Ch5CliLogger;
+
+  let stdErrorStub: SinonStub;
 
   let consoleLogStub: SinonStub;
   let consoleWarnStub: SinonStub;
@@ -16,6 +19,8 @@ export const shouldCheckLoggerByLevelAndEnable = (logLevel: any, enabled: boolea
   let consoleGroupEndStub: SinonStub;
 
   beforeEach(() => {
+    stdErrorStub = sinon.stub(process.stderr, 'write');
+
     consoleLogStub = sinon.stub(console, 'log');
     consoleWarnStub = sinon.stub(console, 'warn');
     consoleErrorStub = sinon.stub(console, 'error');
@@ -79,7 +84,7 @@ export const shouldCheckLoggerByLevelAndEnable = (logLevel: any, enabled: boolea
 
   it('print error', () => {
     ch5CliLoggerObject.printError('test');
-    expect(consoleLogStub.calledWith(ch5CliLoggerObject.FOREGROUND_COLORS.Red, 'test', ch5CliLoggerObject.FORMATTING.Reset)).equals(true);
+    expect(stdErrorStub.calledWith(ch5CliLoggerObject.FOREGROUND_COLORS.Red + 'test' + ch5CliLoggerObject.FORMATTING.Reset + "\n")).equals(true);
   });
 
   it('print log', () => {
