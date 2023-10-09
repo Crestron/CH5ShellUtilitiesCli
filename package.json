@@ -62,6 +62,7 @@
 		"@types/sinon": "10.0.2",
 		"chai": "^4.3.4",
 		"cli-mocker": "^1.0.4",
+		"dir-compare": "^4.2.0",
 		"mocha": "^10.2.0",
 		"mochawesome": "^7.1.2",
 		"mock-fs": "^5.0.0",

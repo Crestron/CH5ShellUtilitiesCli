@@ -61,9 +61,9 @@ export class Ch5BaseClassForProject extends Ch5BaseClassForCliCreate {
     this.logger.end();
   }
 
-  protected validateCLIInputArgument(inputObj: any, key: string, value: string) {
-    this.logger.log("validateCLIInputArgument: " + key + " - " + value, inputObj);
-    value = String(value).trim();
+  public validateCLIInputArgument(inputObj: any) { // }, key: string, value: string) {
+    this.logger.log("validateCLIInputArgument: " + inputObj.key + " - " + inputObj.inputValue, inputObj);
+    const value = String(inputObj.inputValue).trim();
     if (inputObj) {
       if (inputObj.validation && inputObj.validation !== "") {
         if (inputObj.validation === "validateProjectType") {
@@ -167,109 +167,9 @@ export class Ch5BaseClassForProject extends Ch5BaseClassForCliCreate {
     }
     return {
       value: "",
-      warning: this.getText("VERIFY_INPUT_PARAMS.INVALID_INPUT", key)
+      warning: this.getText("VERIFY_INPUT_PARAMS.INVALID_INPUT", inputObj.key)
     };
   }
-
-  // protected validateCLIInputArgument1(inputObj: any, key: string, value: string) {
-  //   this.logger.log("validateCLIInputArgument: " + key + " - " + value, inputObj);
-  //   value = String(value).trim(); //.toLowerCase();
-  //   if (inputObj) {
-  //     if (inputObj.allowedAliases && inputObj.allowedAliases.length > 0 && inputObj.allowedAliases.includes(value)) {
-  //       if (inputObj.type === "boolean") {
-  //         if (value) {
-  //           const val: boolean = this.utils.toBoolean(value);
-  //           return {
-  //             value: val,
-  //             warning: ""
-  //           };
-  //         } else {
-  //           return {
-  //             value: value,
-  //             warning: ""
-  //           };
-  //         }
-  //       } else if (inputObj.type === "enum") {
-  //         if (inputObj.validation !== "") {
-  //           if (inputObj.validation === "validateProjectType") {
-  //             const valOutput: any = this.validateProjectType(inputObj.allowedValues, value);
-  //             return {
-  //               value: valOutput.value,
-  //               warning: ""
-  //             }
-  //           }
-  //           return {
-  //             value: value,
-  //             warning: ""
-  //           };
-  //         } else {
-  //           return {
-  //             value: value,
-  //             warning: ""
-  //           };
-  //         }
-  //       }
-  //     } else {
-  //       if (inputObj.type === "enum" && inputObj.validation !== "" && inputObj.validation === "validateProjectType") {
-  //         const valOutput: any = this.validateProjectType(inputObj.allowedValues, value);
-  //         return {
-  //           value: valOutput.value,
-  //           warning: ""
-  //         }
-  //       } else if (inputObj.type === "string") {
-  //         if (inputObj.validation !== "") {
-  //           if (inputObj.validation === "validatePackageJsonProjectName") {
-  //             const valOutput: any = this.validatePackageJsonProjectName(value);
-  //             if (valOutput.isValid === false) {
-  //               return {
-  //                 value: null,
-  //                 warning: valOutput.warning
-  //               };
-  //             } else {
-  //               return {
-  //                 value: value,
-  //                 warning: ""
-  //               };
-  //             }
-  //           }
-  //           return {
-  //             value: value,
-  //             warning: ""
-  //           };
-  //         } else {
-  //           return {
-  //             value: value,
-  //             warning: ""
-  //           };
-  //         }
-  //       } else if (inputObj.type === "boolean") {
-  //         this.logger.log("boolean", value);
-  //         if (this.utils.isValidInput(value)) {
-  //           const val: boolean = this.utils.toBoolean(value);
-  //           this.logger.log("boolean val", val);
-  //           return {
-  //             value: val,
-  //             warning: ""
-  //           };
-  //         } else {
-  //           this.logger.log("boolean 2 val", this.utils.toBoolean(inputObj.default));
-  //           return {
-  //             value: this.utils.toBoolean(inputObj.default),
-  //             warning: ""
-  //           };
-  //         }
-  //       }
-  //     }
-  //     return {
-  //       value: value,
-  //       warning: ""
-  //     };
-  //   }
-  //   return {
-  //     value: "",
-  //     warning: this.getText("VERIFY_INPUT_PARAMS.INVALID_INPUT", key)
-  //   };
-  // }
 
   private validateProjectType(templateProjectTypes: string[], projectType: string) {
     /*
@@ -410,7 +310,7 @@ export class Ch5BaseClassForProject extends Ch5BaseClassForCliCreate {
         };
         this.logger.log("inputUpdate is ", inputUpdate);
 
-        const validationResponse: any = this.validateCLIInputArgument(value, value.key, value.inputValue);
+        const validationResponse: any = this.validateCLIInputArgument(value); //, value.key, value.inputValue);
         this.logger.log("validationResponse is ", validationResponse);
         if (validationResponse.warning === "") {
           inputUpdate.argsValue = validationResponse.value;
@@ -456,7 +356,8 @@ export class Ch5BaseClassForProject extends Ch5BaseClassForCliCreate {
               hint: "",
               message: this.getText(outputResponse.data.updatedInputs[i].question.name, outputResponse.data.updatedInputs[i].key),
               validate: (inputValue: string) => {
-                const valResponse: any = this.validateCLIInputArgument(outputResponse.data.updatedInputs[i], outputResponse.data.updatedInputs[i]["key"], inputValue);
+                outputResponse.data.updatedInputs[i].inputValue = inputValue;
+                const valResponse: any = this.validateCLIInputArgument(outputResponse.data.updatedInputs[i]); //, outputResponse.data.updatedInputs[i]["key"], inputValue);
                 if (valResponse.warning && valResponse.warning !== "") {
                   return valResponse.warning; // String output is considered as false for validate method.
                 } else {
