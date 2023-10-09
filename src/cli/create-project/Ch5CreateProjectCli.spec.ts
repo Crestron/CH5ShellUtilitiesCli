@@ -149,7 +149,6 @@ describe('Create:Project Functions >>>>>>>> ', () => {
     values: projectNameCases
   });
 
-  console.log("cliTestValues", JSON.stringify(cliTestValues));
   for (let i = 0; i < cliTestValues.length; i++) {
     for (let j = 0; j < cliTestValues[i].values.length; j++) {
       for (let k = 0; k < cliTestValues[i].values[j].input.length; k++) {
@@ -166,9 +165,13 @@ describe('Create:Project Functions >>>>>>>> ', () => {
             cliTestValues[i].values[j].error = createProjectCli.getText("COMMON.VALIDATIONS.PROJECT_NAME");
           }
           expect(output.warning).to.equal(cliTestValues[i].values[j].error);
-          if (cliTestValues[i].key === "projectName") {
+          if (cliTestValues[i].key === "projectName" && cliTestValues[i].values[j].error === "") {
+            // Remove -p for windows and keep for mac
+            console.log("creating folder: build/automation-tests/folders-project-name/" + cliTestValues[i].values[j].input[k]);
             const { lastOutput } = await run('mkdir -p ' + path.resolve("build/automation-tests/folders-project-name/") + cliTestValues[i].values[j].input[k], []);
-            console.log("lastOutput", lastOutput);
+            if (typeof lastOutput !== 'undefined') {
+              console.log("lastOutput", lastOutput);
+            }
           }
         });
       }
