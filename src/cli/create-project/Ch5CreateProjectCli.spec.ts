@@ -65,7 +65,7 @@ describe('Create:Project Functions >>>>>>>> ', () => {
         "value": true
       },
       {
-        "key": "CCC_.",
+        "key": "CCC_",
         "value": false
       }
     ];
@@ -118,6 +118,7 @@ describe('Create:Project Functions >>>>>>>> ', () => {
     - project name characters must be lowercase i.e., no uppercase or mixed case names are allowed
     - project name can consist of hyphens, tilde, numbers and alphabets
     - project name can consist of underscore and dot but these cannot start with these characters
+    - project name should not end with a dot
     - project name must not contain any non-url-safe characters (since name ends up being part of a URL)
     - project name should not contain any spaces or any of the following characters: ! @ # $ % ^ & * ( ) + = [ { } ] | \ : ; " ' < , > ? /
     */
@@ -140,8 +141,8 @@ describe('Create:Project Functions >>>>>>>> ', () => {
   projectNameCases.push({ input: ["1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234"], outputSameAsInput: true, error: "" });
   projectNameCases.push({ input: ["AbCDEf", "abcdE", "AB"], output: null });
   projectNameCases.push({ input: ["--a", "-a", "a-", "a--", "a--b", "~~a", "~a", "a~", "a~~", "a~~b", "abc", "a", "1"], error: "", outputSameAsInput: true });
-  projectNameCases.push({ input: ["a_", "a__", "a__b", "a.", "a..", "a..b"], error: "", outputSameAsInput: true });
-  projectNameCases.push({ input: ["__a", "_a", "..a", ".a"], output: null });
+  projectNameCases.push({ input: ["a_", "a__", "a__b", "a..b"], error: "", outputSameAsInput: true });
+  projectNameCases.push({ input: ["__a", "_a", "..a", ".a", "a.", "a.."], output: null });
   projectNameCases.push({ input: invalidProjNamesSet1, output: null });
 
   cliTestValues.push({
@@ -167,10 +168,10 @@ describe('Create:Project Functions >>>>>>>> ', () => {
           expect(output.warning).to.equal(cliTestValues[i].values[j].error);
           if (cliTestValues[i].key === "projectName" && cliTestValues[i].values[j].error === "") {
             // Remove -p for windows and keep for mac
-            console.log("creating folder: build/automation-tests/folders-project-name/" + cliTestValues[i].values[j].input[k]);
+            // console.log("creating folder: build/automation-tests/folders-project-name/" + cliTestValues[i].values[j].input[k]);
             const { lastOutput } = await run('mkdir -p ' + path.resolve("build/automation-tests/folders-project-name/") + cliTestValues[i].values[j].input[k], []);
             if (typeof lastOutput !== 'undefined') {
-              console.log("lastOutput", lastOutput);
+              // console.log("lastOutput", lastOutput);
             }
           }
         });

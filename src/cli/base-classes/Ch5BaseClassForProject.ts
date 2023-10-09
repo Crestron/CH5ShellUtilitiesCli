@@ -212,6 +212,7 @@ export class Ch5BaseClassForProject extends Ch5BaseClassForCliCreate {
     - project name characters must be lowercase i.e., no uppercase or mixed case names are allowed
     - project name can consist of hyphens, tilde, numbers and alphabets
     - project name can consist of underscore and dot but these cannot start with these characters
+    - project name should not end with a dot
     - project name must not contain any non-url-safe characters (since name ends up being part of a URL)
     - project name should not contain any spaces or any of the following characters: ! @ # $ % ^ & * ( ) + = [ { } ] | \ : ; " ' < , > ? /
     */
@@ -273,6 +274,10 @@ export class Ch5BaseClassForProject extends Ch5BaseClassForCliCreate {
       if (packageName.charAt(0) === specialArray1[i]) {
         return true;
       }
+    }
+
+    if (packageName.charAt(packageName.length - 1) === ".") {
+      return true;
     }
     return false;
   }
