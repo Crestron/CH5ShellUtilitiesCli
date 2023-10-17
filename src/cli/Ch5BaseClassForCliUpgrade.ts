@@ -294,18 +294,17 @@ export abstract class Ch5BaseClassForCliUpgrade {
 
   private validateProjectType(projectType: string) {
     /*
-     - projectType must be "zoomroomcontrol" or "default", it is case-insensitive.
+     - projectType must be "zoomroomcontrol" or "shell-template", it is case-insensitive.
     */
     const TEMPLATES = [
-      'zoomroomcontrol',
-      'default'
+      'shell-template'
     ];
     if (projectType && projectType.trim().length > 0) {
       projectType = projectType.trim().toLowerCase();
       if (!TEMPLATES.includes(projectType)) {
         this.logger.warn("projectType: " + projectType + " is invalid.");
         return {
-          value: "default",
+          value: "shell-template",
           isValid: true,
           error: ""
         };
@@ -319,7 +318,7 @@ export abstract class Ch5BaseClassForCliUpgrade {
     } else {
       this.logger.log("projectType: " + projectType + " is empty.");
       return {
-        value: "default",
+        value: "shell-template",
         isValid: false,
         error: ""
       };

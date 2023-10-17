@@ -185,9 +185,7 @@
       "title": "Project Type",
       "description": "The template chosen for the type of project.",
       "enum": [
-        "shell-template",
-        "ZoomRoomControl",
-        "zoomroomcontrol"
+        "shell-template"
       ],
       "type": "string"
     },
