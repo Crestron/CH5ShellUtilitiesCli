@@ -314,4 +314,32 @@
       }
     }
   }
+
+  #template-set-theme-page {
+    div.ch5-modal-dialog {
+      border: 1px solid $color-darkgrey;
+      color: $color-white;
+      background-color: $color-darkestgrey;
+      .logger-modal-wrapper {
+        .logger-modal,
+        .logger-modal-content {
+          color: $color-white;
+          background-color: $color-darkestgrey;
+        }
+
+        h5.logger-modal-title {
+          color: $color-white;
+        }
+
+        .note-text {
+          color: $color-white;
+          background-color: transparent;
+        }
+      }
+      .ch5-modal-dialog-close-icon-btn {
+        color: $color-white;
+        background-color: transparent;
+      }
+    }
+  }
 }
