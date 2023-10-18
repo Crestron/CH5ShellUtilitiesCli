@@ -201,9 +201,6 @@ const templatePageModule = (() => {
 					if (getSelectedTheme) {
 						document.getElementById("shellTemplateSelectedThemeCss").setAttribute("href", "./assets/css/" + getSelectedTheme.extends + ".css" + cacheBustVersion);
 					}
-					// if (projectConfigResponse.projectType.toLowerCase() === "zoomroomcontrol") {
-					// 	document.getElementById("shellTemplateZoomCh5LibJs").setAttribute("src", "./libraries/ch5-zoom-lib.js" + cacheBustVersion);
-					// }
 					const widgetsAndStandalonePages = document.getElementById("widgets-and-standalone-pages");
 					const widgets = projectConfigResponse.content.widgets;
 					for (let i = 0; i < widgets.length; i++) {
