@@ -1,84 +1,84 @@
 {
-	"name": "@crestron/ch5-shell-utilities-cli",
-	"description": "CH5 Shell Utilities CLI for command scripts",
-	"version": "2.5.0",
-	"author": "Crestron",
-	"license": "SEE LICENSE IN LICENSE.txt",
-	"main": "./build/index.js",
-	"types": "build/@types/index.d.ts",
-	"bin": {
-		"ch5-shell-cli": "./build/index.js"
-	},
-	"repository": {
-		"url": "https://github.com/Crestron/CH5ShellUtilitiesCli.git",
-		"type": "git"
-	},
-	"nyc": {
-		"exclude": "build/**/*.spec.js"
-	},
-	"scripts": {
-		"publish:local:watch": "nodemon --watch 'src/**/*.ts' --exec 'npm run publish:local'",
-		"publish:local": "npm run build && npm unlink && npm link",
-		"mtest": "mocha -r ts-node/register test/index.ts --timeout 15000 --reporter mochawesome",
-		"test:mocha": "npm run clean && npm run build:test && nyc mocha --config=.mocharc.json",
-		"test:mocha:report": "mocha --config=.mocharc.json --timeout 15000 --reporter mochawesome",
-		"start:watch": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts",
-		"create": "npm run build && npm run test",
-		"ch5-utils": "./build/index.js",
-		"tsc": "tsc --declaration --declarationDir build/@types",
-		"start": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts",
-		"start:js": "node build/index.js",
-		"setup:local": "npm install && npm link @crestron/ch5-shell-utilities-cli && npm run build && npm link",
-		"build": "npm run build:prod",
-		"clean": "rimraf build",
-		"build:test": "tsc -p tsconfig.test.json && node build dev",
-		"build:prod": "tsc -p tsconfig.prod.json && node build prod",
-		"build:dev": "tsc -p tsconfig.dev.json && node build dev"
-	},
-	"keywords": [
-		"ch5",
-		"ch5z",
-		"cli"
-	],
-	"dependencies": {
-		"chalk": "^4.1.2",
-		"commander": "^7.1.0",
-		"edit-json-file": "^1.7.0",
-		"enquirer": "^2.3.6",
-		"find-remove": "^2.0.3",
-		"fs-extra": "^9.1.0",
-		"jsonschema": "^1.4.0",
-		"process": "^0.11.10",
-		"rimraf": "^3.0.2",
-		"zip-lib": "^0.7.2"
-	},
-	"devDependencies": {
-		"@gmrchk/cli-testing-library": "^0.1.2",
-		"@types/chai": "^4.2.15",
-		"@types/fs-extra": "^9.0.9",
-		"@types/mocha": "^8.2.3",
-		"@types/mock-fs": "^4.13.0",
-		"@types/node": "^20.4.0",
-		"@types/sinon": "10.0.2",
-		"chai": "^4.3.4",
-		"cli-mocker": "^1.0.4",
-		"dir-compare": "^4.2.0",
-		"mocha": "^10.2.0",
-		"mochawesome": "^7.1.2",
-		"mock-fs": "^5.0.0",
-		"mock-stdin": "^1.0.0",
-		"nodemon": "^2.0.7",
-		"npm-run-all": "^4.1.5",
-		"nyc": "^15.1.0",
-		"sinon": "11.1.1",
-		"ts-node": "^9.1.1",
-		"tsc-hooks": "^1.1.1",
-		"typescript": "^5.1.6",
-		"typings": "^2.1.1"
-	},
-	"files": [
-		"build/**/*",
-		"LICENSE.txt",
-		"readme.md"
-	]
+    "name": "@crestron/ch5-shell-utilities-cli", 
+    "description": "CH5 Shell Utilities CLI for command scripts", 
+    "version": "2.6.0", 
+    "author": "Crestron", 
+    "license": "SEE LICENSE IN LICENSE.txt", 
+    "main": "./build/index.js", 
+    "types": "build/@types/index.d.ts", 
+    "bin": {
+        "ch5-shell-cli": "./build/index.js"
+    }, 
+    "repository": {
+        "url": "https://github.com/Crestron/CH5ShellUtilitiesCli.git", 
+        "type": "git"
+    }, 
+    "nyc": {
+        "exclude": "build/**/*.spec.js"
+    }, 
+    "scripts": {
+        "publish:local:watch": "nodemon --watch 'src/**/*.ts' --exec 'npm run publish:local'", 
+        "publish:local": "npm run build && npm unlink && npm link", 
+        "mtest": "mocha -r ts-node/register test/index.ts --timeout 15000 --reporter mochawesome", 
+        "test:mocha": "npm run clean && npm run build:test && nyc mocha --config=.mocharc.json", 
+        "test:mocha:report": "mocha --config=.mocharc.json --timeout 15000 --reporter mochawesome", 
+        "start:watch": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts", 
+        "create": "npm run build && npm run test", 
+        "ch5-utils": "./build/index.js", 
+        "tsc": "tsc --declaration --declarationDir build/@types", 
+        "start": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts", 
+        "start:js": "node build/index.js", 
+        "setup:local": "npm install && npm link @crestron/ch5-shell-utilities-cli && npm run build && npm link", 
+        "build": "npm run build:prod", 
+        "clean": "rimraf build", 
+        "build:test": "tsc -p tsconfig.test.json && node build dev", 
+        "build:prod": "tsc -p tsconfig.prod.json && node build prod", 
+        "build:dev": "tsc -p tsconfig.dev.json && node build dev"
+    }, 
+    "keywords": [
+        "ch5", 
+        "ch5z", 
+        "cli"
+    ], 
+    "dependencies": {
+        "chalk": "^4.1.2", 
+        "commander": "^7.1.0", 
+        "edit-json-file": "^1.7.0", 
+        "enquirer": "^2.3.6", 
+        "find-remove": "^2.0.3", 
+        "fs-extra": "^9.1.0", 
+        "jsonschema": "^1.4.0", 
+        "process": "^0.11.10", 
+        "rimraf": "^3.0.2", 
+        "zip-lib": "^0.7.2"
+    }, 
+    "devDependencies": {
+        "@gmrchk/cli-testing-library": "^0.1.2", 
+        "@types/chai": "^4.2.15", 
+        "@types/fs-extra": "^9.0.9", 
+        "@types/mocha": "^8.2.3", 
+        "@types/mock-fs": "^4.13.0", 
+        "@types/node": "^20.4.0", 
+        "@types/sinon": "10.0.2", 
+        "chai": "^4.3.4", 
+        "cli-mocker": "^1.0.4", 
+        "dir-compare": "^4.2.0", 
+        "mocha": "^10.2.0", 
+        "mochawesome": "^7.1.2", 
+        "mock-fs": "^5.0.0", 
+        "mock-stdin": "^1.0.0", 
+        "nodemon": "^2.0.7", 
+        "npm-run-all": "^4.1.5", 
+        "nyc": "^15.1.0", 
+        "sinon": "11.1.1", 
+        "ts-node": "^9.1.1", 
+        "tsc-hooks": "^1.1.1", 
+        "typescript": "^5.1.6", 
+        "typings": "^2.1.1"
+    }, 
+    "files": [
+        "build/**/*", 
+        "LICENSE.txt", 
+        "readme.md"
+    ]
 }
