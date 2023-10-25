@@ -5,16 +5,15 @@ The 'Import All' function imports assets, libraries, components to the './app/pr
 ## How to Use
 
 To import all, go to the command-prompt or terminal of the Shell Template project, and execute `ch5-shell-cli import:all`.
-The package.json has scripts to handle this execution - for yarn, use `yarn import:all` command or npm  `npm run import:all` command.
+The package.json has scripts to handle this execution - `npm run import:all` command.
 
-To access help, execute `ch5-shell-cli import:all --help` or `yarn import:all --help` or `npm run import:all -- --help`.
+To access help, execute `ch5-shell-cli import:all --help` or `npm run import:all -- --help`.
 
 ```bash
 Usage:
     ch5-shell-cli import:all [options]
     
-You could also use `yarn` or `npm run` to import all. The following are the commands:
-    yarn import:all [options]
+You could also use `npm run` to import all. The following are the command(s):
     npm run import:all -- [options]
 
 Options:
@@ -27,18 +26,15 @@ Options:
 You could use `ch5-shell-cli` to import the complete contents of the zip file to './app/project/' folder.
     ch5-shell-cli import:all -z {path} --all
     
-You could also use `yarn` or `npm run` to import all. The following are the commands:
-    yarn import:all -z {path} --all
+You could also use `npm run` to import all. The following are the command(s):
     npm run import:all -- -z {path} --all
 
 Import selected assets, libraries, components from './app/project/' folder. In this case, the filenames are mandatory in the command prompt. The filename must follow the complete path starting from './app/project/....'. Only filenames can be provided here (no folder paths). Multiple filenames can be provided in the command prompt. To achieve this, use the following commands
     ch5-shell-cli import:all -z ./dist/exported-all.zip -l ./app/project/components/pages/page1/page1.html ./app/project/assets/scss/_variables.scss
     ch5-shell-cli import:all -z ./dist/exported-all.zip --list ./app/project/components/pages/page1/page1.html ./app/project/assets/scss/_variables.scss
 
-You could also use `yarn` or `npm run` to import selected assets, libraries, components from './app/project/' folder. The following are the commands:
-    yarn import:all -z ./dist/exported-all.zip -l ./app/project/components/pages/page1/page1.html ./app/project/assets/scss/_variables.scss
+You could also use `npm run` to import selected assets, libraries, components from './app/project/' folder. The following are the command(s):
     npm run import:all -- -z ./dist/exported-all.zip -l ./app/project/components/pages/page1/page1.html ./app/project/assets/scss/_variables.scss
-    yarn import:all -z ./dist/exported-all.zip --list ./app/project/components/pages/page1/page1.html ./app/project/assets/scss/_variables.scss
     npm run import:all -- -z ./dist/exported-all.zip --list ./app/project/components/pages/page1/page1.html ./app/project/assets/scss/_variables.scss
 ```
 

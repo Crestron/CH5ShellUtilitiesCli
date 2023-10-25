@@ -1,10 +1,12 @@
 {
   "projectName": "shell-template",
+  "projectType": "shell-template",
   "version": "0.0.1",
   "faviconPath": "favicon.ico",
   "menuOrientation": "horizontal",
   "selectedTheme": "light-theme",
   "useWebXPanel": true,
+  "forceDeviceXPanel": false,
   "themes": [
     {
       "name": "light-theme",

@@ -1,0 +1,37 @@
+// Copyright (C) 2022 to the present, Crestron Electronics, Inc.
+// All rights reserved.
+// No part of this software may be reproduced in any form, machine
+// or natural, without the express written consent of Crestron Electronics.
+// Use of this source code is subject to the terms of the Crestron Software License Agreement
+// under which you licensed this source code.
+
+/**
+* Add the variables that should overwrite bootstrap variables. Ex: $info:#20c997;
+* Add the variables that are custom and not using bootstrap variable references. Ex: $lightblue: rgb(0, 174, 255);
+*/
+
+// Variables
+$info: #20c997;
+$enable-shadows: true;
+$black: #000;
+$lightblue: rgb(0, 174, 255);
+$color-white: #fff;
+$color-offwhite: #eee;
+$color-black: #000;
+$color-darkestgrey: #2b2b2b;
+$color-darkgrey: #7c7c7c;
+$color-lightgrey: #9e9191;
+$color-lightestgrey: #ccc;
+$color-greyishblue: #6c757d;
+
+$headings-font-weight: 700;
+$headings-color: inherit;
+$font-family-sans-serif: "Inter", sans-serif !default;
+
+// small device vars
+$mobile-gutter-space: 0.5rem;
+$mobile-gutter-space-lg: 1rem;
+
+// This needs to be transparent for the ch5-video to display.
+// Use ch5-background for background color or image
+$body-bg: transparent;

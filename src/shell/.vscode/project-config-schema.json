@@ -159,10 +159,12 @@
   "description": "This document is used to configure the themes, content, and navigation in the project. Any pages or widgets can be added or removed via the project configuration.",
   "required": [
     "projectName",
+    "projectType",
     "version",
     "faviconPath",
     "menuOrientation",
     "selectedTheme",
+    "forceDeviceXPanel",
     "useWebXPanel",
     "themes",
     "header",
@@ -172,8 +174,19 @@
   "properties": {
     "projectName": {
       "title": "Project Name",
-      "description": "A meaningful short name for the project.",
-      "pattern": "^(?:@[a-z0-9-*~][a-z0-9-*._~]*\/)?[a-z0-9-~][a-z0-9-._~]*$",
+      "description": "A meaningful name for the project.",
+      "pattern": "^(?:@(?:[a-z0-9-*~][a-z0-9-*._~]*)?\/)?[a-z0-9-~][a-z0-9-._~]*$",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 214
+    },
+    "projectType": {
+      "default": "shell-template",
+      "title": "Project Type",
+      "description": "The template chosen for the type of project.",
+      "enum": [
+        "shell-template"
+      ],
       "type": "string"
     },
     "version": {
@@ -209,8 +222,14 @@
     "useWebXPanel": {
       "default": false,
       "type": "boolean",
-      "description": "Use WebXPanel in the CH5 Project to connect with the CS.",
+      "description": "Use useWebXPanel in the CH5 Project to connect with the CS.",
       "title": "Use WebXPanel"
+    },
+    "forceDeviceXPanel": {
+      "default": false,
+      "type": "boolean",
+      "description": "Use forceDeviceXPanel in the CH5 Project to connect with the CS as a browser based WebXPanel project.",
+      "title": "Force Device XPanel"
     },
     "themes": {
       "default": [],

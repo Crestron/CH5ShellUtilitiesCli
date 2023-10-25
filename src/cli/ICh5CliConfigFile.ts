@@ -25,4 +25,5 @@ export interface ICh5CliConfigFile {
   automatedTests: boolean;
   allowedEnvironments: string[];
   settings: any;
+  custom?: any;
 }

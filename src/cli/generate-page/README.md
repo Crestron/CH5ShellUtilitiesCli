@@ -5,11 +5,11 @@ The 'generate page' function creates new pages using command-line statements.
 ## How to Use
 
 To generate page, go to the command-prompt or terminal of the Shell Template project, and execute `ch5-shell-cli generate:page`.
-The package.json has scripts to handle this execution - for yarn, use `yarn generate:page` command or npm  `npm run generate:page` command. The short hand for it is `yarn gen:p` or `npm run gen:p` within scripts of package.json.
+The package.json has scripts to handle this execution - `npm run generate:page` command. The short hand for it is `npm run gen:p` within scripts of package.json.
 
-To create a page, go to the command-prompt or terminal of the Shell Template Project, and execute `yarn generate:page` or `npm run generate:page`
+To create a page, go to the command-prompt or terminal of the Shell Template Project, and execute `npm run generate:page`
 
-To access help for 'generate page', execute `yarn generate:page --help` or `npm run generate:page -- --help`
+To access help for 'generate page', execute `npm run generate:page -- --help`
 
 The page files will be created inside `./app/project/components/pages/{page}` folder.
 
@@ -17,15 +17,13 @@ The page files will be created inside `./app/project/components/pages/{page}` fo
 Usage:
     ch5-shell-cli generate:page [options]
     
-You could also use `yarn` or `npm run` to generate pages. The following are the commands:
-    yarn generate:page [options]
+You could also use `npm run` to generate pages. The following are the command(s):
     npm run generate:page -- [options]
 
 You could use shortcut script `gen:p` with options:
     ch5-shell-cli gen:p [options]
 
-You could use shortcut script `gen:p` with yarn and npm commands as the following:
-    yarn gen:p [options]
+You could use shortcut script `gen:p` with npm command as the following:
     npm run gen:p -- [options]
 
 Options:
@@ -43,15 +41,7 @@ You could use `ch5-shell-cli` to generate pages with additional options. The fol
     ch5-shell-cli gen:p --name LEDLights --menu Y
     ch5-shell-cli gen:p -n LEDLights -m Y
     
-You could also use `yarn` or `npm run` to generate pages. The following are the commands:
-    yarn generate:page --name LEDLights
-    yarn generate:page -n LEDLights
-    yarn generate:page --name LEDLights --menu Y
-    yarn generate:page -n LEDLights -m Y
-    yarn gen:p --name LEDLights
-    yarn gen:p -n LEDLights
-    yarn gen:p --name LEDLights --menu Y
-    yarn gen:p -n LEDLights -m Y
+You could also use `npm run` to generate pages. The following are the command(s):
     npm run generate:page --  --name LEDLights
     npm run generate:page --  -n LEDLights
     npm run generate:page --  --name LEDLights --menu N

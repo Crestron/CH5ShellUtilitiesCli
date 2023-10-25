@@ -23,6 +23,7 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
 
   public static RULES: any = {
     PRE_BUILD_RULES: "PRE_BUILD_RULES",
+    POST_BUILD_RULES: "POST_BUILD_RULES",
     ALL_RULES: "ALL_RULES"
   };
 
@@ -105,6 +106,8 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
     // Check if response.content.$defaultView has valid input
     this.checkIfDefaultViewIsValid(projectConfigObject.content.$defaultView, pagesArray);
 
+    // Check if forceDeviceXPanel is set to false for Zoom project
+    this.checkIfForceDeviceXPanelForZoomRoomControl(projectConfigObject.forceDeviceXPanel, projectConfigObject.projectType);
 
     // Check if there are additional folders in the project which are not available in project-config.json and throw a warning
     // this.checkIfUnwantedFilesAndFoldersExist(pagesArray, "./app/project/components/pages/");
@@ -266,7 +269,6 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
     for (let i: number = 0; i < pagesArray.length; i++) {
       const page = pagesArray[i];
       if (page.hasOwnProperty("pageName")) {
-
         const validatePageName = this.namingHelper.camelize(page.fileName.split(".")[0]);
         if (validatePageName !== page.pageName) {
           this.logger.log("  validatePageName: ", validatePageName, page.pageName);
@@ -395,6 +397,18 @@ export class Ch5ValidateProjectConfigCli extends Ch5BaseClassForCli implements I
           break;
         }
       }
+    }
+  }
+
+  /**
+   * Check if forceDeviceXPanel is set to false for zoom project
+   * @param forceDeviceXPanel 
+   * @param projectType 
+   */
+  private checkIfForceDeviceXPanelForZoomRoomControl(forceDeviceXPanel: boolean, projectType: string) {
+    if (projectType.toLowerCase() === "zoomroomcontrol" && forceDeviceXPanel === false) {
+      const errorOrWarningType = this.getText("VALIDATIONS.FORCE_DEVICE_XPANEL.HEADER");
+      this.addError(Ch5ValidateProjectConfigCli.RULES.POST_BUILD_RULES, errorOrWarningType, this.getText("VALIDATIONS.FORCE_DEVICE_XPANEL.MESSAGE"), "");
     }
   }
 

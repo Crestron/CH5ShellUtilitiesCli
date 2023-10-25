@@ -5,9 +5,9 @@
 ## How to Use
 
 To export all, go to the command-prompt or terminal of the Shell Template project, and execute `ch5-shell-cli export:all`.
-The package.json has scripts to handle this execution -for yarn, use `yarn export:all` command or npm  `npm run export:all` command.
+The package.json has scripts to handle this execution - for npm, use `npm run export:all` command.
 
-To access help, execute `ch5-shell-cli export:all --help`. Note that, replacing `ch5-shell-cli` with `yarn` or `npm run` will also execute the script.
+To access help, execute `ch5-shell-cli export:all --help`. Note that, replacing `ch5-shell-cli` with `npm run` will also execute the script.
 
 By default, the zip file is created inside the project 'dist' folder. This file has the naming convention of exported-all.zip
 
@@ -15,8 +15,7 @@ By default, the zip file is created inside the project 'dist' folder. This file 
 Usage: 
     ch5-shell-cli export:all [options]
 
-You could also use `yarn` or `npm run` to export assets, libraries, and components. The following are the commands:
-    yarn export:all [options]
+You could also use `npm run` to export assets, libraries, and components. The following are the command(s):
     npm run export:all -- [options]
 
 Options:
@@ -27,18 +26,15 @@ Options:
 Export the complete project directory from './app/project/' folder. To achieve this, use the below command:
     ch5-shell-cli export:all --all
 
-You could also use `yarn` or `npm run` to export complete project directory. The following are the commands:
-    yarn export:all --all
+You could also use `npm run` to export complete project directory. The following are the command(s):
     npm run export:all -- --all
 
 Export selected files from './app/project/' folder. In this case, the file names are mandatory in the command-prompt. The filename must follow the complete path starting from './app/project/assets/....'. Only file names can be provided here (no folder paths). Multiple file names can be provided in the command-prompt. To achieve this, use the below commands:
     ch5-shell-cli export:all -l ./app/project/assets/data/translation/en.json ./app/project/components/pages/page1/page1.html
     ch5-shell-cli export:all --list ./app/project/components/pages/page1/page1.html ./app/project/assets/scss/_variables.scss
 
-You could also use `yarn` or `npm run` to export all. The following are the commands:
-    yarn export:all -l ./app/project/assets/data/translation/en.json ./app/project/components/pages/page1/page1.html
+You could also use `npm run` to export all. The following are the command(s):
     npm run export:all -- -l ./app/project/components/pages/page1/page1.html ./app/project/assets/scss/_variables.scss
-    yarn export:all --list ./app/project/components/pages/page1/page1.html ./app/project/assets/scss/_variables.scss
     npm run export:all -- --list ./app/project/assets/data/translation/en.json ./app/project/components/pages/page1/page1.html
 
 ```

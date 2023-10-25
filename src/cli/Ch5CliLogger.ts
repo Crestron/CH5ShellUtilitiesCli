@@ -4,6 +4,7 @@
 // or natural, without the express written consent of Crestron Electronics.
 // Use of this source code is subject to the terms of the Crestron Software License Agreement
 // under which you licensed this source code.
+const process = require('process');
 export const LOG_LEVELS: any = {
   TRACE: 1,
   DEBUG: 2,
@@ -154,7 +155,13 @@ export class Ch5CliLogger {
    * @param  {...any} input
    */
   public printError(...input: any) {
-    console.log(this.FOREGROUND_COLORS.Red, ...input, this.FORMATTING.Reset);
+    let outputString = "";
+    for (let i = 0; i < input.length; i++) {
+      outputString += input[i] + ", ";
+    }
+    outputString = outputString.substring(0, outputString.length - 2);
+    outputString = this.FOREGROUND_COLORS.Red + outputString + this.FORMATTING.Reset + "\n";
+    process.stderr.write(outputString);
   }
 
   /**

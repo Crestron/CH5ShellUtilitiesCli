@@ -14,27 +14,26 @@
   <title data-ch5-i18n="-+app.title+-"></title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <link rel="icon" type="image/x-icon" id="favicon" />
-  <link rel="stylesheet" href="./assets/css/external.css">
-  <link rel="stylesheet" id="selectedThemeCss">
-  <link rel="stylesheet" href="./assets/css/main.css">
-  <link rel="stylesheet" href="./assets/css/sg.css">
-  <link rel="stylesheet" href="./assets/css/templatecomponents.css">
-  <link rel="stylesheet" href="./assets/css/projectcomponents.css">
-</head>
+  <link rel="stylesheet" id="shellTemplateSelectedThemeCss">
+  <% for (var css in htmlWebpackPlugin.files.css) { %>
+  <link rel="stylesheet" href="./<%= htmlWebpackPlugin.files.css[css] %>">
+  <% } %>
 
+</head>
+					
 <body>
   <div id="widgets-and-standalone-pages">
   </div>
-  <div id="wrapper">
-    <ch5-import-htmlsnippet id="template-page-import-page"
-      url="./app/template/components/pages/template-page/template-page.html">
-    </ch5-import-htmlsnippet>
-  </div>
+  <ch5-import-htmlsnippet id="template-page-import-page"
+    url="./app/template/components/pages/template-page/template-page.html">
+  </ch5-import-htmlsnippet>
+
   <!-- Loader -->
   <div id="loader" class="loader"></div>
 
-  <script src="./libraries/cr-com-lib.js"></script>
-  <script src="./libraries/component.js"></script>
+  <% for (var js in htmlWebpackPlugin.files.js) { %>
+  <script src="<%= htmlWebpackPlugin.files.js[js] %>"></script>
+  <% } %>
 </body>
 
 </html>

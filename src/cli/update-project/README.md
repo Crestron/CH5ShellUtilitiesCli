@@ -10,7 +10,7 @@ Usage:
 
 ```
 
-The package.json in the shell template project has scripts to handle this execution - for yarn, use `yarn update:project` command or npm  `npm run update:project` command.
+The package.json in the shell template project has scripts to handle this execution - `npm run update:project` command.
 
 There are two ways to update a project using CLI. 
 
@@ -32,9 +32,11 @@ Since the json file is not provided, user will need to atleast 1 argument. Multi
 1. Validation for projectName argument are as follows:
     - project name length should be greater than zero and cannot exceed 214
     - project name characters must be lowercase i.e., no uppercase or mixed case names are allowed
-    - project name can consist of hyphens and numbers, and can only begin with alphabets
+    - project name can consist of hyphens, tilde, numbers and alphabets
+    - project name can consist of underscore and dot but these cannot start with these characters
+    - project name should not end with a dot
     - project name must not contain any non-url-safe characters (since name ends up being part of a URL)
-    - project name should not contain any spaces or any of the following characters: ~)('!*
+    - project name should not contain any spaces or any of the following characters: ! @ # $ % ^ & * ( ) + = [ { } ] | \ : ; " ' < , > ? /
 
 2. All argument names like projectName, menuOrientation etc are exactly the same as defined in project-config.json. Only exception is 'version'. To update version, you will need to use `ch5-shell-cli update:project --projectVersion "1.0.0"`
 
@@ -44,10 +46,14 @@ Since the json file is not provided, user will need to atleast 1 argument. Multi
 
 5. To access help, execute `ch5-shell-cli update:project --help`.
 
+6. projectType default value is 'shell-template' if either projectType is not provided or is invalid.
+
+7. forceDeviceXPanel must be either Y or N or true or false. Default value is false, if either forceDeviceXPanel is not provided or is invalid. 
+
 
 ### Copyright
 
-Copyright (C) 2022 to the present, Crestron Electronics, Inc.
+Copyright (C) 2023 to the present, Crestron Electronics, Inc.
 
 All rights reserved.
 

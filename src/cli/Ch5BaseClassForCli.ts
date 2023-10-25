@@ -12,7 +12,6 @@ import { Ch5CliLogger } from "./Ch5CliLogger";
 import { Ch5CliNamingHelper } from "./Ch5CliNamingHelper";
 import { Ch5CliProjectConfig } from "./Ch5CliProjectConfig";
 import { Ch5CliConfigFileReader } from "./Ch5CliConfigFileReader";
-import { ICh5CliConfigFile } from "./ICh5CliConfigFile";
 import { Ch5CliError } from "./Ch5CliError";
 
 const { Select, Confirm, prompt } = require('enquirer');
@@ -188,63 +187,6 @@ export abstract class Ch5BaseClassForCli {
     return target;
   }
 
-  protected validateCLIInputArgument(inputObj: any, key: string, value: string, errorMessage: string) {
-    this.logger.log(key + ": ", value);
-    value = String(value).trim().toLowerCase();
-    if (inputObj) {
-      if (inputObj.allowedAliases.length > 0 && inputObj.allowedAliases.includes(value)) {
-        if (inputObj.type === "boolean") {
-          const val: boolean = this.utils.toBoolean(value);
-          return {
-            value: val,
-            error: ""
-          };
-        } else if (inputObj.type === "enum") {
-          return {
-            value: value,
-            error: ""
-          };
-        }
-      } else {
-        if (inputObj.type === "string") {
-          if (inputObj.validation !== "") {
-            if (inputObj.validation === "validatePackageJsonProjectName") {
-              const valOutput: any = this.validatePackageJsonProjectName(value);
-              if (valOutput.isValid === false) {
-                return {
-                  value: null,
-                  warning: valOutput.error
-                };
-              } else {
-                return {
-                  value: value,
-                  warning: ""
-                };
-              }
-            }
-            return {
-              value: value,
-              warning: ""
-            };
-          } else {
-            return {
-              value: value,
-              warning: ""
-            };
-          }
-        }
-      }
-      return {
-        value: value,
-        error: ""
-      };
-    }
-    return {
-      value: "",
-      error: errorMessage
-    };
-  }
-
   /**
    *
    * @param program
@@ -408,43 +350,6 @@ export abstract class Ch5BaseClassForCli {
 
   protected getConfigNode(nodeName: string) {
     return this.CONFIG_FILE[nodeName];
-  }
-
-  private validatePackageJsonProjectName(packageName: string) {
-    /*
-      - project name length should be greater than zero and cannot exceed 214
-      - project name characters must be lowercase i.e., no uppercase or mixed case names are allowed
-      - project name can consist of hyphens and numbers, and can only begin with alphabets
-      - project name must not contain any non-url-safe characters (since name ends up being part of a URL)
-      - project name should not contain any spaces or any of the following characters: ~)('!*
-    */
-    if (packageName && packageName.trim().length > 0) {
-      packageName = packageName.trim().toLowerCase();
-      packageName = packageName.substring(0, 213);
-      // const packageNameValidity = new RegExp(/^[a-z][a-z0-9-._$]*$/).test(packageName);
-      const regexValue = /^(?:@[a-z0-9-*~][a-z0-9-*._~]*\/)?[a-z0-9-~][a-z0-9-._~]*$/; // /^[a-z][a-z0-9-._$]*$/
-      const packageNameValidity = new RegExp(regexValue).test(packageName);
-     
-      if (packageNameValidity === false) {
-        return {
-          value: null,
-          isValid: false,
-          error: this.getText("COMMON.VALIDATIONS.PROJECT_NAME")
-        };
-      } else {
-        return {
-          value: packageName,
-          isValid: true,
-          error: ""
-        };
-      }
-    } else {
-      return {
-        value: "",
-        isValid: false,
-        error: this.getText("COMMON.VALIDATIONS.PROJECT_NAME")
-      };
-    }
   }
 
   /**

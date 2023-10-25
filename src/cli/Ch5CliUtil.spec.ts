@@ -4,7 +4,6 @@ import { SinonSpy, SinonStub } from 'sinon';
 import mock from 'mock-fs';
 import { Ch5CliUtil } from "./Ch5CliUtil";
 import chalk from "chalk";
-import '@types/mocha'; // Should be able to remove this
 
 const ch5utils = new Ch5CliUtil();
 

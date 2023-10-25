@@ -5,7 +5,7 @@
 // Use of this source code is subject to the terms of the Crestron Software License Agreement
 // under which you licensed this source code.
 
-import { Ch5BaseClassForCliNew } from "../Ch5BaseClassForCliNew";
+import { Ch5BaseClassForCliUpgrade } from "../Ch5BaseClassForCliUpgrade";
 import { Ch5CliProjectConfig } from '../Ch5CliProjectConfig';
 import { ICh5CliNew } from "../ICh5Cli";
 
@@ -16,7 +16,7 @@ const fs = require("fs");
 const fsExtra = require("fs-extra");
 const editJsonFile = require("edit-json-file");
 
-export class Ch5UpgradeProjectCli extends Ch5BaseClassForCliNew implements ICh5CliNew {
+export class Ch5UpgradeProjectCli extends Ch5BaseClassForCliUpgrade implements ICh5CliNew {
 	private readonly SHELL_FOLDER: string = path.normalize(path.join(__dirname, "../../", "shell"));
 	private readonly PROJECT_CONFIG_JSON_PATH: string = path.normalize("/app/project-config.json");
 	private readonly cliProjectConfig: Ch5CliProjectConfig;
@@ -38,6 +38,7 @@ export class Ch5UpgradeProjectCli extends Ch5BaseClassForCliNew implements ICh5C
 	private readonly webpackProdPath = './webpack.prod.js';
 	private readonly indexHtmlPath = './app/index.html';
 	private readonly oldShellUtilitiesPath = './shell-utilities';
+	private readonly hardButtonsPath = './app/hard-buttons.json';
 
 	/**
 	 * Constructor
@@ -55,13 +56,15 @@ export class Ch5UpgradeProjectCli extends Ch5BaseClassForCliNew implements ICh5C
 
 		try {
 			// STEP 1: Update new project-config.json
+			this.processProjectConfig();
+
 			this.processThemesDifferences();
 
 			this.processHeaderDifferences();
 
 			this.processPagesDifferences();
-			// STEP 2: update directories
 
+			// STEP 2: update directories
 			await this.processDirectories();
 			this.logger.printSuccess(this.getText('SUCCESS_MESSAGE'));
 		} catch (err: any) {
@@ -100,6 +103,16 @@ export class Ch5UpgradeProjectCli extends Ch5BaseClassForCliNew implements ICh5C
 				})
 			})
 		})
+	}
+
+	processProjectConfig() {
+		const jsonProjectConfig = this.cliProjectConfig.getJson();
+		if (!jsonProjectConfig.projectType) {
+			this.cliProjectConfig.saveOverrideAttributeToJSON("projectType", "shell-template");
+		}
+		if (!jsonProjectConfig.forceDeviceXPanel) {
+			this.cliProjectConfig.saveOverrideAttributeToJSON("forceDeviceXPanel", false);
+		}
 	}
 
 	processDirectories() {
@@ -162,6 +175,10 @@ export class Ch5UpgradeProjectCli extends Ch5BaseClassForCliNew implements ICh5C
 			// copy index.html
 			fsExtra.copySync(path.resolve(path.join(this.temporaryPath, "v2", this.indexHtmlPath)), this.indexHtmlPath);
 
+			// if hard-buttons.json exists
+			if (!fs.existsSync(path.resolve(this.hardButtonsPath))) {
+				fsExtra.copySync(path.resolve(path.join(this.temporaryPath, "v2", this.hardButtonsPath)), this.hardButtonsPath);
+			}
 
 			// copy package.json and keep old name from v1
 			const oldPackageName = (fsExtra.readJSONSync(this.packagePath)).name;
@@ -178,7 +195,9 @@ export class Ch5UpgradeProjectCli extends Ch5BaseClassForCliNew implements ICh5C
 		const oldThemes = this.cliProjectConfig.getAllThemes();
 
 		for (const oldTheme of oldThemes) {
-			oldTheme.extends = oldTheme.name;
+			if (!oldTheme.extends) {
+				oldTheme.extends = oldTheme.name;
+			}
 		}
 
 		this.cliProjectConfig.saveOverrideAttributeToJSON('themes', oldThemes);
@@ -203,8 +222,16 @@ export class Ch5UpgradeProjectCli extends Ch5BaseClassForCliNew implements ICh5C
 		const oldPages = this.cliProjectConfig.getJson().content.pages;
 
 		for (const oldPage of oldPages) {
-			oldPage.cachePage = false;
-			oldPage.preloadPage = true;
+			if (oldPage.preloadPage === false) {
+				oldPage.preloadPage = false;
+			} else {
+				oldPage.preloadPage = true;
+			}
+			if (oldPage.cachePage === true) {
+				oldPage.cachePage = true;
+			} else {
+				oldPage.cachePage = false;
+			}
 			delete oldPage.pageProperties;
 		}
 
@@ -224,7 +251,7 @@ export class Ch5UpgradeProjectCli extends Ch5BaseClassForCliNew implements ICh5C
 	 */
 	async cleanUp() {
 		setTimeout(() => {
-			this.utils.deleteFolder(this.temporaryPath);
+			// this.utils.deleteFolder(this.temporaryPath);
 		}, 100);
 	}
 }

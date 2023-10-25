@@ -25,8 +25,8 @@
   },
   "CLEAN_UP": {},
   "LOG_OUTPUT": {    
-    "SUCCESS_MESSAGE_WITH_BACKUP": "Project updated successfully. Backup folder for the previous project files is created at {0}.",
-    "SUCCESS_MESSAGE": "Project updated successfully."
+    "SUCCESS_MESSAGE_WITH_BACKUP": "Project updated successfully. Backup folder for the previous project files is created at {0}.\n\nIf the projectType is updated, please run the command npm install.",
+    "SUCCESS_MESSAGE": "Project updated successfully.\n\nIf the projectType is updated, please run the command npm install."
   },
   "VALIDATIONS": {
     "CONFIRMATION" : {
@@ -36,6 +36,6 @@
   },
   "ERRORS": {
     "PROGRAM_STOPPED_OR_UNKNOWN_ERROR": "Either the program has been cancelled or an unknown error occurred. Please try again.",
-    "DO_NOT_UPDATE_PROJECT": "Project update cancelled."
+    "DO_NOT_MODIFY_PROJECT": "Project update cancelled."
   }
 }

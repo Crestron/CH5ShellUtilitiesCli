@@ -1,13 +1,11 @@
    
-You could also use `yarn` or `npm run` to generate widgets. The following are the commands:
-    yarn generate:widget [options]
+You could also use `npm run` to generate widgets. The following are the command(s):
     npm run generate:widget -- [options]
 
 You could use shortcut script `gen:w` with options:
     ch5-shell-cli gen:w [options]
     
-You could use shortcut script `gen:w` with yarn and npm commands as the following:
-    yarn gen:w [options]
+You could use shortcut script `gen:w` with npm command as the following:
     npm run gen:w -- [options]
 
 You could use `ch5-shell-cli` to generate widgets with additional options. The following are some examples:
@@ -16,13 +14,9 @@ You could use `ch5-shell-cli` to generate widgets with additional options. The f
     ch5-shell-cli gen:w --name LEDLights
     ch5-shell-cli gen:w -n LEDLights
     
-You could also use `yarn` or `npm run` to generate widgets. The following are the commands:
-    yarn generate:widget --name LEDLights
-    yarn generate:widget -n LEDLights
+You could also use `npm run` to generate widgets. The following are the command(s):
     npm run generate:widget --  --name LEDLights
     npm run generate:widget --  -n LEDLights
-    yarn gen:w --name LEDLights
-    yarn gen:w -n LEDLights
     npm run gen:w --  --name LEDLights
     npm run gen:w --  -n LEDLights
 
