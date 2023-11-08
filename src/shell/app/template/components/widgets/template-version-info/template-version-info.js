@@ -19,36 +19,25 @@ const templateVersionInfoModule = (() => {
 		ipId: '',
 		roomId: ''
 	};
-	let versionData = [];
 
 	/**
 	 * Initialize Method
 	 */
 	function onInit() {
-		serviceModule.loadJSON('./assets/data/version.json', (packages) => {
-			if (!packages) return console.log("FILE NOT FOUND");
-			versionData = packages;
-		})
+		projectConfigModule.projectConfigData().then(projectConfigResponse => {
+			projectConfig = projectConfigResponse;
+			if (projectConfig.header.displayInfo) {
+				updateSubscriptions();
+				setTabs();
+				setWebXStatus();
+			}
+		});
 		CrComLib.subscribeState('b', 'infoBtn.clicked', (value) => {
-			if (value.repeatdigital === true) {
-				projectConfigModule.projectConfigData().then(projectConfigResponse => {
-					projectConfig = projectConfigResponse;
-					if (projectConfig.header.displayInfo) {
-						updateSubscriptions();
-						setTabs();
-						setWebXStatus();
-					}
-				});
+			if (value.repeatdigital === true && document.getElementById('template-info').getAttribute('show') === 'false') {
+				document.getElementById('template-info').setAttribute('show', 'true');
+				updatePageCount();
 			}
 		});
-		CrComLib.subscribeState('b', 'infoModal.opened', (value) => {
-			if (value === true) {
-				document.getElementById('infobtn').children[0].style.pointerEvents = "none";
-			} else {
-				document.getElementById('infobtn').children[0].removeAttribute('style');
-			}
-		});
-
 
 	}
 
@@ -72,9 +61,13 @@ const templateVersionInfoModule = (() => {
 		setLogButtonListener();
 	}
 	function updateVersionTabHTML() {
-		const versionTableBody = document.getElementById('versionTableBody');
-		versionTableBody.innerHTML = "";
-		Array.from(JSON.parse(versionData)).forEach((e) => versionTableBody.appendChild(createTableRow(e)))
+
+		serviceModule.loadJSON('./assets/data/version.json', (packages) => {
+			if (!packages) return console.log("FILE NOT FOUND");
+			const versionTableBody = document.getElementById('versionTableBody');
+			versionTableBody.innerHTML = "";
+			Array.from(JSON.parse(packages)).forEach((e) => versionTableBody.appendChild(createTableRow(e)))
+		})
 	}
 	function createTableRow(data) {
 		const tableRow = document.createElement('tr');

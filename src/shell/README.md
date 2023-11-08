@@ -45,3 +45,7 @@ Run `npm run build:deploy` to deploy the project in TSW device.
 
 Run `npm run build:onestep` to build, archive and deploy the project in one step.
 
+## Template Theme
+
+To change the template theme from join, the join name can be configured on app/project-config.json using the receiveStateTheme and sendEventTheme properties in customSignals.
+Initially the join for sendEvent and receiveState have been set to `templateTheme`.

@@ -14,7 +14,6 @@ const templatePageModule = (() => {
 	let pageLoadTimeout = 2000;
 	let isWebXPanelInitialized = false; // avoid calling connection method multiple times
 	let projectThemes = [];
-	let selectedTheme = "";
 
 	const effects = {
 		"fadeOutUpBig": ["animate__animated", "animate__fadeOutUpBig"],
