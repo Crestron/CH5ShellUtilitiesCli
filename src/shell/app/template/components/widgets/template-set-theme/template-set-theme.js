@@ -16,10 +16,13 @@ const templateSetThemeModule = (() => {
       const themeList = document.getElementById('template-theme-list');
       themeList.setAttribute('numberOfItems', projectThemes.length + '');
 
+      const receiveStateTheme = projectConfigResponse.customSignals.receiveStateTheme || 'template-theme';
+      const sendEventTheme = projectConfigResponse.customSignals.sendEventTheme || 'template-theme';
+
       projectThemes.forEach(theme => {
         themeList.innerHTML +=
           `<ch5-button-list-individual-button 
-            onRelease="CrComLib.publishEvent('s','${projectConfigResponse.customSignals.receiveStateTheme}','${theme.name}')" 
+            onRelease="CrComLib.publishEvent('s','${receiveStateTheme}','${theme.name}')" 
             labelInnerHtml="${theme.name}" >
           </ch5-button-list-individual-button>`
       })
@@ -30,16 +33,26 @@ const templateSetThemeModule = (() => {
         }
       })
 
-      CrComLib.subscribeState('s', projectConfigResponse.customSignals.receiveStateTheme, (value) => {
-        if (document.body.classList.contains(value) === false && projectThemes.find(theme => theme.name === value)) {
-          featureModule.changeTheme(value);
-          if (projectConfigResponse.customSignals.receiveStateTheme !== projectConfigResponse.customSignals.sendEventTheme) {
-            CrComLib.publishEvent('s', projectConfigResponse.customSignals.sendEventTheme, value);
+      CrComLib.subscribeState('s', receiveStateTheme, (value) => {
+
+        // Conditions to check theme value
+        const validValue = document.body.classList.contains(value) === false && !!projectThemes.find(theme => theme.name === value);
+        const noValue = value === "" && document.body.classList.contains(projectConfigResponse.selectedTheme) === false;
+
+        // change theme if valid
+        if (validValue || noValue) {
+
+          document.getElementById('template-theme').setAttribute('show', 'false');
+
+          const theme = validValue === true ? value : projectConfigResponse.selectedTheme;
+          featureModule.changeTheme(theme);
+
+          if (receiveStateTheme !== sendEventTheme && sendEventTheme?.trim()) {
+            CrComLib.publishEvent('s', sendEventTheme, theme);
           }
-        } else if (value === "" && document.body.classList.contains(projectConfigResponse.selectedTheme) === false) {
-          featureModule.changeTheme(projectConfigResponse.selectedTheme);
         }
       });
+
     });
   }
 

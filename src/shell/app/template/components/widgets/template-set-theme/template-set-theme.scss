@@ -58,28 +58,6 @@
   }
 }
 
-#themebtn {
-  .ch5-button {
-    background-color: transparent;
-    border: none;
-    color: #808080;
-    height: 36px;
-    width: 36px;
-    box-shadow: none;
-    cursor: pointer;
-
-    .cb-btn {
-      @include size(100%);
-      padding: 0;
-    }
-
-    i {
-      font-size: 32px;
-      padding: 0;
-    }
-  }
-}
-
 .dark-theme,
 .project-dark-theme {
   #template-set-theme-page {
@@ -97,19 +75,5 @@
         color: $color-white;
       }
     }
-  }
-}
-
-#template-theme {
-  .ch5-button--warning {
-    background-color: #ffc107;
-  }
-
-  .ch5-button--label {
-    color: #333;
-  }
-
-  .ch5-button-list--selected {
-    background-color: #ff8f00;
   }
 }

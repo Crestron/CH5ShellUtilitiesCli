@@ -510,16 +510,14 @@
           "default": "templateTheme",
           "type": "string",
           "description": "join to receive and select a string theme name from the control system.",
-          "title": "receiveStateTheme",
-          "pattern": "^(?!\\s*$).+"
+          "title": "receiveStateTheme"
         },
         "sendEventTheme": {
           "$id": "#/properties/customSignals/properties/sendEventTheme",
           "default": "templateTheme",
           "type": "string",
           "description": "join to send a string theme name to the control system.",
-          "title": "sendEventTheme",
-          "pattern": "^(?!\\s*$).+"
+          "title": "sendEventTheme"
         }
       },
       "additionalProperties": false
