@@ -82,6 +82,10 @@
   "config": {
     "controlSystem": {}
   },
+  "customSignals": {
+    "receiveStateTheme": "templateTheme",
+    "sendEventTheme": "templateTheme"
+  },
   "header": {
     "display": true,
     "displayInfo": true,
