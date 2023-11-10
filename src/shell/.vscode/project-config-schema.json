@@ -426,7 +426,8 @@
           "roomId": "",
           "ipId": "",
           "tokenSource": "",
-          "tokenUrl": ""
+          "tokenUrl": "",
+          "secureToken": ""
         }
       },
       "properties": {
@@ -483,6 +484,13 @@
               "type": "string",
               "title": "tokenSource",
               "description": "Crestron provided code of the identity provider that provides security token",
+              "pattern": "^(?!\\s*$).+"
+            },
+            "secureToken": {
+              "default": "",
+              "type": "string",
+              "title": "secureToken",
+              "description": "Token to validate the authentication of the user",
               "pattern": "^(?!\\s*$).+"
             }
           },
