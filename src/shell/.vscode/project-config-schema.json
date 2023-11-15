@@ -185,9 +185,7 @@
       "title": "Project Type",
       "description": "The template chosen for the type of project.",
       "enum": [
-        "shell-template",
-        "ZoomRoomControl",
-        "zoomroomcontrol"
+        "shell-template"
       ],
       "type": "string"
     },
@@ -489,6 +487,37 @@
             }
           },
           "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "customSignals": {
+      "$id": "#/properties/customSignals",
+      "type": "object",
+      "title": "Custom Signals",
+      "description": "The configuration information of custom signals of the shell template",
+      "default": {
+        "receiveStateTheme": "templateTheme",
+        "sendEventTheme": "templateTheme"
+      },
+      "required": [
+        "receiveStateTheme",
+        "sendEventTheme"
+      ],
+      "properties": {
+        "receiveStateTheme": {
+          "$id": "#/properties/customSignals/properties/receiveStateTheme",
+          "default": "templateTheme",
+          "type": "string",
+          "description": "join to receive and select a string theme name from the control system.",
+          "title": "receiveStateTheme"
+        },
+        "sendEventTheme": {
+          "$id": "#/properties/customSignals/properties/sendEventTheme",
+          "default": "templateTheme",
+          "type": "string",
+          "description": "join to send a string theme name to the control system.",
+          "title": "sendEventTheme"
         }
       },
       "additionalProperties": false

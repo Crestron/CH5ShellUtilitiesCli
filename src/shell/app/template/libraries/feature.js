@@ -61,6 +61,8 @@ const featureModule = (() => {
           }
         }
       }
+      const themeIndex = projectThemes.findIndex(ele => ele.name === theme);
+      CrComLib.publishEvent('n', 'selectedTheme', themeIndex);
     }, 500);
   }
 
