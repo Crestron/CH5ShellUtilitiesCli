@@ -229,7 +229,8 @@
   }
 }
 
-.dark-theme {
+.dark-theme,
+.project-dark-theme {
   #template-version-info-page {
     .ch5-modal-dialog.project-info-dialog {
       border: 1px solid $color-darkgrey;
