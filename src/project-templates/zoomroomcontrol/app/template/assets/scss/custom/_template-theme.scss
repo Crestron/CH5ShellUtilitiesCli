@@ -343,4 +343,28 @@
       }
     }
   }
+
+  .info-widget,
+  .theme-widget {
+    .ch5-button.ch5-button--circle.ch5-button--size-small {
+      border: none;
+      color: white;
+      height: 36px;
+      width: 36px;
+      box-shadow: none;
+      cursor: pointer;
+
+
+      .cb-btn {
+        width: 36px;
+        height: 36px;
+        padding: 0;
+      }
+
+      i {
+        font-size: 32px;
+        padding: 0;
+      }
+    }
+  }
 }
