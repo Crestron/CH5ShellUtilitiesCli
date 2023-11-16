@@ -192,7 +192,8 @@
   }
 }
 
-.dark-theme {
+.dark-theme,
+.project-dark-theme {
   #template-remote-logger-settings-page {
     div.ch5-modal-dialog {
       border: 1px solid $color-darkgrey;

@@ -109,7 +109,8 @@
   }
 }
 
-.zoom-dark-theme {
+.zoom-dark-theme,
+.project-dark-theme {
   .footer-page {
     background-color: darken(#343a40, 5%);
     color: #fff;
@@ -339,6 +340,30 @@
       .ch5-modal-dialog-close-icon-btn {
         color: $color-white;
         background-color: transparent;
+      }
+    }
+  }
+
+  .info-widget,
+  .theme-widget {
+    .ch5-button.ch5-button--circle.ch5-button--size-small {
+      border: none;
+      color: white;
+      height: 36px;
+      width: 36px;
+      box-shadow: none;
+      cursor: pointer;
+
+
+      .cb-btn {
+        width: 36px;
+        height: 36px;
+        padding: 0;
+      }
+
+      i {
+        font-size: 32px;
+        padding: 0;
       }
     }
   }
