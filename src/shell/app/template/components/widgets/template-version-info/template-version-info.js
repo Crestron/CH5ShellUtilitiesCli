@@ -13,24 +13,19 @@ const templateVersionInfoModule = (() => {
 	let projectConfig;
 	const tableCount = {};
 	const componentCount = {};
-	const webXTab = {
-		status: '',
-		cs: '',
-		ipId: '',
-		roomId: ''
-	};
 
 	/**
 	 * Initialize Method
 	 */
 	function onInit() {
 		projectConfigModule.projectConfigData().then(projectConfigResponse => {
-			projectConfig = projectConfigResponse;
-			if (projectConfig.header.displayInfo) {
+			translateModule.initializeDefaultLanguage().then(() => {
+				projectConfig = projectConfigResponse;
 				updateSubscriptions();
 				setTabs();
-				setWebXStatus();
-			}
+				const infoModal = document.getElementById('template-info');
+				infoModal.setAttribute('title', translateModule.translateInstant('header.info.title'));
+			});
 		});
 		CrComLib.subscribeState('b', 'infoBtn.clicked', (value) => {
 			if (value.repeatdigital === true && document.getElementById('template-info').getAttribute('show') === 'false') {
@@ -94,18 +89,19 @@ const templateVersionInfoModule = (() => {
 		const diagnosticPageHeaderElement = document.getElementById('diagnosticPageHeaderElement');
 		const listOfPages = projectConfigModule.getNavigationPages();
 
+
 		document.getElementById('pageCount').textContent = translateModuleHelper('pagecount', listOfPages.length);
 		diagnosticPageHeaderElement.children[2].textContent = `Preload (${listOfPages.filter(page => page.preloadPage).length})`;
 		diagnosticPageHeaderElement.children[3].textContent = `	Cached (${listOfPages.filter(page => page.cachePage).length})`;
 		for (const page of listOfPages) {
 			let count = tableCount[page.pageName]?.total ?? '';
 			let nodes = tableCount[page.pageName]?.domNodes ?? '';
-			if (tableCount.hasOwnProperty(page.pageName) === false) {
-				const pageImporterElement = document.getElementById(page.pageName + '-import-page');
-				if (!pageImporterElement) return;
 
+			const pageImporterElement = document.getElementById(page.pageName + '-import-page');
+			if (pageImporterElement) {
 				tableCount[page.pageName] = CrComLib.countNumberOfCh5Components(pageImporterElement);
 				tableCount[page.pageName].domNodes = pageImporterElement.getElementsByTagName('*').length;
+
 				if (tableCount[page.pageName].domNodes === 1) {
 					tableCount[page.pageName].total = "";
 					tableCount[page.pageName].domNodes = "";
@@ -196,14 +192,6 @@ const templateVersionInfoModule = (() => {
 			});
 		}
 	});
-	function setWebXStatus() {
-		setTimeout(() => {
-			document.querySelector('#webxpanel-tab-content .connection .status').innerHTML = webXTab.status || translateModule.translateInstant('header.info.webxpanel.status');
-			document.querySelector('#webxpanel-tab-content .connection .cs').innerHTML = webXTab.cs || translateModule.translateInstant('header.info.webxpanel.cs');
-			document.querySelector('#webxpanel-tab-content .connection .ipid').innerHTML = webXTab.ipId || translateModule.translateInstant('header.info.webxpanel.ipid');
-			document.querySelector('#webxpanel-tab-content .connection .roomid').innerHTML = webXTab.roomId || translateModule.translateInstant('header.info.webxpanel.roomid');
-		});
-	}
 
 	/**
 	 * All public method and properties are exported here
@@ -213,7 +201,6 @@ const templateVersionInfoModule = (() => {
 		updateSubscriptions,
 		tableCount,
 		componentCount,
-		logSubscriptionsCount,
-		webXTab
+		logSubscriptionsCount
 	};
 })();

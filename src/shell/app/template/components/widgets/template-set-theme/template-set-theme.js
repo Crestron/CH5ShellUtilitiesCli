@@ -12,45 +12,51 @@ const templateSetThemeModule = (() => {
 
   function onInit() {
     projectConfigModule.projectConfigData().then(projectConfigResponse => {
-      const projectThemes = projectConfigResponse.themes;
-      const themeList = document.getElementById('template-theme-list');
-      themeList.setAttribute('numberOfItems', projectThemes.length + '');
+      translateModule.initializeDefaultLanguage().then(() => {
 
-      const receiveStateTheme = projectConfigResponse.customSignals.receiveStateTheme || 'template-theme';
-      const sendEventTheme = projectConfigResponse.customSignals.sendEventTheme || 'template-theme';
-
-      projectThemes.forEach(theme => {
-        themeList.innerHTML +=
-          `<ch5-button-list-individual-button 
+        const receiveStateTheme = projectConfigResponse.customSignals.receiveStateTheme || 'template-theme';
+        const sendEventTheme = projectConfigResponse.customSignals.sendEventTheme || 'template-theme';
+        
+        const projectThemes = projectConfigResponse.themes;
+        const themeList = document.getElementById('template-theme-list');
+        let wrapper = `<ch5-button-list orientation="vertical" buttonType="warning" numberOfItems="${projectThemes.length}" columns="1" 
+        buttonShape="rounded-rectangle" indexId="idx" loadItems="all"
+        receiveStateSelectedButton="selectedTheme">`
+        projectThemes.forEach(theme => {
+          wrapper +=
+            `<ch5-button-list-individual-button 
             onRelease="CrComLib.publishEvent('s','${receiveStateTheme}','${theme.name}')" 
             labelInnerHtml="${theme.name}" >
           </ch5-button-list-individual-button>`
-      })
+        })
+        wrapper += '</ch5-button-list>';
+        themeList.innerHTML = wrapper;
 
-      CrComLib.subscribeState('b', 'themebtn.clicked', (value) => {
-        if (value.repeatdigital === true && document.getElementById('template-theme').getAttribute('show') === 'false') {
-          document.getElementById('template-theme').setAttribute('show', 'true');
-        }
-      })
-
-      CrComLib.subscribeState('s', receiveStateTheme, (value) => {
-
-        // Conditions to check theme value
-        const validValue = document.body.classList.contains(value) === false && !!projectThemes.find(theme => theme.name === value);
-        const noValue = value === "" && document.body.classList.contains(projectConfigResponse.selectedTheme) === false;
-
-        // change theme if valid
-        if (validValue || noValue) {
-
-          document.getElementById('template-theme').setAttribute('show', 'false');
-
-          const theme = validValue === true ? value : projectConfigResponse.selectedTheme;
-          featureModule.changeTheme(theme);
-
-          if (receiveStateTheme !== sendEventTheme && sendEventTheme?.trim()) {
-            CrComLib.publishEvent('s', sendEventTheme, theme);
+        CrComLib.subscribeState('b', 'themebtn.clicked', (value) => {
+          if (value.repeatdigital === true && document.getElementById('template-theme').getAttribute('show') === 'false') {
+            document.getElementById('template-theme').setAttribute('show', 'true');
           }
-        }
+        })
+
+        CrComLib.subscribeState('s', receiveStateTheme, (value) => {
+
+          // Conditions to check theme value
+          const validValue = document.body.classList.contains(value) === false && !!projectThemes.find(theme => theme.name === value);
+          const noValue = value === "" && document.body.classList.contains(projectConfigResponse.selectedTheme) === false;
+
+          // change theme if valid
+          if (validValue || noValue) {
+
+            document.getElementById('template-theme').setAttribute('show', 'false');
+
+            const theme = validValue === true ? value : projectConfigResponse.selectedTheme;
+            featureModule.changeTheme(theme);
+
+            if (receiveStateTheme !== sendEventTheme && sendEventTheme?.trim()) {
+              CrComLib.publishEvent('s', sendEventTheme, theme);
+            }
+          }
+        });
       });
 
     });
