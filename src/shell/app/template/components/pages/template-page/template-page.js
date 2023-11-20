@@ -546,7 +546,7 @@ const templatePageModule = (() => {
 
 			}
 			cleanup();
-			setTimeout(() => { document.getElementById("loader").style.display = "none"; }, pageLoadTimeout);
+			setTimeout(() => { document.getElementById("loader").style.display = "none"; }, 2000);
 		} else {
 			setTimeout(() => {
 				hideLoading(pageObject);
