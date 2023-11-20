@@ -23,6 +23,11 @@
 //   }
 // }
 
+// CH5C-15398 - Please DO NOT remove the below class
+.ch5-hide-dis {
+  display: none !important;
+}
+
 #template-index-import-page,
 #template-index-import-page>div {
   max-height: 100%;
