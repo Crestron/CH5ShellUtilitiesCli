@@ -475,21 +475,16 @@ const templatePageModule = (() => {
 
 	function connectToWebXPanel(projectConfigResponse) {
 		if (!isWebXPanelInitialized) {
-			if (projectConfigResponse.header.display && projectConfigResponse.header.displayInfo && projectConfigResponse.header.$component.trim() === "") {
-				let loadListCh5 = CrComLib.subscribeState('o', 'ch5-import-htmlsnippet:template-version-info-import-page', (value) => {
-					if (value['loaded']) {
-						webXPanelModule.connect(projectConfigResponse);
-						isWebXPanelInitialized = true;
-						setTimeout(() => {
-							CrComLib.unsubscribeState('o', 'ch5-import-htmlsnippet:template-version-info-import-page', loadListCh5);
-							loadListCh5 = null;
-						});
-					}
-				});
-			} else {
-				webXPanelModule.connect(projectConfigResponse);
-				isWebXPanelInitialized = true;
-			}
+			let loadListCh5 = CrComLib.subscribeState('o', 'ch5-import-htmlsnippet:template-version-info-import-page', (value) => {
+				if (value['loaded']) {
+					webXPanelModule.connect(projectConfigResponse);
+					isWebXPanelInitialized = true;
+					setTimeout(() => {
+						CrComLib.unsubscribeState('o', 'ch5-import-htmlsnippet:template-version-info-import-page', loadListCh5);
+						loadListCh5 = null;
+					});
+				}
+			});
 		}
 	}
 
@@ -547,13 +542,11 @@ const templatePageModule = (() => {
 			if (!firstLoad && totalPreloadPage !== 0) {
 				firstLoad = true;
 				const listOfPages = projectConfigModule.getNavigationPages();
-				setTimeout(() => {
-					listOfPages.forEach((page) => page.preloadPage ? navigationModule.updateDiagnosticsOnPageChange(page.pageName) : '');
-				}, pageLoadTimeout);
+				listOfPages.forEach((page) => page.preloadPage && navigationModule.updateDiagnosticsOnPageChange(page.pageName));
 
 			}
 			cleanup();
-			document.getElementById("loader").style.display = "none";
+			setTimeout(() => { document.getElementById("loader").style.display = "none"; }, 2000);
 		} else {
 			setTimeout(() => {
 				hideLoading(pageObject);
