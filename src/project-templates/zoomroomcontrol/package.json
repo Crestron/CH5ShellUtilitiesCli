@@ -75,7 +75,7 @@
 		"@crestron/ch5-crcomlib": "http://nj6v-cloudrelaybuild/CH5/dev/2.5.0-dev.3/crestron-ch5-crcomlib-2.5.0-dev.3.tgz",
 		"@crestron/ch5-theme": "http://nj6v-cloudrelaybuild/CH5/dev/2.5.0-dev.3/crestron-ch5-theme-2.5.0-dev.3.tgz",
 		"@crestron/ch5-webxpanel": "http://nj6v-cloudrelaybuild/CH5/dev/2.5.0-dev.3/crestron-ch5-webxpanel-2.5.0-dev.3.tgz",
-		"@crestron/ch5-zoom-lib": "https://linux3-dev.crestron.crestron.com/UC-CH5ZoomLib/dev/crestron-ch5-zoom-lib-1.0.1.tgz"
+		"@crestron/ch5-zoom-lib": "^1.0.1"
 	},
 	"files": [
 		"copyright.txt",
