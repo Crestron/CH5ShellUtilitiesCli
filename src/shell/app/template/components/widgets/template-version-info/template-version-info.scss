@@ -249,7 +249,8 @@
   }
 }
 
-.dark-theme {
+.dark-theme,
+.project-dark-theme {
   #template-version-info-page {
     .ch5-modal-dialog.project-info-dialog {
       border: 1px solid $color-darkgrey;
@@ -312,7 +313,7 @@
           background-color: rgba(200, 200, 200, 0.8);
         }
 
-        tr:first-child {
+        thead tr:first-child {
           background-color: rgba(80, 80, 80, 0.8);
         }
       }

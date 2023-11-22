@@ -41,7 +41,7 @@
     },
     {
       "key": "projectType",
-      "description": "Sets the type of project. Value that will be set by default is shell-template.",
+      "description": "Sets the type of project. Value that will be set by default is shell-template and zoomroomcontrol.",
       "type": "enum",
       "default": "shell-template",
       "valueIfNotFound": "shell-template",
@@ -50,9 +50,11 @@
         "--projectType"
       ],
       "allowedValues": [
+        "zoomroomcontrol",
         "shell-template"
       ],
       "allowedAliases": [
+        "zoomroomcontrol",
         "shell-template"
       ],
       "validation": "validateProjectType",
@@ -232,6 +234,7 @@
           "app/template/libraries/webxpanel.js",
           "app/template/assets/scss/custom/_fonts.scss",
           "app/template/assets/scss/custom/_variables.scss",
+          "app/template/assets/scss/custom/_template-theme.scss",
           "app.config.js",
           "package.json",
           "packagelock.json",
@@ -248,6 +251,7 @@
           "app/template/libraries/webxpanel.js",
           "app/template/assets/scss/custom/_fonts.scss",
           "app/template/assets/scss/custom/_variables.scss",
+          "app/template/assets/scss/custom/_template-theme.scss",
           "app.config.js",
           "package.json",
           "packagelock.json",
