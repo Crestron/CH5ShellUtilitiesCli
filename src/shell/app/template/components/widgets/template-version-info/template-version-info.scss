@@ -14,27 +14,6 @@
 
   margin-left: 1rem;
 
-  #infobtn.warn {
-    position: relative;
-
-    &:after {
-      content: "!";
-      position: absolute;
-      background: #dc3545;
-      color: white;
-      border-radius: 50%;
-      height: 13px;
-      border: 1px solid #711c24;
-      width: 13px;
-      line-height: 12px;
-      text-align: center;
-      top: -2px;
-      right: -2px;
-      font-size: 0.8rem;
-      font-weight: 600;
-    }
-  }
-
   div.ch5-modal-dialog.project-info-dialog {
     width: 60vw;
     max-height: 70vh;
