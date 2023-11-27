@@ -41,7 +41,7 @@
     },
     {
       "key": "projectType",
-      "description": "Sets the type of project. Value that will be set by default is shell-template and zoomroomcontrol.",
+      "description": "Sets the type of project. Applicable values are shell-template and zoomroomcontrol.",
       "type": "enum",
       "default": "shell-template",
       "valueIfNotFound": "shell-template",
