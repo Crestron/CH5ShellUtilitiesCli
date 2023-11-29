@@ -16,7 +16,7 @@ const templateSetThemeModule = (() => {
 
         const receiveStateTheme = projectConfigResponse.customSignals.receiveStateTheme || 'template-theme';
         const sendEventTheme = projectConfigResponse.customSignals.sendEventTheme || 'template-theme';
-        
+
         const projectThemes = projectConfigResponse.themes;
         const themeList = document.getElementById('template-theme-list');
         let wrapper = `<ch5-button-list orientation="vertical" buttonType="warning" numberOfItems="${projectThemes.length}" columns="1" 
@@ -46,8 +46,9 @@ const templateSetThemeModule = (() => {
 
           // change theme if valid
           if (validValue || noValue) {
-
-            document.getElementById('template-theme').setAttribute('show', 'false');
+            setTimeout(() => {
+              document.getElementById('template-theme').setAttribute('show', 'false');
+            }, 50);
 
             const theme = validValue === true ? value : projectConfigResponse.selectedTheme;
             featureModule.changeTheme(theme);
