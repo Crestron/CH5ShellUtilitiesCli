@@ -90,6 +90,9 @@
           }
         }
       }
+    },
+    "theme": {
+      "title": "Select Theme"
     }
   },
   "footer": {

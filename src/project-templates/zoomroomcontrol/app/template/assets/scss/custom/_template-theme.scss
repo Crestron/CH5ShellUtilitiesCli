@@ -109,7 +109,8 @@
   }
 }
 
-.zoom-dark-theme {
+.zoom-dark-theme,
+.project-dark-theme {
   .footer-page {
     background-color: darken(#343a40, 5%);
     color: #fff;
@@ -201,5 +202,169 @@
   // heading
   .heading-color {
     color: darken(#fff, 10%);
+  }
+
+  #template-version-info-page {
+    .ch5-modal-dialog.project-info-dialog {
+      border: 1px solid $color-darkgrey;
+      color: $color-white;
+      background-color: $color-darkestgrey;
+
+      h4 {
+        color: $color-white;
+      }
+
+      p {
+        color: $color-offwhite;
+      }
+
+      .ch5-modal-dialog-close-icon-btn {
+        color: $color-white;
+      }
+
+      #version-tab-content,
+      #webxpanel-tab-content,
+      #diagnostics-tab-content {
+        color: white;
+      }
+
+      #tab-wrapper {
+        button {
+          background-color: rgba(169, 169, 169, 0.8);
+          border: 1px solid darkgray;
+
+          &:first-child {
+            border-right: none;
+            border-top-left-radius: 3px;
+          }
+
+          &:last-child {
+            border-left: none;
+            border-top-right-radius: 3px;
+          }
+
+          &.selected {
+            background-color: rgba(211, 211, 211, 0.8);
+          }
+        }
+      }
+
+      table {
+        width: 100%;
+
+        th,
+        td {
+          border: 1px solid lightgray;
+          padding: 5px;
+        }
+
+        tr:nth-child(even) {
+          background-color: rgba(200, 200, 200, 0.6);
+        }
+
+        tr:nth-child(odd) {
+          background-color: rgba(200, 200, 200, 0.8);
+        }
+
+        thead tr:first-child {
+          background-color: rgba(80, 80, 80, 0.8);
+        }
+      }
+
+    }
+
+    .ch5-button {
+      background-color: black;
+      border: none;
+      color: white;
+      height: 32px;
+      width: 32px;
+      box-shadow: none;
+
+      .cb-btn {
+        @include size(100%);
+        padding: 0;
+      }
+    }
+  }
+
+   #template-remote-logger-settings-page {
+    div.ch5-modal-dialog {
+      border: 1px solid $color-darkgrey;
+      color: $color-white;
+      background-color: $color-darkestgrey;
+      .logger-modal-wrapper {
+        .logger-modal,
+        .logger-modal-content {
+          color: $color-white;
+          background-color: $color-darkestgrey !important;
+        }
+
+        h5.logger-modal-title {
+          color: $color-white;
+        }
+
+        .note-text {
+          color: $color-white;
+          background-color: transparent;
+        }
+      }
+      .ch5-modal-dialog-close-icon-btn {
+        color: $color-white;
+        background-color: transparent;
+      }
+    }
+  }
+
+  #template-set-theme-page {
+    div.ch5-modal-dialog {
+      border: 1px solid $color-darkgrey;
+      color: $color-white;
+      background-color: $color-darkestgrey;
+      .logger-modal-wrapper {
+        .logger-modal,
+        .logger-modal-content {
+          color: $color-white;
+          background-color: $color-darkestgrey;
+        }
+
+        h5.logger-modal-title {
+          color: $color-white;
+        }
+
+        .note-text {
+          color: $color-white;
+          background-color: transparent;
+        }
+      }
+      .ch5-modal-dialog-close-icon-btn {
+        color: $color-white;
+        background-color: transparent;
+      }
+    }
+  }
+
+  .info-widget,
+  .theme-widget {
+    .ch5-button.ch5-button--circle.ch5-button--size-small {
+      border: none;
+      color: white;
+      height: 36px;
+      width: 36px;
+      box-shadow: none;
+      cursor: pointer;
+
+
+      .cb-btn {
+        width: 36px;
+        height: 36px;
+        padding: 0;
+      }
+
+      i {
+        font-size: 32px;
+        padding: 0;
+      }
+    }
   }
 }

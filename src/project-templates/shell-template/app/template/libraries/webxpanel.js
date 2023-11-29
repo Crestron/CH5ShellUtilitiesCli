@@ -31,19 +31,12 @@ var webXPanelModule = (function () {
   var status;
   var pcConfig = config;
   var urlConfig = config;
-  var isDisplayHeader = false;
-  var isEmptyHeaderComponent = true;
-  var isDisplayInfo = false;
   var connectParams = config;
   /**
    * Function to set status bar current state - hidden being default
    * @param {*} classNameToAdd
    */
   function setStatus(classNameToAdd = RENDER_STATUS.hide) {
-    if (!isDisplayHeader) {
-      return;
-    }
-
     let preloader = document.getElementById('pageStatusIdentifier');
     if (preloader) {
       preloader.className = classNameToAdd;
@@ -86,7 +79,7 @@ var webXPanelModule = (function () {
    * Get the url params if defined.
    */
   function getWebXPanelUrlParams() {
-   
+
     const entries = paramsToObject();
 
     // default host should be the IP address of the PC
@@ -135,7 +128,6 @@ var webXPanelModule = (function () {
         if (status !== null) {
           status.innerHTML = statusMsgPrefix + msg.detail.status + " " + msg.detail.statusText;
         }
-        templateVersionInfoModule.webXTab['status'] = statusMsgPrefix + msg.detail.status + " " + msg.detail.statusText;
       } else {
         updateInfoStatus("app.webxpanel.status.FETCH_TOKEN_FAILED");
       }
@@ -152,17 +144,13 @@ var webXPanelModule = (function () {
       }, 10000);
       updateInfoStatus("app.webxpanel.status.CONNECT_CIP");
 
-      if (isVersionInfoDisplayed()) {
-        const cs = document.querySelector('#webxpanel-tab-content .connection .cs');
-        const ipId = document.querySelector('#webxpanel-tab-content .connection .ipid');
-        const roomId = document.querySelector('#webxpanel-tab-content .connection .roomid');
-        if (cs !== null) { cs.textContent = `CS: wss://${connectParams.host}:${connectParams.port}`; }
-        if (ipId !== null) { ipId.textContent = `IPID: ${urlConfig.ipId}`; }
-        if (roomId !== null && msg.detail.roomId !== "") { ipId.textContent = `Room Id: ${msg.detail.roomId}`; }
-        templateVersionInfoModule.webXTab.cs = `CS: wss://${connectParams.host}:${connectParams.port}`;
-        templateVersionInfoModule.webXTab.ipId = `IPID: ${urlConfig.ipId}`;
-        templateVersionInfoModule.webXTab.roomId = `Room Id: ${msg.detail.roomId}`;
-      }
+
+      const cs = document.querySelector('#webxpanel-tab-content .connection .cs');
+      const ipId = document.querySelector('#webxpanel-tab-content .connection .ipid');
+      const roomId = document.querySelector('#webxpanel-tab-content .connection .roomid');
+      cs.textContent = `CS: wss://${connectParams.host}:${connectParams.port}`;
+      ipId.textContent = `IPID: ${urlConfig.ipId}`;
+      if (msg.detail.roomId !== "") { roomId.textContent = `Room Id: ${msg.detail.roomId}`; }
     });
 
     // Authorization
@@ -185,32 +173,20 @@ var webXPanelModule = (function () {
     let statusMessage = translateModule.translateInstant(statusMessageKey);
     if (statusMessage) {
       let sMsg = statusMsgPrefix + statusMessage;
-      if (isVersionInfoDisplayed()) {
-        const status = document.querySelector('#webxpanel-tab-content .connection .status');
-        if (status !== null) {
-          status.innerHTML = sMsg;
-        }
-        templateVersionInfoModule.webXTab['status'] = sMsg;
-      } else {
-        console.log(sMsg);
+      const status = document.querySelector('#webxpanel-tab-content .connection .status');
+      if (status !== null) {
+        status.innerHTML = sMsg;
       }
     }
   }
 
-  function isVersionInfoDisplayed() {
-    return (isDisplayInfo && isEmptyHeaderComponent && isDisplayHeader);
-  }
   /**
    * Show the badge on the info icon for connection status.
    */
   function displayConnectionWarning() {
-    if (!isVersionInfoDisplayed()) {
-      return;
-    }
-
-    let classArr = document.getElementById("infobtn").classList;
-    if (classArr) {
-      classArr.add("warn");
+    let infoBtn = document.getElementById("infobtn");
+    if (infoBtn) {
+      infoBtn.classList.add("warn");
     }
   }
 
@@ -218,13 +194,10 @@ var webXPanelModule = (function () {
    * Remove the badge on the info icon.
    */
   function removeConnectionWarning() {
-    if (!isVersionInfoDisplayed()) {
-      return;
-    }
 
-    let classArr = document.getElementById("infobtn").classList;
-    if (classArr) {
-      classArr.remove("warn");
+    let infoBtn = document.getElementById("infobtn");
+    if (infoBtn) {
+      infoBtn.classList.remove("warn");
     }
   }
 
@@ -250,18 +223,7 @@ var webXPanelModule = (function () {
   function connectWebXPanel(projectConfig) {
     connectParams = config;
 
-    isDisplayHeader = projectConfig.header.display;
-    /**
-     * if the header is false then displayInfo needs to be false
-     * even if it is set as true in project-config.json
-     */
-    isDisplayInfo = projectConfig.header.displayInfo;
-    isEmptyHeaderComponent = (projectConfig.header.$component === "") ? true : false;
-
-    // Show the connection bar when true
-    if (isVersionInfoDisplayed()) {
-      status = document.querySelector('#webxpanel-tab-content .connection .status');
-    }
+    status = document.querySelector('#webxpanel-tab-content .connection .status');
 
     webXPanelConnectionStatus();
     // Merge the configuration params, params of the URL takes precedence
@@ -275,22 +237,17 @@ var webXPanelModule = (function () {
 
     updateInfoStatus("app.webxpanel.status.CONNECT_WS");
 
-    if (isVersionInfoDisplayed()) {
-      const cs = document.querySelector('#webxpanel-tab-content .connection .cs');
-      const ipId = document.querySelector('#webxpanel-tab-content .connection .ipid');
-      const roomId = document.querySelector('#webxpanel-tab-content .connection .roomid');
-      if (connectParams.host !== "") {
-        if (cs !== null) { cs.textContent = `CS: wss://${connectParams.host}:${connectParams.port}`; }
-        templateVersionInfoModule.webXTab.cs = `CS: wss://${connectParams.host}:${connectParams.port}`;
-      }
-      if (connectParams.ipId !== "") {
-        if (ipId !== null) { ipId.textContent = `IPID: ${Number(connectParams.ipId).toString(16)}`; }
-        templateVersionInfoModule.webXTab.ipId = `IPID: ${Number(connectParams.ipId).toString(16)}`;
-      }
-      if (connectParams.roomId !== "") {
-        if (roomId !== null) { ipId.textContent = `Room Id: ${connectParams.roomId}`; }
-        templateVersionInfoModule.webXTab.roomId = `Room Id: ${connectParams.roomId}`;;
-      }
+    const cs = document.querySelector('#webxpanel-tab-content .connection .cs');
+    const ipId = document.querySelector('#webxpanel-tab-content .connection .ipid');
+    const roomId = document.querySelector('#webxpanel-tab-content .connection .roomid');
+    if (connectParams.host !== "") {
+      cs.textContent = `CS: wss://${connectParams.host}:${connectParams.port}`;
+    }
+    if (connectParams.ipId !== "") {
+      ipId.textContent = `IPID: ${Number(connectParams.ipId).toString(16)}`;
+    }
+    if (connectParams.roomId !== "") {
+      roomId.textContent = `Room Id: ${connectParams.roomId}`;
     }
 
     // WebXPanel listeners are called in the below method

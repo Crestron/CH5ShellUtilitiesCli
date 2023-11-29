@@ -11,39 +11,74 @@ const templateSetThemeModule = (() => {
   "use strict";
 
   function onInit() {
+    projectConfigModule.projectConfigData().then(projectConfigResponse => {
+      translateModule.initializeDefaultLanguage().then(() => {
+
+        const receiveStateTheme = projectConfigResponse.customSignals.receiveStateTheme || 'template-theme';
+        const sendEventTheme = projectConfigResponse.customSignals.sendEventTheme || 'template-theme';
+
+        const projectThemes = projectConfigResponse.themes;
+        const themeList = document.getElementById('template-theme-list');
+        let wrapper = `<ch5-button-list orientation="vertical" buttonType="warning" numberOfItems="${projectThemes.length}" columns="1" 
+        buttonShape="rounded-rectangle" indexId="idx" loadItems="all"
+        receiveStateSelectedButton="selectedTheme">`
+        projectThemes.forEach(theme => {
+          wrapper +=
+            `<ch5-button-list-individual-button 
+            onRelease="CrComLib.publishEvent('s','${receiveStateTheme}','${theme.name}')" 
+            labelInnerHtml="${theme.name}" >
+          </ch5-button-list-individual-button>`
+        })
+        wrapper += '</ch5-button-list>';
+        themeList.innerHTML = wrapper;
+
+        CrComLib.subscribeState('b', 'themebtn.clicked', (value) => {
+          if (value.repeatdigital === true && document.getElementById('template-theme').getAttribute('show') === 'false') {
+            document.getElementById('template-theme').setAttribute('show', 'true');
+          }
+        })
+
+        CrComLib.subscribeState('s', receiveStateTheme, (value) => {
+
+          // Conditions to check theme value
+          const validValue = document.body.classList.contains(value) === false && !!projectThemes.find(theme => theme.name === value);
+          const noValue = value === "" && document.body.classList.contains(projectConfigResponse.selectedTheme) === false;
+
+          // change theme if valid
+          if (validValue || noValue) {
+            setTimeout(() => {
+              document.getElementById('template-theme').setAttribute('show', 'false');
+            }, 50);
+
+            const theme = validValue === true ? value : projectConfigResponse.selectedTheme;
+            featureModule.changeTheme(theme);
+
+            if (receiveStateTheme !== sendEventTheme && sendEventTheme?.trim()) {
+              CrComLib.publishEvent('s', sendEventTheme, theme);
+            }
+          }
+        });
+      });
+
+    });
   }
 
-  function setTheme(themeName) {
-    featureModule.changeTheme(themeName);
-    // CrComLib.subscribeState('b', 'shellTemplate.projectTheme.sendEventOnClick', (value) => {
-    //   console.log('shellTemplate.projectTheme.sendEventOnClick', (value));
-    //   let themeName = "light-theme";
-    //   if (value === true) {
-    //     themeName = "dark-theme";
-    //   }
-    //   featureModule.changeTheme(projectThemes, themeName);
-    //   CrComLib.publishEvent('b', "shellTemplate.projectTheme.receiveStateValue", value);
-    // });
-  }
   /**
  * private method for page class initialization
  */
-  // let loadedImportSnippet = CrComLib.subscribeState('o', 'ch5-import-htmlsnippet:template-set-theme-import-page', (value) => {
-  //   if (value['loaded']) {
-  //     setTimeout(() => {
-  //       onInit();
-  //     }, 5000);
-  //     setTimeout(() => {
-  //       CrComLib.unsubscribeState('o', 'ch5-import-htmlsnippet:template-set-theme-import-page', loadedImportSnippet);
-  //       loadedImportSnippet = null;
-  //     });
-  //   }
-  // });
+  let loadedImportSnippet = CrComLib.subscribeState('o', 'ch5-import-htmlsnippet:template-set-theme-import-page', (value) => {
+    if (value['loaded']) {
+      onInit();
+      setTimeout(() => {
+        CrComLib.unsubscribeState('o', 'ch5-import-htmlsnippet:template-set-theme-import-page', loadedImportSnippet);
+        loadedImportSnippet = null;
+      });
+    }
+  });
 
   /**
    * All public method and properties are exported here
    */
   return {
-    setTheme
   };
 })();

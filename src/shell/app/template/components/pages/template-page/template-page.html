@@ -10,18 +10,27 @@
 						<i class="toggle-icon"></i>
 					</a>
 					<a class="navbar-brand">
-						<ch5-image class="d-block img-fluid" id="brandLogo" onclick="templateRemoteLoggerSettingsModule.showLoggerPopUp();"></ch5-image>
+						<ch5-image class="d-block img-fluid" id="brandLogo"
+							onclick="templateRemoteLoggerSettingsModule.showLoggerPopUp();"></ch5-image>
 					</a>
-					<ch5-import-htmlsnippet id="template-remote-logger-settings-import-page" url="./app/template/components/widgets/template-remote-logger-settings/template-remote-logger-settings.html">
+					<ch5-import-htmlsnippet id="template-remote-logger-settings-import-page"
+						url="./app/template/components/widgets/template-remote-logger-settings/template-remote-logger-settings.html">
 					</ch5-import-htmlsnippet>
 				</div>
 				<div id="header-section-page-set1"></div>
 				<template id="header-section-page-template1-set1">
 					<div class="navbar-action-right">
-						<!-- <ch5-import-htmlsnippet id="template-set-theme-import-page" url="./app/template/components/widgets/template-set-theme/template-set-theme.html">
-						</ch5-import-htmlsnippet> -->
-						<ch5-import-htmlsnippet id="template-version-info-import-page" url="./app/template/components/widgets/template-version-info/template-version-info.html">
-						</ch5-import-htmlsnippet>
+						<div class="theme-widget">
+							<ch5-button id="themebtn" shape="circle" size="small" iconClass="material-icons md-invert_colors"
+								sendEventOnClick="themebtn.clicked" role="button" aria-label="Select Theme" aria-pressed="false">
+							</ch5-button>
+						</div>
+						<div class="info-widget">
+							<ch5-button id="infobtn" shape="circle" size="small" iconClass="material-icons md-info"
+								sendEventOnClick="infoBtn.clicked" role="button" aria-label="Open Version Information"
+								aria-pressed="false">
+							</ch5-button>
+						</div>
 					</div>
 				</template>
 			</nav>
@@ -36,6 +45,14 @@
 		</section>
 	</template>
 </div>
+
+<!-- Template Widget -->
+<ch5-import-htmlsnippet id="template-set-theme-import-page"
+	url="./app/template/components/widgets/template-set-theme/template-set-theme.html">
+</ch5-import-htmlsnippet>
+<ch5-import-htmlsnippet id="template-version-info-import-page"
+	url="./app/template/components/widgets/template-version-info/template-version-info.html">
+</ch5-import-htmlsnippet>
 
 <!-- Content -->
 <div id="content-index-page">
@@ -52,11 +69,12 @@
 		<div class="vertical-menu">
 			<div class="vertical-menu-cols">
 				<div class="nav-panel col-auto height-for-list-menu">
-					<ch5-list id="vertical-menu-swiper-thumb" class="swiper-thumb" orientation="vertical" itemHeight="50px" maxHeight="auto" indexId="idx" itemWidth="100%">
+					<ch5-list id="vertical-menu-swiper-thumb" class="swiper-thumb" orientation="vertical" itemHeight="50px"
+						maxHeight="auto" indexId="idx" itemWidth="100%">
 						<template>
 							<div class="vertical-list-item">
-								<ch5-button id="menu-list-id-{{idx}}" type="text" shape="rectangle" hAlignLabel="left" 
-									receiveStateSelected="active_state_class_{{idx}}" 
+								<ch5-button id="menu-list-id-{{idx}}" type="text" shape="rectangle" hAlignLabel="left"
+									receiveStateSelected="active_state_class_{{idx}}"
 									onRelease="templatePageModule.navMenu({{idx}})"></ch5-button>
 							</div>
 						</template>
@@ -83,11 +101,13 @@
 
 <!-- footer -->
 <div class="horizontal-footer-menu" id="template-content-index-footer">
-	<ch5-list id="horizontal-menu-swiper-thumb" receiveStateScrollTo="scrollToMenu" scrollbar="false" class="swiper-thumb" orientation="horizontal" maxHeight="auto" indexId="idx" itemHeight="100%">
+	<ch5-list id="horizontal-menu-swiper-thumb" receiveStateScrollTo="scrollToMenu" scrollbar="false" class="swiper-thumb"
+		orientation="horizontal" maxHeight="auto" indexId="idx" itemHeight="100%">
 		<template>
 			<div class="horizontal-list-item">
-				<ch5-button id="menu-list-id-{{idx}}" type="text" shape="rectangle" stretch="both" 
-					receiveStateSelected="active_state_class_{{idx}}" onRelease="templatePageModule.navMenu({{idx}})"></ch5-button>
+				<ch5-button id="menu-list-id-{{idx}}" type="text" shape="rectangle" stretch="both"
+					receiveStateSelected="active_state_class_{{idx}}"
+					onRelease="templatePageModule.navMenu({{idx}})"></ch5-button>
 			</div>
 		</template>
 	</ch5-list>
