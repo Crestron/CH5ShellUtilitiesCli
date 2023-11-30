@@ -3,7 +3,7 @@
 // No part of this software may be reproduced in any form, machine
 // or natural, without the express written consent of Crestron Electronics.
 // Use of this source code is subject to the terms of the Crestron Software License Agreement
-// under which you licensed this source code.
+// under which you licensed this source code. 
 
 /* global WebXPanel, translateModule*/
 
@@ -16,7 +16,8 @@ var webXPanelModule = (function () {
     "roomId": "",
     "ipId": "0x03",
     "tokenSource": "",
-    "tokenUrl": ""
+    "tokenUrl": "",
+    "authToken": ""
   };
 
   const RENDER_STATUS = {
@@ -87,6 +88,7 @@ var webXPanelModule = (function () {
     urlConfig.ipId = entries["ipid"] || pcConfig.ipId;
     urlConfig.tokenSource = entries["tokensource"] || pcConfig.tokenSource;
     urlConfig.tokenUrl = entries["tokenurl"] || pcConfig.tokenUrl;
+    urlConfig.authToken = entries["authtoken"];
   }
 
   /**
