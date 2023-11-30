@@ -51,8 +51,7 @@ const serviceModule = (() => {
    */
   function newJsonLoad(url) {
     // Create new promise with the Promise() constructor;
-    // This has as its argument a function
-    // with two parameters, resolve and reject
+    // This has as its argument a function with two parameters, resolve and reject
     return new Promise(function (resolve, reject) {
       // Standard XHR to load an image
       let request = new XMLHttpRequest();
@@ -122,8 +121,7 @@ const serviceModule = (() => {
     // apply scenario only 
     // not running on TSW and either No XPanel loaded or XPanel disabled 
     if (!CrComLib.isCrestronTouchscreen()
-      && ((typeof WebXPanel == 'undefined' || !WebXPanel.isActive)
-        || !useWebXPanel)) {
+      && ((typeof WebXPanel == 'undefined' || !WebXPanel.isActive) || !useWebXPanel)) {
       for (let index = 0; index < noControlSystemEmulatorScenarios.length; index++) {
         const url = noControlSystemEmulatorScenarios[index];
         addEmulatorScenario(url);

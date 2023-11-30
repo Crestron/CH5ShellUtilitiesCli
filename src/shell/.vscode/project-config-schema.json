@@ -169,6 +169,7 @@
     "themes",
     "header",
     "content",
+    "customSignals",
     "footer"
   ],
   "properties": {
@@ -531,6 +532,7 @@
       "required": [
         "display",
         "displayInfo",
+        "displayTheme",
         "$component"
       ],
       "title": "Layout Header Bar",
@@ -548,6 +550,13 @@
           "type": "boolean",
           "description": "Shows or hides the information icon on the header bar. The displayInfo is only applicable when the display is set to true.\nNOTE: Not applicable for custom template.",
           "title": "displayInfo Property"
+        },
+        "displayTheme": {
+          "$id": "#/properties/header/properties/displayTheme",
+          "default": true,
+          "type": "boolean",
+          "description": "Shows or hides the Theme icon on the header bar. The displayTheme is only applicable when the display is set to true.\nNOTE: Not applicable for custom template.",
+          "title": "displayTheme Property"
         },
         "diagnostics": {
           "$id": "#/properties/header/properties/diagnostics",

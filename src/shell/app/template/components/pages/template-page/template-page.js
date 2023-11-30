@@ -9,11 +9,9 @@ const templatePageModule = (() => {
 	let selectedPage = { name: "" };
 	let totalPreloadPage = 0;
 	let preloadPageLoaded = 0;
-	let _isPageLoaded = false;
 	let firstLoad = false;
 	let pageLoadTimeout = 2000;
 	let isWebXPanelInitialized = false; // avoid calling connection method multiple times
-	let projectThemes = [];
 
 	const effects = {
 		"fadeOutUpBig": ["animate__animated", "animate__fadeOutUpBig"],
@@ -119,10 +117,6 @@ const templatePageModule = (() => {
 		}
 	}
 
-	function isPageLoaded() {
-		return _isPageLoaded;
-	}
-
 	/**
 	 * This is public method to show/hide bottom navigation in smaller screen
 	 */
@@ -180,18 +174,15 @@ const templatePageModule = (() => {
 
 			projectConfigModule.projectConfigData().then((projectConfigResponse) => {
 				translateModule.initializeDefaultLanguage().then(() => {
-					projectThemes = projectConfigResponse.themes;
-					featureModule.setProjectThemes(projectThemes);
-					featureModule.changeTheme(projectConfigResponse.selectedTheme);
+					templateSetThemeModule.setThemes(projectConfigResponse.themes);
+					templateSetThemeModule.changeTheme(projectConfigResponse.selectedTheme);
 
 					/* Note: You can uncomment below line to enable remote logger.
-					* Refer below documentation link to know more about remote logger.
-					* https://sdkcon78221.crestron.com/sdk/Crestron_HTML5UI/Content/Topics/UI-Remote-Logger.htm
-					*/
-					// featureModule.initializeLogger(serverIPAddress, serverPortNumber);
+					 * Refer below documentation link to know more about remote logger.
+					 * https://sdkcon78221.crestron.com/sdk/Crestron_HTML5UI/Content/Topics/UI-Remote-Logger.htm
+					 */
+					// templateRemoteLoggerSettingsModule.setRemoteLoggerConfig(serverIPAddress, serverPortNumber);
 					serviceModule.initialize(projectConfigResponse);
-					// navigationModule.goToPage(projectConfigResponse.content.$defaultView);
-					featureModule.logDiagnostics(projectConfigResponse.header.diagnostics.logs.logDiagnostics);
 
 					// Changes for index.html - Start
 					const cacheBustVersion = "?v=" + (new Date()).getTime();
@@ -200,6 +191,7 @@ const templatePageModule = (() => {
 					if (getSelectedTheme) {
 						document.getElementById("shellTemplateSelectedThemeCss").setAttribute("href", "./assets/css/" + getSelectedTheme.extends + ".css" + cacheBustVersion);
 					}
+
 					const widgetsAndStandalonePages = document.getElementById("widgets-and-standalone-pages");
 					const widgets = projectConfigResponse.content.widgets;
 					for (let i = 0; i < widgets.length; i++) {
@@ -248,18 +240,16 @@ const templatePageModule = (() => {
 							}
 						}
 
-						if (projectConfigResponse.header.displayInfo === true) {
-							if (projectConfigResponse.header.$component === "") {
-								const headerSectionPageSet1 = document.getElementById('header-section-page-set1');
-								headerSectionPageSet1.innerHTML = utilsModule.replacePlaceHolders(document.getElementById("header-section-page-template1-set1").innerHTML, mergedJsonContentHeader);
-							}
+						if (projectConfigResponse.header.$component === "") {
+							const headerSectionPageSet1 = document.getElementById('header-section-page-set1');
+							headerSectionPageSet1.innerHTML = utilsModule.replacePlaceHolders(document.getElementById("header-section-page-template1-set1").innerHTML, mergedJsonContentHeader);
 						}
 					} else {
 						document.getElementById("header-index-page").remove();
 					}
 
 					// Content
-					const app = document.getElementById('content-index-page');
+					const appContent = document.getElementById('content-index-page');
 					let data = "";
 					if (projectConfigResponse.menuOrientation === "horizontal") {
 						data = document.getElementById("template-content-page-section-horizontal").innerHTML;
@@ -270,20 +260,14 @@ const templatePageModule = (() => {
 					}
 
 					const mergedJsonContent = utilsModule.mergeJSON(projectConfigResponse, {});
-					app.innerHTML += utilsModule.replacePlaceHolders(data, mergedJsonContent);
+					appContent.innerHTML += utilsModule.replacePlaceHolders(data, mergedJsonContent);
 
 					const pagesList = projectConfigModule.getNavigationPages();
-					pagesList.forEach(e => { if (e.preloadPage) totalPreloadPage++ })
+					pagesList.forEach(e => { if (e.preloadPage) { totalPreloadPage++; } })
 					if (projectConfigResponse.menuOrientation === "horizontal") {
-						const horizontalMenuSwiperThumb = document.getElementById("horizontal-menu-swiper-thumb");
-						if (horizontalMenuSwiperThumb) {
-							horizontalMenuSwiperThumb.setAttribute("size", pagesList.length);
-						}
+						document.getElementById("horizontal-menu-swiper-thumb")?.setAttribute("size", pagesList.length);
 					} else if (projectConfigResponse.menuOrientation === "vertical") {
-						const verticalMenuSwiperThumb = document.getElementById("vertical-menu-swiper-thumb");
-						if (verticalMenuSwiperThumb) {
-							verticalMenuSwiperThumb.setAttribute("size", pagesList.length);
-						}
+						document.getElementById("vertical-menu-swiper-thumb")?.setAttribute("size", pagesList.length);
 					}
 
 					let triggerviewInContent = "";
@@ -394,12 +378,9 @@ const templatePageModule = (() => {
 					}
 
 					CrComLib.subscribeState('s', 'Csig.Product_Name_Text_Join_fb', (deviceSpecificData) => {
-						hardButtonsModule.initialize(deviceSpecificData).then(hardButtonResponse => {
+						hardButtonsModule.initialize(deviceSpecificData).then(() => {
 							let responseArrayForNavPages = projectConfigModule.getNavigationPages();
 							if (projectConfigResponse.menuOrientation === "horizontal") {
-
-								// window.customElements.whenDefined('horizontal-menu-swiper-thumb').then(()=>{
-
 								let loadListCh5 = CrComLib.subscribeState('o', 'ch5-list', (value) => {
 									if (value['loaded'] && (value['id'] === "horizontal-menu-swiper-thumb")) {
 										loadCh5ListForMenu(projectConfigResponse, responseArrayForNavPages);
@@ -440,10 +421,10 @@ const templatePageModule = (() => {
 		}
 	});
 
-	function setTransition(app) {
+	function setTransition(selectedElement) {
 		const selectedEffect = effects.fadeIn;
 		for (let i = 0; i < selectedEffect.length; i++) {
-			app.classList.add(selectedEffect[i]);
+			selectedElement.classList.add(selectedEffect[i]);
 		}
 	}
 
@@ -459,7 +440,6 @@ const templatePageModule = (() => {
 			webXPanelModule.getWebXPanel(true); // Always Connect as WebX and not Native
 			connectToWebXPanel(projectConfigResponse);
 		} else {
-
 			// Check if Crestron Device
 			if (WebXPanel.runsInContainerApp() === true) {
 				webXPanelModule.getWebXPanel(false); // Connect as Native
@@ -531,7 +511,6 @@ const templatePageModule = (() => {
 			newIndex = 0;
 		}
 		navigateTriggerViewByIndex(newIndex);
-		_isPageLoaded = true;
 	}
 
 	/**
@@ -565,7 +544,10 @@ const templatePageModule = (() => {
 
 		projectConfigModule.projectConfigData().then(data => {
 			if (data.header.displayInfo === false) {
-				document.getElementById('header-section-page-set1')?.remove();
+				document.getElementById('infobtn')?.remove();
+			}
+			if (data.header.displayTheme === false) {
+				document.getElementById('themebtn')?.remove();
 			}
 			if (data.menuOrientation === "vertical" || data.menuOrientation === "none") {
 				document.getElementById('template-content-index-footer')?.remove();
@@ -587,7 +569,6 @@ const templatePageModule = (() => {
 	 */
 	return {
 		navigateTriggerViewByPageName,
-		isPageLoaded,
 		openThumbNav,
 		toggleSidebar,
 		hideLoading,

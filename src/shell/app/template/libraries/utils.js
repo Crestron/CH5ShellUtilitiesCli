@@ -9,22 +9,21 @@
 const utilsModule = (() => {
   "use strict";
 
+  const allowLogging = false; // Set this to true for manual debugging
+
   function log(...input) {
-    let allowLogging = true;
     if (allowLogging === true) {
       console.log(...input);
     }
   }
 
   /**
- * 
- * @param  {...any} args 
- */
+   * Merge the object into the target object
+   * @param  {...any} args 
+   */
   function mergeJSON(...args) {
     let target = {};
-    // Merge the object into the target object
-
-    //Loop through each object and conduct a merge
+    // Loop through each object and conduct a merge
     for (let i = 0; i < args.length; i++) {
       target = merger(target, args[i]);
     }
@@ -38,7 +37,6 @@ const utilsModule = (() => {
         if (Object.prototype.toString.call(obj[prop]) === '[object Object]') {
           // If we're doing a deep merge and the property is an object
           target[prop] = mergeJSON(target[prop], obj[prop]);
-          // target = merger(target, obj[prop]);
         } else {
           // Otherwise, do a regular merge
           target[prop] = obj[prop];
@@ -119,20 +117,20 @@ const utilsModule = (() => {
    * @param {object} input 
    */
   function isValidObject(input) {
-    if (!input || input === {} || !isValidInput(input)) {
+    if (!input || Object.keys(input).length === 0 || !isValidInput(input)) {
       return false;
     } else {
       return true;
     }
   }
 
-  /*!
- * Get an object value from a specific path
- * @param  {Object}       obj  The object
- * @param  {String|Array} path The path
- * @param  {*}            def  A default value to return [optional]
- * @return {*}                 The value
- */
+  /*
+   * Get an object value from a specific path
+   * @param  {Object}       obj  The object
+   * @param  {String|Array} path The path
+   * @param  {*}            def  A default value to return [optional]
+   * @return {*}                 The value
+   */
   function getContent(obj, path, def) {
     /**
      * If the path is a string, convert it to an array
@@ -140,23 +138,22 @@ const utilsModule = (() => {
      * @return {Array}             The path array
      */
     const stringToPath = function (path) {
-
       // If the path isn't a string, return it
-      if (typeof path !== 'string') return path;
-
-      // Create new array
-      const output = [];
-      // Split to an array with dot notation
-      path.split('.').forEach(function (item) {
-        // Split to an array with bracket notation
-        item.split(/\[([^}]+)\]/g).forEach(function (key) {
-          // Push to the new array
-          if (key.length > 0) {
-            output.push(key);
-          }
+      if (typeof path !== 'string') {
+        return path;
+      } else {
+        const output = [];
+        path.split('.').forEach(function (item) {
+          // Split to an array with bracket notation
+          item.split(/\[([^}]+)\]/g).forEach(function (key) {
+            // Push to the new array
+            if (key.length > 0) {
+              output.push(key);
+            }
+          });
         });
-      });
-      return output;
+        return output;
+      }
     };
 
     // Get the path as an array
@@ -175,7 +172,7 @@ const utilsModule = (() => {
     return current;
   }
 
-  /*!
+  /*
    * Replaces placeholders with real content
    * @param {String} template The template string
    * @param {String} local    A local placeholder to use, if any

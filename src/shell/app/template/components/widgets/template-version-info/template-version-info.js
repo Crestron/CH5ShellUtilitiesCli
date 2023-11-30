@@ -13,6 +13,7 @@ const templateVersionInfoModule = (() => {
 	let projectConfig;
 	const tableCount = {};
 	const componentCount = {};
+	let logInterval;
 
 	/**
 	 * Initialize Method
@@ -21,6 +22,7 @@ const templateVersionInfoModule = (() => {
 		projectConfigModule.projectConfigData().then(projectConfigResponse => {
 			translateModule.initializeDefaultLanguage().then(() => {
 				projectConfig = projectConfigResponse;
+				logDiagnostics(projectConfigResponse.header.diagnostics.logs.logDiagnostics);
 				updateSubscriptions();
 				setTabs();
 				const infoModal = document.getElementById('template-info');
@@ -33,11 +35,9 @@ const templateVersionInfoModule = (() => {
 				updatePageCount();
 			}
 		});
-
 	}
 
 	function setTabs() {
-
 		const entries = webXPanelModule.paramsToObject();
 
 		let isForceDeviceXPanel = projectConfig.forceDeviceXPanel;
@@ -55,15 +55,18 @@ const templateVersionInfoModule = (() => {
 		setTabsListeners();
 		setLogButtonListener();
 	}
-	function updateVersionTabHTML() {
 
+	function updateVersionTabHTML() {
 		serviceModule.loadJSON('./assets/data/version.json', (packages) => {
-			if (!packages) return console.log("FILE NOT FOUND");
+			if (!packages) {
+				return utilsModule.log("FILE NOT FOUND");
+			}
 			const versionTableBody = document.getElementById('versionTableBody');
 			versionTableBody.innerHTML = "";
 			Array.from(JSON.parse(packages)).forEach((e) => versionTableBody.appendChild(createTableRow(e)))
 		})
 	}
+
 	function createTableRow(data) {
 		const tableRow = document.createElement('tr');
 		for (const value of Object.values(data)) {
@@ -83,12 +86,12 @@ const templateVersionInfoModule = (() => {
 		}
 		return tableRow;
 	}
+
 	function updatePageCount() {
 		const diagnosticsTableElement = document.getElementById('diagnosticsTableElement');
 		diagnosticsTableElement.innerHTML = "";
 		const diagnosticPageHeaderElement = document.getElementById('diagnosticPageHeaderElement');
 		const listOfPages = projectConfigModule.getNavigationPages();
-
 
 		document.getElementById('pageCount').textContent = translateModuleHelper('pagecount', listOfPages.length);
 		diagnosticPageHeaderElement.children[2].textContent = `Preload (${listOfPages.filter(page => page.preloadPage).length})`;
@@ -119,8 +122,8 @@ const templateVersionInfoModule = (() => {
 		document.getElementById('totalDom').innerHTML = templateVersionInfoModule.translateModuleHelper('totalnodes', componentCount.totalDomCount);
 		document.getElementById('totalComponents').innerHTML = templateVersionInfoModule.translateModuleHelper('totalcomponents', componentCount.totalComponentsCount);;
 		document.getElementById('currentComponents').innerHTML = templateVersionInfoModule.translateModuleHelper('currentcomp', componentCount.currentCh5Components);
-
 	}
+
 	function setTabsListeners() {
 		const tabs = ['version-tab', 'webxpanel-tab', 'diagnostics-tab'];
 		tabs.forEach((tab) => {
@@ -132,10 +135,34 @@ const templateVersionInfoModule = (() => {
 			})
 		})
 	}
+
+	/**
+	 * Log information in specific interval as mentioned in project-config.json
+	 * @param {string} duration duration to log issues
+	 * @returns 
+	 */
+	function logDiagnostics(duration) {
+		let delay = 0;
+		if (duration === "none") {
+			return;
+		} else if (duration === "hourly") {
+			delay = 60 * 60 * 1000; // 1 hour in msec
+		} else if (duration === "daily") {
+			delay = 60 * 60 * 1000 * 24; // 24 hour in msec
+		} else if (duration === "weekly") {
+			delay = 60 * 60 * 1000 * 24 * 7; // Weekly in msec
+		}
+
+		if (!logInterval) {
+			logInterval = setInterval(templateVersionInfoModule.logSubscriptionsCount, delay);
+		}
+	}
+
 	function setLogButtonListener() {
 		subscribeLogButton.addEventListener('click', logSubscriptionsCount);
 		CrComLib.subscribeState('b', '' + projectConfig.header.diagnostics.logs.receiveStateLogDiagnostics, (value) => logSubscriptionsCount(null, value));
 	}
+
 	function logSubscriptionsCount(event, signalValue) {
 		const signals = updateSubscriptions();
 		const ch5components = {
@@ -150,6 +177,7 @@ const templateVersionInfoModule = (() => {
 			console.log({ signals, ch5components, signalNames, subscriptions });
 		}
 	}
+
 	function translateModuleHelper(fieldName, fieldValue) {
 		return translateModule.translateInstant(`header.info.diagnostics.${fieldName}`) + " " + fieldValue;
 	}
