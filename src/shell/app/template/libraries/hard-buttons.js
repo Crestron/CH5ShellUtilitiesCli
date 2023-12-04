@@ -78,11 +78,11 @@ const hardButtonsModule = (() => {
 			serviceModule.loadJSON("./assets/data/hard-buttons.json", (dataResponse) => {
 				const hardButtonData = JSON.parse(dataResponse);
 				const signalNames = getAllSignals(hardButtonData);
-				log("signalNames", signalNames);
+				utilsModule.log("signalNames", signalNames);
 				for (let i = 0; i < signalNames.length; i++) {
 					const iteratedSignal = signalNames[i];
 					CrComLib.subscribeState('b', iteratedSignal.signalName, (response) => {
-						log("CrComLib.subscribeState: ", iteratedSignal.signalName, response, clickedOnPage);
+						utilsModule.log("CrComLib.subscribeState: ", iteratedSignal.signalName, response, clickedOnPage);
 						if (clickedOnPage !== "" || response === true) {
 							if (response === true) {
 								clickedOnPage = navigationModule.selectedPage();
@@ -93,20 +93,10 @@ const hardButtonsModule = (() => {
 				}
 				resolve(true);
 			}, error => {
+				console.error("Error in Hard Buttons", error);
 				reject(false);
 			});
 		});
-	}
-
-	function log(...data) {
-		console.log(...data);
-		let outputString = "";
-		for (let i = 0; i < data.length; i++) {
-			outputString += data[i] + " ";
-		}
-		if (document.getElementById('txtOutput')) {
-			document.getElementById('txtOutput').value += outputString + "\n";
-		}
 	}
 
 	function hardButtonClicked(hardButtonsArray, signal, response) {
@@ -181,12 +171,12 @@ const hardButtonsModule = (() => {
 			}
 		}
 
-		log("signalValue: ", signalValue);
-		log("navigationPageName: ", navigationPageName);
+		utilsModule.log("signalValue: ", signalValue);
+		utilsModule.log("navigationPageName: ", navigationPageName);
 		if (navigationPageName !== "") {
 			if (response === true) {
-				log("currentPage.toLowerCase().trim(): ", currentPage.toLowerCase().trim());
-				log("navigationPageName.toLowerCase().trim(): ", navigationPageName.toLowerCase().trim());
+				utilsModule.log("currentPage.toLowerCase().trim(): ", currentPage.toLowerCase().trim());
+				utilsModule.log("navigationPageName.toLowerCase().trim(): ", navigationPageName.toLowerCase().trim());
 				if (currentPage.toLowerCase().trim() !== navigationPageName.toLowerCase().trim()) {
 					templatePageModule.navigateTriggerViewByPageName(navigationPageName);
 				}
@@ -200,7 +190,7 @@ const hardButtonsModule = (() => {
 				}
 				let numRepeatDigitals = 0;
 				repeatDigitalInterval = window.setInterval(() => {
-					log("Prioritized signal name: ", signalValue, ' for response ', response);
+					utilsModule.log("Prioritized signal name: ", signalValue, ' for response ', response);
 					CrComLib.publishEvent('b', signalValue, response);
 					if (++numRepeatDigitals >= MAX_REPEAT_DIGITALS) {
 						console.warn("Hard Button MAXIMUM Repeat digitals sent");

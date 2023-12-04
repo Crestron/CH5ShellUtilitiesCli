@@ -3,7 +3,7 @@
 // No part of this software may be reproduced in any form, machine
 // or natural, without the express written consent of Crestron Electronics.
 // Use of this source code is subject to the terms of the Crestron Software License Agreement
-// under which you licensed this source code.
+// under which you licensed this source code. 
 
 /* global WebXPanel, translateModule*/
 
@@ -16,7 +16,8 @@ var webXPanelModule = (function () {
     "roomId": "",
     "ipId": "0x03",
     "tokenSource": "",
-    "tokenUrl": ""
+    "tokenUrl": "",
+    "authToken": ""
   };
 
   const RENDER_STATUS = {
@@ -36,7 +37,6 @@ var webXPanelModule = (function () {
    * @param {*} classNameToAdd
    */
   function setStatus(classNameToAdd = RENDER_STATUS.hide) {
-
     let preloader = document.getElementById('pageStatusIdentifier');
     if (preloader) {
       preloader.className = classNameToAdd;
@@ -88,6 +88,7 @@ var webXPanelModule = (function () {
     urlConfig.ipId = entries["ipid"] || pcConfig.ipId;
     urlConfig.tokenSource = entries["tokensource"] || pcConfig.tokenSource;
     urlConfig.tokenUrl = entries["tokenurl"] || pcConfig.tokenUrl;
+    urlConfig.authToken = entries["authtoken"];
   }
 
   /**
@@ -149,8 +150,6 @@ var webXPanelModule = (function () {
       cs.textContent = `CS: wss://${connectParams.host}:${connectParams.port}`;
       ipId.textContent = `IPID: ${urlConfig.ipId}`;
       if (msg.detail.roomId !== "") { roomId.textContent = `Room Id: ${msg.detail.roomId}`; }
-
-
     });
 
     // Authorization
@@ -173,15 +172,12 @@ var webXPanelModule = (function () {
     let statusMessage = translateModule.translateInstant(statusMessageKey);
     if (statusMessage) {
       let sMsg = statusMsgPrefix + statusMessage;
-
       const status = document.querySelector('#webxpanel-tab-content .connection .status');
       if (status !== null) {
         status.innerHTML = sMsg;
       }
-
     }
   }
-
 
   /**
    * Show the badge on the info icon for connection status.
@@ -228,7 +224,6 @@ var webXPanelModule = (function () {
 
     status = document.querySelector('#webxpanel-tab-content .connection .status');
 
-
     webXPanelConnectionStatus();
     // Merge the configuration params, params of the URL takes precedence
     getWebXPanelConfiguration(projectConfig);
@@ -240,7 +235,6 @@ var webXPanelModule = (function () {
     WebXPanel.default.initialize(connectParams);
 
     updateInfoStatus("app.webxpanel.status.CONNECT_WS");
-
 
     const cs = document.querySelector('#webxpanel-tab-content .connection .cs');
     const ipId = document.querySelector('#webxpanel-tab-content .connection .ipid');
@@ -254,7 +248,6 @@ var webXPanelModule = (function () {
     if (connectParams.roomId !== "") {
       roomId.textContent = `Room Id: ${connectParams.roomId}`;
     }
-
 
     // WebXPanel listeners are called in the below method
     setWebXPanelListeners();

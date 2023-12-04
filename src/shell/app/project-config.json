@@ -89,6 +89,7 @@
   "header": {
     "display": true,
     "displayInfo": true,
+    "displayTheme": true,
     "diagnostics": {
       "logs": {
         "logAfterProjectLoad": true,
