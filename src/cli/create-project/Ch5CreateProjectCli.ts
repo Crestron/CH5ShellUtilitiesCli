@@ -115,6 +115,10 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForProject implements ICh5C
       templateConfigJSON["content"]["triggerViewProperties"] = inputConfigJSON["content"]["triggerViewProperties"];
       this.projectConfig.changeNodeValues("content.triggerViewProperties", templateConfigJSON["content"]["triggerViewProperties"]);
 
+      // 7. Custom Signal
+      templateConfigJSON["customSignals"] = inputConfigJSON["customSignals"];
+      this.projectConfig.changeNodeValues("customSignals", templateConfigJSON["customSignals"]);
+
       templateConfigJSON["content"]["$defaultView"] = inputConfigJSON["content"]["$defaultView"];
       this.projectConfig.changeNodeValues("content.$defaultView", templateConfigJSON["content"]["$defaultView"]);
 
