@@ -113,6 +113,16 @@ export class Ch5UpgradeProjectCli extends Ch5BaseClassForCliUpgrade implements I
 		if (!jsonProjectConfig.forceDeviceXPanel) {
 			this.cliProjectConfig.saveOverrideAttributeToJSON("forceDeviceXPanel", false);
 		}
+		const customSignalDefaultValue = {
+			receiveStateTheme: "templateTheme",
+			sendEventTheme: "templateTheme"
+		}
+		if (!jsonProjectConfig.customSignals) {
+			this.cliProjectConfig.saveOverrideAttributeToJSON("customSignals", customSignalDefaultValue);
+		}
+		if (!jsonProjectConfig.header.displayTheme) {
+			this.cliProjectConfig.saveOverrideAttributeToJSON("header.displayTheme", true);
+		}
 	}
 
 	processDirectories() {
