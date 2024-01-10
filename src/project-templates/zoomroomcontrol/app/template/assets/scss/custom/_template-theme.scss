@@ -109,7 +109,11 @@
   }
 }
 
+<<<<<<< HEAD
 .zoom-dark-theme, 
+=======
+.zoom-dark-theme,
+>>>>>>> f3a42703a9d0ab9cb4d55b4c841d09b2c31f5c10
 .project-dark-theme {
   .footer-page {
     background-color: darken(#343a40, 5%);
@@ -204,11 +208,16 @@
     color: darken(#fff, 10%);
   }
 
+<<<<<<< HEAD
    #template-version-info-page {
+=======
+  #template-version-info-page {
+>>>>>>> f3a42703a9d0ab9cb4d55b4c841d09b2c31f5c10
     .ch5-modal-dialog.project-info-dialog {
       border: 1px solid $color-darkgrey;
       color: $color-white;
       background-color: $color-darkestgrey;
+<<<<<<< HEAD
       h4 {
         color: $color-white;
       }
@@ -218,46 +227,102 @@
       .ch5-modal-dialog-close-icon-btn {
         color: $color-white;
       }
+=======
+
+      h4 {
+        color: $color-white;
+      }
+
+      p {
+        color: $color-offwhite;
+      }
+
+      .ch5-modal-dialog-close-icon-btn {
+        color: $color-white;
+      }
+
+>>>>>>> f3a42703a9d0ab9cb4d55b4c841d09b2c31f5c10
       #version-tab-content,
       #webxpanel-tab-content,
       #diagnostics-tab-content {
         color: white;
       }
+<<<<<<< HEAD
+=======
+
+>>>>>>> f3a42703a9d0ab9cb4d55b4c841d09b2c31f5c10
       #tab-wrapper {
         button {
           background-color: rgba(169, 169, 169, 0.8);
           border: 1px solid darkgray;
+<<<<<<< HEAD
+=======
+
+>>>>>>> f3a42703a9d0ab9cb4d55b4c841d09b2c31f5c10
           &:first-child {
             border-right: none;
             border-top-left-radius: 3px;
           }
+<<<<<<< HEAD
+=======
+
+>>>>>>> f3a42703a9d0ab9cb4d55b4c841d09b2c31f5c10
           &:last-child {
             border-left: none;
             border-top-right-radius: 3px;
           }
+<<<<<<< HEAD
+=======
+
+>>>>>>> f3a42703a9d0ab9cb4d55b4c841d09b2c31f5c10
           &.selected {
             background-color: rgba(211, 211, 211, 0.8);
           }
         }
       }
+<<<<<<< HEAD
       table {
         width: 100%;
+=======
+
+      table {
+        width: 100%;
+
+>>>>>>> f3a42703a9d0ab9cb4d55b4c841d09b2c31f5c10
         th,
         td {
           border: 1px solid lightgray;
           padding: 5px;
         }
+<<<<<<< HEAD
         tr:nth-child(even) {
           background-color: rgba(200, 200, 200, 0.6);
         }
         tr:nth-child(odd) {
           background-color: rgba(200, 200, 200, 0.8);
         }
+=======
+
+        tr:nth-child(even) {
+          background-color: rgba(200, 200, 200, 0.6);
+        }
+
+        tr:nth-child(odd) {
+          background-color: rgba(200, 200, 200, 0.8);
+        }
+
+>>>>>>> f3a42703a9d0ab9cb4d55b4c841d09b2c31f5c10
         thead tr:first-child {
           background-color: rgba(80, 80, 80, 0.8);
         }
       }
+<<<<<<< HEAD
     }
+=======
+
+    }
+
+>>>>>>> f3a42703a9d0ab9cb4d55b4c841d09b2c31f5c10
     .ch5-button {
       background-color: black;
       border: none;
@@ -265,12 +330,20 @@
       height: 32px;
       width: 32px;
       box-shadow: none;
+<<<<<<< HEAD
+=======
+
+>>>>>>> f3a42703a9d0ab9cb4d55b4c841d09b2c31f5c10
       .cb-btn {
         @include size(100%);
         padding: 0;
       }
     }
   }
+<<<<<<< HEAD
+=======
+
+>>>>>>> f3a42703a9d0ab9cb4d55b4c841d09b2c31f5c10
    #template-remote-logger-settings-page {
     div.ch5-modal-dialog {
       border: 1px solid $color-darkgrey;
@@ -282,9 +355,17 @@
           color: $color-white;
           background-color: $color-darkestgrey !important;
         }
+<<<<<<< HEAD
         h5.logger-modal-title {
           color: $color-white;
         }
+=======
+
+        h5.logger-modal-title {
+          color: $color-white;
+        }
+
+>>>>>>> f3a42703a9d0ab9cb4d55b4c841d09b2c31f5c10
         .note-text {
           color: $color-white;
           background-color: transparent;
@@ -296,7 +377,11 @@
       }
     }
   }
+<<<<<<< HEAD
   
+=======
+
+>>>>>>> f3a42703a9d0ab9cb4d55b4c841d09b2c31f5c10
   #template-set-theme-page {
     div.ch5-modal-dialog {
       border: 1px solid $color-darkgrey;
@@ -308,9 +393,17 @@
           color: $color-white;
           background-color: $color-darkestgrey;
         }
+<<<<<<< HEAD
         h5.logger-modal-title {
           color: $color-white;
         }
+=======
+
+        h5.logger-modal-title {
+          color: $color-white;
+        }
+
+>>>>>>> f3a42703a9d0ab9cb4d55b4c841d09b2c31f5c10
         .note-text {
           color: $color-white;
           background-color: transparent;
@@ -332,11 +425,20 @@
       width: 36px;
       box-shadow: none;
       cursor: pointer;
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> f3a42703a9d0ab9cb4d55b4c841d09b2c31f5c10
       .cb-btn {
         width: 36px;
         height: 36px;
         padding: 0;
       }
+<<<<<<< HEAD
+=======
+
+>>>>>>> f3a42703a9d0ab9cb4d55b4c841d09b2c31f5c10
       i {
         font-size: 32px;
         padding: 0;

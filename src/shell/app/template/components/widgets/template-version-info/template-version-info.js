@@ -13,47 +13,31 @@ const templateVersionInfoModule = (() => {
 	let projectConfig;
 	const tableCount = {};
 	const componentCount = {};
-	const webXTab = {
-		status: '',
-		cs: '',
-		ipId: '',
-		roomId: ''
-	};
-	let versionData = [];
+	let logInterval;
 
 	/**
 	 * Initialize Method
 	 */
 	function onInit() {
-		serviceModule.loadJSON('./assets/data/version.json', (packages) => {
-			if (!packages) return console.log("FILE NOT FOUND");
-			versionData = packages;
-		})
+		projectConfigModule.projectConfigData().then(projectConfigResponse => {
+			translateModule.initializeDefaultLanguage().then(() => {
+				projectConfig = projectConfigResponse;
+				logDiagnostics(projectConfigResponse.header.diagnostics.logs.logDiagnostics);
+				updateSubscriptions();
+				setTabs();
+				const infoModal = document.getElementById('template-info');
+				infoModal.setAttribute('title', translateModule.translateInstant('header.info.title'));
+			});
+		});
 		CrComLib.subscribeState('b', 'infoBtn.clicked', (value) => {
-			if (value.repeatdigital === true) {
-				projectConfigModule.projectConfigData().then(projectConfigResponse => {
-					projectConfig = projectConfigResponse;
-					if (projectConfig.header.displayInfo) {
-						updateSubscriptions();
-						setTabs();
-						setWebXStatus();
-					}
-				});
+			if (value.repeatdigital === true && document.getElementById('template-info').getAttribute('show') === 'false') {
+				document.getElementById('template-info').setAttribute('show', 'true');
+				updatePageCount();
 			}
 		});
-		CrComLib.subscribeState('b', 'infoModal.opened', (value) => {
-			if (value === true) {
-				document.getElementById('infobtn').children[0].style.pointerEvents = "none";
-			} else {
-				document.getElementById('infobtn').children[0].removeAttribute('style');
-			}
-		});
-
-
 	}
 
 	function setTabs() {
-
 		const entries = webXPanelModule.paramsToObject();
 
 		let isForceDeviceXPanel = projectConfig.forceDeviceXPanel;
@@ -71,11 +55,18 @@ const templateVersionInfoModule = (() => {
 		setTabsListeners();
 		setLogButtonListener();
 	}
+
 	function updateVersionTabHTML() {
-		const versionTableBody = document.getElementById('versionTableBody');
-		versionTableBody.innerHTML = "";
-		Array.from(JSON.parse(versionData)).forEach((e) => versionTableBody.appendChild(createTableRow(e)))
+		serviceModule.loadJSON('./assets/data/version.json', (packages) => {
+			if (!packages) {
+				return utilsModule.log("FILE NOT FOUND");
+			}
+			const versionTableBody = document.getElementById('versionTableBody');
+			versionTableBody.innerHTML = "";
+			Array.from(JSON.parse(packages)).forEach((e) => versionTableBody.appendChild(createTableRow(e)))
+		})
 	}
+
 	function createTableRow(data) {
 		const tableRow = document.createElement('tr');
 		for (const value of Object.values(data)) {
@@ -95,6 +86,7 @@ const templateVersionInfoModule = (() => {
 		}
 		return tableRow;
 	}
+
 	function updatePageCount() {
 		const diagnosticsTableElement = document.getElementById('diagnosticsTableElement');
 		diagnosticsTableElement.innerHTML = "";
@@ -107,12 +99,12 @@ const templateVersionInfoModule = (() => {
 		for (const page of listOfPages) {
 			let count = tableCount[page.pageName]?.total ?? '';
 			let nodes = tableCount[page.pageName]?.domNodes ?? '';
-			if (tableCount.hasOwnProperty(page.pageName) === false) {
-				const pageImporterElement = document.getElementById(page.pageName + '-import-page');
-				if (!pageImporterElement) return;
 
+			const pageImporterElement = document.getElementById(page.pageName + '-import-page');
+			if (pageImporterElement) {
 				tableCount[page.pageName] = CrComLib.countNumberOfCh5Components(pageImporterElement);
 				tableCount[page.pageName].domNodes = pageImporterElement.getElementsByTagName('*').length;
+
 				if (tableCount[page.pageName].domNodes === 1) {
 					tableCount[page.pageName].total = "";
 					tableCount[page.pageName].domNodes = "";
@@ -130,8 +122,8 @@ const templateVersionInfoModule = (() => {
 		document.getElementById('totalDom').innerHTML = templateVersionInfoModule.translateModuleHelper('totalnodes', componentCount.totalDomCount);
 		document.getElementById('totalComponents').innerHTML = templateVersionInfoModule.translateModuleHelper('totalcomponents', componentCount.totalComponentsCount);;
 		document.getElementById('currentComponents').innerHTML = templateVersionInfoModule.translateModuleHelper('currentcomp', componentCount.currentCh5Components);
-
 	}
+
 	function setTabsListeners() {
 		const tabs = ['version-tab', 'webxpanel-tab', 'diagnostics-tab'];
 		tabs.forEach((tab) => {
@@ -143,10 +135,34 @@ const templateVersionInfoModule = (() => {
 			})
 		})
 	}
+
+	/**
+	 * Log information in specific interval as mentioned in project-config.json
+	 * @param {string} duration duration to log issues
+	 * @returns 
+	 */
+	function logDiagnostics(duration) {
+		let delay = 0;
+		if (duration === "none") {
+			return;
+		} else if (duration === "hourly") {
+			delay = 60 * 60 * 1000; // 1 hour in msec
+		} else if (duration === "daily") {
+			delay = 60 * 60 * 1000 * 24; // 24 hour in msec
+		} else if (duration === "weekly") {
+			delay = 60 * 60 * 1000 * 24 * 7; // Weekly in msec
+		}
+
+		if (!logInterval) {
+			logInterval = setInterval(templateVersionInfoModule.logSubscriptionsCount, delay);
+		}
+	}
+
 	function setLogButtonListener() {
 		subscribeLogButton.addEventListener('click', logSubscriptionsCount);
 		CrComLib.subscribeState('b', '' + projectConfig.header.diagnostics.logs.receiveStateLogDiagnostics, (value) => logSubscriptionsCount(null, value));
 	}
+
 	function logSubscriptionsCount(event, signalValue) {
 		const signals = updateSubscriptions();
 		const ch5components = {
@@ -161,6 +177,7 @@ const templateVersionInfoModule = (() => {
 			console.log({ signals, ch5components, signalNames, subscriptions });
 		}
 	}
+
 	function translateModuleHelper(fieldName, fieldValue) {
 		return translateModule.translateInstant(`header.info.diagnostics.${fieldName}`) + " " + fieldValue;
 	}
@@ -203,14 +220,6 @@ const templateVersionInfoModule = (() => {
 			});
 		}
 	});
-	function setWebXStatus() {
-		setTimeout(() => {
-			document.querySelector('#webxpanel-tab-content .connection .status').innerHTML = webXTab.status || translateModule.translateInstant('header.info.webxpanel.status');
-			document.querySelector('#webxpanel-tab-content .connection .cs').innerHTML = webXTab.cs || translateModule.translateInstant('header.info.webxpanel.cs');
-			document.querySelector('#webxpanel-tab-content .connection .ipid').innerHTML = webXTab.ipId || translateModule.translateInstant('header.info.webxpanel.ipid');
-			document.querySelector('#webxpanel-tab-content .connection .roomid').innerHTML = webXTab.roomId || translateModule.translateInstant('header.info.webxpanel.roomid');
-		});
-	}
 
 	/**
 	 * All public method and properties are exported here
@@ -220,7 +229,6 @@ const templateVersionInfoModule = (() => {
 		updateSubscriptions,
 		tableCount,
 		componentCount,
-		logSubscriptionsCount,
-		webXTab
+		logSubscriptionsCount
 	};
 })();

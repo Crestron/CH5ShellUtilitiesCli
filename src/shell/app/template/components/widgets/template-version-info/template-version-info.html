@@ -7,12 +7,17 @@
     under which you licensed this source code.
 -->
 <section id="template-version-info-page" aria-labelledby="Version Information">
-    <ch5-button id="infobtn" shape="circle" size="small" iconClass="material-icons md-info"
-        sendEventOnClick="infoBtn.clicked" role="button" aria-label="Open Version Information" aria-pressed="false">
-    </ch5-button>
-    <ch5-modal-dialog sendeventonshow="infoModal.opened" receiveStateShow="infoBtn.clicked" closable
-        closeIcon="fa fa-window-close" noshowtype="remove" hideOkButton="true" hideCancelButton="true"
-        title="-+header.info.title+-" customclass="project-info-dialog">
+    <template id="template-info-widget">
+        <div class="info-widget" aria-labelledby="Info">
+            <ch5-button shape="circle" size="small" iconClass="material-icons md-info"
+                sendEventOnClick="infoBtn.clicked" role="button" aria-label="Open Version Information"
+                aria-pressed="false">
+            </ch5-button>
+        </div>
+    </template>
+    <ch5-modal-dialog sendeventonshow="infoModal.opened" show="false" closable id="template-info"
+        closeIcon="fa fa-window-close" hideOkButton="true" hideCancelButton="true" title="-+header.info.title+-"
+        customclass="project-info-dialog">
         <div id="tab-wrapper">
             <button id="version-tab" class="selected" data-ch5-i18n="-+header.info.tab.version+-"></button>
             <button id="webxpanel-tab" data-ch5-i18n="-+header.info.tab.webxpanel+-"></button>

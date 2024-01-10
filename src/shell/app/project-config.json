@@ -82,9 +82,14 @@
   "config": {
     "controlSystem": {}
   },
+  "customSignals": {
+    "receiveStateTheme": "templateTheme",
+    "sendEventTheme": "templateTheme"
+  },
   "header": {
     "display": true,
     "displayInfo": true,
+    "displayTheme": true,
     "diagnostics": {
       "logs": {
         "logAfterProjectLoad": true,

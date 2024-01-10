@@ -8,53 +8,11 @@
 @import "./../../../../template/assets/scss/all-var-fns-mix";
 
 #template-version-info-page {
-  padding: 0.5rem;
-  $version-modal-dialog-content-color: $color-lightgrey  !default;
+  $version-modal-dialog-content-color: $color-lightgrey !default;
   $border-type: solid;
   $version-modal-dialog-border-width: 1px;
 
   margin-left: 1rem;
-
-  #infobtn.warn {
-    position: relative;
-
-    &:after {
-      content: "!";
-      position: absolute;
-      background: #dc3545;
-      color: white;
-      border-radius: 50%;
-      height: 13px;
-      border: 1px solid #711c24;
-      width: 13px;
-      line-height: 12px;
-      text-align: center;
-      top: -2px;
-      right: -2px;
-      font-size: 0.8rem;
-      font-weight: 600;
-    }
-  }
-
-  .ch5-button {
-    background-color: transparent;
-    border: none;
-    color: #808080;
-    height: 36px;
-    width: 36px;
-    box-shadow: none;
-    cursor: pointer;
-
-    .cb-btn {
-      @include size(100%);
-      padding: 0;
-    }
-
-    i {
-      font-size: 32px;
-      padding: 0;
-    }
-  }
 
   div.ch5-modal-dialog.project-info-dialog {
     width: 60vw;
@@ -320,16 +278,57 @@
 
     }
 
-    .ch5-button {
-      background-color: black;
+
+  }
+}
+
+.info-widget,
+.theme-widget {
+  .ch5-button.ch5-button--circle.ch5-button--size-small {
+    background-color: transparent;
+    border: none;
+    color: #808080;
+    height: 36px;
+    width: 36px;
+    box-shadow: none;
+    cursor: pointer;
+
+
+    .cb-btn {
+      width: 36px;
+      height: 36px;
+      padding: 0;
+    }
+
+    i {
+      font-size: 32px;
+      padding: 0;
+    }
+  }
+}
+
+.dark-theme,
+.project-dark-theme {
+
+  .info-widget,
+  .theme-widget {
+    .ch5-button.ch5-button--circle.ch5-button--size-small {
       border: none;
       color: white;
-      height: 32px;
-      width: 32px;
+      height: 36px;
+      width: 36px;
       box-shadow: none;
+      cursor: pointer;
+
 
       .cb-btn {
-        @include size(100%);
+        width: 36px;
+        height: 36px;
+        padding: 0;
+      }
+
+      i {
+        font-size: 32px;
         padding: 0;
       }
     }

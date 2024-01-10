@@ -59,6 +59,8 @@
     width: 20%;
     align-items: center;
     justify-content: flex-end;
+    gap: 24px;
+    margin-right: 5px;
   }
 
   @include media-breakpoint-down(sm) {

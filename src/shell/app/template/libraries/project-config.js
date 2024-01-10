@@ -82,7 +82,7 @@ const projectConfigModule = (() => {
 			return response;
 		} else {
 			// wait until the promise returns us a value
-			let result = await initialize();
+			const result = await initialize();
 			return result;
 		}
 	}

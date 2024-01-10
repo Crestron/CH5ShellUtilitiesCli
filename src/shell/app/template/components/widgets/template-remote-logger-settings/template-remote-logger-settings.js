@@ -265,10 +265,10 @@ const templateRemoteLoggerSettingsModule = (() => {
    * All public method and properties are exported here
    */
   return {
-    showLoggerPopUp: showLoggerPopUp,
-    validate: validate,
-    resetConnection: resetConnection,
-    updateLoggerInfo: updateLoggerInfo,
-    setRemoteLoggerConfig: setRemoteLoggerConfig,
+    showLoggerPopUp,
+    validate,
+    resetConnection,
+    updateLoggerInfo,
+    setRemoteLoggerConfig,
   };
 })();

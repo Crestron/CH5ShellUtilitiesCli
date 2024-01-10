@@ -10,40 +10,134 @@
 const templateSetThemeModule = (() => {
   "use strict";
 
+  let projectThemesList = [];
+
   function onInit() {
+    projectConfigModule.projectConfigData().then(projectConfigResponse => {
+      translateModule.initializeDefaultLanguage().then(() => {
+
+        const receiveStateTheme = projectConfigResponse.customSignals.receiveStateTheme || 'template-theme';
+        const sendEventTheme = projectConfigResponse.customSignals.sendEventTheme || 'template-theme';
+
+        const projectThemes = projectConfigResponse.themes;
+        const themeList = document.getElementById('template-theme-list');
+        let wrapper = `<ch5-button-list orientation="vertical" buttonType="warning" numberOfItems="${projectThemes.length}" columns="1" 
+        buttonShape="rounded-rectangle" indexId="idx" loadItems="all"
+        receiveStateSelectedButton="selectedTheme">`
+        projectThemes.forEach(theme => {
+          wrapper +=
+            `<ch5-button-list-individual-button 
+            onRelease="CrComLib.publishEvent('s','${receiveStateTheme}','${theme.name}')" 
+            labelInnerHtml="${theme.name}" >
+          </ch5-button-list-individual-button>`
+        })
+        wrapper += '</ch5-button-list>';
+        themeList.innerHTML = wrapper;
+
+        CrComLib.subscribeState('b', 'themebtn.clicked', (value) => {
+          if (value.repeatdigital === true && document.getElementById('template-theme').getAttribute('show') === 'false') {
+            document.getElementById('template-theme').setAttribute('show', 'true');
+          }
+        })
+
+        CrComLib.subscribeState('s', receiveStateTheme, (value) => {
+
+          // Conditions to check theme value
+          const validValue = document.body.classList.contains(value) === false && !!projectThemes.find(theme => theme.name === value);
+          const noValue = value === "" && document.body.classList.contains(projectConfigResponse.selectedTheme) === false;
+
+          // change theme if valid
+          if (validValue || noValue) {
+            setTimeout(() => {
+              document.getElementById('template-theme').setAttribute('show', 'false');
+            }, 50);
+
+            const theme = validValue === true ? value : projectConfigResponse.selectedTheme;
+            changeTheme(theme);
+            if (receiveStateTheme !== sendEventTheme && sendEventTheme?.trim()) {
+              CrComLib.publishEvent('s', sendEventTheme, theme);
+            }
+          }
+        });
+      });
+
+    });
   }
 
-  function setTheme(themeName) {
-    featureModule.changeTheme(themeName);
-    // CrComLib.subscribeState('b', 'shellTemplate.projectTheme.sendEventOnClick', (value) => {
-    //   console.log('shellTemplate.projectTheme.sendEventOnClick', (value));
-    //   let themeName = "light-theme";
-    //   if (value === true) {
-    //     themeName = "dark-theme";
-    //   }
-    //   featureModule.changeTheme(projectThemes, themeName);
-    //   CrComLib.publishEvent('b', "shellTemplate.projectTheme.receiveStateValue", value);
-    // });
+  function setThemes(listInput) {
+    projectThemesList = listInput;
   }
+
   /**
- * private method for page class initialization
- */
-  // let loadedImportSnippet = CrComLib.subscribeState('o', 'ch5-import-htmlsnippet:template-set-theme-import-page', (value) => {
-  //   if (value['loaded']) {
-  //     setTimeout(() => {
-  //       onInit();
-  //     }, 5000);
-  //     setTimeout(() => {
-  //       CrComLib.unsubscribeState('o', 'ch5-import-htmlsnippet:template-set-theme-import-page', loadedImportSnippet);
-  //       loadedImportSnippet = null;
-  //     });
-  //   }
-  // });
+   * This is public method to change the theme
+   * @param {string} theme pass theme type like 'light-theme', 'dark-theme'
+   */
+  function changeTheme(theme) {
+    setTimeout(() => {
+      const body = document.body;
+      for (let i = 0; i < projectThemesList.length; i++) {
+        body.classList.remove(projectThemesList[i].name);
+      }
+      let selectedThemeName = theme.trim();
+      body.classList.add(selectedThemeName);
+      let selectedTheme = projectThemesList.find((tempObj) => tempObj.name.trim().toLowerCase() === selectedThemeName.toLowerCase());
+      const cacheBustVersion = "?v=" + (new Date()).getTime();
+      document.getElementById("shellTemplateSelectedThemeCss").setAttribute("href", "./assets/css/" + selectedTheme.extends + ".css" + cacheBustVersion);
+
+      if (document.getElementById("brandLogo")) {
+        if (selectedTheme.brandLogo !== "undefined") {
+          for (var prop in selectedTheme.brandLogo) {
+            if (selectedTheme.brandLogo[prop] !== "") {
+              document.getElementById("brandLogo").setAttribute(prop, selectedTheme.brandLogo[prop]);
+            }
+          }
+        }
+      }
+
+      const templateContentBackground = document.getElementById("template-content-background");
+      if (templateContentBackground) {
+        if (selectedTheme.backgroundProperties !== "undefined") {
+          for (let prop in selectedTheme.backgroundProperties) {
+
+            if (prop === "url") {
+              if (typeof selectedTheme.backgroundProperties.url === "object") {
+                selectedTheme.backgroundProperties.url = selectedTheme.backgroundProperties.url.join(" | ");
+              }
+            } else if (prop === "backgroundColor") {
+              if (typeof selectedTheme.backgroundProperties.backgroundColor === "object") {
+                selectedTheme.backgroundProperties.backgroundColor = selectedTheme.backgroundProperties.backgroundColor.join(' | ');
+              }
+            }
+
+            if (selectedTheme.backgroundProperties[prop] !== "") {
+              templateContentBackground.setAttribute(prop, selectedTheme.backgroundProperties[prop]);
+            }
+          }
+        }
+      }
+      const themeIndex = projectThemesList.findIndex(ele => ele.name === theme);
+      CrComLib.publishEvent('n', 'selectedTheme', themeIndex);
+    }, 500);
+  }
+
+  /**
+   * private method for page class initialization
+   */
+  let loadedImportSnippet = CrComLib.subscribeState('o', 'ch5-import-htmlsnippet:template-set-theme-import-page', (value) => {
+    if (value['loaded']) {
+      onInit();
+      setTimeout(() => {
+        CrComLib.unsubscribeState('o', 'ch5-import-htmlsnippet:template-set-theme-import-page', loadedImportSnippet);
+        loadedImportSnippet = null;
+      });
+    }
+  });
 
   /**
    * All public method and properties are exported here
    */
   return {
-    setTheme
+    setThemes,
+    changeTheme
   };
 })();
