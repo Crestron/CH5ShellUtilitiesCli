@@ -82,7 +82,7 @@ const templateSetThemeModule = (() => {
       body.classList.add(selectedThemeName);
       let selectedTheme = projectThemesList.find((tempObj) => tempObj.name.trim().toLowerCase() === selectedThemeName.toLowerCase());
       const cacheBustVersion = "?v=" + (new Date()).getTime();
-      document.getElementById("shellTemplateSelectedThemeCss").setAttribute("href", "./assets/css/" + selectedTheme.extends + ".css" + cacheBustVersion);
+      document.getElementById("shellTemplateSelectedThemeCss").setAttribute("href", "./assets/css/ch5-theme.css" + cacheBustVersion);
 
       if (document.getElementById("brandLogo")) {
         if (selectedTheme.brandLogo !== "undefined") {

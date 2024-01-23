@@ -187,10 +187,7 @@ const templatePageModule = (() => {
 					// Changes for index.html - Start
 					const cacheBustVersion = "?v=" + (new Date()).getTime();
 					document.getElementById("favicon").setAttribute("href", projectConfigResponse.faviconPath);
-					const getSelectedTheme = projectConfigResponse.themes.find(themeName => themeName.name === projectConfigResponse.selectedTheme);
-					if (getSelectedTheme) {
-						document.getElementById("shellTemplateSelectedThemeCss").setAttribute("href", "./assets/css/" + getSelectedTheme.extends + ".css" + cacheBustVersion);
-					}
+					document.getElementById("shellTemplateSelectedThemeCss").setAttribute("href", "./assets/css/ch5-theme.css" + cacheBustVersion);
 
 					const widgetsAndStandalonePages = document.getElementById("widgets-and-standalone-pages");
 					const widgets = projectConfigResponse.content.widgets;
