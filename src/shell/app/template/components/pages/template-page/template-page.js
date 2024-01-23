@@ -174,9 +174,6 @@ const templatePageModule = (() => {
 
 			projectConfigModule.projectConfigData().then((projectConfigResponse) => {
 				translateModule.initializeDefaultLanguage().then(() => {
-					templateSetThemeModule.setThemes(projectConfigResponse.themes);
-					templateSetThemeModule.changeTheme(projectConfigResponse.selectedTheme);
-
 					/* Note: You can uncomment below line to enable remote logger.
 					 * Refer below documentation link to know more about remote logger.
 					 * https://sdkcon78221.crestron.com/sdk/Crestron_HTML5UI/Content/Topics/UI-Remote-Logger.htm
@@ -407,7 +404,8 @@ const templatePageModule = (() => {
 							}
 						});
 					});
-
+					templateSetThemeModule.setThemes(projectConfigResponse.themes);
+					templateSetThemeModule.changeTheme(projectConfigResponse.selectedTheme);
 				});
 			});
 

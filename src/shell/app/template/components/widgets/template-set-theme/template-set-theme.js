@@ -73,51 +73,46 @@ const templateSetThemeModule = (() => {
    * @param {string} theme pass theme type like 'light-theme', 'dark-theme'
    */
   function changeTheme(theme) {
-    setTimeout(() => {
-      const body = document.body;
-      for (let i = 0; i < projectThemesList.length; i++) {
-        body.classList.remove(projectThemesList[i].name);
-      }
-      let selectedThemeName = theme.trim();
-      body.classList.add(selectedThemeName);
-      let selectedTheme = projectThemesList.find((tempObj) => tempObj.name.trim().toLowerCase() === selectedThemeName.toLowerCase());
-      const cacheBustVersion = "?v=" + (new Date()).getTime();
-      document.getElementById("shellTemplateSelectedThemeCss").setAttribute("href", "./assets/css/ch5-theme.css" + cacheBustVersion);
-
-      if (document.getElementById("brandLogo")) {
-        if (selectedTheme.brandLogo !== "undefined") {
-          for (var prop in selectedTheme.brandLogo) {
-            if (selectedTheme.brandLogo[prop] !== "") {
-              document.getElementById("brandLogo").setAttribute(prop, selectedTheme.brandLogo[prop]);
-            }
+    const body = document.body;
+    for (let i = 0; i < projectThemesList.length; i++) {
+      body.classList.remove(projectThemesList[i].name);
+    }
+    let selectedThemeName = theme.trim();
+    body.classList.add(selectedThemeName);
+    let selectedTheme = projectThemesList.find((tempObj) => tempObj.name.trim().toLowerCase() === selectedThemeName.toLowerCase());
+    if (document.getElementById("brandLogo")) {
+      if (selectedTheme.brandLogo !== "undefined") {
+        for (var prop in selectedTheme.brandLogo) {
+          if (selectedTheme.brandLogo[prop] !== "") {
+            document.getElementById("brandLogo").setAttribute(prop, selectedTheme.brandLogo[prop]);
           }
         }
       }
+    }
 
-      const templateContentBackground = document.getElementById("template-content-background");
-      if (templateContentBackground) {
-        if (selectedTheme.backgroundProperties !== "undefined") {
-          for (let prop in selectedTheme.backgroundProperties) {
+    const templateContentBackground = document.getElementById("template-content-background");
+    if (templateContentBackground) {
+      if (selectedTheme.backgroundProperties !== "undefined") {
+        for (let prop in selectedTheme.backgroundProperties) {
 
-            if (prop === "url") {
-              if (typeof selectedTheme.backgroundProperties.url === "object") {
-                selectedTheme.backgroundProperties.url = selectedTheme.backgroundProperties.url.join(" | ");
-              }
-            } else if (prop === "backgroundColor") {
-              if (typeof selectedTheme.backgroundProperties.backgroundColor === "object") {
-                selectedTheme.backgroundProperties.backgroundColor = selectedTheme.backgroundProperties.backgroundColor.join(' | ');
-              }
+          if (prop === "url") {
+            if (typeof selectedTheme.backgroundProperties.url === "object") {
+              selectedTheme.backgroundProperties.url = selectedTheme.backgroundProperties.url.join(" | ");
             }
-
-            if (selectedTheme.backgroundProperties[prop] !== "") {
-              templateContentBackground.setAttribute(prop, selectedTheme.backgroundProperties[prop]);
+          } else if (prop === "backgroundColor") {
+            if (typeof selectedTheme.backgroundProperties.backgroundColor === "object") {
+              selectedTheme.backgroundProperties.backgroundColor = selectedTheme.backgroundProperties.backgroundColor.join(' | ');
             }
+          }
+
+          if (selectedTheme.backgroundProperties[prop] !== "") {
+            templateContentBackground.setAttribute(prop, selectedTheme.backgroundProperties[prop]);
           }
         }
       }
-      const themeIndex = projectThemesList.findIndex(ele => ele.name === theme);
-      CrComLib.publishEvent('n', 'selectedTheme', themeIndex);
-    }, 500);
+    }
+    const themeIndex = projectThemesList.findIndex(ele => ele.name === theme);
+    CrComLib.publishEvent('n', 'selectedTheme', themeIndex);
   }
 
   /**
