@@ -78,6 +78,10 @@
   }
 }
 
+#template-content-background {
+  --ch5-background--transition-duration: 0;
+}
+
 #content-index-page {
   flex: 1;
   overflow-y: hidden;
