@@ -80,7 +80,10 @@ const templateSetThemeModule = (() => {
     }
     let selectedThemeName = theme.trim();
     const currentTheme = projectThemesList.find(theme => theme.name === selectedThemeName);
-    if (currentTheme.name === currentTheme.extends) {
+    // corner case
+    if (selectedThemeName === "project-custom-theme") {
+      body.classList.add(selectedThemeName);
+    } else if (currentTheme.name === currentTheme.extends) {
       body.classList.add(selectedThemeName);
     } else {
       body.classList.add(selectedThemeName);
