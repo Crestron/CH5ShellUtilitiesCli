@@ -43,8 +43,8 @@ const templateSetThemeModule = (() => {
         CrComLib.subscribeState('s', receiveStateTheme, (value) => {
 
           // Conditions to check theme value
-          const validValue = document.body.classList.contains(value) === false && !!projectThemes.find(theme => theme.name === value);
-          const noValue = value === "" && document.body.classList.contains(projectConfigResponse.selectedTheme) === false;
+          const validValue = !!projectThemes.find(theme => theme.name === value);
+          const noValue = value === "";
 
           // change theme if valid
           if (validValue || noValue) {
@@ -76,9 +76,20 @@ const templateSetThemeModule = (() => {
     const body = document.body;
     for (let i = 0; i < projectThemesList.length; i++) {
       body.classList.remove(projectThemesList[i].name);
+      body.classList.remove(projectThemesList[i].extends);
     }
     let selectedThemeName = theme.trim();
-    body.classList.add(selectedThemeName);
+    const currentTheme = projectThemesList.find(theme => theme.name === selectedThemeName);
+    if (currentTheme.name === currentTheme.extends) {
+      if (!body.classList.contains(selectedThemeName)) {
+        body.classList.add(selectedThemeName);
+      }
+    } else {
+      if (!body.classList.contains(selectedThemeName)) {
+        body.classList.add(selectedThemeName);
+        body.classList.add(currentTheme.extends);
+      }
+    }
     let selectedTheme = projectThemesList.find((tempObj) => tempObj.name.trim().toLowerCase() === selectedThemeName.toLowerCase());
     if (document.getElementById("brandLogo")) {
       if (selectedTheme.brandLogo !== "undefined") {
