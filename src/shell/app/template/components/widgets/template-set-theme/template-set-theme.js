@@ -80,14 +80,15 @@ const templateSetThemeModule = (() => {
     }
     let selectedThemeName = theme.trim();
     const currentTheme = projectThemesList.find(theme => theme.name === selectedThemeName);
-    // corner case
-    if (selectedThemeName === "project-custom-theme") {
-      body.classList.add(selectedThemeName);
-    } else if (currentTheme.name === currentTheme.extends) {
-      body.classList.add(selectedThemeName);
+    if (currentTheme.name === currentTheme.extends) {
+      if (!body.classList.contains(selectedThemeName)) {
+        body.classList.add(selectedThemeName);
+      }
     } else {
-      body.classList.add(selectedThemeName);
-      body.classList.add(currentTheme.extends);
+      if (!body.classList.contains(selectedThemeName)) {
+        body.classList.add(selectedThemeName);
+        body.classList.add(currentTheme.extends);
+      }
     }
     let selectedTheme = projectThemesList.find((tempObj) => tempObj.name.trim().toLowerCase() === selectedThemeName.toLowerCase());
     if (document.getElementById("brandLogo")) {
