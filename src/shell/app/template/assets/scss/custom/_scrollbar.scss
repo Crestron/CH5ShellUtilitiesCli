@@ -9,24 +9,12 @@
   width: 7px;
 }
 
-::-webkit-scrollbar-track,
-ch5-list .scrollbar-container {
+::-webkit-scrollbar-track {
   background-color: transparent;
 }
 
-::-webkit-scrollbar-thumb,
-ch5-list .scrollbar {
+::-webkit-scrollbar-thumb {
   background-color: rgba(0, 0, 0, 0.5);
   border-radius: 3px;
   border: 1px solid rgba(255, 255, 255, 0.9);
-}
-
-ch5-list {
-  .ch5-list-vertical-scrollbar {
-    padding-right: 0;
-  }
-
-  .ch5-list-horizontal-scrollbar {
-    padding-bottom: 0;
-  }
 }
