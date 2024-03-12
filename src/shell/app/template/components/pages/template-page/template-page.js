@@ -185,6 +185,7 @@ const templatePageModule = (() => {
 					const cacheBustVersion = "?v=" + (new Date()).getTime();
 					document.getElementById("favicon").setAttribute("href", projectConfigResponse.faviconPath);
 					document.getElementById("shellTemplateSelectedThemeCss").setAttribute("href", "./assets/css/ch5-theme.css" + cacheBustVersion);
+					document.getElementById("externalCss").setAttribute("href", "./assets/css/external.css" + cacheBustVersion);
 
 					const widgetsAndStandalonePages = document.getElementById("widgets-and-standalone-pages");
 					const widgets = projectConfigResponse.content.widgets;

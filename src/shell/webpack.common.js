@@ -12,14 +12,6 @@ const basePath = appConfig.basePath;
 const srcRoot = appConfig.srcRoot;
 const srcTemplateRoot = appConfig.srcTemplateRoot;
 const srcProjectRoot = appConfig.srcProjectRoot;
-const fontAwesomeCssBasePath = appConfig.fontAwesomeCssBasePath;
-const materialIconsCssBasePath = appConfig.materialIconsCssBasePath;
-const sgCssBasePath = appConfig.sgCssBasePath;
-const sgIconsBasePath = appConfig.sgIconsBasePath;
-const sgMediaTransportAccent = appConfig.sgMediaTransportAccent;
-const sgMediaTransportDark = appConfig.sgMediaTransportDark;
-const sgMediaTransportLight = appConfig.sgMediaTransportLight;
-const baseThemePath = appConfig.baseThemePath;
 
 function getConfig(envPath) {
   let copyToDest = [];
@@ -29,26 +21,6 @@ function getConfig(envPath) {
     fav: {
       to: `${distPath}`,
       from: `${srcRoot}/*.ico`,
-    },
-    layoutCss: {
-      to: `${distPath}/assets/css`,
-      from: `${appConfig.getAllThemes}`,
-    },
-    sgIcons: {
-      to: `${distPath}/assets/svgs/icons`,
-      from: `${sgIconsBasePath}`,
-    },
-    sgMediaAccents: {
-      to: `${distPath}/assets/svgs/media-transports/accents`,
-      from: `${sgMediaTransportAccent}`,
-    },
-    sgMediaDark: {
-      to: `${distPath}/assets/svgs/media-transports/dark`,
-      from: `${sgMediaTransportDark}`,
-    },
-    sgMediaLight: {
-      to: `${distPath}/assets/svgs/media-transports/light`,
-      from: `${sgMediaTransportLight}`,
     },
     projectConfig: {
       to: `${distPath}/assets/data`,
@@ -164,18 +136,20 @@ function getConfig(envPath) {
     copyToDest.push(listObj);
   });
 
+  const ch5Theme = {
+    from: path.resolve(path.resolve(__dirname), appConfig.themeBasePath),
+    to: path.resolve(`${distPath}/assets/`),
+  }
+
+  copyToDest.push(ch5Theme)
+
   return copyToDest;
 }
 
 module.exports = (env) => {
   return {
     entry: {
-      external: [
-        path.resolve(basePath, `${fontAwesomeCssBasePath}/all.css`),
-        path.resolve(basePath, `${materialIconsCssBasePath}/all.css`)
-      ],
       main: path.resolve(basePath, `${srcTemplateRoot}/assets/scss/main.scss`),
-      sg: path.resolve(basePath, `${sgCssBasePath}`),
       templatecomponents: glob.sync(`${srcTemplateRoot}/components/**/*.scss`),
       projectcomponents: glob.sync(`${srcProjectRoot}/components/**/*.scss`),
     },
