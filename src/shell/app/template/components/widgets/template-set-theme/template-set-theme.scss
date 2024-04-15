@@ -58,36 +58,9 @@
   }
 }
 
-<<<<<<< HEAD
-#themebtn {
-  .ch5-button {
-    background-color: transparent;
-    border: none;
-    color: #808080;
-    height: 36px;
-    width: 36px;
-    box-shadow: none;
-    cursor: pointer;
-
-    .cb-btn {
-      @include size(100%);
-      padding: 0;
-    }
-
-    i {
-      font-size: 32px;
-      padding: 0;
-    }
-  }
-}
-
-.dark-theme,
-.project-dark-theme {
-=======
 .dark-theme,
 .project-dark-theme,
 .zoom-dark-theme {
->>>>>>> f3a42703a9d0ab9cb4d55b4c841d09b2c31f5c10
   #template-set-theme-page {
     div.ch5-modal-dialog {
       border: 1px solid $color-darkgrey;

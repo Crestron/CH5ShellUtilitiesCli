@@ -1,11 +1,7 @@
 {
     "name": "@crestron/ch5-shell-utilities-cli", 
     "description": "CH5 Shell Utilities CLI for command scripts", 
-<<<<<<< HEAD
-    "version": "2.7.0", 
-=======
     "version": "2.8.0", 
->>>>>>> f3a42703a9d0ab9cb4d55b4c841d09b2c31f5c10
     "author": "Crestron", 
     "license": "SEE LICENSE IN LICENSE.txt", 
     "main": "./build/index.js", 
