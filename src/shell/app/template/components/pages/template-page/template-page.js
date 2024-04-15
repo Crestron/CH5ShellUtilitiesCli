@@ -174,9 +174,6 @@ const templatePageModule = (() => {
 
 			projectConfigModule.projectConfigData().then((projectConfigResponse) => {
 				translateModule.initializeDefaultLanguage().then(() => {
-					templateSetThemeModule.setThemes(projectConfigResponse.themes);
-					templateSetThemeModule.changeTheme(projectConfigResponse.selectedTheme);
-
 					/* Note: You can uncomment below line to enable remote logger.
 					 * Refer below documentation link to know more about remote logger.
 					 * https://sdkcon78221.crestron.com/sdk/Crestron_HTML5UI/Content/Topics/UI-Remote-Logger.htm
@@ -187,10 +184,8 @@ const templatePageModule = (() => {
 					// Changes for index.html - Start
 					const cacheBustVersion = "?v=" + (new Date()).getTime();
 					document.getElementById("favicon").setAttribute("href", projectConfigResponse.faviconPath);
-					const getSelectedTheme = projectConfigResponse.themes.find(themeName => themeName.name === projectConfigResponse.selectedTheme);
-					if (getSelectedTheme) {
-						document.getElementById("shellTemplateSelectedThemeCss").setAttribute("href", "./assets/css/" + getSelectedTheme.extends + ".css" + cacheBustVersion);
-					}
+					document.getElementById("shellTemplateSelectedThemeCss").setAttribute("href", "./assets/css/ch5-theme.css" + cacheBustVersion);
+					document.getElementById("externalCss").setAttribute("href", "./assets/css/external.css" + cacheBustVersion);
 
 					const widgetsAndStandalonePages = document.getElementById("widgets-and-standalone-pages");
 					const widgets = projectConfigResponse.content.widgets;
@@ -410,7 +405,8 @@ const templatePageModule = (() => {
 							}
 						});
 					});
-
+					templateSetThemeModule.setThemes(projectConfigResponse.themes);
+					templateSetThemeModule.changeTheme(projectConfigResponse.selectedTheme);
 				});
 			});
 
