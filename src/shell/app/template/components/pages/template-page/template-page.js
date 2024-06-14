@@ -379,7 +379,6 @@ const templatePageModule = (() => {
 								let loadListCh5 = CrComLib.subscribeState('o', 'ch5-list', (value) => {
 									if (value['loaded'] && (value['id'] === "horizontal-menu-swiper-thumb")) {
 										loadCh5ListForMenu(projectConfigResponse, responseArrayForNavPages);
-										configureWebXPanel(projectConfigResponse);
 										navigateToFirstPage(projectConfigResponse, responseArrayForNavPages);
 										setTimeout(() => {
 											CrComLib.unsubscribeState('o', 'ch5-list', loadListCh5);
@@ -391,7 +390,6 @@ const templatePageModule = (() => {
 								let loadListCh5 = CrComLib.subscribeState('o', 'ch5-list', (value) => {
 									if (value['loaded'] && (value['id'] === "vertical-menu-swiper-thumb")) {
 										loadCh5ListForMenu(projectConfigResponse, responseArrayForNavPages);
-										configureWebXPanel(projectConfigResponse);
 										navigateToFirstPage(projectConfigResponse, responseArrayForNavPages);
 										setTimeout(() => {
 											CrComLib.unsubscribeState('o', 'ch5-list', loadListCh5);
@@ -400,8 +398,10 @@ const templatePageModule = (() => {
 									}
 								});
 							} else {
-								configureWebXPanel(projectConfigResponse);
 								navigateToFirstPage(projectConfigResponse, responseArrayForNavPages);
+							}
+							if (!deviceSpecificData) {
+								configureWebXPanel(projectConfigResponse);
 							}
 						});
 					});
