@@ -20,6 +20,11 @@
 				<div id="header-section-page-set1"></div>
 				<template id="header-section-page-template1-set1">
 					<div class="navbar-action-right">
+						<div class="logs-widget">
+							<ch5-button shape="circle" size="small" receiveStateShow="logsbtn.show" class="logs-button-widget" noshowtype="remove"
+								iconClass="material-icons md-storage" sendEventOnClick="logsbtn.clicked" role="button" aria-label="Show Logs" aria-pressed="false">
+							</ch5-button>
+						</div>
 						<div class="theme-widget">
 							<ch5-button id="themebtn" shape="circle" size="small" iconClass="material-icons md-invert_colors"
 								sendEventOnClick="themebtn.clicked" role="button" aria-label="Select Theme" aria-pressed="false">
@@ -47,6 +52,9 @@
 </div>
 
 <!-- Template Widget -->
+<ch5-import-htmlsnippet id="template-logs-import-page"
+url="./app/template/components/widgets/template-logs/template-logs.html">
+</ch5-import-htmlsnippet>
 <ch5-import-htmlsnippet id="template-set-theme-import-page"
 	url="./app/template/components/widgets/template-set-theme/template-set-theme.html">
 </ch5-import-htmlsnippet>

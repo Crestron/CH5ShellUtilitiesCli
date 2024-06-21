@@ -1,0 +1,493 @@
+// Copyright (C) 2022 to the present, Crestron Electronics, Inc.
+// All rights reserved.
+// No part of this software may be reproduced in any form, machine
+// or natural, without the express written consent of Crestron Electronics.
+// Use of this source code is subject to the terms of the Crestron Software License Agreement
+// under which you licensed this source code.
+
+.template-logs-widget {
+  // BEGIN::CHANGEAREA - your page level styles go here
+}
+
+#loggerViewModalDialog {
+  $constHeight: 40px;
+  $color-blue: #3e97eb;
+  $color-light-blue: #e3f5ff;
+  $color-white: #fff;
+
+  width: 95%;
+  height: 80%;
+
+  $spaceamounts: (0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100); // Adjust this to include the pixel amounts you need
+
+  @each $var in $spaceamounts {
+    .h-#{$var} {
+      height: #{$var} + "%";
+    }
+  }
+ 
+  .ch5-modal-dialog {
+    background-color: whitesmoke;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: flex;
+    flex-direction: column;
+    --ch5-modal-dialog--close-icon-size: 26px;
+
+    .ch5-modal-dialog-close-icon-btn {
+      position: absolute;
+      right: 38px;
+    }
+    .ch5-modal-dialog-header {
+      font-size: 24px;
+      font-weight: bold;
+      padding-left: 14px;
+    }
+    .ch5-modal-dialog-contents {
+      // height: 100%;
+      flex-grow: 1;
+    }
+  }
+
+  .ch5-modal-dialog .ch5-modal-dialog-close-icon-btn {
+    background-color: transparent;
+  }
+
+  input[type="text"] {
+    outline: 0;
+  }
+
+  input[type="text"]:disabled {
+    background-color: #ecf8fc;
+  }
+
+  label {
+    margin: 0;
+  }
+
+  .logicon {
+    font-size: 16px;
+  }
+  .border-rounded {
+    border: solid 1px dimgray;
+    overflow-x: hidden;
+    overflow-y: auto;
+    border-radius: 4px;
+    font-size: 24px;
+    background-color: white;
+  }
+
+  .log-message-type {
+    font-weight: bold;
+    text-transform: capitalize;
+  }
+
+  input[type="search"]::-webkit-search-cancel-button {
+    // -webkit-appearance: searchfield-cancel-button;
+    /* Remove default */
+    // -webkit-appearance: none;
+    // cursor: pointer;
+
+    // content: "";
+    // display: block;
+    // width: 25px;
+    // height: 12px;
+    // background-repeat: no-repeat;
+    // background-size: 18px;
+    // background-position: top left;
+    // background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAEFUlEQVR4Ab2Y1XIrORCGZ6TgYWZmZmZmCi+G7Ruz3yLwAgeulxnvlvddlulu0dtfYrmMMyNTqv4qeaTu/iM1Sc61a5dUFtrA/A4AdfnyeXXhwml1/vypmbG/Ds85ZQi1BMW5cyf1smWLXUf+1q9fpbq6HrQODr7UIehkvHHjupm5BQvmumfPntDIWEBDKJDQqVPHNIbC4fF5iUTicCqVGk2n01OCVwUfgex4WuZGWBMKjc9D5vTpY7puhC5ePKNbWx03Go2sEEPDYvBTwQ+CfwWZCmCONZ8gE4lEVqDj0qVzuiZChw/vVaOjI+2itFuUfyP4C4OWQOYb0dGFrkOH9ik/QmUXrF27XMmuLMseyx8orxHomIpGo8s2b16rrHZo+fIFKhaLrREFr3kfjTXQ9Xo8Hlu7dOk8FYjQnj3bzM5AJtMgvM5OYcuTkOQTPTQ02C4Ck9Y7Y79TU8PDg+3YrEhIItTFgY3PNBi/4+jYLEto//6dmtCWhV97KPlP8IXgmeBnj3XMPRV8jozHuq+xeeDALl1CiAQmjId8QvtdcfZ1N25c07J2rAKpn0maN25c1ayV3+946PubPIXtAkKUA7IqicxD+It4PL5+7lztnj9/Wnd3P2opJmXI9PZ24Y+a45CIWoesh96PsQ2HHCEEk8nEIZn83kPwWXf3Q511QjF4Rvf19RhSv4BZMt3M5dY8fHhfy9wTD73fi+3DcMgRymQyHNeIz3ljcIz/3hhkp7KkBsHAQF8emdOQYW4EWS+/ZA0cDCEFO8IwQGT8DCl2weyUtBwtd+7c1Ldv39CMy5D5OYDeqdwO0cPQNlCpmQxKCh8yxfLq1YszYMy3R48e2JABr8JBuGiH5op+hvbBIof8yhERroaIIcY3mXvZHFNAfEQ/BReHTo8floR+gdChQ3tKCJHPmKuCUIcQqvrICG2Op6XckfX0mJRQxZHhSFZOXRTaELh+/Yq+efOaZlycEuyc2j7s2Zn80Jbd6MLwy4LB/v7CsO/qemhI2Yc9ycknMT6VndH5BvOi6RdQlBIgB2GNrFVizCsdH/uUjnXt7Q6lo2yeMSmBnWFNW5vjIkORtSodecV1mILnV1zPnTutOT6P4jqGT1VdXAXkD5v242mA9uNZgPbjG+kcV2Dbq0Hran6D5t/CTjWhhZ0cHHzZu4UFu3dvNU3+6w0k9Bo2sBXoXrZq1SLFVQVSDbgGvYZubFjdXDdtWq3E4ep9UZxE58aNq1SVV+l9amxstB3nq/Eq/a25Sh87dlDV+NhwllqX/9jwie1jA7Lo4OGijs8xRyHmkFWzzzFk6ekyzzFTxc8xyNb9fciAR6hVq5a6GNqzZ4ebfbDqFHQw3rFjs5p9zFrtUg6qebBSDKoFPQydnoAx32qB+h8A5v1nBDyBdQAAAABJRU5ErkJggg==);
+  }
+
+  ch5-list .list-item,
+  .each-list-item {
+    padding: 0 10px 0 10px;
+    border: 0;
+    font-size: 20px;
+    position: relative;
+    border-bottom: 1px solid lightgray;
+    .log-indicator {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 5px;
+      height: 100%;
+    }
+    .log-item-object {
+      cursor: pointer;
+      background-color: $color-blue;
+      color: $color-white;
+      display: inline-block;
+      border-radius: 4px;
+      // cursor: pointer;
+      // box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+      padding: 0 20px;
+      margin: 0 5px;
+      &.smoke {
+        background-color: transparent;
+        color: black;
+        display: block;
+        padding: 0;
+      }
+    }
+  }
+  .logiconholder {
+    width: $constHeight;
+    min-width: $constHeight;
+  }
+  .log-overlay {
+    min-width: 800px;
+    color: black;
+  }
+  input::placeholder {
+    color: lightgray;
+    font-style: italic;
+    opacity: 1;
+  }
+
+  .info-wrapper {
+    border-right: 1px solid rgba(0, 0, 0, 0.1);
+    .info-type {
+      color: rgb(90, 90, 92);
+      font-size: calc(1.5rem);
+      text-overflow: ellipsis;
+      padding-right: 5px;
+      position: relative;
+      text-transform: uppercase;
+    }
+
+    .info-value {
+      color: black;
+      font-size: 2rem;
+      text-overflow: ellipsis;
+      font-weight: bold;
+      line-height: 20px;
+      position: relative;
+    }
+  }
+
+  .text-input {
+    height: $constHeight;
+    width: calc(100% - 45px);
+    border: solid 1px dimgray;
+    border-radius: 5px;
+    font-size: 1.8rem;
+    padding: 0 15px 0 15px;
+  }
+
+  .logmessagetext {
+    font-size: 16px;
+    padding: 4px;
+  }
+
+  ul,
+  #myUL {
+    list-style-type: none;
+  }
+
+  #myUL {
+    margin: 0;
+    padding: 0;
+  }
+
+  .caret {
+    cursor: pointer;
+    -webkit-user-select: none; /* Safari 3.1+ */
+    -moz-user-select: none; /* Firefox 2+ */
+    -ms-user-select: none; /* IE 10+ */
+    user-select: none;
+  }
+
+  .caret::before {
+    content: "\25B6";
+    color: black;
+    display: inline-block;
+    margin-right: 6px;
+  }
+
+  .caret-down::before {
+    -ms-transform: rotate(90deg); /* IE 9 */
+    -webkit-transform: rotate(90deg); /* Safari */
+    transform: rotate(90deg);
+  }
+
+  .nested {
+    display: none;
+  }
+
+  .active {
+    display: block;
+  }
+
+  #logBtnReload {
+    position: absolute;
+    right: 90px;
+    top: -50px;
+    --ch5-button--default-border-width: 0;
+    --ch5-button--default-background-color: transparent;
+    --ch5-button--default-font-color: #58b158;
+    --ch5-button--small-icon-size: 24px;
+    --ch5-button--small-width: 36px;
+    --ch5-button--small-height: 36px;
+  }
+  #logBtnClear {
+    position: absolute;
+    right: 40px;
+    top: -50px;
+    --ch5-button--default-border-width: 0;
+    --ch5-button--default-background-color: transparent;
+    --ch5-button--default-font-color: #ef583d;
+    --ch5-button--small-icon-size: 24px;
+    --ch5-button--small-width: 36px;
+    --ch5-button--small-height: 36px;
+  }
+
+  #ch5listVerticalLogOptions {
+    .vertical-list-item {
+      height: $constHeight;
+    }
+    .mycustom-checkbox {
+      & + i {
+        position: absolute;
+        top: 13px;
+        left: $constHeight;
+        font-size: 1.4rem;
+      }
+    }
+
+    .mycustom-checkbox-label {
+      padding-left: 55px;
+      height: $constHeight;
+      line-height: $constHeight;
+      font-size: 1.8rem;
+      text-transform: capitalize;
+      &:before {
+        top: 10px;
+      }
+      &:after {
+        top: 13px;
+        left: 7px;
+      }
+    }
+  }
+
+  #logsContentArea {
+    position: relative;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    input[type="checkbox"] {
+      position: absolute;
+      bottom: 5%;
+      left: calc(25% - 50px);
+      height: $constHeight + 10;
+      width: $constHeight + 10;
+      z-index: 2;
+      opacity: 0;
+      cursor: pointer;
+      ~ .collapse-icon {
+        position: absolute;
+        display: block;
+        bottom: 5%;
+        left: calc(25% - 50px);
+        height: $constHeight + 10;
+        width: $constHeight + 10;
+        line-height: $constHeight + 10;
+        z-index: 1;
+        font-size: 3rem;
+        text-align: center;
+        color: $color-white;
+        background-color: $color-blue;
+        box-shadow: 6px 3px 6px 2px rgba(0, 0, 0, 0.2);
+      }
+      ~ .collapse-icon.fa-angle-right {
+        display: none;
+      }
+
+      &:checked {
+        left: 0;
+        ~ .collapse-icon.fa-angle-left {
+          display: none;
+        }
+        ~ .collapse-icon.fa-angle-right {
+          left: 0;
+          display: block;
+        }
+        ~ #filterLogsSection {
+          width: 0 !important;
+          flex-basis: 0;
+          max-width: 0;
+          padding: 0 !important;
+          overflow: hidden;
+          border: 0 !important;
+        }
+        ~ #logsSection {
+          width: 100%;
+          flex: 100%;
+          max-width: 100%;
+        }
+      }
+    }
+
+    #filterLogsSection {
+      transition: width 0.3s;
+      // transition: all 0.25s ease-out;
+      background-color: #f5f5f5;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      #sendToServerMessage {
+        display: block;
+        text-align: left;
+        font-size: 1.4rem;
+        color: #666;
+        font-style: italic;
+      }
+      .info-wrapper {
+        border: 0 !important;
+      }
+    }
+  }
+
+  #logFilter {
+    ~ #logBtnFilter {
+      margin-left: 0 !important;
+      background-color: $color-blue;
+      width: $constHeight;
+      height: $constHeight;
+      i {
+        color: $color-white;
+        font-size: 2rem;
+        line-height: 3rem;
+      }
+    }
+  }
+
+  #ipAddressToPost {
+    display: inline-block;
+    width: calc(100% - 50px) !important;
+    font-size: 1.8rem;
+    padding-left: 10px;
+    padding-right: 10px;
+    height: $constHeight;
+  }
+  #logBtnPostMessages {
+    margin: 0;
+    font-size: 2rem;
+    background-color: $color-blue;
+    width: $constHeight;
+    height: $constHeight;
+    i {
+      color: $color-white !important;
+      font-size: 2rem;
+      line-height: 3rem;
+      margin-left: -5px !important;
+    }
+  }
+
+  #divLogContent {
+    overflow-y: auto;
+    background-color: #eee;
+    // border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border: 1px solid darkgray;
+
+    .each-list-item {
+      background-color: $color-white;
+      border-bottom: 1px solid #ebf7ff;
+      position: relative;
+      &:nth-child(2n + 1) {
+        background-color: #f7f9fb;
+      }
+      &:last-child {
+        border: 0 !important;
+      }
+      // .logiconholder {
+      // .logicon {
+      //   position: absolute;
+      //   top: 5px;
+      //   left: 20px;
+      // }
+      // }
+    }
+  }
+
+  // Below section is specific for browser app to view logs
+  #selectPanelToRenderSection {
+    position: relative;
+    z-index: 100;
+    #selectedPanelValue {
+      position: relative;
+      height: $constHeight;
+      line-height: $constHeight;
+      border: 1px solid #cacaca;
+      border-radius: 10px;
+      background: #e8e8e8;
+      span {
+        display: block;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        height: $constHeight;
+        line-height: $constHeight;
+      }
+    }
+    #panelList {
+      display: none !important;
+      position: absolute;
+      top: 50px;
+      left: 0;
+      width: 30vw;
+      min-height: $constHeight;
+      line-height: $constHeight;
+      background: #fff;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      z-index: 100;
+      box-shadow: 3px 3px 12px 6px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+    }
+    #panelListToggler {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 30vw;
+      height: $constHeight;
+      line-height: $constHeight;
+      z-index: 2;
+      opacity: 0;
+      cursor: pointer;
+      &:checked {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        ~ #panelList {
+          display: flex !important;
+          input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+          }
+        }
+      }
+    }
+  }
+
+  // END::CHANGEAREA
+}
+
+.logs-button-widget {
+  --ch5-button--default-border-width: 0;
+  --ch5-button--default-background-color: transparent;
+  --ch5-button--default-font-color: #808080;
+  --ch5-button--small-font-size: 32px;
+  --ch5-button--small-width: 36px;
+  --ch5-button--small-height: 36px;
+}
+
+.dark-theme,
+.project-dark-theme {
+  .logs-button-widget {
+    --ch5-button--default-border-width: 0;
+    --ch5-button--default-background-color: transparent;
+    --ch5-button--default-font-color: #fff;
+    --ch5-button--small-font-size: 32px;
+    --ch5-button--small-width: 36px;
+    --ch5-button--small-height: 36px;
+  }
+}
