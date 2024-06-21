@@ -20,6 +20,7 @@ const templateSetThemeModule = (() => {
         const sendEventTheme = projectConfigResponse.customSignals.sendEventTheme || 'template-theme';
 
         const projectThemes = projectConfigResponse.themes;
+        setThemes(projectConfigResponse.themes);
         const themeList = document.getElementById('template-theme-list');
         let wrapper = `<ch5-button-list orientation="vertical" buttonType="warning" numberOfItems="${projectThemes.length}" columns="1" 
         buttonShape="rounded-rectangle" indexId="idx" loadItems="all"
@@ -38,10 +39,9 @@ const templateSetThemeModule = (() => {
           if (value.repeatdigital === true && document.getElementById('template-theme').getAttribute('show') === 'false') {
             document.getElementById('template-theme').setAttribute('show', 'true');
           }
-        })
+        });
 
         CrComLib.subscribeState('s', receiveStateTheme, (value) => {
-
           // Conditions to check theme value
           const validValue = !!projectThemes.find(theme => theme.name === value);
           const noValue = value === "";
@@ -79,7 +79,7 @@ const templateSetThemeModule = (() => {
       body.classList.remove(projectThemesList[i].extends);
     }
     let selectedThemeName = theme.trim();
-    const currentTheme = projectThemesList.find(theme => theme.name === selectedThemeName);
+    const currentTheme = projectThemesList.find(themeVal => themeVal.name === selectedThemeName);
     if (currentTheme.name === currentTheme.extends) {
       if (!body.classList.contains(selectedThemeName)) {
         body.classList.add(selectedThemeName);
@@ -93,7 +93,7 @@ const templateSetThemeModule = (() => {
     let selectedTheme = projectThemesList.find((tempObj) => tempObj.name.trim().toLowerCase() === selectedThemeName.toLowerCase());
     if (document.getElementById("brandLogo")) {
       if (selectedTheme.brandLogo !== "undefined") {
-        for (var prop in selectedTheme.brandLogo) {
+        for (const prop in selectedTheme.brandLogo) {
           if (selectedTheme.brandLogo[prop] !== "") {
             document.getElementById("brandLogo").setAttribute(prop, selectedTheme.brandLogo[prop]);
           }
