@@ -22,7 +22,37 @@ const componentsList = [...mainTemplateJs, ...mainProjectJs, ...componentsTempla
 const appVersionInfo = {};
 appVersionInfo.appName = appName;
 appVersionInfo.appVersion = appVersion;
+appVersionInfo.ch5 = {};
+appVersionInfo.ch5.crComLib = {};
+appVersionInfo.ch5.crComLib.value = pkg.dependencies['@crestron/ch5-crcomlib'];
+appVersionInfo.ch5.crComLib.version = getVersionValue(pkg.dependencies['@crestron/ch5-crcomlib']);
+appVersionInfo.ch5.ch5Theme = {};
+appVersionInfo.ch5.ch5Theme.value = pkg.dependencies['@crestron/ch5-theme'];
+appVersionInfo.ch5.ch5Theme.version = getVersionValue(pkg.dependencies['@crestron/ch5-theme']);
+appVersionInfo.ch5.ch5WebXPanel = {};
+appVersionInfo.ch5.ch5WebXPanel.value = pkg.dependencies['@crestron/ch5-webxpanel'];
+appVersionInfo.ch5.ch5WebXPanel.version = getVersionValue(pkg.dependencies['@crestron/ch5-webxpanel']);
 
+function getVersionValue(input) {
+  try {
+    let output = input.toLowerCase().replaceAll("~", "").replaceAll("^", "").replaceAll(".tgz", "").replaceAll("file::", "");
+    const urlStringForward = output.split("/");
+    if (urlStringForward.length > 1) {
+      output = urlStringForward[urlStringForward.length - 2];
+    } else {
+      output = urlStringForward[urlStringForward.length - 1];
+    }
+    const urlStringBackward = output.split("\\");
+    if (urlStringBackward.length > 1) {
+      output = urlStringBackward[urlStringBackward.length - 2];
+    } else {
+      output = urlStringBackward[urlStringBackward.length - 1];
+    }
+    return output;
+  } catch {
+    return input.toLowerCase().replaceAll("~", "").replaceAll("^", "").replaceAll(".tgz", "").replaceAll("file::", "");
+  }
+}
 module.exports = merge(common("prod"), {
   mode: 'production',
   plugins: [

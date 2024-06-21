@@ -8,8 +8,10 @@ const GenerateJsonPlugin = require('generate-json-webpack-plugin');
 const WebpackConcatPlugin = require('@mcler/webpack-concat-plugin');
 const common = require('./webpack.common.js');
 const pkg = require('./package.json');
+const projectConfig = require('./app/project-config.json');
 const BrowserSyncPlugin = require("browser-sync-webpack-plugin");
 const appConfig = require('./app.config');
+const CopyPlugin = require('copy-webpack-plugin');
 
 const appName = appConfig.appName;
 const appVersion = pkg.version;
@@ -27,6 +29,62 @@ const componentsList = [...mainTemplateJs, ...mainProjectJs, ...componentsTempla
 const appVersionInfo = {};
 appVersionInfo.appName = appName;
 appVersionInfo.appVersion = appVersion;
+appVersionInfo.ch5 = {};
+appVersionInfo.ch5.crComLib = {};
+appVersionInfo.ch5.crComLib.value = pkg.dependencies['@crestron/ch5-crcomlib'];
+appVersionInfo.ch5.crComLib.version = getVersionValue(pkg.dependencies['@crestron/ch5-crcomlib']);
+appVersionInfo.ch5.ch5Theme = {};
+appVersionInfo.ch5.ch5Theme.value = pkg.dependencies['@crestron/ch5-theme'];
+appVersionInfo.ch5.ch5Theme.version = getVersionValue(pkg.dependencies['@crestron/ch5-theme']);
+appVersionInfo.ch5.ch5WebXPanel = {};
+appVersionInfo.ch5.ch5WebXPanel.value = pkg.dependencies['@crestron/ch5-webxpanel'];
+appVersionInfo.ch5.ch5WebXPanel.version = getVersionValue(pkg.dependencies['@crestron/ch5-webxpanel']);
+
+function getVersionValue(input) {
+  try {
+    let output = input.toLowerCase().replaceAll("~", "").replaceAll("^", "").replaceAll(".tgz", "").replaceAll("file::", "");
+    const urlStringForward = output.split("/");
+    if (urlStringForward.length > 1) {
+      output = urlStringForward[urlStringForward.length - 2];
+    } else {
+      output = urlStringForward[urlStringForward.length - 1];
+    }
+    const urlStringBackward = output.split("\\");
+    if (urlStringBackward.length > 1) {
+      output = urlStringBackward[urlStringBackward.length - 2];
+    } else {
+      output = urlStringBackward[urlStringBackward.length - 1];
+    }
+    return output;
+  } catch {
+    return input.toLowerCase().replaceAll("~", "").replaceAll("^", "").replaceAll(".tgz", "").replaceAll("file::", "");
+  }
+}
+
+const ArbitraryCodeAfterReload = function (cb) {
+  this.apply = function (compiler) {
+    if (compiler.hooks && compiler.hooks.done) {
+      compiler.hooks.done.tap('webpack-arbitrary-code', cb);
+    }
+  };
+};
+
+const myCallback = function () {
+
+  console.log('Implementing alien intelligence');
+};
+
+function modify(buffer) {
+  // copy-webpack-plugin passes a buffer
+  const manifest = JSON.parse(buffer.toString());
+
+  // make any modifications you like, such as
+  manifest.version = projectConfig.version;
+
+  // pretty print to JSON with two spaces
+  manifest_JSON = JSON.stringify(manifest, null, 2);
+  return manifest_JSON;
+}
 
 module.exports = merge(common("dev"), {
   mode: "development",
@@ -59,6 +117,15 @@ module.exports = merge(common("dev"), {
       hash: true,
       inject: false
     }),
+    new ArbitraryCodeAfterReload(myCallback),
+    new CopyPlugin([
+      {
+        from: "./app/project-config.json",
+        to: "./assets/data/project-config1.json",
+        transform(content, path) {
+          return modify(JSON.stringify({ 'version': 'ab.c.d' }))
+        }
+      }]),
     new BrowserSyncPlugin({
       host: "localhost",
       port: 3000,
