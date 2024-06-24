@@ -5,6 +5,19 @@
 // Use of this source code is subject to the terms of the Crestron Software License Agreement
 // under which you licensed this source code.
 
+@mixin logs-button-widget-mixin($iconColor) {
+  --ch5-button--small-font-size: 32px;
+  --ch5-button--small-width: 36px;
+  --ch5-button--small-height: 36px;
+  --ch5-button--default-border-width: 0;
+  --ch5-button--default-background-color: transparent;
+  --ch5-button--default-pressed-background-color: transparent;
+  --ch5-button--default-selected-background-color: transparent;
+  --ch5-button--default-font-color: #{$iconColor};
+  --ch5-button--default-pressed-font-color: #{$iconColor};
+  --ch5-button--default-selected-font-color: #{$iconColor};
+}
+
 .template-logs-widget {
   // BEGIN::CHANGEAREA - your page level styles go here
 }
@@ -25,7 +38,7 @@
       height: #{$var} + "%";
     }
   }
- 
+
   .ch5-modal-dialog {
     background-color: whitesmoke;
     width: 100%;
@@ -54,6 +67,10 @@
     background-color: transparent;
   }
 
+  .lbl-title-logs {
+    font-size: 14px;
+    font-style: italic;
+  }
   input[type="text"] {
     outline: 0;
   }
@@ -129,11 +146,18 @@
         display: block;
         padding: 0;
       }
+      > * {
+        cursor: default;
+      }
     }
   }
   .logiconholder {
     width: $constHeight;
     min-width: $constHeight;
+    display: flex;
+    justify-content: center;
+    margin-top: 8px;
+    align-items: flex-start;
   }
   .log-overlay {
     min-width: 800px;
@@ -219,27 +243,20 @@
     display: block;
   }
 
-  #logBtnReload {
-    position: absolute;
-    right: 90px;
-    top: -50px;
-    --ch5-button--default-border-width: 0;
-    --ch5-button--default-background-color: transparent;
-    --ch5-button--default-font-color: #58b158;
+  .log-reload-button {
+    @include logs-button-widget-mixin(#58b158);
     --ch5-button--small-icon-size: 24px;
-    --ch5-button--small-width: 36px;
-    --ch5-button--small-height: 36px;
+    position: absolute;
+    right: 125px;
+    top: 20px;
   }
-  #logBtnClear {
-    position: absolute;
-    right: 40px;
-    top: -50px;
-    --ch5-button--default-border-width: 0;
-    --ch5-button--default-background-color: transparent;
-    --ch5-button--default-font-color: #ef583d;
+
+  .log-clear-button {
+    @include logs-button-widget-mixin(#ef583d);
     --ch5-button--small-icon-size: 24px;
-    --ch5-button--small-width: 36px;
-    --ch5-button--small-height: 36px;
+    position: absolute;
+    right: 75px;
+    top: 20px;
   }
 
   #ch5listVerticalLogOptions {
@@ -318,11 +335,6 @@
           padding: 0 !important;
           overflow: hidden;
           border: 0 !important;
-        }
-        ~ #logsSection {
-          width: 100%;
-          flex: 100%;
-          max-width: 100%;
         }
       }
     }
@@ -407,87 +419,16 @@
     }
   }
 
-  // Below section is specific for browser app to view logs
-  #selectPanelToRenderSection {
-    position: relative;
-    z-index: 100;
-    #selectedPanelValue {
-      position: relative;
-      height: $constHeight;
-      line-height: $constHeight;
-      border: 1px solid #cacaca;
-      border-radius: 10px;
-      background: #e8e8e8;
-      span {
-        display: block;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-        height: $constHeight;
-        line-height: $constHeight;
-      }
-    }
-    #panelList {
-      display: none !important;
-      position: absolute;
-      top: 50px;
-      left: 0;
-      width: 30vw;
-      min-height: $constHeight;
-      line-height: $constHeight;
-      background: #fff;
-      border: 1px solid rgba(0, 0, 0, 0.1);
-      z-index: 100;
-      box-shadow: 3px 3px 12px 6px rgba(0, 0, 0, 0.2);
-      cursor: pointer;
-    }
-    #panelListToggler {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 30vw;
-      height: $constHeight;
-      line-height: $constHeight;
-      z-index: 2;
-      opacity: 0;
-      cursor: pointer;
-      &:checked {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        ~ #panelList {
-          display: flex !important;
-          input[type="checkbox"] {
-            width: 16px;
-            height: 16px;
-          }
-        }
-      }
-    }
-  }
-
   // END::CHANGEAREA
 }
 
 .logs-button-widget {
-  --ch5-button--default-border-width: 0;
-  --ch5-button--default-background-color: transparent;
-  --ch5-button--default-font-color: #808080;
-  --ch5-button--small-font-size: 32px;
-  --ch5-button--small-width: 36px;
-  --ch5-button--small-height: 36px;
+  @include logs-button-widget-mixin(#808080);
 }
 
 .dark-theme,
 .project-dark-theme {
   .logs-button-widget {
-    --ch5-button--default-border-width: 0;
-    --ch5-button--default-background-color: transparent;
-    --ch5-button--default-font-color: #fff;
-    --ch5-button--small-font-size: 32px;
-    --ch5-button--small-width: 36px;
-    --ch5-button--small-height: 36px;
+    @include logs-button-widget-mixin(#fff);
   }
 }

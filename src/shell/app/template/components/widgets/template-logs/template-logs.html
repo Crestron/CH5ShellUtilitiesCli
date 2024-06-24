@@ -26,6 +26,11 @@
 			</div>
 		</div>
 
+		<ch5-button onclick="templateLogsModule.reload()" size="small" class="log-reload-button" iconclass="fas fa-sync">
+		</ch5-button>
+		<ch5-button onclick="templateLogsModule.clearLogs()" size="small" class="log-clear-button" iconclass="fas fa-ban">
+		</ch5-button>
+
 		<div class="m-0 p-0 h-100" id="logsContentArea">
 			<!-- <div class="h-100 m-0 p-0" id="filterLogsSection" style="visibility:hidden; height:0 !important">
 				<input type="checkbox" />
@@ -71,13 +76,7 @@
 					</div>
 				</div>
 			</div> -->
-			<div class="w-100 h-10 p-r-10 p-l-10 d-flex flex-row justify-content-start align-items-center" id="logsSection">
-				<ch5-button id="logBtnReload" onclick="templateLogsModule.reload()" size="small" class="" iconclass="fas fa-sync">
-				</ch5-button>
-				<ch5-button id="logBtnClear" onclick="templateLogsModule.clearLogs()" size="small" class="" iconclass="fas fa-ban">
-				</ch5-button>
-			</div>
-			<div class="w-100 h-90" id="divLogContent">
+			<div class="w-100 h-100" id="divLogContent">
 			</div>
 		</div>
 	</div>

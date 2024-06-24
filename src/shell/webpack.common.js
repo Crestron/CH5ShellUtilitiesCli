@@ -221,6 +221,11 @@ module.exports = (env) => {
         content: copyright()
       }),
       new CreateFileWebpack({
+        path: './',
+        fileName: 'LICENSE.txt',
+        content: license()
+      }),
+      new CreateFileWebpack({
         path: `${appConfigDistPath[env]}/assets/data`,
         fileName: 'version.json',
         content: getVersionForPackages()
@@ -266,4 +271,16 @@ function copyright() {
     "or natural, without the express written consent of Crestron Electronics.\n" +
     "Use of this source code is subject to the terms of the Crestron Software License Agreement\n" +
     "under which you licensed this source code.\n";
+}
+
+function license() {
+  return "Copyright (C) " + ((new Date()).getFullYear()) + " to the present, Crestron Electronics, Inc.\n" +
+    "All rights reserved.\n" +
+    "No part of this software may be reproduced in any form, machine\n" +
+    "or natural, without the express written consent of Crestron Electronics.\n" +
+    "Use of this source code is subject to the terms of the Crestron Software Development Tools License Agreement\n" +
+    "under which you licensed this source code.\n\n" +
+    "If you did not accept the terms of the license agreement,\n" +
+    "you are not authorized to use this software. For the terms of the license,\n" +
+    "please see the license agreement between you and Crestron at http://www.crestron.com/sla.\n";
 }

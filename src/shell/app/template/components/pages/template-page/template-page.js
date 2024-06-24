@@ -13,24 +13,6 @@ const templatePageModule = (() => {
 	let pageLoadTimeout = 2000;
 	let isWebXPanelInitialized = false; // avoid calling connection method multiple times
 
-	const effects = {
-		"fadeOutUpBig": ["animate__animated", "animate__fadeOutUpBig"],
-		"fadeInUpBig": ["animate__animated", "animate__fadeInUpBig"],
-		"fadeOutDownBig": ["animate__animated", "animate__fadeOutDownBig"],
-		"fadeInDownBig": ["animate__animated", "animate__fadeInDownBig"],
-		"fadeOutUpBigFast": ["animate__animated", "animate__fadeOutUpBig", "animate__fast"],
-		"fadeInUpBigFast": ["animate__animated", "animate__fadeInUpBig", "animate__fast"],
-		"fadeOutDownBigFast": ["animate__animated", "animate__fadeOutDownBig", "animate__fast"],
-		"fadeInDownBigFast": ["animate__animated", "animate__fadeInDownBig", "animate__fast"],
-		"fadeOut": ["animate__animated", "animate__fadeOut"],
-		"fadeOutSlow": ["animate__animated", "animate__fadeOut", "animate__slow"],
-		"fadeIn": ["animate__animated", "animate__fadeIn"],
-		"fadeInSlow": ["animate__animated", "animate__fadeIn", "animate__slow"],
-		"fadeInFast": ["animate__animated", "animate__fadeIn", "animate__fast"],
-		"zoomIn": ["animate__animated", "animate__zoomIn"],
-		"zoomOut": ["animate__animated", "animate__zoomOut"],
-		"fadeOutFast": ["animate__animated", "animate__fadeOut", "animate__fast"]
-	};
 
 	/**
 	 * This is public method for bottom navigation to navigate to next page
@@ -422,12 +404,6 @@ const templatePageModule = (() => {
 		}
 	});
 
-	function setTransition(selectedElement) {
-		const selectedEffect = effects.fadeIn;
-		for (let i = 0; i < selectedEffect.length; i++) {
-			selectedElement.classList.add(selectedEffect[i]);
-		}
-	}
 
 	function configureWebXPanel(projectConfigResponse) {
 		const entries = webXPanelModule.paramsToObject();
@@ -523,7 +499,6 @@ const templatePageModule = (() => {
 				firstLoad = true;
 				const listOfPages = projectConfigModule.getNavigationPages();
 				listOfPages.forEach((page) => page.preloadPage && navigationModule.updateDiagnosticsOnPageChange(page.pageName));
-
 			}
 			cleanup();
 			setTimeout(() => { document.getElementById("loader").style.display = "none"; }, 2000);
@@ -533,6 +508,7 @@ const templatePageModule = (() => {
 			}, 500);
 		}
 	}
+
 	function cleanup() {
 		document.getElementById("header-section-page-template1")?.remove();
 		document.getElementById("header-section-page-template2")?.remove();
@@ -557,7 +533,6 @@ const templatePageModule = (() => {
 				document.getElementById('template-content-index-footer')?.remove();
 			}
 		});
-
 	}
 
 	window.addEventListener("orientationchange", function () {
@@ -569,15 +544,14 @@ const templatePageModule = (() => {
 	}, false);
 
 	/**
-	 * All public method and properties exporting here
+	 * Exported public method and properties
 	 */
 	return {
 		navigateTriggerViewByPageName,
 		openThumbNav,
 		toggleSidebar,
 		hideLoading,
-		navigateTriggerViewByIndex,
-		setTransition
+		navigateTriggerViewByIndex
 	};
 
 })();

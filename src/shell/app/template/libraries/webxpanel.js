@@ -28,12 +28,13 @@ var webXPanelModule = (function () {
     loading: 'loading'
   };
 
-  var status;
-  var pcConfig = config;
-  var urlConfig = config;
-  var connectParams = config;
+  // var status;
+  const pcConfig = config;
+  const urlConfig = config;
+  let connectParams = config;
+
   /**
-   * Function to set status bar current state - hidden being default
+   * Set status bar current state - hidden being default
    * @param {*} classNameToAdd
    */
   function setStatus(classNameToAdd = RENDER_STATUS.hide) {
@@ -143,7 +144,6 @@ var webXPanelModule = (function () {
       }, 10000);
       updateInfoStatus("app.webxpanel.status.CONNECT_CIP");
 
-
       const cs = document.querySelector('#webxpanel-tab-content .connection .cs');
       const ipId = document.querySelector('#webxpanel-tab-content .connection .ipid');
       const roomId = document.querySelector('#webxpanel-tab-content .connection .roomid');
@@ -171,10 +171,9 @@ var webXPanelModule = (function () {
     let statusMsgPrefix = translateModule.translateInstant("app.webxpanel.statusmessageprefix");
     let statusMessage = translateModule.translateInstant(statusMessageKey);
     if (statusMessage) {
-      let sMsg = statusMsgPrefix + statusMessage;
       const status = document.querySelector('#webxpanel-tab-content .connection .status');
       if (status !== null) {
-        status.innerHTML = sMsg;
+        status.innerHTML = statusMsgPrefix + statusMessage;
       }
     }
   }
@@ -183,7 +182,7 @@ var webXPanelModule = (function () {
    * Show the badge on the info icon for connection status.
    */
   function displayConnectionWarning() {
-    let infoBtn = document.getElementById("infobtn");
+    const infoBtn = document.getElementById("infobtn");
     if (infoBtn) {
       infoBtn.classList.add("warn");
     }
@@ -193,8 +192,7 @@ var webXPanelModule = (function () {
    * Remove the badge on the info icon.
    */
   function removeConnectionWarning() {
-
-    let infoBtn = document.getElementById("infobtn");
+    const infoBtn = document.getElementById("infobtn");
     if (infoBtn) {
       infoBtn.classList.remove("warn");
     }
@@ -221,8 +219,7 @@ var webXPanelModule = (function () {
    */
   function connectWebXPanel(projectConfig) {
     connectParams = config;
-
-    status = document.querySelector('#webxpanel-tab-content .connection .status');
+    // status = document.querySelector('#webxpanel-tab-content .connection .status');
 
     webXPanelConnectionStatus();
     // Merge the configuration params, params of the URL takes precedence
