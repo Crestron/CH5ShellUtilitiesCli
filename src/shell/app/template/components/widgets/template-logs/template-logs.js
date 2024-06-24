@@ -54,7 +54,7 @@ const templateLogsModule = (() => {
 					// 	document.getElementById("ch5ListLogsSelectedTypeOption_" + i).setAttribute("value", logLevels[i].type);
 					// 	document.getElementById("ch5ListLogsSelectedTypeOptionLabel_" + i).innerHTML = logLevels[i].type;
 					// }
-					document.getElementById('loggerViewModalDialog').setAttribute('title', 'View Logs (Panel Id: ' + DEVICE_ID + ')');
+					document.querySelector('.ch5-modal-dialog-header').innerHTML = 'View Logs <label class="lbl-title-logs">(Panel Id: ' + DEVICE_ID + ')<label>';
 					// document.getElementById("logDisplayDeviceUniqueId").innerHTML = DEVICE_ID;
 
 					getLoggerElement().addEventListener('scroll', populate);
@@ -254,8 +254,8 @@ const templateLogsModule = (() => {
 		const output = `
         <div class="each-list-item log_{logtype}">
             <span class="log-indicator" style='background-color: {color}'></span>
-            <div class="d-flex justify-content-start align-items-center">
-							<div class="logiconholder text-center">
+            <div class="d-flex justify-content-start">
+							<div class="logiconholder">
 								<i style="color:{color}" class="logicon {icon}"></i>
 							</div>
 							<div class="text-left w-100 logmessagetext">
@@ -304,12 +304,32 @@ const templateLogsModule = (() => {
 			if (Array.isArray(value[i]) || isObject(value[i])) {
 				//output += processInput(value[i], "");
 				output += '<div class="log-item-object" data-input-index=' + itemIndex +
-					' onclick="templateLogsModule.processAndRenderObject(this)">View Object</div>';
+					' onclick="templateLogsModule.processAndRenderObjectNew(this, ' + i + ')">View Object</div>';
 			} else {
 				output += value[i] + " ";
 			}
 		}
+
+		// if (Array.isArray(value) || isObject(value)) {
+		// 	output += '<div class="log-item-object" data-input-index=' + itemIndex +
+		// 		' onclick="templateLogsModule.processAndRenderObject(this)">View Object</div>';
+		// } else {
+		// 	for (let i = 0; i < value.length; i++) {
+		// 		output += value[i] + " ";
+		// 	}
+		// }
 		return output;
+	}
+
+	function processAndRenderObjectNew(object, internalIndex) {
+		const logIndex = parseInt(object.getAttribute('data-input-index')) - 1;
+		if (logIndex >= 0) {
+			let value = console.getFullLogs()[logIndex].value;
+			let output = processInput(value[internalIndex], "");
+			object.innerHTML = output;
+			object.removeAttribute('onclick');
+			object.classList.add('smoke');
+		}
 	}
 
 	function processAndRenderObject(object) {
@@ -533,7 +553,8 @@ const templateLogsModule = (() => {
 		closePopup,
 		onLoggerTextboxOnFocus,
 		onLoggerTextboxOnBlur,
-		processAndRenderObject
+		processAndRenderObject,
+		processAndRenderObjectNew
 	};
 
 	// END::CHANGEAREA
