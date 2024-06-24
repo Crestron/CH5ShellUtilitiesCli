@@ -155,7 +155,7 @@ const console = (function (defaultConsole) {
 	 * Wrapper over console.log to allow controlling this based on config.
 	 */
 	function initialize() {
-		allowLogging = false;		
+		allowLogging = false;
 		const configData = getData();
 		if (configData) {
 			allowLogging = configData.allowLogging;
@@ -239,6 +239,8 @@ const console = (function (defaultConsole) {
 			if (logs.length > logLimit) {
 				logs.splice(0, 1); // removing the first log from array whenever a new log gets added
 			}
+		} else {
+			defaultConsole[logLevelInput.type](...input);
 		}
 	}
 
