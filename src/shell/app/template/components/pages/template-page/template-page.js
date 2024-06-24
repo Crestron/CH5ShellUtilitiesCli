@@ -551,8 +551,7 @@ const templatePageModule = (() => {
 		openThumbNav,
 		toggleSidebar,
 		hideLoading,
-		navigateTriggerViewByIndex,
-		setTransition
+		navigateTriggerViewByIndex
 	};
 
 })();
