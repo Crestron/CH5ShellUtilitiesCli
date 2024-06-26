@@ -2,7 +2,7 @@
  * copy css unminified files into destination folder
  */
 
-const merge = require('webpack-merge');
+const { merge } = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const GenerateJsonPlugin = require('generate-json-webpack-plugin');
 const WebpackConcatPlugin = require('@mcler/webpack-concat-plugin');

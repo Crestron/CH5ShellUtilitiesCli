@@ -7,7 +7,7 @@
  * No changes should be made to other project variables.
  */
 const path = require("path");
-const glob = require("glob");
+const { glob } = require('glob');
 
 const appName = `Shell`;
 const basePath = path.resolve(__dirname);
@@ -15,14 +15,24 @@ const nodeModules = `./node_modules/`;
 const srcRoot = `./app`;
 const srcTemplateRoot = `./app/template`;
 const srcProjectRoot = `./app/project`;
-const crLib = glob.sync(`${nodeModules}/@crestron/ch5-crcomlib/build_bundles/umd/cr-com-lib.js`);
-const webXPanel = glob.sync(`${nodeModules}/@crestron/ch5-webxpanel/dist/umd/index.js`);
-const mainTemplateJs = glob.sync(`${srcTemplateRoot}/libraries/*.js`);
-const mainProjectJs = glob.sync(`${srcProjectRoot}/libraries/*.js`);
-const componentsTemplateJs = glob.sync(`${srcTemplateRoot}/components/**/*.js`);
-const componentsProjectJs = glob.sync(`${srcProjectRoot}/components/**/*.js`);
+const crLib = pathReWrite(glob.sync(`${nodeModules}/@crestron/ch5-crcomlib/build_bundles/umd/cr-com-lib.js`));
+const webXPanel = pathReWrite(glob.sync(`${nodeModules}/@crestron/ch5-webxpanel/dist/umd/index.js`));
+const mainTemplateJs = pathReWrite(glob.sync(`${srcTemplateRoot}/libraries/*.js`));
+const mainProjectJs = pathReWrite(glob.sync(`${srcProjectRoot}/libraries/*.js`));
+const componentsTemplateJs = pathReWrite(glob.sync(`${srcTemplateRoot}/components/**/*.js`));
+const componentsProjectJs = pathReWrite(glob.sync(`${srcProjectRoot}/components/**/*.js`));
 const themeBasePath = 'node_modules/@crestron/ch5-theme/output/themes/';
-const zoomMngr = glob.sync(`${nodeModules}/@crestron/ch5-zoom-lib/dist/index.js`);
+const zoomMngr = pathReWrite(glob.sync(`${nodeModules}/@crestron/ch5-zoom-lib/dist/index.js`));
+
+function pathReWrite(data) {
+  let tempArray = [];
+  for (let i = 0; i < data.length; i++) {
+    let updatedPath = data[i].toString().replaceAll('\\', '/');
+    updatedPath = './' + updatedPath;
+    tempArray.unshift(updatedPath);
+  }
+  return tempArray;
+}
 
 module.exports = {
   appName,
