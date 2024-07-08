@@ -82,7 +82,7 @@ function modify(buffer) {
   manifest.version = projectConfig.version;
 
   // pretty print to JSON with two spaces
-  manifest_JSON = JSON.stringify(manifest, null, 2);
+  const manifest_JSON = JSON.stringify(manifest, null, 2);
   return manifest_JSON;
 }
 
