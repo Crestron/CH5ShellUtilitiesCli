@@ -73,27 +73,6 @@ const templateLogsModule = (() => {
 		filterLogs();
 	}
 
-	function getParentList(itemIndex) {
-		return `
-					<ul id="myUL_` + itemIndex + `">
-						<li><span class="caret" onclick="templateLogsModule.toggleJsonObject(this);">{title}</span>
-								<ul class="nested">
-									{nestedList}
-								</ul>
-						</li>
-					</ul>
-					`;
-	}
-
-	/**
-	 * 
-	 * @param {*} id 
-	 */
-	function toggleJsonObject(id) {
-		id.parentElement.querySelector(".nested").classList.toggle("active");
-		id.classList.toggle("caret-down");
-	}
-
 	/**
 	 * 
 	 */
@@ -128,7 +107,6 @@ const templateLogsModule = (() => {
 			}
 		}
 	}
-
 
 	function generateOTP() {
 		// Declare a digits variable which stores all digits 
@@ -240,8 +218,7 @@ const templateLogsModule = (() => {
 
 	function getNewLog(item) {
 		const output = `
-			<div class="each-list-item log_{logtype}">
-					<span class="log-indicator" style='background-color: {color}'></span>
+			<div class="each-list-item log_{logtype}" style='border-left: solid 5px {color}'>
 					<div class="d-flex justify-content-start">
 							<div class="logiconholder">
 									<i style="color:{color}" class="logicon {icon}"></i>
@@ -256,7 +233,7 @@ const templateLogsModule = (() => {
 
 		let returnVal = replaceAll(output, "{logtype}", item['logLevel'].type);
 		returnVal = replaceAll(returnVal, "{icon}", item['logLevel'].icon);
-		returnVal = replaceAll(returnVal, "{color}", item.logLevel.color.browser);
+		returnVal = replaceAll(returnVal, "{color}", item.logLevel.color.browser.toLowerCase());
 		returnVal = replaceAll(returnVal, "{message}", (itemIndex + 1) + ") "
 			+ item["date"] + ": " + evaluateValue(item["value"], itemIndex));
 		return returnVal;
@@ -320,13 +297,11 @@ const templateLogsModule = (() => {
 	function processAndRenderObject(object, itemIndex, localIndex) {
 		const value = console.getFullLogs()[itemIndex].value;
 		if (value !== "" && value.length > 0) {
-			// value[0] is needed cos by default an object also comes into array
-			let output = processInput(object, value, "", "", itemIndex);
-			// object.innerHTML =  output;
-			// toggleJsonObject(object.querySelector("span"))
-			// toggleJsonObject(document.getElementById("myUL_" + itemIndex).querySelector("span"))
-			object.removeAttribute('onclick');
-			object.classList.add('smoke');
+			if (localIndex !== -1) {
+				createArrayObjectContainer(object, value[localIndex]);
+			} else {
+				createArrayObjectContainer(object, value);
+			}
 		}
 	}
 
@@ -376,8 +351,8 @@ const templateLogsModule = (() => {
 		if (scrollTop < 100 && loadLogsDynamically) {
 			currentScrollIndex += 1;
 			// if (filteredLogs.length - ((currentScrollIndex + 1) * LOG_SCROLL_INCREMENT_COUNTER) >= 0) {
-		if (currentScrollIndex > console.getCurrentLogCounter() && console.getCurrentLogCounter() >= 0) {
-			getLoggerElement().insertAdjacentHTML("afterbegin", formatLogs());
+			if (currentScrollIndex > console.getCurrentLogCounter() && console.getCurrentLogCounter() >= 0) {
+				getLoggerElement().insertAdjacentHTML("afterbegin", formatLogs());
 			}
 		}
 	}
@@ -418,144 +393,11 @@ const templateLogsModule = (() => {
 	 * @param {*} index 
 	 * @param {*} subTitle 
 	 */
-	function processInput(obj, input, index, subTitle, itemIndex) {
-		// let z = "";
-		// let title = "";
-
-		// if (Array.isArray(input)) {
-		// 	if (subTitle) {
-		// 		title = (subTitle === "" ? "" : (subTitle + ": ")) + "[Array] (" + input.length + ")";
-		// 	} else {
-		// 		title = (index === "" ? "" : (index + ": ")) + "[Array] (" + input.length + ")";
-		// 	}
-
-		// 	if (input.length === 0) {
-		// 		z += "<li class='m-l-20'>[]</li>";
-		// 	} else {
-		// 		for (let i = 0; i < input.length; i++) {
-		// 			if (Array.isArray(input[i])) {
-		// 				z += processInput(input[i], i);
-		// 			} else if (isObject(input[i])) {
-		// 				z += processInput(input[i], i);
-		// 			} else {
-		// 				z += "<li class='m-l-20'>" + i + ": " + input[i] + "</li>";
-		// 			}
-		// 		}
-		// 	}
-		// 	let parentNewList = getParentList(itemIndex);
-		// 	parentNewList = parentNewList.replace("{title}", title);
-		// 	parentNewList = parentNewList.replace("{nestedList}", z);
-		// 	return parentNewList;
-
-		// } else if (isObject(input)) {
-		// 	if (subTitle) {
-		// 		title = (subTitle === "" ? "" : (subTitle + ": ")) + "{Object}";
-		// 	} else {
-		// 		title = (index === "" ? "" : (index + ": ")) + "{Object}";
-		// 	}
-		// 	if (typeof input === 'object' && input !== null) {
-		// 		if (Object.keys(input).length === 0 && input.constructor === Object) {
-		// 			z += "<li class='m-l-20'>{}</li>";
-		// 		} else {
-
-		// 			for (let key in input) {
-		// 				if (typeof input[key] === 'object' && input[key] !== null) {
-		// 					z += processInput(input[key], "", key);
-		// 				} else {
-		// 					z += "<li class='m-l-20'>" + key + ": " + input[key] + "</li>";
-		// 				}
-		// 			}
-		// 		}
-		// 	}
-		// 	let parentNewList = getParentList(itemIndex);
-		// 	parentNewList = parentNewList.replace("{title}", title);
-		// 	parentNewList = parentNewList.replace("{nestedList}", z);
-		// 	return parentNewList;
-		// } else {
-		// 	return input;
-		// }
-		const jsonData = input; //{ name: "John", age: 30, city: "New York" };
-
-// Convert JSON object to a formatted string
-const formattedJson = JSON.stringify(jsonData, null, 2);
-
-// Get the div element
-const newDiv = document.createElement("pre");
-// Set the div's content to the formatted JSON
-newDiv.innerHTML = formattedJson;
-
-obj.appendChild(newDiv, newDiv);
-
-		return newDiv;
+	function createArrayObjectContainer(obj, input) {
+		const jsonData = input;
+		obj.parentElement.insertAdjacentHTML("beforeend", "<pre class='logcontent'>" + JSON.stringify(jsonData, null, 2) + "</pre>");
+		obj.remove();
 	}
-
-	function processInput2(input, index, subTitle, itemIndex) {
-		let z = "";
-		let title = "";
-
-		if (Array.isArray(input)) {
-			// if (subTitle) {
-			// 	title = (subTitle === "" ? "" : (subTitle + ": ")) + "[Array] (" + input.length + ")";
-			// } else {
-			// 	title = (index === "" ? "" : (index + ": ")) + "[Array] (" + input.length + ")";
-			// }
-
-			if (input.length === 0) {
-				z += "<li class='m-l-20'>[]</li>";
-			} else {
-				for (let i = 0; i < input.length; i++) {
-					if (Array.isArray(input[i])) {
-						z += processInput(input[i], i);
-					} else if (isObject(input[i])) {
-						z += processInput(input[i], i);
-					} else {
-						z += "<li class='m-l-20'>" + i + ": " + input[i] + "</li>";
-					}
-				}
-			}
-			let parentNewList = getParentList(itemIndex);
-			parentNewList = parentNewList.replace("{title}", title);
-			parentNewList = parentNewList.replace("{nestedList}", z);
-			return parentNewList;
-
-		} else if (isObject(input)) {
-			// if (subTitle) {
-			// 	title = (subTitle === "" ? "" : (subTitle + ": ")) + "{Object}";
-			// } else {
-			// 	title = (index === "" ? "" : (index + ": ")) + "{Object}";
-			// }
-			// if (typeof input === 'object' && input !== null) {
-				if (Object.keys(input).length === 0 && input.constructor === Object) {
-					z += "<li class='m-l-20'>{}</li>";
-				} else {
-
-					for (let key in input) {
-						if (typeof input[key] === 'object' && input[key] !== null) {
-							z += processInput(input[key], "", key);
-						} else {
-							z += "<li class='m-l-20'>" + key + ": " + input[key] + "</li>";
-						}
-					}
-				}
-			// }
-			let parentNewList = getParentList(itemIndex);
-			parentNewList = parentNewList.replace("{title}", title);
-			parentNewList = parentNewList.replace("{nestedList}", z);
-			return parentNewList;
-		} else {
-			return input;
-		}
-	}
-	// /**
-	//  * 
-	//  * @param {*} val 
-	//  */
-	// function isObject(val) {
-	//     if (val === null) {
-	//         return false;
-	//     }
-	//     return ((typeof val === 'function') || (typeof val === 'object'));
-	// }
 
 	/**
 	 * Function to manage show/hide of content below fields when keyboard is up
@@ -583,7 +425,6 @@ obj.appendChild(newDiv, newDiv);
 	 */
 	return {
 		setNewLog,
-		toggleJsonObject,
 		clearLogs,
 		captureScreenshot,
 		postLogs,
