@@ -10,6 +10,7 @@ const console = (function (defaultConsole) {
 
 	"use strict";
 
+	// #region "Variables"
 	let configurationData = {
 		"allowLogging": true,
 		"urls": {
@@ -28,6 +29,8 @@ const console = (function (defaultConsole) {
 	};
 	let logIndex = 0;
 	let logs = [];
+	let currentLogCounter = 0;
+
 	let addColors = true;
 	let colorType = "browser";
 	let showLogIndex = true;
@@ -113,6 +116,8 @@ const console = (function (defaultConsole) {
 	logLevelCountObj[LOG_LEVELS.WARN.type] = 0;
 	logLevelCountObj[LOG_LEVELS.ERROR.type] = 0;
 
+	// #endregion 
+
 	/**
 	 * Returns Urls
 	 */
@@ -162,6 +167,7 @@ const console = (function (defaultConsole) {
 		}
 		CrComLib.publishEvent('b', 'logsbtn.show', true);
 		// CrComLib.subscribeState('s', `console.log`, (v) => {
+		// 	if()
 		//   // console.log("****");
 		//   // avfUtility.log(`console.log: ${v}`);
 		// });
@@ -184,7 +190,6 @@ const console = (function (defaultConsole) {
 	 */
 	function internalLog(logLevelInput, ...input) {
 		if (allowLogging === true && logLevel.value <= logLevelInput.value) {
-			logIndex += 1;
 			const outputLog = [];
 			let outputString = "";
 			const dateForLog = new Date().toISOString();
@@ -231,14 +236,18 @@ const console = (function (defaultConsole) {
 			incrementLogTypeBasedCount(logLevelInput.type);
 			logs.push(newLog);
 
-			if (templateLogsModule) {
-				templateLogsModule.setNewLog(newLog);
-			}
+			// if (templateLogsModule) {
+			// 	templateLogsModule.setNewLog(newLog);
+			// }
+			CrComLib.publishEvent('b', 'console-log-new', true);
 
-			const logLimit = getLoggerLimit();
-			if (logs.length > logLimit) {
-				logs.splice(0, 1); // removing the first log from array whenever a new log gets added
-			}
+			// Rags - later
+			// const logLimit = getLoggerLimit();
+			// if (logs.length > logLimit) {
+			// 	logs.splice(0, 1); // removing the first log from array whenever a new log gets added
+			// }
+
+			logIndex += 1;
 		} else {
 			defaultConsole[logLevelInput.type](...input);
 		}
@@ -258,12 +267,28 @@ const console = (function (defaultConsole) {
 	function getDeviceDetails() {
 		return device;
 	}
+
 	/**
 	* 
 	*/
 	function getFullLogs() {
-		const newLogs = (logs) ? JSON.parse(JSON.stringify(logs)) : [];
-		return newLogs;
+		let output = [];
+		try {
+			output = (logs) ? JSON.parse(JSON.stringify(logs)) : [];
+		} catch {
+			output = logs ? logs : [];
+		}
+		return output;
+	}
+
+	function getLogs() {
+		let output = [];
+		try {
+			output = (logs) ? JSON.parse(JSON.stringify(logs)) : [];
+		} catch {
+			output = logs ? logs : [];
+		}
+		return output.slice(currentLogCounter, output.length);
 	}
 
 	/**
@@ -287,14 +312,16 @@ const console = (function (defaultConsole) {
 	 * 
 	 */
 	function clearLogs() {
-		logs = [];
+		currentLogCounter = logs.length;
+		// logs = [];
+
 		resetLogLevelCountObj();
 	}
 
 	/**
-	* 
-	* @param  {...any} input 
-	*/
+	 * 
+	 * @param  {...any} input 
+	 */
 	function debug(...input) {
 		internalLog(LOG_LEVELS.DEBUG, ...input);
 		// defaultConsole.debug(...input);
@@ -345,6 +372,9 @@ const console = (function (defaultConsole) {
 		// defaultConsole.trace(...input);
 	}
 
+	function getCurrentLogCounter() {
+		return currentLogCounter;
+	}
 	/**
 	 * Throw any error raised
 	 * @param {any} err
@@ -364,6 +394,7 @@ const console = (function (defaultConsole) {
 		trace,
 		log,
 		clearLogs,
+		getLogs,
 		getFullLogs,
 		getDeviceDetails,
 		getLogTypeCountDetails,
@@ -372,7 +403,8 @@ const console = (function (defaultConsole) {
 		getData,
 		getConfigIcon,
 		getUrls,
-		getLoggerLimit
+		getLoggerLimit,
+		getCurrentLogCounter
 	};
 
 }(window.console));
