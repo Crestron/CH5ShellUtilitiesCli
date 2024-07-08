@@ -23,7 +23,7 @@
 }
 
 #loggerViewModalDialog {
-  $constHeight: 40px;
+  $constHeight: 32px;
   $color-blue: #3e97eb;
   $color-light-blue: #e3f5ff;
   $color-white: #fff;
@@ -39,6 +39,8 @@
     }
   }
 
+  $heightSetForTop: 100px;
+  
   .ch5-modal-dialog {
     background-color: whitesmoke;
     width: 100%;
@@ -56,6 +58,7 @@
       font-size: 24px;
       font-weight: bold;
       padding-left: 14px;
+      height: $heightSetForTop;
     }
     .ch5-modal-dialog-contents {
       // height: 100%;
@@ -118,7 +121,7 @@
 
   ch5-list .list-item,
   .each-list-item {
-    padding: 0 10px 0 10px;
+    padding: 0 10px 0 0px;
     border: 0;
     font-size: 20px;
     position: relative;
@@ -291,6 +294,8 @@
   #logsContentArea {
     position: relative;
     border: 1px solid rgba(0, 0, 0, 0.1);
+    height: calc(100vh - $heightSetForTop);
+    
     input[type="checkbox"] {
       position: absolute;
       bottom: 5%;
@@ -431,4 +436,51 @@
   .logs-button-widget {
     @include logs-button-widget-mixin(#fff);
   }
+}
+
+.container-logs {
+  height: 200px;
+  width: 500px;
+  display: -moz-box;
+  display: -webkit-flexbox;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: flex;
+  -webkit-flex-direction: column;
+  -moz-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+.container-logs-flex-1 {
+  height: 40px;
+  background-color: blue;
+}
+.container-logs-flex-2 {
+  position: relative;
+  -moz-box-flex: 1;
+  -webkit-flex: 1;
+  -moz-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  background-color: red;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;  
+}
+.container-flex-2-child {    
+  background-color: green;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+pre.logcontent {
+  border: solid 1px dimgray;
+  border-radius: 8px;
+  padding: 10px;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }

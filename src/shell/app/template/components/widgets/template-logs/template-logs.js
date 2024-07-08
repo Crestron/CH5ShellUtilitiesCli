@@ -1,12 +1,3 @@
-// Copyright (C) 2022 to the present, Crestron Electronics, Inc.
-// All rights reserved.
-// No part of this software may be reproduced in any form, machine
-// or natural, without the express written consent of Crestron Electronics.
-// Use of this source code is subject to the terms of the Crestron Software License Agreement
-// under which you licensed this source code.
-/* jslint es6 */
-/* global CrComLib, translateModule, serviceModule, utilsModule, templatePageModule */
-
 const templateLogsModule = (() => {
 	"use strict";
 
@@ -17,22 +8,13 @@ const templateLogsModule = (() => {
 	let APP_VERSION = "";
 	let CRCOMLIB_VERSION = "";
 	let currentScrollIndex = 0;
-	let fullLogs = [];
 	let filteredLogs = [];
+	let fullLogs = [];
 	let pushMessageLastIndex = -1;
 	let socketConnectionOpen = false;
 	let socket = null;
-	let loadLogsDynamically = false;
-
-	const parentList = `
-        <ul id="myUL">
-          <li><span class="caret" onclick="templateLogsModule.toggleJsonObject(this);">{title}</span>
-          	<ul class="nested">
-            	{nestedList}
-          	</ul>
-          </li>
-        </ul>
-        `;
+	let loadLogsDynamically = false; // This variable is set to true when the popup is opened
+	let subScriptionId = null;
 
 	/**
 	 * private method for page class initialization
@@ -59,7 +41,19 @@ const templateLogsModule = (() => {
 
 					getLoggerElement().addEventListener('scroll', populate);
 
-					showLogs();
+					loadLogsDynamically = true;
+					loadContent();
+
+					subScriptionId = CrComLib.subscribeState('b', 'console-log-new', (v) => {
+						loadContent();
+					});
+				});
+
+				document.getElementById('loggerViewModalDialog').addEventListener('beforeHide', function (e) {
+					getLoggerElement().innerHTML = '';
+					loadLogsDynamically = false;
+					CrComLib.unsubscribeState('b', 'console-log-new', subScriptionId);
+					// navigationModule.closePopup(navigationModule.popupPages.logDisplayImportPage);		
 				});
 
 				setTimeout(() => {
@@ -73,20 +67,10 @@ const templateLogsModule = (() => {
 	/**
 	 * 
 	 */
-	function showLogs() {
-		if (loadLogsDynamically === false) {
-			reload();
-			loadLogsDynamically = true;
-		}
-	}
-
-	/**
-	 * 
-	 * @param {*} id 
-	 */
-	function toggleJsonObject(id) {
-		id.parentElement.querySelector(".nested").classList.toggle("active");
-		id.classList.toggle("caret-down");
+	function loadContent() {
+		fullLogs = console.getLogs();
+		filteredLogs = console.getLogs();
+		filterLogs();
 	}
 
 	/**
@@ -95,23 +79,6 @@ const templateLogsModule = (() => {
 	function clearLogs() {
 		console.clearLogs();
 		currentScrollIndex = 0;
-		loadContent();
-	}
-
-	/**
-	 * 
-	 */
-	function loadContent() {
-		const logs = console.getFullLogs();
-		fullLogs = logs;
-		filteredLogs = logs; //JSON.parse(JSON.stringify(logs));
-		filterLogs();
-	}
-
-	/**
-	 * 
-	 */
-	function reload() {
 		loadContent();
 	}
 
@@ -140,7 +107,6 @@ const templateLogsModule = (() => {
 			}
 		}
 	}
-
 
 	function generateOTP() {
 		// Declare a digits variable which stores all digits 
@@ -252,24 +218,23 @@ const templateLogsModule = (() => {
 
 	function getNewLog(item) {
 		const output = `
-        <div class="each-list-item log_{logtype}">
-            <span class="log-indicator" style='background-color: {color}'></span>
-            <div class="d-flex justify-content-start">
+			<div class="each-list-item log_{logtype}" style='border-left: solid 5px {color}'>
+					<div class="d-flex justify-content-start">
 							<div class="logiconholder">
-								<i style="color:{color}" class="logicon {icon}"></i>
+									<i style="color:{color}" class="logicon {icon}"></i>
 							</div>
 							<div class="text-left w-100 logmessagetext">
-								{message}
+									{message}
 							</div>
-            </div>
-        </div>
-        `;
+					</div>
+			</div>
+			`;
 		const itemIndex = item["index"];
 
 		let returnVal = replaceAll(output, "{logtype}", item['logLevel'].type);
 		returnVal = replaceAll(returnVal, "{icon}", item['logLevel'].icon);
-		returnVal = replaceAll(returnVal, "{color}", item.logLevel.color.browser);
-		returnVal = replaceAll(returnVal, "{message}", itemIndex + ") "
+		returnVal = replaceAll(returnVal, "{color}", item.logLevel.color.browser.toLowerCase());
+		returnVal = replaceAll(returnVal, "{message}", (itemIndex + 1) + ") "
 			+ item["date"] + ": " + evaluateValue(item["value"], itemIndex));
 		return returnVal;
 	}
@@ -294,59 +259,49 @@ const templateLogsModule = (() => {
 		// }
 	}
 
+	function isObject(value) {
+		return typeof value === 'object' && value !== null && !Array.isArray(value) && !(value instanceof Function);
+	}
 	/**
 	 * 
 	 * @param {*} value 
 	 */
 	function evaluateValue(value, itemIndex) {
-		let output = "";
-		for (let i = 0; i < value.length; i++) {
-			if (Array.isArray(value[i]) || isObject(value[i])) {
-				//output += processInput(value[i], "");
-				output += '<div class="log-item-object" data-input-index=' + itemIndex +
-					' onclick="templateLogsModule.processAndRenderObjectNew(this, ' + i + ')">View Object</div>';
-			} else {
-				output += value[i] + " ";
-			}
-		}
-
-		// if (Array.isArray(value) || isObject(value)) {
-		// 	output += '<div class="log-item-object" data-input-index=' + itemIndex +
-		// 		' onclick="templateLogsModule.processAndRenderObject(this)">View Object</div>';
-		// } else {
-		// 	for (let i = 0; i < value.length; i++) {
-		// 		output += value[i] + " ";
-		// 	}
-		// }
-		return output;
-	}
-
-	function processAndRenderObjectNew(object, internalIndex) {
-		const logIndex = parseInt(object.getAttribute('data-input-index')) - 1;
-		if (logIndex >= 0) {
-			let value = console.getFullLogs()[logIndex].value;
-			let output = processInput(value[internalIndex], "");
-			object.innerHTML = output;
-			object.removeAttribute('onclick');
-			object.classList.add('smoke');
-		}
-	}
-
-	function processAndRenderObject(object) {
-		const logIndex = parseInt(object.getAttribute('data-input-index')) - 1;
-		if (logIndex >= 0) {
-			let value = console.getFullLogs()[logIndex].value;
+		try {
 			let output = "";
-			for (let i = 0; i < value.length; i++) {
-				if (Array.isArray(value[i]) || isObject(value[i])) {
-					output += processInput(value[i], "");
-				} else {
-					output += value[i] + " ";
+			if (Array.isArray(value)) {
+				for (let i = 0; i < value.length; i++) {
+					if (Array.isArray(value[i])) {
+						output += '<div class="log-item-object" data-input-index=' + itemIndex +
+							' onclick="templateLogsModule.processAndRenderObject(this, ' + itemIndex + ', ' + i + ')">View Array</div>';
+						// output += '<div class="log-item-object1">' + JSON.stringify(value[i]) + '</div>';
+					} else if (isObject(value[i])) {
+						output += '<div class="log-item-object" data-input-index=' + itemIndex +
+							' onclick="templateLogsModule.processAndRenderObject(this, ' + itemIndex + ', ' + i + ')">View Object</div>';
+					} else {
+						output += value[i] + " ";
+					}
 				}
+			} else if (isObject(value)) {
+				output += '<div class="log-item-object" data-input-index=' + itemIndex +
+					' onclick="templateLogsModule.processAndRenderObject(this, ' + itemIndex + ', -1)">View Object</div>';
+			} else {
+				output += value + " ";
 			}
-			object.innerHTML = output;
-			object.removeAttribute('onclick');
-			object.classList.add('smoke');
+			return output;
+		} catch (e) {
+			return "$$: " + typeof value + " ," + ((value instanceof Function) + ", " + (value.constructor === Object));
+		}
+	}
+
+	function processAndRenderObject(object, itemIndex, localIndex) {
+		const value = console.getFullLogs()[itemIndex].value;
+		if (value !== "" && value.length > 0) {
+			if (localIndex !== -1) {
+				createArrayObjectContainer(object, value[localIndex]);
+			} else {
+				createArrayObjectContainer(object, value);
+			}
 		}
 	}
 
@@ -389,13 +344,14 @@ const templateLogsModule = (() => {
 	}
 
 	/**
-		 * 
+	 * 
 	 */
 	function populate() {
 		const scrollTop = getLoggerElement().scrollTop;
 		if (scrollTop < 100 && loadLogsDynamically) {
 			currentScrollIndex += 1;
-			if (filteredLogs.length - ((currentScrollIndex + 1) * LOG_SCROLL_INCREMENT_COUNTER) >= 0) {
+			// if (filteredLogs.length - ((currentScrollIndex + 1) * LOG_SCROLL_INCREMENT_COUNTER) >= 0) {
+			if (currentScrollIndex > console.getCurrentLogCounter() && console.getCurrentLogCounter() >= 0) {
 				getLoggerElement().insertAdjacentHTML("afterbegin", formatLogs());
 			}
 		}
@@ -427,15 +383,6 @@ const templateLogsModule = (() => {
 	/**
 	 * 
 	 */
-	function closePopup() {
-		getLoggerElement().innerHTML = '';
-		loadLogsDynamically = false;
-		navigationModule.closePopup(navigationModule.popupPages.logDisplayImportPage);
-	}
-
-	/**
-	 * 
-	 */
 	function getLoggerElement() {
 		return document.getElementById('divLogContent');
 	}
@@ -446,73 +393,10 @@ const templateLogsModule = (() => {
 	 * @param {*} index 
 	 * @param {*} subTitle 
 	 */
-	function processInput(input, index, subTitle) {
-		let z = "";
-		let title = "";
-
-		if (Array.isArray(input)) {
-			if (subTitle) {
-				title = (subTitle === "" ? "" : (subTitle + ": ")) + "[Array] (" + input.length + ")";
-			} else {
-				title = (index === "" ? "" : (index + ": ")) + "[Array] (" + input.length + ")";
-			}
-
-			if (input.length === 0) {
-				z += "<li class='m-l-20'>[]</li>";
-			} else {
-				for (let i = 0; i < input.length; i++) {
-					if (Array.isArray(input[i])) {
-						z += processInput(input[i], i);
-					} else if (isObject(input[i])) {
-						z += processInput(input[i], i);
-					} else {
-						z += "<li class='m-l-20'>" + i + ": " + input[i] + "</li>";
-					}
-				}
-			}
-			let parentNewList = parentList;
-			parentNewList = parentNewList.replace("{title}", title);
-			parentNewList = parentNewList.replace("{nestedList}", z);
-			return parentNewList;
-
-		} else if (isObject(input)) {
-			if (subTitle) {
-				title = (subTitle === "" ? "" : (subTitle + ": ")) + "{Object}";
-			} else {
-				title = (index === "" ? "" : (index + ": ")) + "{Object}";
-			}
-			if (typeof input === 'object' && input !== null) {
-				if (Object.keys(input).length === 0 && input.constructor === Object) {
-					z += "<li class='m-l-20'>{}</li>";
-				} else {
-
-					for (let key in input) {
-						if (typeof input[key] === 'object' && input[key] !== null) {
-							z += processInput(input[key], "", key);
-						} else {
-							z += "<li class='m-l-20'>" + key + ": " + input[key] + "</li>";
-						}
-					}
-				}
-			}
-			let parentNewList = parentList;
-			parentNewList = parentNewList.replace("{title}", title);
-			parentNewList = parentNewList.replace("{nestedList}", z);
-			return parentNewList;
-		} else {
-			return input;
-		}
-	}
-
-	/**
-	 * 
-	 * @param {*} val 
-	 */
-	function isObject(val) {
-		if (val === null) {
-			return false;
-		}
-		return ((typeof val === 'function') || (typeof val === 'object'));
+	function createArrayObjectContainer(obj, input) {
+		const jsonData = input;
+		obj.parentElement.insertAdjacentHTML("beforeend", "<pre class='logcontent'>" + JSON.stringify(jsonData, null, 2) + "</pre>");
+		obj.remove();
 	}
 
 	/**
@@ -541,20 +425,15 @@ const templateLogsModule = (() => {
 	 */
 	return {
 		setNewLog,
-		toggleJsonObject,
-		showLogs,
 		clearLogs,
-		reload,
 		captureScreenshot,
 		postLogs,
 		filterLogs,
 		showDetails,
 		hideDetails,
-		closePopup,
 		onLoggerTextboxOnFocus,
 		onLoggerTextboxOnBlur,
-		processAndRenderObject,
-		processAndRenderObjectNew
+		processAndRenderObject
 	};
 
 	// END::CHANGEAREA

@@ -17,7 +17,7 @@
 </template>
 
 <ch5-modal-dialog id="loggerViewModalDialog" receiveStateShowPulse="logsbtn.clicked" closable mask closeIcon="fa fa-window-close" hideOkButton="true" hideCancelButton="true" title="View Logs" customclass="project-info-dialog">
-	<div class="h-100">
+	<!-- <div class="h-100"> -->
 		<div class="w-100 h-10 d-flex flex-row justify-content-start align-items-center" style="display: none !important;">
 			<div class="d-flex flex-row" style="width: 30vw;">
 				<input type="text" id="ipAddressToPost" value="" class='text-input' placeholder="Logger Server (http://localhost:8080)" onfocus="templateLogsModule.onLoggerTextboxOnFocus()" onblur="templateLogsModule.onLoggerTextboxOnBlur()" />
@@ -26,12 +26,12 @@
 			</div>
 		</div>
 
-		<ch5-button onclick="templateLogsModule.reload()" size="small" class="log-reload-button" iconclass="fas fa-sync">
+		<ch5-button onclick="templateLogsModule.loadContent()" size="small" class="log-reload-button" iconclass="fas fa-sync">
 		</ch5-button>
 		<ch5-button onclick="templateLogsModule.clearLogs()" size="small" class="log-clear-button" iconclass="fas fa-ban">
 		</ch5-button>
 
-		<div class="m-0 p-0 h-100" id="logsContentArea">
+		<div class="m-0 p-0" id="logsContentArea">
 			<!-- <div class="h-100 m-0 p-0" id="filterLogsSection" style="visibility:hidden; height:0 !important">
 				<input type="checkbox" />
 				<span class="fas fa-angle-left collapse-icon"></span>
@@ -78,7 +78,6 @@
 			</div> -->
 			<div class="w-100 h-100" id="divLogContent">
 			</div>
-		</div>
+		<!-- </div> -->
 	</div>
-
 </ch5-modal-dialog>
