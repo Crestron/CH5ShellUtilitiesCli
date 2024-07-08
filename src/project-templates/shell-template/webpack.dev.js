@@ -8,10 +8,8 @@ const GenerateJsonPlugin = require('generate-json-webpack-plugin');
 const WebpackConcatPlugin = require('@mcler/webpack-concat-plugin');
 const common = require('./webpack.common.js');
 const pkg = require('./package.json');
-const projectConfig = require('./app/project-config.json');
 const BrowserSyncPlugin = require("browser-sync-webpack-plugin");
 const appConfig = require('./app.config');
-const CopyPlugin = require('copy-webpack-plugin');
 
 const appName = appConfig.appName;
 const appVersion = pkg.version;
@@ -61,31 +59,6 @@ function getVersionValue(input) {
   }
 }
 
-const ArbitraryCodeAfterReload = function (cb) {
-  this.apply = function (compiler) {
-    if (compiler.hooks && compiler.hooks.done) {
-      compiler.hooks.done.tap('webpack-arbitrary-code', cb);
-    }
-  };
-};
-
-const myCallback = function () {
-
-  console.log('Implementing alien intelligence');
-};
-
-function modify(buffer) {
-  // copy-webpack-plugin passes a buffer
-  const manifest = JSON.parse(buffer.toString());
-
-  // make any modifications you like, such as
-  manifest.version = projectConfig.version;
-
-  // pretty print to JSON with two spaces
-  manifest_JSON = JSON.stringify(manifest, null, 2);
-  return manifest_JSON;
-}
-
 module.exports = merge(common("dev"), {
   mode: "development",
   watch: true,
@@ -117,15 +90,6 @@ module.exports = merge(common("dev"), {
       hash: true,
       inject: false
     }),
-    new ArbitraryCodeAfterReload(myCallback),
-    new CopyPlugin([
-      {
-        from: "./app/project-config.json",
-        to: "./assets/data/project-config1.json",
-        transform(content, path) {
-          return modify(JSON.stringify({ 'version': 'ab.c.d' }))
-        }
-      }]),
     new BrowserSyncPlugin({
       host: "localhost",
       port: 3000,
