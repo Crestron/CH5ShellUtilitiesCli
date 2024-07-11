@@ -163,7 +163,7 @@ const templatePageModule = (() => {
 						 */
 						// templateRemoteLoggerSettingsModule.setRemoteLoggerConfig(serverIPAddress, serverPortNumber);
 						serviceModule.initialize(projectConfigResponse);
-						// console.initialize();
+						console.initialize();
 
 						// Changes for index.html - Start
 						// console.log("appManifestResponse", appManifestResponse["ch5"]["crComLib"], appManifestResponse["ch5"]["ch5Theme"], appManifestResponse["ch5"]["ch5WebXPanel"]);

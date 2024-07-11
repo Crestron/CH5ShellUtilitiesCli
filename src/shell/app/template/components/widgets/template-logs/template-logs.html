@@ -18,66 +18,46 @@
 
 <ch5-modal-dialog id="loggerViewModalDialog" receiveStateShowPulse="logsbtn.clicked" closable mask closeIcon="fa fa-window-close" hideOkButton="true" hideCancelButton="true" title="View Logs" customclass="project-info-dialog">
 	<!-- <div class="h-100"> -->
-		<div class="w-100 h-10 d-flex flex-row justify-content-start align-items-center" style="display: none !important;">
-			<div class="d-flex flex-row" style="width: 30vw;">
-				<input type="text" id="ipAddressToPost" value="" class='text-input' placeholder="Logger Server (http://localhost:8080)" onfocus="templateLogsModule.onLoggerTextboxOnFocus()" onblur="templateLogsModule.onLoggerTextboxOnBlur()" />
-				<ch5-button id="logBtnPostMessages" onclick="templateLogsModule.postLogs()" class="m-0" iconclass="fas fa-paper-plane">
-				</ch5-button>
+	<div class="w-100 h-10 d-flex flex-row justify-content-start align-items-center" style="display: none !important;">
+		<div class="d-flex flex-row" style="width: 30vw;">
+			<input type="text" id="ipAddressToPost" value="" class='text-input' placeholder="Logger Server (http://localhost:8080)" onfocus="templateLogsModule.onLoggerTextboxOnFocus()" onblur="templateLogsModule.onLoggerTextboxOnBlur()" />
+			<ch5-button id="logBtnPostMessages" onclick="templateLogsModule.postLogs()" class="m-0" iconclass="fas fa-paper-plane">
+			</ch5-button>
+		</div>
+	</div>
+
+	<ch5-button sendeventonclick="LogLevels.FilterLogs.Send" size="small" class="log-filter-button" iconclass="fa-solid fa-gear">
+	</ch5-button>
+	<ch5-button onclick="templateLogsModule.loadContent()" size="small" class="log-reload-button" iconclass="fas fa-sync">
+	</ch5-button>
+	<ch5-button onclick="templateLogsModule.clearLogs()" size="small" class="log-clear-button" iconclass="fas fa-ban">
+	</ch5-button>
+
+	<!-- <span class="fas fa-angle-left collapse-icon"></span>
+	<span class="fas fa-angle-right collapse-icon"></span>
+			<input type="checkbox" />
+	 -->
+	 <!-- -->
+	<div class="m-0 p-0" id="logsContentArea">
+		<div class="h-100 filter-area" data-ch5-show="LogLevels.FilterLogs.Receive" id="filterLogsSection">
+			<div class="w-100 h-100 text-center">
+				<div class="mt-2 mb-2">
+					<input type="search" id="logFilter" class="text-input" placeholder="Filter" oninput="templateLogsModule.filterLogsWithDebounce()" iconclass="fas fa-search" />
+				</div>
+				<!-- <div class="w-100">Total Logs: <span id="logDisplayNoOfLogs" class="m-l-r-2 font-weight-bold"></span></div> -->
+				<ch5-subpage-reference-list widgetId="loadLogTypes" id="srlLogTypes" indexId="idx" loaditems="all" orientation="vertical" numberOfItems="6">
+				</ch5-subpage-reference-list>
+				<template id="loadLogTypes">
+					<ch5-button stretch="width" halignlabel="left" checkboxshow="true"	checkboxposition="right"
+						sendeventonclick="LogLevels.LogLevel[{{idx}}].Clicked" receivestateselected="LogLevels.LogLevel[{{idx}}].Selected" 
+						receivestatecustomstyle="LogLevels.LogLevel[{{idx}}].CustomStyle" onrelease111="templateLogsModule.filterLogsWithDebounce()"
+						receivestateiconclass="LogLevels.LogLevel[{{idx}}].Icon" receivestatescriptlabelhtml="LogLevels.LogLevel[{{idx}}].Label"></ch5-button>
+				</template>
 			</div>
 		</div>
-
-		<ch5-button onclick="templateLogsModule.loadContent()" size="small" class="log-reload-button" iconclass="fas fa-sync">
-		</ch5-button>
-		<ch5-button onclick="templateLogsModule.clearLogs()" size="small" class="log-clear-button" iconclass="fas fa-ban">
-		</ch5-button>
-
-		<div class="m-0 p-0" id="logsContentArea">
-			<!-- <div class="h-100 m-0 p-0" id="filterLogsSection" style="visibility:hidden; height:0 !important">
-				<input type="checkbox" />
-				<span class="fas fa-angle-left collapse-icon"></span>
-				<span class="fas fa-angle-right collapse-icon"></span>
-				<div class="w-100 h-100 p-l-r-10">
-					<div class="d-flex flex-column h-100 text-center justify-content-between text-center align-items-center">
-						<div class="w-100 text-left">
-							<div class="m-t-10 m-b-10">
-								<input type="search" id="logFilter" class="text-input" placeholder="Filter" />
-								<ch5-button id="logBtnFilter" onclick="templateLogsModule.filterLogs()" class="" iconclass="fas fa-search">
-								</ch5-button>
-							</div>
-							<div class="d-flex flex-column">
-								<div class="info-wrapper d-flex p-l-10">
-									<div class="w-100" style="font-size: 2rem;">Total Logs: <span id="logDisplayNoOfLogs" class="m-l-r-2 font-weight-bold"></span></div>
-								</div>
-								<ch5-subpage-reference-list widgetId="loadLogTypes" id="srlLogTypes" indexId="idx" orientation="vertical" numberOfItems="6">
-
-								</ch5-subpage-reference-list>
-								<template id="loadLogTypes">
-									<div class="vertical-list-item">
-										<div>
-											<input type="checkbox" class="mycustom-checkbox" checked="checked" onclick="templateLogsModule.filterLogs()" id="ch5ListLogsSelectedTypeOption_{{idx}}" />
-											<i id="ch5ListLogsSelectedTypeOptionRowIcon_{{idx}}"></i>
-											<label for="ch5ListLogsSelectedTypeOption_{{idx}}" class="mycustom-checkbox-label" id="ch5ListLogsSelectedTypeOptionLabel_{{idx}}"></label>
-										</div>
-									</div>
-								</template>
-								<ch5-list id="ch5listVerticalLogOptions" orientation="vertical" size="6" indexId="idx" class="w-100" maxHeight="98%" maxWidth="100%" scrollbar="true">
-											<template>
-												<div class="vertical-list-item">
-													<div>
-														<input type="checkbox" class="mycustom-checkbox" checked="checked" onclick="templateLogsModule.filterLogs()" id="ch5ListLogsSelectedTypeOption_{{idx}}" />
-														<i id="ch5ListLogsSelectedTypeOptionRowIcon_{{idx}}"></i>
-														<label for="ch5ListLogsSelectedTypeOption_{{idx}}" class="mycustom-checkbox-label" id="ch5ListLogsSelectedTypeOptionLabel_{{idx}}"></label>
-													</div>
-												</div>
-											</template>
-										</ch5-list> 
-						</div>
-						</div>
-					</div>
-				</div>
-			</div> -->
-			<div class="w-100 h-100" id="divLogContent">
-			</div>
+		<div class="w-100 h-100 ch5-hide-vis" id="divLogContent">
+		</div>
 		<!-- </div> -->
 	</div>
+	<div id="templateToastMsgNewLog" class="fade-toast" onclick="templateLogsModule.scrollToBottomAndClose()">New log message(s). Scroll down.</div>
 </ch5-modal-dialog>

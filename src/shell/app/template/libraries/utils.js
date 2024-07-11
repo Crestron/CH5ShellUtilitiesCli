@@ -17,6 +17,10 @@ const utilsModule = (() => {
     }
   }
 
+  function isObject(value) {
+		return typeof value === 'object' && value !== null && !Array.isArray(value) && !(value instanceof Function);
+	}
+
   /**
    * Merge the object into the target object
    * @param  {...any} args 
@@ -196,13 +200,78 @@ const utilsModule = (() => {
     return template;
   }
 
+  function replaceAll(str, find, replace) {
+		if (str && String(str).trim() !== "") {
+			return String(str).split(find).join(replace);
+		} else {
+			return str;
+		}
+	}
+
+  function debounce(func, timeout = 300) {
+		let timer;
+		return (...args) => {
+			clearTimeout(timer);
+			timer = setTimeout(() => { func.apply(this, args); }, timeout);
+		};
+	}
+
+	function generateOTP() {
+		// Declare a digits variable which stores all digits 
+		const digits = '0123456789';
+		let OTP = '';
+		for (let i = 0; i < 6; i++) {
+			OTP += digits[Math.floor(Math.random() * 10)];
+		}
+		return OTP;
+	}
+
+	function isValidURL(inputStr = '') {
+		const input = inputStr.toLowerCase();
+		let isValidURLEntry = false;
+		if ((input !== "")) {
+			const colonCount = (input.match(/:/g) === null) ? 0 : input.match(/:/g).length; // storing colon count if its valid
+			let ipExp = /^(\d|[1-9]\d|1\d\d|2([0-4]\d|5[0-5]))\.(\d|[1-9]\d|1\d\d|2([0-4]\d|5[0-5]))\.(\d|[1-9]\d|1\d\d|2([0-4]\d|5[0-5]))\.(\d|[1-9]\d|1\d\d|2([0-4]\d|5[0-5]))$/;
+			let hostExp = /^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9-]*[A-Za-z0-9])$/;
+			let httpCheck = (input.indexOf('http://') > -1 || input.indexOf('https://') > -1);
+			let checkPortNo = ((colonCount === 0 && !httpCheck) || (colonCount === 1 && httpCheck));
+			let dataArr = input.split(':');
+			let valueToTestEntry = (httpCheck) ? dataArr[1] : dataArr[0];
+			valueToTestEntry = valueToTestEntry.replace(/\//g, '');
+			// if a valid count of colon is found, check for valid port number
+			if (colonCount == 1 || colonCount == 2) {
+				if ((httpCheck && colonCount == 2) ||
+					(!httpCheck && colonCount == 1)) {
+					let portNo = parseInt(dataArr[dataArr.length - 1]);
+					// check if port number is a valid number and lies between 1025 and 65335
+					checkPortNo = (!isNaN(portNo) && portNo > 1024 && portNo < 65536);
+				}
+			}
+			isValidURLEntry = (
+				checkPortNo &&
+				valueToTestEntry !== null &&
+				valueToTestEntry !== undefined &&
+				valueToTestEntry !== "0.0.0.0" &&
+				valueToTestEntry !== "255.255.255.255" &&
+				valueToTestEntry.length <= 127 &&
+				(ipExp.test(valueToTestEntry) || hostExp.test(valueToTestEntry))
+			)
+		}
+		return isValidURLEntry;
+	}
+
   return {
     log,
+    debounce,
     dynamicSort,
     isValidObject,
     isValidInput,
     mergeJSON,
-    replacePlaceHolders
+    replacePlaceHolders,
+    replaceAll,
+    isObject,
+    isValidURL,
+    generateOTP
   };
   
 })();

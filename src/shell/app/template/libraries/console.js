@@ -12,7 +12,8 @@ const console = (function (defaultConsole) {
 
 	// #region "Variables"
 	let configurationData = {
-		"allowLogging": true,
+		"allowLogging": false,
+		"showIcon": false,
 		"urls": {
 			"ipAddress": "127.0.0.1",
 			"uriProtocol": "http://",
@@ -152,7 +153,7 @@ const console = (function (defaultConsole) {
 	/**
 	 * Returns the configuration data object.
 	 */
-	function getData() {
+	function getConfigurationSettings() {
 		return configurationData;
 	}
 
@@ -161,11 +162,11 @@ const console = (function (defaultConsole) {
 	 */
 	function initialize() {
 		allowLogging = false;
-		const configData = getData();
+		const configData = getConfigurationSettings();
 		if (configData) {
 			allowLogging = configData.allowLogging;
 		}
-		CrComLib.publishEvent('b', 'logsbtn.show', true);
+		CrComLib.publishEvent('b', 'logsbtn.show', configData.showIcon);
 		// CrComLib.subscribeState('s', `console.log`, (v) => {
 		// 	if()
 		//   // console.log("****");
@@ -400,7 +401,7 @@ const console = (function (defaultConsole) {
 		getLogTypeCountDetails,
 		resetLogLevelCountObj,
 		setData,
-		getData,
+		getConfigurationSettings,
 		getConfigIcon,
 		getUrls,
 		getLoggerLimit,

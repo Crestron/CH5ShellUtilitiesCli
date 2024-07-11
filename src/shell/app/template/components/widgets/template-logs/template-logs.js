@@ -1,7 +1,7 @@
 const templateLogsModule = (() => {
 	"use strict";
 
-	// BEGIN::CHANGEAREA - your javascript for page module code goes here         
+	//#region "Variables"
 
 	const LOG_SCROLL_INCREMENT_COUNTER = 200;
 	let DEVICE_ID = "";
@@ -13,69 +13,109 @@ const templateLogsModule = (() => {
 	let pushMessageLastIndex = -1;
 	let socketConnectionOpen = false;
 	let socket = null;
-	let loadLogsDynamically = false; // This variable is set to true when the popup is opened
+	let logPageOpened = false;
+	let logsLoaded = false;
 	let subScriptionId = null;
+	let selectedLogLevels = [];
+	const subsciptionList = [];
+	//#endregion
+
+	//#region "Load Page"
 
 	/**
 	 * private method for page class initialization
 	 */
 	let loadedSubId = CrComLib.subscribeState('o', 'ch5-import-htmlsnippet:template-logs-import-page', (value) => {
 		if (value['loaded']) {
-			setTimeout(() => {
-				onInit();
-				document.getElementById('loggerViewModalDialog').addEventListener('beforeShow', function (e) {
-					// console.log('modal beforeShow event: ', e);
-					DEVICE_ID = console.getDeviceDetails().deviceId;
-					// const logLevels = Object.values(console.LOG_LEVELS);
-					// for (let i = 0; i < logLevels.length; i++) {
-					// 	// console.log("logLevels", logLevels[i]);
-					// 	if (logLevels[i].icon && logLevels[i].icon !== "") {
-					// 		document.getElementById("ch5ListLogsSelectedTypeOptionRowIcon_" + i).setAttribute("class", "logicon " + logLevels[i].icon);
-					// 		document.getElementById("ch5ListLogsSelectedTypeOptionRowIcon_" + i).style.color = logLevels[i].color.browser;
-					// 	}
-					// 	document.getElementById("ch5ListLogsSelectedTypeOption_" + i).setAttribute("value", logLevels[i].type);
-					// 	document.getElementById("ch5ListLogsSelectedTypeOptionLabel_" + i).innerHTML = logLevels[i].type;
-					// }
-					document.querySelector('.ch5-modal-dialog-header').innerHTML = 'View Logs <label class="lbl-title-logs">(Panel Id: ' + DEVICE_ID + ')<label>';
-					// document.getElementById("logDisplayDeviceUniqueId").innerHTML = DEVICE_ID;
+			onInit();
 
-					getLoggerElement().addEventListener('scroll', populate);
+			document.getElementById('loggerViewModalDialog').addEventListener('beforeShow', function (e) {
+				DEVICE_ID = console.getDeviceDetails().deviceId;
 
-					loadLogsDynamically = true;
-					loadContent();
+				if (selectedLogLevels.length === 0) {
+					selectedLogLevels = JSON.parse(JSON.stringify(Object.values(console.LOG_LEVELS)));
+					for (let i = 0; i < selectedLogLevels.length; i++) {
+						selectedLogLevels[i].selected = true;
+					}
+				}
 
-					subScriptionId = CrComLib.subscribeState('b', 'console-log-new', (v) => {
+				let loadedSubpageRefId = CrComLib.subscribeState('o', 'ch5-subpage-reference-list', (valueSRL) => {
+					if (valueSRL['loaded'] && valueSRL['id'] === 'srlLogTypes') {
+						const logLevels = Object.values(console.LOG_LEVELS);
+						// for (let i = 0; i < logLevels.length; i++) {
+						// 	CrComLib.publishEvent('s', 'LogLevels.LogLevel[' + i + '].Icon', 'logicon ' + logLevels[i].icon);
+						// 	CrComLib.publishEvent('s', 'LogLevels.LogLevel[' + i + '].Label', logLevels[i].type);
+						// 	CrComLib.publishEvent('s', 'LogLevels.LogLevel[' + i + '].CustomStyle', "--ch5-button--default-font-color: " + logLevels[i].color.browser + "; --ch5-button--default-selected-font-color: " + logLevels[i].color.browser + "; --ch5-button--default-pressed-font-color: " + logLevels[i].color.browser + "; --ch5-button--default-selected-border-color: " + logLevels[i].color.browser);
+						// }
+
+						// const srlLogTypes = document.getElementById("srlLogTypes");
+						// const ch5ButtonsInSrlLogTypes = srlLogTypes.getElementsByTagName("ch5-button");
+						// for (let i = 0; i < ch5ButtonsInSrlLogTypes.length; i++) {
+						for (let i = 0; i < logLevels.length; i++) {
+							// ch5ButtonsInSrlLogTypes[i].setAttribute("data-custom-type-id", logLevels[i].type);
+							//ch5ButtonsInSrlLogTypes[i].setAttribute("id", "ch5ButtonsInSrlLogTypes_" + logLevels[i].type);
+							CrComLib.publishEvent('s', 'LogLevels.LogLevel[' + i + '].Icon', 'logicon ' + logLevels[i].icon);
+							CrComLib.publishEvent('s', 'LogLevels.LogLevel[' + i + '].Label', logLevels[i].type);
+							CrComLib.publishEvent('s', 'LogLevels.LogLevel[' + i + '].CustomStyle', "--ch5-button--default-font-color: " + logLevels[i].color.browser + "; --ch5-button--default-selected-font-color: " + logLevels[i].color.browser + "; --ch5-button--default-pressed-font-color: " + logLevels[i].color.browser + "; --ch5-button--default-selected-border-color: " + logLevels[i].color.browser);
+						};
+
+						logPageOpened = true;
+						getLoggerElement().addEventListener('scroll', populate);
 						loadContent();
+						setTimeout(() => {
+							logsLoaded = true;
+							getLoggerElement().classList.remove("ch5-hide-vis");
+						}, 500);
+						setTimeout(() => {
+							CrComLib.unsubscribeState('o', 'ch5-subpage-reference-list', loadedSubpageRefId);
+							loadedSubpageRefId = '';
+						});
+					}
+				});
+
+
+				for (let i = 0; i < selectedLogLevels.length; i++) {
+					// subsciptionList[0] = 
+					CrComLib.subscribeState('b', 'LogLevels.LogLevel[' + i + '].Selected', (v) => {
+						selectedLogLevels[i].selected = v;
+						templateLogsModule.filterLogsWithDebounce();
 					});
-				});
 
-				document.getElementById('loggerViewModalDialog').addEventListener('beforeHide', function (e) {
-					getLoggerElement().innerHTML = '';
-					loadLogsDynamically = false;
-					CrComLib.unsubscribeState('b', 'console-log-new', subScriptionId);
-					// navigationModule.closePopup(navigationModule.popupPages.logDisplayImportPage);		
-				});
+				}
 
-				setTimeout(() => {
-					CrComLib.unsubscribeState('o', 'ch5-import-htmlsnippet:template-logs-import-page', loadedSubId);
-					loadedSubId = '';
+				document.querySelector('.ch5-modal-dialog-header').innerHTML = 'View Logs <label class="lbl-title-logs">(Panel Id: ' + DEVICE_ID + ')<label>';
+
+				subScriptionId = CrComLib.subscribeState('b', 'console-log-new', (v) => {
+					loadContent();
+					scrollToBottomOfLogs(true);
 				});
-			}, 1000);
+			});
+
+			document.getElementById('loggerViewModalDialog').addEventListener('beforeHide', function (e) {
+				getLoggerElement().innerHTML = '';
+				logPageOpened = false;
+				logsLoaded = false;
+				CrComLib.unsubscribeState('b', 'console-log-new', subScriptionId);
+				// for (let i = 0; i < subsciptionList.length; i++) {
+				// 	CrComLib.unsubscribeState('b', 'LogLevels.LogLevel[' + i + '].Selected', subScriptionId);
+				// }
+			});
+
+			setTimeout(() => {
+				CrComLib.unsubscribeState('o', 'ch5-import-htmlsnippet:template-logs-import-page', loadedSubId);
+				loadedSubId = '';
+			});
 		}
 	});
 
-	/**
-	 * 
-	 */
+	//#end region
+
 	function loadContent() {
 		fullLogs = console.getLogs();
 		filteredLogs = console.getLogs();
 		filterLogs();
 	}
 
-	/**
-	 * 
-	 */
 	function clearLogs() {
 		console.clearLogs();
 		currentScrollIndex = 0;
@@ -108,48 +148,9 @@ const templateLogsModule = (() => {
 		}
 	}
 
-	function generateOTP() {
-		// Declare a digits variable which stores all digits 
-		const digits = '0123456789';
-		let OTP = '';
-		for (let i = 0; i < 6; i++) {
-			OTP += digits[Math.floor(Math.random() * 10)];
-		}
-		return OTP;
-	}
-
-	function isValidURL(inputStr = '') {
-		const input = inputStr.toLowerCase();
-		let isValidURLEntry = false;
-		if ((input !== "")) {
-			const colonCount = (input.match(/:/g) === null) ? 0 : input.match(/:/g).length; // storing colon count if its valid
-			let ipExp = /^(\d|[1-9]\d|1\d\d|2([0-4]\d|5[0-5]))\.(\d|[1-9]\d|1\d\d|2([0-4]\d|5[0-5]))\.(\d|[1-9]\d|1\d\d|2([0-4]\d|5[0-5]))\.(\d|[1-9]\d|1\d\d|2([0-4]\d|5[0-5]))$/;
-			let hostExp = /^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9-]*[A-Za-z0-9])$/;
-			let httpCheck = (input.indexOf('http://') > -1 || input.indexOf('https://') > -1);
-			let checkPortNo = ((colonCount === 0 && !httpCheck) || (colonCount === 1 && httpCheck));
-			let dataArr = input.split(':');
-			let valueToTestEntry = (httpCheck) ? dataArr[1] : dataArr[0];
-			valueToTestEntry = valueToTestEntry.replace(/\//g, '');
-			// if a valid count of colon is found, check for valid port number
-			if (colonCount == 1 || colonCount == 2) {
-				if ((httpCheck && colonCount == 2) ||
-					(!httpCheck && colonCount == 1)) {
-					let portNo = parseInt(dataArr[dataArr.length - 1]);
-					// check if port number is a valid number and lies between 1025 and 65335
-					checkPortNo = (!isNaN(portNo) && portNo > 1024 && portNo < 65536);
-				}
-			}
-			isValidURLEntry = (
-				checkPortNo &&
-				valueToTestEntry !== null &&
-				valueToTestEntry !== undefined &&
-				valueToTestEntry !== "0.0.0.0" &&
-				valueToTestEntry !== "255.255.255.255" &&
-				valueToTestEntry.length <= 127 &&
-				(ipExp.test(valueToTestEntry) || hostExp.test(valueToTestEntry))
-			)
-		}
-		return isValidURLEntry;
+	function isAtBottom() {
+		const element = getLoggerElement(); // Or any specific scrollable element
+		return element.scrollTop + element.clientHeight >= element.scrollHeight;
 	}
 
 	/**
@@ -157,7 +158,7 @@ const templateLogsModule = (() => {
 	 */
 	function postLogs() {
 		const ipAddress = document.getElementById("ipAddressToPost").value;
-		if (isValidURL(ipAddress)) {
+		if (utilsModule.isValidURL(ipAddress)) {
 			document.getElementById('ipAddressToPost').setAttribute("disabled", true);
 			document.getElementById('logBtnPostMessages').setAttribute("disabled", true);
 
@@ -184,7 +185,7 @@ const templateLogsModule = (() => {
 								// document.body.appendChild(canvas);
 								// console.log(canvas.toDataURL());
 								const screenShot = {
-									screenshotId: generateOTP(),
+									screenshotId: utilsModule.generateOTP(),
 									panelId: DEVICE_ID,
 									date: new Date(),
 									now: (new Date()).getTime(),
@@ -219,49 +220,26 @@ const templateLogsModule = (() => {
 	function getNewLog(item) {
 		const output = `
 			<div class="each-list-item log_{logtype}" style='border-left: solid 5px {color}'>
-					<div class="d-flex justify-content-start">
-							<div class="logiconholder">
-									<i style="color:{color}" class="logicon {icon}"></i>
-							</div>
-							<div class="text-left w-100 logmessagetext">
-									{message}
-							</div>
+				<div class="d-flex justify-content-start">
+					<div class="logiconholder">
+						<i style="color:{color}" class="logicon {icon}"></i>
 					</div>
+					<div class="text-left w-100 logmessagetext">
+						{message}
+					</div>
+				</div>
 			</div>
 			`;
 		const itemIndex = item["index"];
 
-		let returnVal = replaceAll(output, "{logtype}", item['logLevel'].type);
-		returnVal = replaceAll(returnVal, "{icon}", item['logLevel'].icon);
-		returnVal = replaceAll(returnVal, "{color}", item.logLevel.color.browser.toLowerCase());
-		returnVal = replaceAll(returnVal, "{message}", (itemIndex + 1) + ") "
+		let returnVal = utilsModule.replaceAll(output, "{logtype}", item['logLevel'].type);
+		returnVal = utilsModule.replaceAll(returnVal, "{icon}", item['logLevel'].icon);
+		returnVal = utilsModule.replaceAll(returnVal, "{color}", item.logLevel.color.browser.toLowerCase());
+		returnVal = utilsModule.replaceAll(returnVal, "{message}", (itemIndex + 1) + ") "
 			+ item["date"] + ": " + evaluateValue(item["value"], itemIndex));
 		return returnVal;
 	}
 
-	function replaceAll(str, find, replace) {
-		if (str && String(str).trim() !== "") {
-			return String(str).split(find).join(replace);
-		} else {
-			return str;
-		}
-	}
-
-	/**
-	 * 
-	 * @param {*} item 
-	 */
-	function setNewLog(item) {
-		// if (loadLogsDynamically === true) {
-		fullLogs.push(item);
-		filteredLogs.push(item);
-		filterLogs();
-		// }
-	}
-
-	function isObject(value) {
-		return typeof value === 'object' && value !== null && !Array.isArray(value) && !(value instanceof Function);
-	}
 	/**
 	 * 
 	 * @param {*} value 
@@ -274,15 +252,14 @@ const templateLogsModule = (() => {
 					if (Array.isArray(value[i])) {
 						output += '<div class="log-item-object" data-input-index=' + itemIndex +
 							' onclick="templateLogsModule.processAndRenderObject(this, ' + itemIndex + ', ' + i + ')">View Array</div>';
-						// output += '<div class="log-item-object1">' + JSON.stringify(value[i]) + '</div>';
-					} else if (isObject(value[i])) {
+					} else if (utilsModule.isObject(value[i])) {
 						output += '<div class="log-item-object" data-input-index=' + itemIndex +
 							' onclick="templateLogsModule.processAndRenderObject(this, ' + itemIndex + ', ' + i + ')">View Object</div>';
 					} else {
 						output += value[i] + " ";
 					}
 				}
-			} else if (isObject(value)) {
+			} else if (utilsModule.isObject(value)) {
 				output += '<div class="log-item-object" data-input-index=' + itemIndex +
 					' onclick="templateLogsModule.processAndRenderObject(this, ' + itemIndex + ', -1)">View Object</div>';
 			} else {
@@ -305,50 +282,113 @@ const templateLogsModule = (() => {
 		}
 	}
 
+	const filterLogsWithDebounceMethod = utilsModule.debounce(() => {
+		filterLogs();
+	}, 500);
+
+	function filterLogsWithDebounce() {
+		filterLogsWithDebounceMethod();
+	}
 	/**
 	 * 
 	 */
 	function filterLogs() {
-		setTimeout(() => {
-			if (loadLogsDynamically === true) {
-				const input = ""; //document.getElementById("logFilter").value;
-				const selectedLogTypes = [];
-				const logLevels = Object.values(console.LOG_LEVELS);
-				// for (let i = 0; i < logLevels.length; i++) {
-				// 	// let selectedTypeOption = document.getElementById("ch5ListLogsSelectedTypeOption_" + i);
-				// 	// if (selectedTypeOption.checked === true) {
-				// 		// selectedLogTypes.push(selectedTypeOption.value);
-				// 	// }
-				// }
-				filteredLogs = fullLogs.filter((tempObj) => {
-					return (tempObj.mergedValue.toLowerCase().indexOf(input.trim().toLowerCase()) !== -1);
-				});
-				currentScrollIndex = 0;
+		// setTimeout(() => {
+		if (logPageOpened === true) {
+			const input = (document.getElementById("logFilter") ? document.getElementById("logFilter").value : "").trim().toLowerCase();
+			// const selectedLogLevels = [];
+			const logLevels = Object.values(console.LOG_LEVELS);
 
-				let objDiv = getLoggerElement();
-				objDiv.innerHTML = formatLogs();
+			// const srlLogTypes = document.getElementById("srlLogTypes");
+			// if (srlLogTypes) {
+			// 	const ch5ButtonsInSrlLogTypes = srlLogTypes.getElementsByTagName("ch5-button");
+			// 	if (ch5ButtonsInSrlLogTypes && ch5ButtonsInSrlLogTypes.length > 0) {
+			// 		for (let i = 0; i < ch5ButtonsInSrlLogTypes.length; i++) {
+			// 			if (ch5ButtonsInSrlLogTypes[i].getAttribute("selected") === "true") {
+			// 				selectedLogLevels.push(ch5ButtonsInSrlLogTypes[i].getAttribute("data-custom-type-id"));
+			// 			}
+			// 		}
+			// 	} else {
+			// 		for (let i = 0; i < logLevels.length; i++) {
+			// 			selectedLogLevels.push(logLevels[i].type);
+			// 		}
+			// 	}
+			// } else {
+			// 	for (let i = 0; i < logLevels.length; i++) {
+			// 		selectedLogLevels.push(logLevels[i].type);
+			// 	}
+			// }
+			// const srlLogTypes = document.querySelectorAll("#srlLogTypes > [data-custom-type-id]")
+			// if (srlLogTypes.length > 0) {
+			// 	Array.from(srlLogTypes).forEach(function (el) {
+			// 		//  console.log(el.getAttribute("theChildsAttribute"))
 
-				// const logTypeCountObj = console.getLogTypeCountDetails();
-				// for (let i = 0; i < logLevels.length; i++) {
-				// 	document.getElementById("ch5ListLogsSelectedTypeOptionLabel_" + i).innerHTML = logLevels[i].type + " (<b>" +
-				// 		logTypeCountObj[logLevels[i].type] + "</b>)";
-				// }
+			// 		for (let i = 0; i < logLevels.length; i++) {
+			// 			const selectedTypeOption = srlLogTypes.getElementById("srlLogTypes");
+			// 			if (selectedTypeOption) {
+			// 				if (selectedTypeOption.getAttribute("selected") === "true") {
+			// 					selectedLogLevels.push(logLevels[i].type);
+			// 				}
+			// 			} else {
+			// 				// Used for hidden tab cases
+			// 				selectedLogLevels.push(logLevels[i].type);
+			// 			}
+			// 		}
+			// 	});
+			// } else {
+			// 	for (let i = 0; i < logLevels.length; i++) {
+			// 		selectedLogLevels.push(logLevels[i].type);
+			// 	}
+			// }
 
-				// document.getElementById("logDisplayNoOfLogs").innerHTML = fullLogs.length;
-				setTimeout(() => {
-					objDiv.scrollTop = objDiv.scrollHeight;
-				}, 500);
+			const selectedLevelsMap =  selectedLogLevels.filter((item) => item.selected).map((item) => item.type);
+			filteredLogs = fullLogs.filter((tempObj) => {
+				return ((tempObj.mergedValue.toLowerCase().indexOf(input) !== -1) && selectedLevelsMap.includes(tempObj.logLevel.type));
+			});
+			currentScrollIndex = 0;
+
+			const objDiv = getLoggerElement();
+			objDiv.innerHTML = formatLogs();
+
+			const logTypeCountObj = console.getLogTypeCountDetails();
+			for (let i = 0; i < logLevels.length; i++) {
+				CrComLib.publishEvent('s', 'LogLevels.LogLevel[' + i + '].Label', logLevels[i].type + " (<b>" +
+					logTypeCountObj[logLevels[i].type] + "</b>)");
 			}
-			synchronize();
-		}, 100);
+
+			// document.getElementById("logDisplayNoOfLogs").innerHTML = fullLogs.length;
+			scrollToBottomOfLogs(false);
+		}
+		synchronize();
+		// }, 100);
 	}
 
+	function scrollToBottomOfLogs(showToast) {
+		if (isAtBottom() || logsLoaded === false) {
+			scrollToBottomOnly();
+		} else {
+			if (showToast) {
+				showToastMessage();
+			}
+		}
+	}
+
+	function scrollToBottomOnly() {
+		setTimeout(() => {
+			const objDiv = getLoggerElement();
+			objDiv.scrollTop = objDiv.scrollHeight;
+		}, 500);
+	}
+	function scrollToBottomAndClose() {
+		scrollToBottomOnly();
+		hideToastAsap();
+	}
 	/**
 	 * 
 	 */
 	function populate() {
 		const scrollTop = getLoggerElement().scrollTop;
-		if (scrollTop < 100 && loadLogsDynamically) {
+		if (scrollTop < 100 && logPageOpened) {
 			currentScrollIndex += 1;
 			// if (filteredLogs.length - ((currentScrollIndex + 1) * LOG_SCROLL_INCREMENT_COUNTER) >= 0) {
 			if (currentScrollIndex > console.getCurrentLogCounter() && console.getCurrentLogCounter() >= 0) {
@@ -357,46 +397,47 @@ const templateLogsModule = (() => {
 		}
 	}
 
-	/**
-	 * 
-	 */
 	function showDetails() {
 		document.getElementById('overlayClassLogDisplayOpen').classList.add('is-open');
 		document.getElementById('overlayClassLogDisplayClose').classList.add('is-open');
 	}
 
-	/**
-	 * 
-	 */
+	function showToastMessage() {
+		const templateToastMsgNewLog = document.getElementById("templateToastMsgNewLog");
+		if (!templateToastMsgNewLog.classList.contains("show-toast")) {
+			templateToastMsgNewLog.classList.add("show-toast");
+		}
+		hideToastMessage();
+	}
+
+	const hideToastMessage = utilsModule.debounce(() => {
+		hideToastAsap();
+	}, 3000);
+
+	function hideToastAsap() {
+		const templateToastMsgNewLog = document.getElementById("templateToastMsgNewLog");
+		templateToastMsgNewLog.classList.remove("show-toast");
+	}
 	function hideDetails() {
 		document.getElementById('overlayClassLogDisplayOpen').classList.remove('is-open');
 		document.getElementById('overlayClassLogDisplayClose').classList.remove('is-open');
 	}
 
-	/**
-	 * 
-	 */
-	function onInit() {
-
-	}
-
-	/**
-	 * 
-	 */
 	function getLoggerElement() {
 		return document.getElementById('divLogContent');
 	}
 
-	/**
-	 * 
-	 * @param {*} input 
-	 * @param {*} index 
-	 * @param {*} subTitle 
-	 */
 	function createArrayObjectContainer(obj, input) {
 		const jsonData = input;
 		obj.parentElement.insertAdjacentHTML("beforeend", "<pre class='logcontent'>" + JSON.stringify(jsonData, null, 2) + "</pre>");
 		obj.remove();
+	}
+
+	/**
+	 * Initialize Method
+	 */
+	function onInit() {
+		serviceModule.addEmulatorScenario("./app/template/components/widgets/template-logs/template-logs-emulator.json");
 	}
 
 	/**
@@ -424,12 +465,13 @@ const templateLogsModule = (() => {
 	 * All public method and properties are exported here
 	 */
 	return {
-		setNewLog,
+		scrollToBottomAndClose,
 		clearLogs,
 		captureScreenshot,
 		postLogs,
-		filterLogs,
+		filterLogsWithDebounce,
 		showDetails,
+		loadContent,
 		hideDetails,
 		onLoggerTextboxOnFocus,
 		onLoggerTextboxOnBlur,
