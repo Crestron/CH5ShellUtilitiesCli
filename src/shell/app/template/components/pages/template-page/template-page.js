@@ -501,7 +501,16 @@ const templatePageModule = (() => {
 				listOfPages.forEach((page) => page.preloadPage && navigationModule.updateDiagnosticsOnPageChange(page.pageName));
 			}
 			cleanup();
-			setTimeout(() => { document.getElementById("loader").style.display = "none"; }, 2000);
+			const newPageTest = pageObject.pageName + "-import-page";
+			setTimeout(() => {
+				document.getElementById(newPageTest).classList.add("ch5-hide-dis");
+				setTimeout(() => {
+					document.getElementById(newPageTest).classList.remove("ch5-hide-dis");
+					setTimeout(() => {
+						document.getElementById("loader").style.display = "none";
+					}, 2000);
+				}, 1000);
+			}, 1000);
 		} else {
 			setTimeout(() => {
 				hideLoading(pageObject);
