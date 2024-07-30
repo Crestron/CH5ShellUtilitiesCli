@@ -1,0 +1,472 @@
+// Copyright (C) 2022 to the present, Crestron Electronics, Inc.
+// All rights reserved.
+// No part of this software may be reproduced in any form, machine
+// or natural, without the express written consent of Crestron Electronics.
+// Use of this source code is subject to the terms of the Crestron Software License Agreement
+// under which you licensed this source code.
+
+@mixin logs-button-widget-mixin($iconColor) {
+  --ch5-button--small-font-size: 32px;
+  --ch5-button--small-width: 36px;
+  --ch5-button--small-height: 36px;
+  --ch5-button--default-border-width: 0;
+  --ch5-button--default-background-color: transparent;
+  --ch5-button--default-pressed-background-color: transparent;
+  --ch5-button--default-selected-background-color: transparent;
+  --ch5-button--default-font-color: #{$iconColor};
+  --ch5-button--default-pressed-font-color: #{$iconColor};
+  --ch5-button--default-selected-font-color: #{$iconColor};
+}
+
+.template-logs-widget {
+  // BEGIN::CHANGEAREA - your page level styles go here
+}
+
+#loggerViewModalDialog {
+  $constHeight: 32px;
+  $color-blue: #3e97eb;
+  $color-light-blue: #e3f5ff;
+  $color-white: #fff;
+
+  // width: 95%;
+  // height: 80%;
+
+  $spaceamounts: (0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100); // Adjust this to include the pixel amounts you need
+
+  @each $var in $spaceamounts {
+    .h-#{$var} {
+      height: #{$var} + "%";
+    }
+  }
+
+  $heightSetForTop: 100px;
+
+  .ch5-modal-dialog {
+    background-color: whitesmoke;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: flex;
+    overflow: hidden;
+
+    flex-direction: column;
+    --ch5-modal-dialog--close-icon-size: 26px;
+
+    .ch5-modal-dialog-close-icon-btn {
+      position: absolute;
+      right: 38px;
+    }
+    .ch5-modal-dialog-header {
+      font-size: 24px;
+      font-weight: bold;
+      padding-left: 14px;
+      height: $heightSetForTop;
+    }
+    .ch5-modal-dialog-contents {
+      // height: 100%;
+      flex-grow: 1;
+    }
+  }
+
+  .ch5-modal-dialog .ch5-modal-dialog-close-icon-btn {
+    background-color: transparent;
+  }
+
+  .lbl-title-logs {
+    font-size: 14px;
+    font-style: italic;
+  }
+
+  label {
+    margin: 0;
+  }
+
+  .logicon {
+    font-size: 16px;
+  }
+  .border-rounded {
+    border: solid 1px dimgray;
+    overflow-x: hidden;
+    overflow-y: auto;
+    border-radius: 4px;
+    font-size: 24px;
+    background-color: white;
+  }
+
+  .log-message-type {
+    font-weight: bold;
+    text-transform: capitalize;
+  }
+
+  #filterLogsSection {
+    width: 30%;
+    background-color: #f5f5f5;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    font-size: 16px;
+
+    #srlLogTypes {
+      .ch5-subpage-reference-list {
+        --ch5-subpage-reference-list--container-padding: 2px 10px 0 10px;
+        text-align: left;
+      }
+      ch5-button {
+        --ch5-button--default-border-color: transparent;
+        --ch5-button--default-background-color: transparent;
+        --ch5-button--default-pressed-background-color: transparent;
+        --ch5-button--default-pressed-border-color: transparent;
+        --ch5-button--default-selected-background-color: transparent;
+      }
+      .ch5-button__checkbox--checked:before {
+        content: "\f058";
+        font-size: 24px !important;
+        font-weight: 400;
+      }
+
+      .ch5-button__checkbox--unchecked:before {
+        display: none;
+      }
+    }
+    #sendToServerMessage {
+      display: block;
+      text-align: left;
+      font-size: 1.4rem;
+      color: #666;
+      font-style: italic;
+    }
+    // .info-wrapper {
+    //   border: 0 !important;
+    // }
+
+    input[type="search"]::-webkit-search-cancel-button {
+      // -webkit-appearance: searchfield-cancel-button;
+      /* Remove default */
+      // -webkit-appearance: none;
+      // cursor: pointer;
+
+      // content: "";
+      // display: block;
+      // width: 25px;
+      // height: 12px;
+      // background-repeat: no-repeat;
+      // background-size: 18px;
+      // background-position: top left;
+      // background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAEFUlEQVR4Ab2Y1XIrORCGZ6TgYWZmZmZmCi+G7Ruz3yLwAgeulxnvlvddlulu0dtfYrmMMyNTqv4qeaTu/iM1Sc61a5dUFtrA/A4AdfnyeXXhwml1/vypmbG/Ds85ZQi1BMW5cyf1smWLXUf+1q9fpbq6HrQODr7UIehkvHHjupm5BQvmumfPntDIWEBDKJDQqVPHNIbC4fF5iUTicCqVGk2n01OCVwUfgex4WuZGWBMKjc9D5vTpY7puhC5ePKNbWx03Go2sEEPDYvBTwQ+CfwWZCmCONZ8gE4lEVqDj0qVzuiZChw/vVaOjI+2itFuUfyP4C4OWQOYb0dGFrkOH9ik/QmUXrF27XMmuLMseyx8orxHomIpGo8s2b16rrHZo+fIFKhaLrREFr3kfjTXQ9Xo8Hlu7dOk8FYjQnj3bzM5AJtMgvM5OYcuTkOQTPTQ02C4Ck9Y7Y79TU8PDg+3YrEhIItTFgY3PNBi/4+jYLEto//6dmtCWhV97KPlP8IXgmeBnj3XMPRV8jozHuq+xeeDALl1CiAQmjId8QvtdcfZ1N25c07J2rAKpn0maN25c1ayV3+946PubPIXtAkKUA7IqicxD+It4PL5+7lztnj9/Wnd3P2opJmXI9PZ24Y+a45CIWoesh96PsQ2HHCEEk8nEIZn83kPwWXf3Q511QjF4Rvf19RhSv4BZMt3M5dY8fHhfy9wTD73fi+3DcMgRymQyHNeIz3ljcIz/3hhkp7KkBsHAQF8emdOQYW4EWS+/ZA0cDCEFO8IwQGT8DCl2weyUtBwtd+7c1Ldv39CMy5D5OYDeqdwO0cPQNlCpmQxKCh8yxfLq1YszYMy3R48e2JABr8JBuGiH5op+hvbBIof8yhERroaIIcY3mXvZHFNAfEQ/BReHTo8floR+gdChQ3tKCJHPmKuCUIcQqvrICG2Op6XckfX0mJRQxZHhSFZOXRTaELh+/Yq+efOaZlycEuyc2j7s2Zn80Jbd6MLwy4LB/v7CsO/qemhI2Yc9ycknMT6VndH5BvOi6RdQlBIgB2GNrFVizCsdH/uUjnXt7Q6lo2yeMSmBnWFNW5vjIkORtSodecV1mILnV1zPnTutOT6P4jqGT1VdXAXkD5v242mA9uNZgPbjG+kcV2Dbq0Hran6D5t/CTjWhhZ0cHHzZu4UFu3dvNU3+6w0k9Bo2sBXoXrZq1SLFVQVSDbgGvYZubFjdXDdtWq3E4ep9UZxE58aNq1SVV+l9amxstB3nq/Eq/a25Sh87dlDV+NhwllqX/9jwie1jA7Lo4OGijs8xRyHmkFWzzzFk6ekyzzFTxc8xyNb9fciAR6hVq5a6GNqzZ4ebfbDqFHQw3rFjs5p9zFrtUg6qebBSDKoFPQydnoAx32qB+h8A5v1nBDyBdQAAAABJRU5ErkJggg==);
+    }
+
+    input {
+      outline: 0;
+      height: $constHeight;
+      width: 80%;
+      border: solid 1px dimgray;
+      border-radius: 5px;
+      font-size: 14px;
+      padding: 0 15px 0 15px;
+    }
+
+    input::placeholder {
+      color: rgb(168, 168, 168);
+      opacity: 1;
+    }
+  }
+
+  ch5-list .list-item,
+  .each-list-item {
+    padding: 0 10px 0 0px;
+    border: 0;
+    font-size: 20px;
+    position: relative;
+    border-bottom: 1px solid lightgray;
+    .log-indicator {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 5px;
+      height: 100%;
+    }
+    .log-item-object {
+      cursor: pointer;
+      background-color: $color-blue;
+      color: $color-white;
+      display: inline-block;
+      border-radius: 4px;
+      // cursor: pointer;
+      // box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+      padding: 0 20px;
+      margin: 0 5px;
+      &.smoke {
+        background-color: transparent;
+        color: black;
+        display: block;
+        padding: 0;
+      }
+      > * {
+        cursor: default;
+      }
+    }
+  }
+  .logiconholder {
+    width: $constHeight;
+    min-width: $constHeight;
+    display: flex;
+    justify-content: center;
+    margin-top: 8px;
+    align-items: flex-start;
+  }
+
+  // .info-wrapper {
+  //   border-right: 1px solid rgba(0, 0, 0, 0.1);
+  //   .info-type {
+  //     color: rgb(90, 90, 92);
+  //     font-size: calc(1.5rem);
+  //     text-overflow: ellipsis;
+  //     padding-right: 5px;
+  //     position: relative;
+  //     text-transform: uppercase;
+  //   }
+
+  //   .info-value {
+  //     color: black;
+  //     font-size: 2rem;
+  //     text-overflow: ellipsis;
+  //     font-weight: bold;
+  //     line-height: 20px;
+  //     position: relative;
+  //   }
+  // }
+
+  .logmessagetext {
+    font-size: 16px;
+    padding: 4px;
+  }
+
+  .nested {
+    display: none;
+  }
+
+  .active {
+    display: block;
+  }
+
+  .log-filter-button {
+    @include logs-button-widget-mixin(#050996);
+    --ch5-button--small-icon-size: 24px;
+    position: absolute;
+    right: 175px;
+    top: 20px;
+  }
+  .log-reload-button {
+    @include logs-button-widget-mixin(#58b158);
+    --ch5-button--small-icon-size: 24px;
+    position: absolute;
+    right: 125px;
+    top: 20px;
+  }
+
+  .log-clear-button {
+    @include logs-button-widget-mixin(#ef583d);
+    --ch5-button--small-icon-size: 24px;
+    position: absolute;
+    right: 75px;
+    top: 20px;
+  }
+
+  // #ch5listVerticalLogOptions {
+  //   .vertical-list-item {
+  //     height: $constHeight;
+  //   }
+  //   .mycustom-checkbox {
+  //     & + i {
+  //       position: absolute;
+  //       top: 13px;
+  //       left: $constHeight;
+  //       font-size: 1.4rem;
+  //     }
+  //   }
+
+  //   .mycustom-checkbox-label {
+  //     padding-left: 55px;
+  //     height: $constHeight;
+  //     line-height: $constHeight;
+  //     font-size: 1.8rem;
+  //     text-transform: capitalize;
+  //     &:before {
+  //       top: 10px;
+  //     }
+  //     &:after {
+  //       top: 13px;
+  //       left: 7px;
+  //     }
+  //   }
+  // }
+
+  #logsContentArea {
+    position: relative;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    height: calc(100vh - $heightSetForTop);
+    display: flex;
+    flex-direction: row-reverse;
+
+    .filter-area {
+      transition: all 1s;
+    }
+    // input[type="checkbox"] {
+    //   position: absolute;
+    //   bottom: 5%;
+    //   left: calc(25% - 50px);
+    //   height: $constHeight + 10;
+    //   width: $constHeight + 10;
+    //   z-index: 2;
+    //   opacity: 0;
+    //   cursor: pointer;
+    //   ~ .collapse-icon {
+    //     position: absolute;
+    //     display: block;
+    //     bottom: 5%;
+    //     left: calc(25% - 50px);
+    //     height: $constHeight + 10;
+    //     width: $constHeight + 10;
+    //     line-height: $constHeight + 10;
+    //     z-index: 1;
+    //     font-size: 3rem;
+    //     text-align: center;
+    //     color: $color-white;
+    //     background-color: $color-blue;
+    //     box-shadow: 6px 3px 6px 2px rgba(0, 0, 0, 0.2);
+    //   }
+    //   ~ .collapse-icon.fa-angle-right {
+    //     display: none;
+    //   }
+
+    //   &:checked {
+    //     left: 0;
+    //     ~ .collapse-icon.fa-angle-left {
+    //       display: none;
+    //     }
+    //     ~ .collapse-icon.fa-angle-right {
+    //       left: 0;
+    //       display: block;
+    //     }
+    //     ~ #filterLogsSection {
+    //       width: 0 !important;
+    //       flex-basis: 0;
+    //       max-width: 0;
+    //       padding: 0 !important;
+    //       overflow: hidden;
+    //       border: 0 !important;
+    //     }
+    //   }
+    // }
+  }
+
+  #logFilter {
+    ~ #logBtnFilter {
+      margin-left: 0 !important;
+      background-color: $color-blue;
+      width: $constHeight;
+      height: $constHeight;
+      i {
+        color: $color-white;
+        font-size: 2rem;
+        line-height: 3rem;
+      }
+    }
+  }
+
+  #ipAddressToPost {
+    display: inline-block;
+    width: calc(100% - 50px) !important;
+    font-size: 1.8rem;
+    padding-left: 10px;
+    padding-right: 10px;
+    height: $constHeight;
+  }
+  #logBtnPostMessages {
+    margin: 0;
+    font-size: 2rem;
+    background-color: $color-blue;
+    width: $constHeight;
+    height: $constHeight;
+    i {
+      color: $color-white !important;
+      font-size: 2rem;
+      line-height: 3rem;
+      margin-left: -5px !important;
+    }
+  }
+
+  #divLogContent {
+    overflow-y: auto;
+    background-color: #eee;
+    // border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border: 1px solid darkgray;
+
+    .each-list-item {
+      background-color: $color-white;
+      border-bottom: 1px solid #ebf7ff;
+      position: relative;
+      &:nth-child(2n + 1) {
+        background-color: #f7f9fb;
+      }
+      &:last-child {
+        border-bottom: 0;
+      }
+      // .logiconholder {
+      // .logicon {
+      //   position: absolute;
+      //   top: 5px;
+      //   left: 20px;
+      // }
+      // }
+    }
+  }
+
+  // END::CHANGEAREA
+}
+
+.logs-button-widget {
+  @include logs-button-widget-mixin(#808080);
+}
+
+.dark-theme,
+.project-dark-theme {
+  .logs-button-widget {
+    @include logs-button-widget-mixin(#fff);
+  }
+}
+
+pre.logcontent {
+  border: solid 1px dimgray;
+  border-radius: 8px;
+  padding: 10px;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+/* The SIMPLE-TOAST - position it at the bottom and in the middle of the screen */
+#templateToastMsgNewLog {
+  min-width: 250px; /* Set a default minimum width */
+  margin-left: -125px; /* Divide value of min-width by 2 */
+  background-color: #3e97eb; /* Background color */
+  border: solid 1px #137ada;
+  color: #fff; /* White text color */
+  text-align: center; /* Centered text */
+  border-radius: 6px; /* Rounded borders */
+  padding: 10px; /* Padding */
+  position: fixed; /* Sit on top of the screen */
+  z-index: 1; /* Add a z-index if needed */
+  left: 50%; /* Center the snackbar */
+  bottom: 30px; /* 30px from the bottom */
+  display: inline-flex;
+  line-height: 12px;
+  font-size: 14px;
+
+  &.fade-toast {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    cursor: default;
+  }
+  &.show-toast {
+    opacity: 1;
+    cursor: pointer;
+  }
+}

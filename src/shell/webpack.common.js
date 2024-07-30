@@ -1,6 +1,6 @@
 const path = require("path");
 const fs = require("fs");
-const glob = require("glob");
+const { glob } = require('glob');
 
 const RemoveEmptyScriptsPlugin = require('webpack-remove-empty-scripts');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
@@ -146,12 +146,22 @@ function getConfig(envPath) {
   return copyToDest;
 }
 
+function pathReWrite(data) {
+  let tempArray = [];
+  for (let i = 0; i < data.length; i++) {
+    let updatedPath = data[i].toString().replaceAll('\\', '/');
+    updatedPath = './' + updatedPath;
+    tempArray.unshift(updatedPath);
+  }
+  return tempArray;
+}
+
 module.exports = (env) => {
   return {
     entry: {
       main: path.resolve(basePath, `${srcTemplateRoot}/assets/scss/main.scss`),
-      templatecomponents: glob.sync(`${srcTemplateRoot}/components/**/*.scss`),
-      projectcomponents: glob.sync(`${srcProjectRoot}/components/**/*.scss`),
+      templatecomponents: pathReWrite(glob.sync(`${srcTemplateRoot}/components/**/*.scss`)),
+      projectcomponents: pathReWrite(glob.sync(`${srcProjectRoot}/components/**/*.scss`)),
     },
     output: {
       filename: "[name].[contenthash].js",
@@ -221,6 +231,11 @@ module.exports = (env) => {
         content: copyright()
       }),
       new CreateFileWebpack({
+        path: './',
+        fileName: 'LICENSE.txt',
+        content: license()
+      }),
+      new CreateFileWebpack({
         path: `${appConfigDistPath[env]}/assets/data`,
         fileName: 'version.json',
         content: getVersionForPackages()
@@ -266,4 +281,16 @@ function copyright() {
     "or natural, without the express written consent of Crestron Electronics.\n" +
     "Use of this source code is subject to the terms of the Crestron Software License Agreement\n" +
     "under which you licensed this source code.\n";
+}
+
+function license() {
+  return "Copyright (C) " + ((new Date()).getFullYear()) + " to the present, Crestron Electronics, Inc.\n" +
+    "All rights reserved.\n" +
+    "No part of this software may be reproduced in any form, machine\n" +
+    "or natural, without the express written consent of Crestron Electronics.\n" +
+    "Use of this source code is subject to the terms of the Crestron Software Development Tools License Agreement\n" +
+    "under which you licensed this source code.\n\n" +
+    "If you did not accept the terms of the license agreement,\n" +
+    "you are not authorized to use this software. For the terms of the license,\n" +
+    "please see the license agreement between you and Crestron at http://www.crestron.com/sla.\n";
 }

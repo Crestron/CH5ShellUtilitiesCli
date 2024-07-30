@@ -13,24 +13,6 @@ const templatePageModule = (() => {
 	let pageLoadTimeout = 2000;
 	let isWebXPanelInitialized = false; // avoid calling connection method multiple times
 
-	const effects = {
-		"fadeOutUpBig": ["animate__animated", "animate__fadeOutUpBig"],
-		"fadeInUpBig": ["animate__animated", "animate__fadeInUpBig"],
-		"fadeOutDownBig": ["animate__animated", "animate__fadeOutDownBig"],
-		"fadeInDownBig": ["animate__animated", "animate__fadeInDownBig"],
-		"fadeOutUpBigFast": ["animate__animated", "animate__fadeOutUpBig", "animate__fast"],
-		"fadeInUpBigFast": ["animate__animated", "animate__fadeInUpBig", "animate__fast"],
-		"fadeOutDownBigFast": ["animate__animated", "animate__fadeOutDownBig", "animate__fast"],
-		"fadeInDownBigFast": ["animate__animated", "animate__fadeInDownBig", "animate__fast"],
-		"fadeOut": ["animate__animated", "animate__fadeOut"],
-		"fadeOutSlow": ["animate__animated", "animate__fadeOut", "animate__slow"],
-		"fadeIn": ["animate__animated", "animate__fadeIn"],
-		"fadeInSlow": ["animate__animated", "animate__fadeIn", "animate__slow"],
-		"fadeInFast": ["animate__animated", "animate__fadeIn", "animate__fast"],
-		"zoomIn": ["animate__animated", "animate__zoomIn"],
-		"zoomOut": ["animate__animated", "animate__zoomOut"],
-		"fadeOutFast": ["animate__animated", "animate__fadeOut", "animate__fast"]
-	};
 
 	/**
 	 * This is public method for bottom navigation to navigate to next page
@@ -172,241 +154,246 @@ const templatePageModule = (() => {
 			triggerview = document.querySelector(".triggerview");
 			horizontalMenuSwiperThumb = document.getElementById("horizontal-menu-swiper-thumb");
 
-			projectConfigModule.projectConfigData().then((projectConfigResponse) => {
-				translateModule.initializeDefaultLanguage().then(() => {
-					/* Note: You can uncomment below line to enable remote logger.
-					 * Refer below documentation link to know more about remote logger.
-					 * https://sdkcon78221.crestron.com/sdk/Crestron_HTML5UI/Content/Topics/UI-Remote-Logger.htm
-					 */
-					// templateRemoteLoggerSettingsModule.setRemoteLoggerConfig(serverIPAddress, serverPortNumber);
-					serviceModule.initialize(projectConfigResponse);
+			projectConfigModule.appMainfestData().then((appManifestResponse) => {
+				projectConfigModule.projectConfigData().then((projectConfigResponse) => {
+					translateModule.initializeDefaultLanguage().then(() => {
+						/* Note: You can uncomment below line to enable remote logger.
+						 * Refer below documentation link to know more about remote logger.
+						 * https://sdkcon78221.crestron.com/sdk/Crestron_HTML5UI/Content/Topics/UI-Remote-Logger.htm
+						 */
+						// templateRemoteLoggerSettingsModule.setRemoteLoggerConfig(serverIPAddress, serverPortNumber);
+						serviceModule.initialize(projectConfigResponse);
+						console.initialize();
 
-					// Changes for index.html - Start
-					const cacheBustVersion = "?v=" + (new Date()).getTime();
-					document.getElementById("favicon").setAttribute("href", projectConfigResponse.faviconPath);
-					document.getElementById("shellTemplateSelectedThemeCss").setAttribute("href", "./assets/css/ch5-theme.css" + cacheBustVersion);
-					document.getElementById("externalCss").setAttribute("href", "./assets/css/external.css" + cacheBustVersion);
+						// Changes for index.html - Start
+						// console.log("appManifestResponse", appManifestResponse["ch5"]["crComLib"], appManifestResponse["ch5"]["ch5Theme"], appManifestResponse["ch5"]["ch5WebXPanel"]);
+						// console.log("appManifestResponse", appManifestResponse["ch5"]["crComLib"], appManifestResponse["ch5"]["ch5Theme"], "rags", [{a:1,b: {a:1, b:2}}]);
+						const cacheBustVersion = "?v=" + appManifestResponse["ch5"]["ch5Theme"]["version"];
+						document.getElementById("favicon").setAttribute("href", projectConfigResponse.faviconPath);
+						document.getElementById("shellTemplateSelectedThemeCss").setAttribute("href", "./assets/css/ch5-theme.css" + cacheBustVersion);
+						document.getElementById("externalCss").setAttribute("href", "./assets/css/external.css" + cacheBustVersion);
 
-					const widgetsAndStandalonePages = document.getElementById("widgets-and-standalone-pages");
-					const widgets = projectConfigResponse.content.widgets;
-					for (let i = 0; i < widgets.length; i++) {
-						const htmlImportSnippet = document.createElement("ch5-import-htmlsnippet");
-						htmlImportSnippet.setAttribute("id", widgets[i].widgetName + "-import-widget");
-						htmlImportSnippet.setAttribute("url", widgets[i].fullPath + widgets[i].fileName);
-						htmlImportSnippet.setAttribute("show", "false");
-						widgetsAndStandalonePages.appendChild(htmlImportSnippet);
-					}
-
-					const standAlonePages = projectConfigModule.getAllStandAloneViewPages();
-					for (let i = 0; i < standAlonePages.length; i++) {
-						const htmlImportSnippet = document.createElement("ch5-import-htmlsnippet");
-						htmlImportSnippet.setAttribute("id", standAlonePages[i].pageName + "-import-page");
-						htmlImportSnippet.setAttribute("url", standAlonePages[i].fullPath + standAlonePages[i].fileName);
-						htmlImportSnippet.setAttribute("show", "false");
-						widgetsAndStandalonePages.appendChild(htmlImportSnippet);
-					}
-					// Changes for index.html - End
-
-					// Header
-					if (projectConfigResponse.header.display === true) {
-						let dataHeader = "";
-						if (projectConfigResponse.header.$component && projectConfigResponse.header.$component !== "") {
-							dataHeader = document.getElementById("header-section-page-template2").innerHTML;
-						} else {
-							dataHeader = document.getElementById("header-section-page-template1").innerHTML;
+						const widgetsAndStandalonePages = document.getElementById("widgets-and-standalone-pages");
+						const widgets = projectConfigResponse.content.widgets;
+						for (let i = 0; i < widgets.length; i++) {
+							const htmlImportSnippet = document.createElement("ch5-import-htmlsnippet");
+							htmlImportSnippet.setAttribute("id", widgets[i].widgetName + "-import-widget");
+							htmlImportSnippet.setAttribute("url", widgets[i].fullPath + widgets[i].fileName);
+							htmlImportSnippet.setAttribute("show", "false");
+							widgetsAndStandalonePages.appendChild(htmlImportSnippet);
 						}
 
-						const app = document.getElementById('header-section-page');
-						const mergedJsonContentHeader = utilsModule.mergeJSON(projectConfigResponse, {
-							customHeaderUrl: projectConfigModule.getCustomHeaderUrl()
-						});
-						app.innerHTML = utilsModule.replacePlaceHolders(dataHeader, mergedJsonContentHeader);
+						const standAlonePages = projectConfigModule.getAllStandAloneViewPages();
+						for (let i = 0; i < standAlonePages.length; i++) {
+							const htmlImportSnippet = document.createElement("ch5-import-htmlsnippet");
+							htmlImportSnippet.setAttribute("id", standAlonePages[i].pageName + "-import-page");
+							htmlImportSnippet.setAttribute("url", standAlonePages[i].fullPath + standAlonePages[i].fileName);
+							htmlImportSnippet.setAttribute("show", "false");
+							widgetsAndStandalonePages.appendChild(htmlImportSnippet);
+						}
+						// Changes for index.html - End
 
-						let sidebarToggle = document.getElementById("sidebarToggle");
-						if (projectConfigResponse.menuOrientation === "vertical") {
-							if (sidebarToggle) {
-								sidebarToggle.classList.remove("display-none");
+						// Header
+						if (projectConfigResponse.header.display === true) {
+							let dataHeader = "";
+							if (projectConfigResponse.header.$component && projectConfigResponse.header.$component !== "") {
+								dataHeader = document.getElementById("header-section-page-template2").innerHTML;
+							} else {
+								dataHeader = document.getElementById("header-section-page-template1").innerHTML;
 							}
-						} else {
-							if (sidebarToggle) {
-								if (!sidebarToggle.classList.contains("display-none")) {
-									sidebarToggle.classList.add("display-none");
+
+							const app = document.getElementById('header-section-page');
+							const mergedJsonContentHeader = utilsModule.mergeJSON(projectConfigResponse, {
+								customHeaderUrl: projectConfigModule.getCustomHeaderUrl()
+							});
+							app.innerHTML = utilsModule.replacePlaceHolders(dataHeader, mergedJsonContentHeader);
+
+							let sidebarToggle = document.getElementById("sidebarToggle");
+							if (projectConfigResponse.menuOrientation === "vertical") {
+								if (sidebarToggle) {
+									sidebarToggle.classList.remove("display-none");
+								}
+							} else {
+								if (sidebarToggle) {
+									if (!sidebarToggle.classList.contains("display-none")) {
+										sidebarToggle.classList.add("display-none");
+									}
 								}
 							}
+
+							if (projectConfigResponse.header.$component === "") {
+								const headerSectionPageSet1 = document.getElementById('header-section-page-set1');
+								headerSectionPageSet1.innerHTML = utilsModule.replacePlaceHolders(document.getElementById("header-section-page-template1-set1").innerHTML, mergedJsonContentHeader);
+							}
+						} else {
+							document.getElementById("header-index-page").remove();
 						}
 
-						if (projectConfigResponse.header.$component === "") {
-							const headerSectionPageSet1 = document.getElementById('header-section-page-set1');
-							headerSectionPageSet1.innerHTML = utilsModule.replacePlaceHolders(document.getElementById("header-section-page-template1-set1").innerHTML, mergedJsonContentHeader);
+						// Content
+						const appContent = document.getElementById('content-index-page');
+						let data = "";
+						if (projectConfigResponse.menuOrientation === "horizontal") {
+							data = document.getElementById("template-content-page-section-horizontal").innerHTML;
+						} else if (projectConfigResponse.menuOrientation === "vertical") {
+							data = document.getElementById("template-content-page-section-vertical").innerHTML;
+						} else {
+							data = document.getElementById("template-content-page-section-none").innerHTML;
 						}
-					} else {
-						document.getElementById("header-index-page").remove();
-					}
 
-					// Content
-					const appContent = document.getElementById('content-index-page');
-					let data = "";
-					if (projectConfigResponse.menuOrientation === "horizontal") {
-						data = document.getElementById("template-content-page-section-horizontal").innerHTML;
-					} else if (projectConfigResponse.menuOrientation === "vertical") {
-						data = document.getElementById("template-content-page-section-vertical").innerHTML;
-					} else {
-						data = document.getElementById("template-content-page-section-none").innerHTML;
-					}
+						const mergedJsonContent = utilsModule.mergeJSON(projectConfigResponse, {});
+						appContent.innerHTML += utilsModule.replacePlaceHolders(data, mergedJsonContent);
 
-					const mergedJsonContent = utilsModule.mergeJSON(projectConfigResponse, {});
-					appContent.innerHTML += utilsModule.replacePlaceHolders(data, mergedJsonContent);
+						const pagesList = projectConfigModule.getNavigationPages();
+						pagesList.forEach(e => { if (e.preloadPage) { totalPreloadPage++; } })
+						if (projectConfigResponse.menuOrientation === "horizontal") {
+							document.getElementById("horizontal-menu-swiper-thumb")?.setAttribute("size", pagesList.length);
+						} else if (projectConfigResponse.menuOrientation === "vertical") {
+							document.getElementById("vertical-menu-swiper-thumb")?.setAttribute("size", pagesList.length);
+						}
 
-					const pagesList = projectConfigModule.getNavigationPages();
-					pagesList.forEach(e => { if (e.preloadPage) { totalPreloadPage++; } })
-					if (projectConfigResponse.menuOrientation === "horizontal") {
-						document.getElementById("horizontal-menu-swiper-thumb")?.setAttribute("size", pagesList.length);
-					} else if (projectConfigResponse.menuOrientation === "vertical") {
-						document.getElementById("vertical-menu-swiper-thumb")?.setAttribute("size", pagesList.length);
-					}
+						let triggerviewInContent = "";
+						if (projectConfigResponse.menuOrientation === "horizontal") {
+							triggerviewInContent = document.getElementById("triggerviewInContentHorizontal");
+						} else if (projectConfigResponse.menuOrientation === "vertical") {
+							triggerviewInContent = document.getElementById("triggerviewInContentVertical");
+						} else {
+							triggerviewInContent = document.getElementById("triggerviewInContentNone");
+						}
+						if (triggerviewInContent) {
+							const tgViewProperties = projectConfigResponse.content.triggerViewProperties;
+							if (tgViewProperties) {
+								Object.entries(tgViewProperties).forEach(([key, value]) => {
+									triggerviewInContent.setAttribute(key, value);
+								});
+							}
 
-					let triggerviewInContent = "";
-					if (projectConfigResponse.menuOrientation === "horizontal") {
-						triggerviewInContent = document.getElementById("triggerviewInContentHorizontal");
-					} else if (projectConfigResponse.menuOrientation === "vertical") {
-						triggerviewInContent = document.getElementById("triggerviewInContentVertical");
-					} else {
-						triggerviewInContent = document.getElementById("triggerviewInContentNone");
-					}
-					if (triggerviewInContent) {
-						const tgViewProperties = projectConfigResponse.content.triggerViewProperties;
-						if (tgViewProperties) {
-							Object.entries(tgViewProperties).forEach(([key, value]) => {
-								triggerviewInContent.setAttribute(key, value);
+							for (let i = 0; i < pagesList.length; i++) {
+								const childNodeTriggerView = document.createElement("ch5-triggerview-child");
+								const tgViewChildProperties = projectConfigResponse.content.pages[i].triggerViewChildProperties;
+								if (tgViewChildProperties) {
+									Object.entries(tgViewChildProperties).forEach(([key, value]) => {
+										childNodeTriggerView.setAttribute(key, value);
+									});
+								}
+
+								/*
+								// LOADING INDICATOR - Uncomment the below lines along with code in navigation.js file to enable loading indicator
+								const htmlImportSnippetForLoader = document.createElement("ch5-import-htmlsnippet");
+								htmlImportSnippetForLoader.setAttribute("id", pagesList[i].pageName + "-import-page-app-loader");
+								htmlImportSnippetForLoader.setAttribute("receiveStateShow", pagesList[i].pageName + "-import-page-show-app-loader");
+								htmlImportSnippetForLoader.setAttribute("url", "./app/template/components/widgets/template-app-loader/template-app-loader.html");							
+								*/
+
+								const htmlImportSnippet = document.createElement("ch5-import-htmlsnippet");
+								htmlImportSnippet.setAttribute("id", pagesList[i].pageName + "-import-page");
+
+								/*
+								preloadPage: FALSE + cachedPage: FALSE (Default setting)
+									* page is not loaded on startup - load time is only during first time page is called
+									* page is not cached - each time user comes to the page, the page is loaded, and unloaded when user leaves the page.
+								preloadPage: FALSE + cachedPage: TRUE
+									* page is not loaded on startup - load time is only during the time page is called. Since page is cached, load time is only for first time.
+									* page is cached - load time is whenever the user opens the page. Each time user comes to the page, the page is available already and there is no page load time. Even after user leaves the page, the page is not removed from DOM and is always available. DOM weight for project is high because of this feature.
+								preloadPage: TRUE + cachedPage: FALSE
+									* page is loaded on startup - load time is during first time page is called
+									* page is not cached - each time user comes to the page, the page is loaded, and unloaded when user leaves the page. However, since the page is loaded for first time, the page will not be removed from DOM unless user visits the page atleast once. Once the user visits the page, and leaves the page, the page is removed from DOM. After user leaves the page, the load time is during each page call again.
+								preloadPage: TRUE + cachedPage: TRUE
+									* page is loaded on startup - load time is during first time page is called
+									* page is cached - load time is during the project load. Each time user comes to the page, the page is available already and there is no page load time. Even after user leaves the page, the page is not removed from DOM and is always available. DOM weight for project is high because of this feature.
+								*/
+								if (CrComLib.isCrestronTouchscreen()) {
+									pageLoadTimeout = 15000;
+								}
+
+								if (pagesList[i].preloadPage === true) {
+									// We need the below becos there is a flicker when page loads and hides if url is set - specifically with signal sent
+									setTimeout(() => {
+										htmlImportSnippet.setAttribute("url", pagesList[i].fullPath + pagesList[i].fileName);
+										preloadPageLoaded++;
+									}, pageLoadTimeout);
+									htmlImportSnippet.setAttribute("noShowType", "display");
+								} else {
+									htmlImportSnippet.setAttribute("receiveStateShow", pagesList[i].pageName + "-import-page-show");
+									if (pagesList[i].cachePage === true) {
+										htmlImportSnippet.setAttribute("noShowType", "display");
+									} else {
+										htmlImportSnippet.setAttribute("noShowType", "remove");
+									}
+								}
+
+								// LOADING INDICATOR - Uncomment the below line along with code in navigation.js file to enable loading indicator
+								// childNodeTriggerView.appendChild(htmlImportSnippetForLoader);
+								childNodeTriggerView.appendChild(htmlImportSnippet);
+								triggerviewInContent.appendChild(childNodeTriggerView);
+							}
+							triggerviewInContent.setAttribute("activeview", projectConfigModule.defaultActiveViewIndex());
+							triggerview = triggerviewInContent;
+						}
+
+						// Footer
+						if (projectConfigResponse.footer.display === true) {
+							const appFooter = document.getElementById('footer-section-page');
+							let dataFooter = "";
+							if (projectConfigResponse.footer.$component && projectConfigResponse.footer.$component !== "") {
+								dataFooter = document.getElementById("footer-section-page-template2").innerHTML;
+							} else {
+								dataFooter = document.getElementById("footer-section-page-template1").innerHTML;
+							}
+
+							const mergedJsonContentFooter = utilsModule.mergeJSON(projectConfigResponse, {
+								copyrightYear: (new Date()).getFullYear(),
+								customFooterUrl: projectConfigModule.getCustomFooterUrl()
+							});
+							appFooter.innerHTML = utilsModule.replacePlaceHolders(dataFooter, mergedJsonContentFooter);
+						} else {
+							document.getElementById("footer-index-page").remove();
+						}
+
+						if (triggerview) {
+							triggerview.addEventListener("select", (event) => {
+								const listOfPages = projectConfigModule.getNavigationPages();
+								if (listOfPages.length > 0 && event.detail !== undefined && listOfPages[event.detail].pageName !== selectedPage.pageName) {
+									navigateTriggerViewByIndex(event.detail);
+								}
 							});
 						}
 
-						for (let i = 0; i < pagesList.length; i++) {
-							const childNodeTriggerView = document.createElement("ch5-triggerview-child");
-							const tgViewChildProperties = projectConfigResponse.content.pages[i].triggerViewChildProperties;
-							if (tgViewChildProperties) {
-								Object.entries(tgViewChildProperties).forEach(([key, value]) => {
-									childNodeTriggerView.setAttribute(key, value);
-								});
-							}
-
-							/*
-							// LOADING INDICATOR - Uncomment the below lines along with code in navigation.js file to enable loading indicator
-							const htmlImportSnippetForLoader = document.createElement("ch5-import-htmlsnippet");
-							htmlImportSnippetForLoader.setAttribute("id", pagesList[i].pageName + "-import-page-app-loader");
-							htmlImportSnippetForLoader.setAttribute("receiveStateShow", pagesList[i].pageName + "-import-page-show-app-loader");
-							htmlImportSnippetForLoader.setAttribute("url", "./app/template/components/widgets/template-app-loader/template-app-loader.html");							
-							*/
-
-							const htmlImportSnippet = document.createElement("ch5-import-htmlsnippet");
-							htmlImportSnippet.setAttribute("id", pagesList[i].pageName + "-import-page");
-
-							/*
-							preloadPage: FALSE + cachedPage: FALSE (Default setting)
-								* page is not loaded on startup - load time is only during first time page is called
-								* page is not cached - each time user comes to the page, the page is loaded, and unloaded when user leaves the page.
-							preloadPage: FALSE + cachedPage: TRUE
-								* page is not loaded on startup - load time is only during the time page is called. Since page is cached, load time is only for first time.
-								* page is cached - load time is whenever the user opens the page. Each time user comes to the page, the page is available already and there is no page load time. Even after user leaves the page, the page is not removed from DOM and is always available. DOM weight for project is high because of this feature.
-							preloadPage: TRUE + cachedPage: FALSE
-								* page is loaded on startup - load time is during first time page is called
-								* page is not cached - each time user comes to the page, the page is loaded, and unloaded when user leaves the page. However, since the page is loaded for first time, the page will not be removed from DOM unless user visits the page atleast once. Once the user visits the page, and leaves the page, the page is removed from DOM. After user leaves the page, the load time is during each page call again.
-							preloadPage: TRUE + cachedPage: TRUE
-								* page is loaded on startup - load time is during first time page is called
-								* page is cached - load time is during the project load. Each time user comes to the page, the page is available already and there is no page load time. Even after user leaves the page, the page is not removed from DOM and is always available. DOM weight for project is high because of this feature.
-							*/
-							if (CrComLib.isCrestronTouchscreen()) {
-								pageLoadTimeout = 15000;
-							}
-
-							if (pagesList[i].preloadPage === true) {
-								// We need the below becos there is a flicker when page loads and hides if url is set - specifically with signal sent
-								setTimeout(() => {
-									htmlImportSnippet.setAttribute("url", pagesList[i].fullPath + pagesList[i].fileName);
-									preloadPageLoaded++;
-								}, pageLoadTimeout);
-								htmlImportSnippet.setAttribute("noShowType", "display");
-							} else {
-								htmlImportSnippet.setAttribute("receiveStateShow", pagesList[i].pageName + "-import-page-show");
-								if (pagesList[i].cachePage === true) {
-									htmlImportSnippet.setAttribute("noShowType", "display");
+						CrComLib.subscribeState('s', 'Csig.Product_Name_Text_Join_fb', (deviceSpecificData) => {
+							hardButtonsModule.initialize(deviceSpecificData).then(() => {
+								let responseArrayForNavPages = projectConfigModule.getNavigationPages();
+								if (projectConfigResponse.menuOrientation === "horizontal") {
+									let loadListCh5 = CrComLib.subscribeState('o', 'ch5-list', (value) => {
+										if (value['loaded'] && (value['id'] === "horizontal-menu-swiper-thumb")) {
+											loadCh5ListForMenu(projectConfigResponse, responseArrayForNavPages);
+											navigateToFirstPage(projectConfigResponse, responseArrayForNavPages);
+											setTimeout(() => {
+												CrComLib.unsubscribeState('o', 'ch5-list', loadListCh5);
+												loadListCh5 = null;
+											});
+										}
+									});
+								} else if (projectConfigResponse.menuOrientation === "vertical") {
+									let loadListCh5 = CrComLib.subscribeState('o', 'ch5-list', (value) => {
+										if (value['loaded'] && (value['id'] === "vertical-menu-swiper-thumb")) {
+											loadCh5ListForMenu(projectConfigResponse, responseArrayForNavPages);
+											navigateToFirstPage(projectConfigResponse, responseArrayForNavPages);
+											setTimeout(() => {
+												CrComLib.unsubscribeState('o', 'ch5-list', loadListCh5);
+												loadListCh5 = null;
+											});
+										}
+									});
 								} else {
-									htmlImportSnippet.setAttribute("noShowType", "remove");
+									navigateToFirstPage(projectConfigResponse, responseArrayForNavPages);
 								}
-							}
-
-							// LOADING INDICATOR - Uncomment the below line along with code in navigation.js file to enable loading indicator
-							// childNodeTriggerView.appendChild(htmlImportSnippetForLoader);
-							childNodeTriggerView.appendChild(htmlImportSnippet);
-							triggerviewInContent.appendChild(childNodeTriggerView);
-						}
-						triggerviewInContent.setAttribute("activeview", projectConfigModule.defaultActiveViewIndex());
-						triggerview = triggerviewInContent;
-					}
-
-					// Footer
-					if (projectConfigResponse.footer.display === true) {
-						const appFooter = document.getElementById('footer-section-page');
-						let dataFooter = "";
-						if (projectConfigResponse.footer.$component && projectConfigResponse.footer.$component !== "") {
-							dataFooter = document.getElementById("footer-section-page-template2").innerHTML;
-						} else {
-							dataFooter = document.getElementById("footer-section-page-template1").innerHTML;
-						}
-
-						const mergedJsonContentFooter = utilsModule.mergeJSON(projectConfigResponse, {
-							copyrightYear: (new Date()).getFullYear(),
-							customFooterUrl: projectConfigModule.getCustomFooterUrl()
+								if (!deviceSpecificData) {
+									configureWebXPanel(projectConfigResponse);
+								}
+							});
 						});
-						appFooter.innerHTML = utilsModule.replacePlaceHolders(dataFooter, mergedJsonContentFooter);
-					} else {
-						document.getElementById("footer-index-page").remove();
-					}
-
-					if (triggerview) {
-						triggerview.addEventListener("select", (event) => {
-							const listOfPages = projectConfigModule.getNavigationPages();
-							if (listOfPages.length > 0 && event.detail !== undefined && listOfPages[event.detail].pageName !== selectedPage.pageName) {
-								navigateTriggerViewByIndex(event.detail);
-							}
-						});
-					}
-
-					CrComLib.subscribeState('s', 'Csig.Product_Name_Text_Join_fb', (deviceSpecificData) => {
-						hardButtonsModule.initialize(deviceSpecificData).then(() => {
-							let responseArrayForNavPages = projectConfigModule.getNavigationPages();
-							if (projectConfigResponse.menuOrientation === "horizontal") {
-								let loadListCh5 = CrComLib.subscribeState('o', 'ch5-list', (value) => {
-									if (value['loaded'] && (value['id'] === "horizontal-menu-swiper-thumb")) {
-										loadCh5ListForMenu(projectConfigResponse, responseArrayForNavPages);
-										configureWebXPanel(projectConfigResponse);
-										navigateToFirstPage(projectConfigResponse, responseArrayForNavPages);
-										setTimeout(() => {
-											CrComLib.unsubscribeState('o', 'ch5-list', loadListCh5);
-											loadListCh5 = null;
-										});
-									}
-								});
-							} else if (projectConfigResponse.menuOrientation === "vertical") {
-								let loadListCh5 = CrComLib.subscribeState('o', 'ch5-list', (value) => {
-									if (value['loaded'] && (value['id'] === "vertical-menu-swiper-thumb")) {
-										loadCh5ListForMenu(projectConfigResponse, responseArrayForNavPages);
-										configureWebXPanel(projectConfigResponse);
-										navigateToFirstPage(projectConfigResponse, responseArrayForNavPages);
-										setTimeout(() => {
-											CrComLib.unsubscribeState('o', 'ch5-list', loadListCh5);
-											loadListCh5 = null;
-										});
-									}
-								});
-							} else {
-								configureWebXPanel(projectConfigResponse);
-								navigateToFirstPage(projectConfigResponse, responseArrayForNavPages);
-							}
-						});
+						templateSetThemeModule.setThemes(projectConfigResponse.themes);
+						templateSetThemeModule.changeTheme(projectConfigResponse.selectedTheme);
 					});
-					templateSetThemeModule.setThemes(projectConfigResponse.themes);
-					templateSetThemeModule.changeTheme(projectConfigResponse.selectedTheme);
 				});
 			});
 
@@ -417,12 +404,6 @@ const templatePageModule = (() => {
 		}
 	});
 
-	function setTransition(selectedElement) {
-		const selectedEffect = effects.fadeIn;
-		for (let i = 0; i < selectedEffect.length; i++) {
-			selectedElement.classList.add(selectedEffect[i]);
-		}
-	}
 
 	function configureWebXPanel(projectConfigResponse) {
 		const entries = webXPanelModule.paramsToObject();
@@ -518,16 +499,31 @@ const templatePageModule = (() => {
 				firstLoad = true;
 				const listOfPages = projectConfigModule.getNavigationPages();
 				listOfPages.forEach((page) => page.preloadPage && navigationModule.updateDiagnosticsOnPageChange(page.pageName));
-
 			}
 			cleanup();
-			setTimeout(() => { document.getElementById("loader").style.display = "none"; }, 2000);
+			if (document.getElementById("loader").style.display === "none") {
+				setTimeout(() => {
+					document.getElementById("loader").style.display = "none";
+				}, 2000);
+			} else {
+				const newPageTest = pageObject.pageName + "-import-page";
+				setTimeout(() => {
+					document.getElementById(newPageTest).classList.add("ch5-hide-dis");
+					setTimeout(() => {
+						document.getElementById(newPageTest).classList.remove("ch5-hide-dis");
+						setTimeout(() => {
+							document.getElementById("loader").style.display = "none";
+						}, 2000);
+					}, 1000);
+				}, 1000);
+			}
 		} else {
 			setTimeout(() => {
 				hideLoading(pageObject);
 			}, 500);
 		}
 	}
+
 	function cleanup() {
 		document.getElementById("header-section-page-template1")?.remove();
 		document.getElementById("header-section-page-template2")?.remove();
@@ -540,6 +536,9 @@ const templatePageModule = (() => {
 
 		projectConfigModule.projectConfigData().then(data => {
 			if (data.header.displayInfo === false) {
+				document.getElementById('logsbtn')?.remove();
+			}
+			if (data.header.displayInfo === false) {
 				document.getElementById('infobtn')?.remove();
 			}
 			if (data.header.displayTheme === false) {
@@ -549,7 +548,6 @@ const templatePageModule = (() => {
 				document.getElementById('template-content-index-footer')?.remove();
 			}
 		});
-
 	}
 
 	window.addEventListener("orientationchange", function () {
@@ -561,15 +559,14 @@ const templatePageModule = (() => {
 	}, false);
 
 	/**
-	 * All public method and properties exporting here
+	 * Exported public method and properties
 	 */
 	return {
 		navigateTriggerViewByPageName,
 		openThumbNav,
 		toggleSidebar,
 		hideLoading,
-		navigateTriggerViewByIndex,
-		setTransition
+		navigateTriggerViewByIndex
 	};
 
 })();

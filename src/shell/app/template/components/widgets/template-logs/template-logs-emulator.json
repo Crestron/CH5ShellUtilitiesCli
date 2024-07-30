@@ -1,0 +1,125 @@
+{
+  "cues": [
+    {
+      "type": "boolean",
+      "event": "LogLevels.FilterLogs.Send",
+      "trigger": true,
+      "actions": [
+        {
+          "state": "LogLevels.FilterLogs.Receive",
+          "type": "boolean",
+          "logic": "toggle"
+        }
+      ]
+    },
+    {
+      "type": "boolean",
+      "event": "LogLevels.LogLevel[0].Clicked",
+      "trigger": true,
+      "actions": [
+        {
+          "state": "LogLevels.LogLevel[0].Selected",
+          "type": "boolean",
+          "logic": "toggle"
+        }
+      ]
+    },
+    {
+      "type": "boolean",
+      "event": "LogLevels.LogLevel[1].Clicked",
+      "trigger": true,
+      "actions": [
+        {
+          "state": "LogLevels.LogLevel[1].Selected",
+          "type": "boolean",
+          "logic": "toggle"
+        }
+      ]
+    },
+    {
+      "type": "boolean",
+      "event": "LogLevels.LogLevel[2].Clicked",
+      "trigger": true,
+      "actions": [
+        {
+          "state": "LogLevels.LogLevel[2].Selected",
+          "type": "boolean",
+          "logic": "toggle"
+        }
+      ]
+    },
+    {
+      "type": "boolean",
+      "event": "LogLevels.LogLevel[3].Clicked",
+      "trigger": true,
+      "actions": [
+        {
+          "state": "LogLevels.LogLevel[3].Selected",
+          "type": "boolean",
+          "logic": "toggle"
+        }
+      ]
+    },
+    {
+      "type": "boolean",
+      "event": "LogLevels.LogLevel[4].Clicked",
+      "trigger": true,
+      "actions": [
+        {
+          "state": "LogLevels.LogLevel[4].Selected",
+          "type": "boolean",
+          "logic": "toggle"
+        }
+      ]
+    },
+    {
+      "type": "boolean",
+      "event": "LogLevels.LogLevel[5].Clicked",
+      "trigger": true,
+      "actions": [
+        {
+          "state": "LogLevels.LogLevel[5].Selected",
+          "type": "boolean",
+          "logic": "toggle"
+        }
+      ]
+    }
+  ],
+  "onStart": [
+    {
+      "state": "LogLevels.FilterLogs.Receive",
+      "type": "boolean",
+      "value": false
+    },
+    {
+      "state": "LogLevels.LogLevel[0].Selected",
+      "type": "boolean",
+      "value": true
+    },
+    {
+      "state": "LogLevels.LogLevel[1].Selected",
+      "type": "boolean",
+      "value": true
+    },
+    {
+      "state": "LogLevels.LogLevel[2].Selected",
+      "type": "boolean",
+      "value": true
+    },
+    {
+      "state": "LogLevels.LogLevel[3].Selected",
+      "type": "boolean",
+      "value": true
+    },
+    {
+      "state": "LogLevels.LogLevel[4].Selected",
+      "type": "boolean",
+      "value": true
+    },
+    {
+      "state": "LogLevels.LogLevel[5].Selected",
+      "type": "boolean",
+      "value": true
+    }
+  ]
+}

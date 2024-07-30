@@ -147,13 +147,11 @@
 
 #brandLogo {
   max-width: 100%;
-  // height: auto;
   height: $header-brandlogo-height;
   outline: none;
   width: 90%;
 
   img {
-    // object-fit:scale-down;
     width: auto;
   }
 
