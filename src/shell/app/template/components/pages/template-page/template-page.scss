@@ -50,7 +50,7 @@
 }
 
 #template-index-import-page,
-#template-index-import-page>div {
+#template-index-import-page > div {
   max-height: 100%;
   height: 100%;
 }
@@ -63,7 +63,7 @@
 }
 
 #template-page-import-page,
-#template-page-import-page>div {
+#template-page-import-page > div {
   max-height: 100%;
   height: 100%;
   display: flex;
@@ -139,8 +139,19 @@
     margin: 0;
     transform: translate3d(0px, 0px, 0px);
 
-    ch5-import-htmlsnippet>div {
+    ch5-import-htmlsnippet > div {
       height: 100%;
+    }
+  }
+}
+
+// The below CSS is used for setting a fixed panel height - without overflow-y (scrollbar)
+// This is primarily used in Construct and must NOT be removed
+.panel-height {
+  #content-index-body {
+    overflow: hidden;
+    .ch5-viewchild {
+      overflow: hidden;
     }
   }
 }
@@ -276,7 +287,7 @@ div#pageStatusIdentifier {
         -webkit-transform: translateY(-100%);
         transform: translateY(-100%);
 
-        &+.thumb-action {
+        & + .thumb-action {
           display: none;
           animation: none;
         }
@@ -326,7 +337,7 @@ div#pageStatusIdentifier {
         padding: 10px 0 10px 10px;
 
         ch5-button {
-          >div {
+          > div {
             min-height: 100px;
           }
 
@@ -392,7 +403,7 @@ div#pageStatusIdentifier {
           min-height: 100px;
 
           ch5-button {
-            >div {
+            > div {
               min-height: 100px;
             }
           }
@@ -448,7 +459,7 @@ div#pageStatusIdentifier {
         -webkit-transform: translateY(-100%);
         transform: translateY(-100%);
 
-        &+.thumb-action {
+        & + .thumb-action {
           display: none;
           animation: none;
         }
