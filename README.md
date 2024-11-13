@@ -12,7 +12,7 @@
 ## Background
 The purpose of the library is to expose the [ch5-shell-cli](https://www.npmjs.com/package/@crestron/ch5-shell-cli) commands.
 
-## Whats New,
+## What's New
 
 Updates to the Crestron HTML5 User Interface and documentation are avalilable in the following link
 https://sdkcon78221.crestron.com/sdk/Crestron_HTML5UI/Content/Topics/Whats-New.htm
