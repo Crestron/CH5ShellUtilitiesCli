@@ -6,7 +6,8 @@
 			<nav role="navigation" class="navbar navbar-dark navbar-default fixed-top">
 				<div id="pageStatusIdentifier" class="hide"></div>
 				<div class="change-theme form-inline">
-					<a class="btn-link toggler display-none" id="sidebarToggle" onclick="templatePageModule.toggleSidebar()">
+					<a class="btn-link toggler display-none" id="sidebarToggle"
+						onclick="templatePageModule.toggleSidebar()">
 						<i class="toggle-icon"></i>
 					</a>
 					<a class="navbar-brand">
@@ -21,13 +22,16 @@
 				<template id="header-section-page-template1-set1">
 					<div class="navbar-action-right">
 						<div class="logs-widget">
-							<ch5-button shape="circle" size="small" receiveStateShow="logsbtn.show" class="logs-button-widget" noshowtype="remove"
-								iconClass="material-icons md-storage" sendEventOnClick="logsbtn.clicked" role="button" aria-label="Show Logs" aria-pressed="false">
+							<ch5-button shape="circle" size="small" receiveStateShow="logsbtn.show"
+								class="logs-button-widget" noshowtype="remove" iconClass="material-icons md-storage"
+								sendEventOnClick="logsbtn.clicked" role="button" aria-label="Show Logs"
+								aria-pressed="false">
 							</ch5-button>
 						</div>
 						<div class="theme-widget">
-							<ch5-button id="themebtn" shape="circle" size="small" iconClass="material-icons md-invert_colors"
-								sendEventOnClick="themebtn.clicked" role="button" aria-label="Select Theme" aria-pressed="false">
+							<ch5-button id="themebtn" shape="circle" size="small"
+								iconClass="material-icons md-invert_colors" sendEventOnClick="themebtn.clicked"
+								role="button" aria-label="Select Theme" aria-pressed="false">
 							</ch5-button>
 						</div>
 						<div class="info-widget">
@@ -53,7 +57,7 @@
 
 <!-- Template Widget -->
 <ch5-import-htmlsnippet id="template-logs-import-page"
-url="./app/template/components/widgets/template-logs/template-logs.html">
+	url="./app/template/components/widgets/template-logs/template-logs.html">
 </ch5-import-htmlsnippet>
 <ch5-import-htmlsnippet id="template-set-theme-import-page"
 	url="./app/template/components/widgets/template-set-theme/template-set-theme.html">
@@ -77,8 +81,8 @@ url="./app/template/components/widgets/template-logs/template-logs.html">
 		<div class="vertical-menu">
 			<div class="vertical-menu-cols">
 				<div class="nav-panel col-auto height-for-list-menu">
-					<ch5-list id="vertical-menu-swiper-thumb" class="swiper-thumb" orientation="vertical" itemHeight="50px"
-						maxHeight="auto" indexId="idx" itemWidth="100%">
+					<ch5-list id="vertical-menu-swiper-thumb" class="swiper-thumb" orientation="vertical"
+						itemHeight="50px" maxHeight="auto" indexId="idx" itemWidth="100%">
 						<template>
 							<div class="vertical-list-item">
 								<ch5-button id="menu-list-id-{{idx}}" type="text" shape="rectangle" hAlignLabel="left"
@@ -109,8 +113,8 @@ url="./app/template/components/widgets/template-logs/template-logs.html">
 
 <!-- footer -->
 <div class="horizontal-footer-menu" id="template-content-index-footer">
-	<ch5-list id="horizontal-menu-swiper-thumb" receiveStateScrollTo="scrollToMenu" scrollbar="false" class="swiper-thumb"
-		orientation="horizontal" maxHeight="auto" indexId="idx" itemHeight="100%">
+	<ch5-list id="horizontal-menu-swiper-thumb" receiveStateScrollTo="scrollToMenu" scrollbar="false"
+		class="swiper-thumb" orientation="horizontal" maxHeight="auto" indexId="idx" itemHeight="100%">
 		<template>
 			<div class="horizontal-list-item">
 				<ch5-button id="menu-list-id-{{idx}}" type="text" shape="rectangle" stretch="both"
@@ -136,3 +140,9 @@ url="./app/template/components/widgets/template-logs/template-logs.html">
 <template id="footer-section-page-template2">
 	<ch5-import-htmlsnippet id="template-footer" url="{{customFooterUrl}}"></ch5-import-htmlsnippet>
 </template>
+<div class="alertOverlay" id="alertOverlayId">
+	<div class="alertPopup">
+		<p>Invalid Authentication Token!</p>
+		<ch5-button sendEventOnClick="alertPopup.clicked" label="OK"></ch5-button>
+	</div>
+</div>

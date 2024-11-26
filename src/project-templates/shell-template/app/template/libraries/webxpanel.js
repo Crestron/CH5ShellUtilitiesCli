@@ -32,6 +32,8 @@ var webXPanelModule = (function () {
   const pcConfig = config;
   const urlConfig = config;
   let connectParams = config;
+  let inavalidAuthToken = false;
+  let alertPopUpShown = false;
 
   /**
    * Set status bar current state - hidden being default
@@ -170,6 +172,10 @@ var webXPanelModule = (function () {
   function updateInfoStatus(statusMessageKey) {
     let statusMsgPrefix = translateModule.translateInstant("app.webxpanel.statusmessageprefix");
     let statusMessage = translateModule.translateInstant(statusMessageKey);
+    if (statusMessage === 'DISCONNECTED' && urlConfig.authToken && !alertPopUpShown) {
+      alertPopUpShown = true;
+      inavalidAuthToken = true;
+    }
     if (statusMessage) {
       const status = document.querySelector('#webxpanel-tab-content .connection .status');
       if (status !== null) {
@@ -267,13 +273,18 @@ var webXPanelModule = (function () {
     WebXPanel = { ...Panel, default: Panel.WebXPanel };
   }
 
+  function isAuthTokenValid() {
+    return inavalidAuthToken;
+  }
+
   /**
    * All public method and properties exporting here
    */
   return {
     connect,
     getWebXPanel,
-    paramsToObject
+    paramsToObject,
+    isAuthTokenValid
   };
 
 })();
