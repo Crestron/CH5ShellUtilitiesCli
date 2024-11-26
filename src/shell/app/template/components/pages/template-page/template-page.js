@@ -150,14 +150,6 @@ const templatePageModule = (() => {
 	 * Load the emulator, theme, default language and listeners
 	 */
 	let loadedSubId = CrComLib.subscribeState('o', 'ch5-import-htmlsnippet:template-page-import-page', (value) => {
-		setTimeout(() => {
-			CrComLib.subscribeState('b', 'alertPopup.clicked', (value) => {
-				if (value.repeatdigital === true) {
-					document.getElementById('alertOverlayId').style.display = 'none';
-				}
-			});
-		})
-
 		if (value['loaded']) {
 			triggerview = document.querySelector(".triggerview");
 			horizontalMenuSwiperThumb = document.getElementById("horizontal-menu-swiper-thumb");
@@ -522,7 +514,7 @@ const templatePageModule = (() => {
 						setTimeout(() => {
 							document.getElementById("loader").style.display = "none";
 							if (webXPanelModule.isAuthTokenValid()) {
-								document.getElementById('alertOverlayId').style.display = 'block';
+								document.getElementById('authtoken-alert').setAttribute('show', 'true');
 							}
 						}, 2000);
 					}, 1000);

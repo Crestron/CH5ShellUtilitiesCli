@@ -66,6 +66,10 @@
 	url="./app/template/components/widgets/template-version-info/template-version-info.html">
 </ch5-import-htmlsnippet>
 
+<ch5-import-htmlsnippet id="template-authtoken-alert-page"
+	url="./app/template/components/widgets/template-authtoken-alert/template-authtoken-alert.html">
+</ch5-import-htmlsnippet>
+
 <!-- Content -->
 <div id="content-index-page">
 	<ch5-background id="template-content-background"></ch5-background>
@@ -140,9 +144,3 @@
 <template id="footer-section-page-template2">
 	<ch5-import-htmlsnippet id="template-footer" url="{{customFooterUrl}}"></ch5-import-htmlsnippet>
 </template>
-<div class="alertOverlay" id="alertOverlayId">
-	<div class="alertPopup">
-		<p>Invalid Authentication Token!</p>
-		<ch5-button sendEventOnClick="alertPopup.clicked" label="OK"></ch5-button>
-	</div>
-</div>
