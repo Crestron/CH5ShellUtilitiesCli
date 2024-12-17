@@ -32,7 +32,7 @@ var webXPanelModule = (function () {
   const pcConfig = config;
   const urlConfig = config;
   let connectParams = config;
-  let inavalidAuthToken = false;
+  let invalidAuthToken = false;
   let alertPopUpShown = false;
 
   /**
@@ -174,7 +174,7 @@ var webXPanelModule = (function () {
     let statusMessage = translateModule.translateInstant(statusMessageKey);
     if (statusMessage === 'DISCONNECTED' && urlConfig.authToken && !alertPopUpShown) {
       alertPopUpShown = true;
-      inavalidAuthToken = true;
+      invalidAuthToken = true;
     }
     if (statusMessage) {
       const status = document.querySelector('#webxpanel-tab-content .connection .status');
@@ -274,7 +274,7 @@ var webXPanelModule = (function () {
   }
 
   function isAuthTokenValid() {
-    return inavalidAuthToken;
+    return invalidAuthToken;
   }
 
   /**
