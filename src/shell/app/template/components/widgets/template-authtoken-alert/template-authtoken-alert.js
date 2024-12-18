@@ -10,6 +10,14 @@
 const templateAuthtokenAlertModule = (() => {
 	'use strict';
 
+	// Handle the escape key 
+	document.addEventListener("keydown", function (event) {
+		let alertFlag = document.getElementById('authtoken-alert').getAttribute('show');
+		if (event.key === 'Escape' && alertFlag) {
+			event.stopPropagation();
+		}
+	});
+
 	/**
 	 * private method for page class initialization
 	 */
