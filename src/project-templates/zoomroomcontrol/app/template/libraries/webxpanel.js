@@ -16,7 +16,8 @@ var webXPanelModule = (function () {
     "roomId": "",
     "ipId": "0x03",
     "tokenSource": "",
-    "tokenUrl": ""
+    "tokenUrl": "",
+    "authToken": ""
   };
 
   const RENDER_STATUS = {
@@ -31,6 +32,8 @@ var webXPanelModule = (function () {
   const pcConfig = config;
   const urlConfig = config;
   let connectParams = config;
+  let invalidAuthToken = false;
+  let alertPopUpShown = false;
 
   /**
    * Set status bar current state - hidden being default
@@ -88,6 +91,7 @@ var webXPanelModule = (function () {
     urlConfig.ipId = entries["ipid"] || pcConfig.ipId;
     urlConfig.tokenSource = entries["tokensource"] || pcConfig.tokenSource;
     urlConfig.tokenUrl = entries["tokenurl"] || pcConfig.tokenUrl;
+    urlConfig.authToken = entries["authtoken"];
   }
 
   /**
@@ -168,6 +172,10 @@ var webXPanelModule = (function () {
   function updateInfoStatus(statusMessageKey) {
     let statusMsgPrefix = translateModule.translateInstant("app.webxpanel.statusmessageprefix");
     let statusMessage = translateModule.translateInstant(statusMessageKey);
+    if (statusMessage === 'DISCONNECTED' && urlConfig.authToken && !alertPopUpShown) {
+      alertPopUpShown = true;
+      invalidAuthToken = true;
+    }
     if (statusMessage) {
       const status = document.querySelector('#webxpanel-tab-content .connection .status');
       if (status !== null) {
@@ -273,13 +281,18 @@ var webXPanelModule = (function () {
     WebXPanel = { ...Panel, default: Panel.WebXPanel };
   }
 
+  function isAuthTokenValid() {
+    return invalidAuthToken;
+  }
+
   /**
    * All public method and properties exporting here
    */
   return {
     connect,
     getWebXPanel,
-    paramsToObject
+    paramsToObject,
+    isAuthTokenValid
   };
 
 })();
