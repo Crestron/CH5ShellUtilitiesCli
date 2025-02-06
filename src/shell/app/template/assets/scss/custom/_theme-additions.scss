@@ -52,14 +52,16 @@
     background-color: #cacaca;
 
     .list-item {
-      ch5-button .ch5-button {
-        background-color: #eeeeee;
-        color: #121212;
-        fill: #121212;
-      }
-
-      .ch5-button--img {
-        fill: #121212;
+      ch5-button {
+        --ch5-button--text-label-font-color: #121212;
+        --ch5-button--text-pressed-label-font-color: #121212;
+        --ch5-button--text-selected-label-font-color: #121212;
+        --ch5-button--text-icon-color: #121212;
+        --ch5-button--text-pressed-icon-color: #121212;
+        --ch5-button--text-selected-icon-color: #121212;
+        --ch5-button--text-background-color: #eeeeee;
+        --ch5-button--text-pressed-background-color: #eeeeee;
+        --ch5-button--text-selected-background-color: #eeeeee;
       }
     }
   }
@@ -73,12 +75,12 @@
     .swiper-thumb {
       .list-item {
         ch5-button {
-          .ch5-button {
-            color: $black;
-          }
-        }
-        .ch5-button--img {
-          fill: $black;
+          --ch5-button--text-label-font-color: #{$black};
+          --ch5-button--text-pressed-label-font-color: #{$black};
+          --ch5-button--text-selected-label-font-color: #{$black};
+          --ch5-button--text-icon-color: #{$black};
+          --ch5-button--text-pressed-icon-color: #{$black};
+          --ch5-button--text-selected-icon-color: #{$black};
         }
       }
     }
@@ -88,12 +90,12 @@
     .swiper-thumb {
       .list-item {
         ch5-button {
-          .ch5-button {
-            color: $black;
-          }
-        }
-        .ch5-button--img {
-          fill: $black;
+          --ch5-button--text-label-font-color: #{$black};
+          --ch5-button--text-pressed-label-font-color: #{$black};
+          --ch5-button--text-selected-label-font-color: #{$black};
+          --ch5-button--text-icon-color: #{$black};
+          --ch5-button--text-pressed-icon-color: #{$black};
+          --ch5-button--text-selected-icon-color: #{$black};
         }
       }
     }
@@ -154,8 +156,12 @@
   .swiper-thumb {
     background-color: #000;
 
-    .list-item ch5-button .ch5-button {
-      background-color: darken(#959595, 10%);
+    .list-item {
+      ch5-button {
+        --ch5-button--text-background-color: darken(#959595, 10%);
+        --ch5-button--text-selected-background-color: darken(#959595, 10%);
+        --ch5-button--text-pressed-background-color: darken(#959595, 10%);
+      }
     }
   }
 
@@ -168,12 +174,12 @@
     .swiper-thumb {
       .list-item {
         ch5-button {
-          .ch5-button {
-            color: $white;
-          }
-        }
-        .ch5-button--img {
-          fill: $white;
+          --ch5-button--text-label-font-color: #{$white};
+          --ch5-button--text-pressed-label-font-color: #{$white};
+          --ch5-button--text-selected-label-font-color: #{$white};
+          --ch5-button--text-icon-color: #{$white};
+          --ch5-button--text-pressed-icon-color: #{$white};
+          --ch5-button--text-selected-icon-color: #{$white};
         }
       }
     }
@@ -183,12 +189,12 @@
     .swiper-thumb {
       .list-item {
         ch5-button {
-          .ch5-button {
-            color: $white;
-          }
-        }
-        .ch5-button--img {
-          fill: $white;
+          --ch5-button--text-label-font-color: #{$white};
+          --ch5-button--text-pressed-label-font-color: #{$white};
+          --ch5-button--text-selected-label-font-color: #{$white};
+          --ch5-button--text-icon-color: #{$white};
+          --ch5-button--text-pressed-icon-color: #{$white};
+          --ch5-button--text-selected-icon-color: #{$white};
         }
       }
     }
