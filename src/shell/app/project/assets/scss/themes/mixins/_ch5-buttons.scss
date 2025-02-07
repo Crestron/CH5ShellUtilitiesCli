@@ -15,7 +15,9 @@
    &.ch5-button--selected {
      background-color: $pressed-bg;
    }
-
+   .ch5-button--label, .cb-icon {
+    color: #fff;
+   }
    &.ch5-button--disabled {
      opacity: 0.5;
      cursor: default;
@@ -28,6 +30,10 @@
    background-image: none;
    border-color: $color;
    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
+
+   .ch5-button--label, .cb-icon {
+    color: $color;
+   }
 
    &.ch5-button--pressed,
    &.ch5-button--selected {
@@ -42,6 +48,9 @@
    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
    border: 0.25px solid $border-color;
 
+   .ch5-button--label, .cb-icon {
+    color: $color;
+   }
    &.ch5-button--pressed,
    &.ch5-button--selected {
      background-color: $start-color;

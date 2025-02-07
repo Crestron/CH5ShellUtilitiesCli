@@ -227,17 +227,20 @@ $ch5-dark-gradient-buttons: map-merge(
     .swiper-thumb {
       .list-item {
         ch5-button {
+          --ch5-button--text-label-font-color: #{$white};
+          --ch5-button--text-pressed-label-font-color: #{$white};
+          --ch5-button--text-selected-label-font-color: #{$white};
+          --ch5-button--text-icon-color: #{$white};
+          --ch5-button--text-pressed-icon-color: #{$white};
+          --ch5-button--text-selected-icon-color: #{$white};
           .fas,
           .fa {
             font-size: 55px;
           }
-          .ch5-button {
-            color: $white;
-          }
         }
-        .ch5-button--img {
-          fill: $white;
-        }
+        // .ch5-button--img {
+        //   fill: $white;
+        // }
       }
     }
   }
