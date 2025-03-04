@@ -52,14 +52,19 @@
     background-color: #cacaca;
 
     .list-item {
-      ch5-button .ch5-button {
-        background-color: #eeeeee;
-        color: #121212;
-        fill: #121212;
-      }
-
-      .ch5-button--img {
-        fill: #121212;
+      ch5-button {
+        --ch5-button--text-label-font-color: #121212;
+        --ch5-button--text-pressed-label-font-color: #121212;
+        --ch5-button--text-selected-label-font-color: #121212;
+        --ch5-button--text-icon-color: #121212;
+        --ch5-button--text-pressed-icon-color: #121212;
+        --ch5-button--text-selected-icon-color: #121212;
+        --ch5-button--text-background-color: #eeeeee;
+        --ch5-button--text-pressed-background-color: #eeeeee;
+        --ch5-button--text-selected-background-color: #eeeeee;
+        --ch5-button--text-border-width: 0;
+        --ch5-button--text-selected-border-width: 0;
+        --ch5-button--text-pressed-border-width: 0;
       }
     }
   }
@@ -73,12 +78,15 @@
     .swiper-thumb {
       .list-item {
         ch5-button {
-          .ch5-button {
-            color: $black;
-          }
-        }
-        .ch5-button--img {
-          fill: $black;
+          --ch5-button--text-label-font-color: #{$black};
+          --ch5-button--text-pressed-label-font-color: #{$black};
+          --ch5-button--text-selected-label-font-color: #{$black};
+          --ch5-button--text-icon-color: #{$black};
+          --ch5-button--text-pressed-icon-color: #{$black};
+          --ch5-button--text-selected-icon-color: #{$black};
+          --ch5-button--text-border-width: 0;
+          --ch5-button--text-selected-border-width: 0;
+          --ch5-button--text-pressed-border-width: 0;
         }
       }
     }
@@ -88,12 +96,15 @@
     .swiper-thumb {
       .list-item {
         ch5-button {
-          .ch5-button {
-            color: $black;
-          }
-        }
-        .ch5-button--img {
-          fill: $black;
+          --ch5-button--text-label-font-color: #{$black};
+          --ch5-button--text-pressed-label-font-color: #{$black};
+          --ch5-button--text-selected-label-font-color: #{$black};
+          --ch5-button--text-icon-color: #{$black};
+          --ch5-button--text-pressed-icon-color: #{$black};
+          --ch5-button--text-selected-icon-color: #{$black};
+          --ch5-button--text-border-width: 0;
+          --ch5-button--text-selected-border-width: 0;
+          --ch5-button--text-pressed-border-width: 0;
         }
       }
     }
@@ -155,8 +166,13 @@
   .swiper-thumb {
     background-color: #000;
 
-    .list-item ch5-button .ch5-button {
-      background-color: darken(#959595, 10%);
+    .list-item ch5-button {
+      --ch5-button--text-background-color: rgb(123.5, 123.5, 123.5);
+      --ch5-button--text-selected-background-color: rgb(123.5, 123.5, 123.5);
+      --ch5-button--text-pressed-background-color: rgb(123.5, 123.5, 123.5);
+      --ch5-button--text-border-width: 0;
+      --ch5-button--text-selected-border-width: 0;
+      --ch5-button--text-pressed-border-width: 0;
     }
   }
 
@@ -169,12 +185,15 @@
     .swiper-thumb {
       .list-item {
         ch5-button {
-          .ch5-button {
-            color: $white;
-          }
-        }
-        .ch5-button--img {
-          fill: $white;
+          --ch5-button--text-label-font-color: #{$white};
+          --ch5-button--text-pressed-label-font-color: #{$white};
+          --ch5-button--text-selected-label-font-color: #{$white};
+          --ch5-button--text-icon-color: #{$white};
+          --ch5-button--text-pressed-icon-color: #{$white};
+          --ch5-button--text-selected-icon-color: #{$white};
+          --ch5-button--text-border-width: 0;
+          --ch5-button--text-selected-border-width: 0;
+          --ch5-button--text-pressed-border-width: 0;
         }
       }
     }
@@ -184,12 +203,15 @@
     .swiper-thumb {
       .list-item {
         ch5-button {
-          .ch5-button {
-            color: $white;
-          }
-        }
-        .ch5-button--img {
-          fill: $white;
+          --ch5-button--text-label-font-color: #{$white};
+          --ch5-button--text-pressed-label-font-color: #{$white};
+          --ch5-button--text-selected-label-font-color: #{$white};
+          --ch5-button--text-icon-color: #{$white};
+          --ch5-button--text-pressed-icon-color: #{$white};
+          --ch5-button--text-selected-icon-color: #{$white};
+          --ch5-button--text-border-width: 0;
+          --ch5-button--text-selected-border-width: 0;
+          --ch5-button--text-pressed-border-width: 0;
         }
       }
     }
@@ -270,7 +292,6 @@
           background-color: rgba(80, 80, 80, 0.8);
         }
       }
-
     }
 
     .ch5-button {
@@ -288,7 +309,7 @@
     }
   }
 
-   #template-remote-logger-settings-page {
+  #template-remote-logger-settings-page {
     div.ch5-modal-dialog {
       border: 1px solid $color-darkgrey;
       color: $color-white;
@@ -344,27 +365,26 @@
     }
   }
 
-  .info-widget,
-  .theme-widget {
-    .ch5-button.ch5-button--circle.ch5-button--size-small {
-      border: none;
-      color: white;
-      height: 36px;
-      width: 36px;
-      box-shadow: none;
-      cursor: pointer;
+  // .info-widget,
+  // .theme-widget {
+  //   .ch5-button.ch5-button--circle.ch5-button--size-small {
+  //     border: none;
+  //     color: white;
+  //     height: 36px;
+  //     width: 36px;
+  //     box-shadow: none;
+  //     cursor: pointer;
 
+  //     .cb-btn {
+  //       width: 36px;
+  //       height: 36px;
+  //       padding: 0;
+  //     }
 
-      .cb-btn {
-        width: 36px;
-        height: 36px;
-        padding: 0;
-      }
-
-      i {
-        font-size: 32px;
-        padding: 0;
-      }
-    }
-  }
+  //     i {
+  //       font-size: 32px;
+  //       padding: 0;
+  //     }
+  //   }
+  // }
 }
