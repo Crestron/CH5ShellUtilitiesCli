@@ -93,6 +93,10 @@
     },
     "theme": {
       "title": "Select Theme"
+    },
+    "authToken": {
+      "title": "Invalid Authentication Token!",
+      "error": "Error"
     }
   },
   "footer": {
