@@ -501,11 +501,15 @@
       "description": "The configuration information of custom signals of the shell template",
       "default": {
         "receiveStateTheme": "templateTheme",
-        "sendEventTheme": "templateTheme"
+        "sendEventTheme": "templateTheme",
+        "receiveStateLanguage": "templateLanguage",
+        "sendEventLanguage": "templateLanguage"
       },
       "required": [
         "receiveStateTheme",
-        "sendEventTheme"
+        "sendEventTheme",
+        "receiveStateLanguage",
+        "sendEventLanguage"
       ],
       "properties": {
         "receiveStateTheme": {
@@ -521,6 +525,20 @@
           "type": "string",
           "description": "join to send a string theme name to the control system.",
           "title": "sendEventTheme"
+        },
+        "receiveStateLanguage": {
+          "$id": "#/properties/customSignals/properties/receiveStateLanguage",
+          "default": "templateLanguage",
+          "type": "string",
+          "description": "join to receive and select a string language name from the control system.",
+          "title": "receiveStateLanguage"
+        },
+        "sendEventLanguage": {
+          "$id": "#/properties/customSignals/properties/sendEventLanguage",
+          "default": "templateLanguage",
+          "type": "string",
+          "description": "join to send a string language name to the control system.",
+          "title": "sendEventLanguage"
         }
       },
       "additionalProperties": false
