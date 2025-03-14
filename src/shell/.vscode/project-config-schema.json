@@ -507,7 +507,8 @@
       "required": [
         "receiveStateTheme",
         "sendEventTheme",
-        "receiveStateLanguage"
+        "receiveStateLanguage",
+        "sendEventLanguage"
       ],
       "properties": {
         "receiveStateTheme": {
@@ -529,7 +530,14 @@
           "default": "templateLanguage",
           "type": "string",
           "description": "join to receive and select a string language name from the control system.",
-          "title": "receiveStateTheme"
+          "title": "receiveStateLanguage"
+        },
+        "sendEventLanguage": {
+          "$id": "#/properties/customSignals/properties/sendEventLanguage",
+          "default": "templateLanguage",
+          "type": "string",
+          "description": "join to send a string language name to the control system.",
+          "title": "sendEventLanguage"
         }
       },
       "additionalProperties": false

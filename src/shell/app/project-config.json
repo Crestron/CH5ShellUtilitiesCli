@@ -85,7 +85,8 @@
   "customSignals": {
     "receiveStateTheme": "templateTheme",
     "sendEventTheme": "templateTheme",
-    "receiveStateLanguage": "templateLanguage"
+    "receiveStateLanguage": "templateLanguage",
+    "sendEventLanguage": "templateLanguage"
   },
   "header": {
     "display": true,

@@ -52,6 +52,8 @@ const translateModule = (() => {
     return new Promise((resolve, reject) => {
       projectConfigModule.projectConfigData().then((projectConfigResponse) => {
         const receiveStateLanguage = projectConfigResponse.customSignals.receiveStateLanguage || "template-language";
+        const sendEventLanguage = projectConfigResponse.customSignals.sendEventLanguage || "template-language";
+
         CrComLib.subscribeState("s", receiveStateLanguage, (value) => {
           if(value) {
             getLanguage(value);
@@ -59,7 +61,10 @@ const translateModule = (() => {
               setLanguage(value);
             } else {
               setLanguage(defaultLng);
-            }                   
+            }
+            if (receiveStateLanguage !== sendEventLanguage && sendEventLanguage?.trim()) {
+              CrComLib.publishEvent('s', sendEventLanguage, value);
+            }          
             resolve(); 
           } else {
             if (!langData[defaultLng]) {
