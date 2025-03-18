@@ -17,85 +17,97 @@ const translateModule = (() => {
   let defaultLng = "en";
   let languageTimer;
   let setLng = "en";
+  let firstLoad = false;
 
   /**
    * This is public method to fetch language data(JSON).
    * @param {string} lng is language code string like en, fr etc...
    */
   function getLanguage(lng) {
-    if (!langData[lng]) {
-      let output = {};
-      loadJSON("./app/template/assets/data/translation/", lng).then((responseTemplate) => {
-        output = utilsModule.mergeJSON(output, responseTemplate);
-        loadJSON("./app/project/assets/data/translation/", lng).then((responseProject) => {
-          output = utilsModule.mergeJSON(output, responseProject);
-          langData[lng] = {
-            translation: output,
-          };
-          setLanguage(lng);
-        });
-      }).catch((error) => {
-        loadJSON("./app/project/assets/data/translation/", lng).then((responseProject) => {
-          output = utilsModule.mergeJSON(output, responseProject);
-          langData[lng] = {
-            translation: output,
-          };
-          setLanguage(lng);
-        });
-      });
-    } else {
-      setLanguage(lng);
-    }
+    return new Promise((resolve, reject) => {
+      if (!langData[lng]) {
+        let output = {};
+        loadJSON("./app/template/assets/data/translation/", lng).then((responseTemplate) => {
+          output = utilsModule.mergeJSON(output, responseTemplate);
+          loadJSON("./app/project/assets/data/translation/", lng).then((responseProject) => {
+            output = utilsModule.mergeJSON(output, responseProject);
+            langData[lng] = {
+              translation: output,
+            };
+            setLanguage(lng);
+            resolve();
+          });
+        }).catch((error) => {
+          loadJSON("./app/project/assets/data/translation/", lng).then((responseProject) => {
+            output = utilsModule.mergeJSON(output, responseProject);
+            langData[lng] = {
+              translation: output,
+            };
+            setLanguage(lng);
+            resolve();
+          })
+        });              
+      } else {
+        setLanguage(lng);
+        resolve();
+      }
+    });
   }
 
-  function initializeDefaultLanguage() {
-    return new Promise((resolve, reject) => {
-      projectConfigModule.projectConfigData().then((projectConfigResponse) => {
-        const receiveStateLanguage = projectConfigResponse.customSignals.receiveStateLanguage || "template-language";
-        const sendEventLanguage = projectConfigResponse.customSignals.sendEventLanguage || "template-language";
-
-        CrComLib.subscribeState("s", receiveStateLanguage, (value) => {
-          if(value) {
-            getLanguage(value);
-            if(langData[value]) {
+  function checkLangSubscription() {
+    firstLoad = true;
+    projectConfigModule.projectConfigData().then((projectConfigResponse) => {
+      const receiveStateLanguage = projectConfigResponse.customSignals.receiveStateLanguage || "template-language";
+      const sendEventLanguage = projectConfigResponse.customSignals.sendEventLanguage || "template-language";
+      CrComLib.subscribeState("s", receiveStateLanguage, (value) => {
+        if (value) {
+          getLanguage(value).then(() => {
+            if (langData[value]) {
               setLanguage(value);
             } else {
               setLanguage(defaultLng);
             }
             if (receiveStateLanguage !== sendEventLanguage && sendEventLanguage?.trim()) {
               CrComLib.publishEvent('s', sendEventLanguage, value);
-            }          
-            resolve(); 
-          } else {
-            if (!langData[defaultLng]) {
-              let output = {};
-              loadJSON("./app/template/assets/data/translation/", defaultLng).then((responseTemplate) => {
-                output = utilsModule.mergeJSON(output, responseTemplate);
-                loadJSON("./app/project/assets/data/translation/", defaultLng).then((responseProject) => {
-                  output = utilsModule.mergeJSON(output, responseProject);
-                  langData[defaultLng] = {
-                    translation: output,
-                  };
-                  setLanguage(defaultLng);
-                  resolve();
-                });
-              }).catch((error) => {
-                loadJSON("./app/project/assets/data/translation/", defaultLng).then((responseProject) => {
-                  output = utilsModule.mergeJSON(output, responseProject);
-                  langData[defaultLng] = {
-                    translation: output,
-                  };
-                  setLanguage(defaultLng);
-                  resolve();
-                });
-              });
-            } else {
-              setLanguage(defaultLng);
-              resolve();
             }
-          }          
-        });
+          })      
+        }
       })
+    })
+  }
+
+
+  function initializeDefaultLanguage() {
+    return new Promise((resolve, reject) => {
+      if (!firstLoad) {
+        checkLangSubscription();
+      }
+      if (!langData[defaultLng]) {
+        let output = {};
+        loadJSON("./app/template/assets/data/translation/", defaultLng).then((responseTemplate) => {
+          output = utilsModule.mergeJSON(output, responseTemplate);
+          loadJSON("./app/project/assets/data/translation/", defaultLng).then((responseProject) => {
+            output = utilsModule.mergeJSON(output, responseProject);
+            langData[defaultLng] = {
+              translation: output,
+            };
+            setLanguage(defaultLng);
+            resolve();
+          });
+        }).catch((error) => {
+          loadJSON("./app/project/assets/data/translation/", defaultLng).then((responseProject) => {
+            output = utilsModule.mergeJSON(output, responseProject);
+            langData[defaultLng] = {
+              translation: output,
+            };
+            setLanguage(defaultLng);
+            resolve();
+          });
+        });
+      } else {
+        setLanguage(defaultLng);
+        resolve();
+      }
     });
   }
 

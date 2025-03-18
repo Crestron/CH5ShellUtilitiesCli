@@ -16,6 +16,7 @@ const projectConfigModule = (() => {
 		return new Promise((resolve, reject) => {
 			serviceModule.loadJSON("./assets/data/project-config.json", (dataResponse) => {
 				projectConfigJson = JSON.parse(dataResponse);
+				CrComLib.publishEvent("o", "shell-project-config", projectConfigJson);
 				resolve(projectConfigJson);
 			}, error => {
 				reject(error);
