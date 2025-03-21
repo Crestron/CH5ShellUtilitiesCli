@@ -115,7 +115,9 @@ export class Ch5UpgradeProjectCli extends Ch5BaseClassForCliUpgrade implements I
 		}
 		const customSignalDefaultValue = {
 			receiveStateTheme: "templateTheme",
-			sendEventTheme: "templateTheme"
+			sendEventTheme: "templateTheme",
+			receiveStateLanguage: "templateLanguage",
+			sendEventLanguage: "templateLanguage"
 		}
 		if (!jsonProjectConfig.customSignals) {
 			this.cliProjectConfig.saveOverrideAttributeToJSON("customSignals", customSignalDefaultValue);

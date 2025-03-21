@@ -49,3 +49,8 @@ Run `npm run build:onestep` to build, archive and deploy the project in one step
 
 To change the template theme from join, the join name can be configured on app/project-config.json using the receiveStateTheme and sendEventTheme properties in customSignals.
 Initially the join for sendEvent and receiveState have been set to `templateTheme`.
+
+## Language Change
+
+To change the language from join, the join name can be configured on app/project-config.json using the receiveStateLanguage and sendEventLanguage properties in customSignals.
+Initially the join for sendEvent and receiveState have been set to `templateLanguage`.
