@@ -8,104 +8,93 @@
 
 const translateModule = (() => {
   'use strict';
+
   /**
    * All public and local properties
    */
-  let langData = [];
-  let crComLibTranslator = CrComLib.translationFactory.translator;
-  let currentLng = document.getElementById("currentLng");
-  let defaultLng = "en";
-  let languageTimer;
-  let setLng = "en";
-  let firstLoad = false;
+  const langData = [];
+  const crComLibTranslator = CrComLib.translationFactory.translator;
+  const DEFAULT_LANGUAGE = "en";
+  let currentLanguage = "en";
+  let languageToSet = "";
+  let isTranslationLoaded = false;
 
   /**
    * This is public method to fetch language data(JSON).
    * @param {string} lng is language code string like en, fr etc...
    */
+
   function getLanguage(lng) {
     return new Promise((resolve, reject) => {
-      if (!langData[lng]) {
-        let output = {};
-        loadJSON("./app/template/assets/data/translation/", lng).then((responseTemplate) => {
-          output = utilsModule.mergeJSON(output, responseTemplate);
-          loadJSON("./app/project/assets/data/translation/", lng).then((responseProject) => {
-            output = utilsModule.mergeJSON(output, responseProject);
-            langData[lng] = {
-              translation: output,
-            };
-            setLanguage(lng);
-            resolve();
-          });
-        }).catch((error) => {
-          loadJSON("./app/project/assets/data/translation/", lng).then((responseProject) => {
-            output = utilsModule.mergeJSON(output, responseProject);
-            langData[lng] = {
-              translation: output,
-            };
-            setLanguage(lng);
-            resolve();
-          })
-        });
-      } else {
-        setLanguage(lng);
+      if (langData[lng]) {
+        console.log("Exists", langData[lng]);
         resolve();
+      } else {
+        let output = {};
+        loadJSON("./app/project/assets/data/translation/", lng).then((responseProject) => {
+          output = utilsModule.mergeJSON(output, responseProject);
+          loadJSON("./app/template/assets/data/translation/", lng).then((responseTemplate) => {
+            output = utilsModule.mergeJSON(output, responseTemplate);
+            langData[lng] = {
+              translation: output,
+            };
+            resolve();
+          }).catch(() => {
+            loadJSON("./app/template/assets/data/translation/", DEFAULT_LANGUAGE).then((responseTemplate) => {
+              output = utilsModule.mergeJSON(output, responseTemplate);
+              langData[lng] = {
+                translation: output,
+              };
+              resolve();
+            }).catch(() => {
+              output = utilsModule.mergeJSON(output, responseTemplate);
+              langData[lng] = {
+                translation: output,
+              };
+              resolve();
+            });
+          });
+        }).catch(() => {
+          // No project json exists
+          loadJSON("./app/template/assets/data/translation/", lng).then((responseTemplate) => {
+            output = utilsModule.mergeJSON(output, responseTemplate);
+            langData[lng] = {
+              translation: output,
+            };
+            resolve();
+          }).catch(() => {
+            loadJSON("./app/template/assets/data/translation/", DEFAULT_LANGUAGE).then((responseTemplate) => {
+              output = utilsModule.mergeJSON(output, responseTemplate);
+              langData[lng] = {
+                translation: output,
+              };
+              resolve();
+            }).catch(() => {
+              reject("Missing template files");
+            });
+          });
+        });
       }
     });
   }
 
-  function checkLangSubscription() {
-    firstLoad = true;
-    projectConfigModule.projectConfigData().then((projectConfigResponse) => {
-      const receiveStateLanguage = projectConfigResponse.customSignals.receiveStateLanguage || "template-language";
-      const sendEventLanguage = projectConfigResponse.customSignals.sendEventLanguage || "template-language";
-      CrComLib.subscribeState("s", receiveStateLanguage, (value) => {
-        if (value) {
-          getLanguage(value).then(() => {
-            if (langData[value]) {
-              setLanguage(value);
-            } else {
-              setLanguage(defaultLng);
-            }
-            if (receiveStateLanguage !== sendEventLanguage && sendEventLanguage?.trim()) {
-              CrComLib.publishEvent('s', sendEventLanguage, value);
-            }
-          })
-        }
-      })
-    })
-  }
-
-
   function initializeDefaultLanguage() {
-    return new Promise((resolve, reject) => {
-      if (!firstLoad) {
-        checkLangSubscription();
-      }
-      if (!langData[defaultLng]) {
-        let output = {};
-        loadJSON("./app/template/assets/data/translation/", defaultLng).then((responseTemplate) => {
-          output = utilsModule.mergeJSON(output, responseTemplate);
-          loadJSON("./app/project/assets/data/translation/", defaultLng).then((responseProject) => {
-            output = utilsModule.mergeJSON(output, responseProject);
-            langData[defaultLng] = {
-              translation: output,
-            };
-            setLanguage(defaultLng);
-            resolve();
-          });
-        }).catch((error) => {
-          loadJSON("./app/project/assets/data/translation/", defaultLng).then((responseProject) => {
-            output = utilsModule.mergeJSON(output, responseProject);
-            langData[defaultLng] = {
-              translation: output,
-            };
-            setLanguage(defaultLng);
-            resolve();
+    return new Promise((resolve) => {
+      if (!isTranslationLoaded) {
+        projectConfigModule.projectConfigData().then((projectConfigResponse) => {
+          const receiveStateLanguage = projectConfigResponse.customSignals.receiveStateLanguage || "template-language";
+          const sendEventLanguage = projectConfigResponse.customSignals.sendEventLanguage || "template-language";
+          CrComLib.subscribeState("s", receiveStateLanguage, (value) => {
+            if (!(value && value !== "")) {
+              value = DEFAULT_LANGUAGE;
+            }
+            setLanguage(value, receiveStateLanguage, sendEventLanguage).then(() => {
+              isTranslationLoaded = true;
+              resolve();
+            });
           });
         });
       } else {
-        setLanguage(defaultLng);
         resolve();
       }
     });
@@ -126,15 +115,37 @@ const translateModule = (() => {
 
   function loadJSON(path, lng) {
     return new Promise((resolve, reject) => {
-      serviceModule.loadJSON(path + lng + ".json", (response) => {
-        if (response) {
+      const url = path + lng + ".json";
+      promisifyLoadJSON(url)
+        .then((response) => {
           resolve(JSON.parse(response));
+        }).catch(() => {
+          reject("No File Found");
+        });
+    });
+  }
+
+  function promisifyLoadJSON(url) {
+    return new Promise(function (resolve, reject) {
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", url);
+      xhr.onload = function () {
+        if (xhr.status >= 200 && xhr.status < 300) {
+          resolve(xhr.response);
         } else {
-          reject("FILE NOT FOUND");
+          reject({
+            status: xhr.status,
+            statusText: xhr.statusText
+          });
         }
-      }, error => {
-        reject("FILE NOT FOUND");
-      });
+      };
+      xhr.onerror = function () {
+        reject({
+          status: xhr.status,
+          statusText: xhr.statusText
+        });
+      };
+      xhr.send();
     });
   }
 
@@ -142,19 +153,31 @@ const translateModule = (() => {
    * Set the language
    * @param {string} lng
    */
-  function setLanguage(lng) {
-    // update selected language
-    crComLibTranslator.changeLanguage(lng);
-    setLng = lng;
-    let responseArrayForNavPages = projectConfigModule.getNavigationPages();
-    for (let i = 0; i < responseArrayForNavPages.length; i++) {
-      const menu = document.getElementById("menu-list-id-" + i);
-      if (responseArrayForNavPages[i].navigation.isI18nLabel === true) {
-        menu.setAttribute("label", translateModule.translateInstant(responseArrayForNavPages[i].navigation.label));
-      } else {
-        menu.setAttribute("label", responseArrayForNavPages[i].navigation.label);
-      }
-    }
+  function setLanguage(lng, receiveStateLanguage, sendEventLanguage) {
+    return new Promise((resolve) => {
+      getLanguage(lng).then(() => {
+        crComLibTranslator.changeLanguage(lng);
+        currentLanguage = lng;
+        const responseArrayForNavPages = projectConfigModule.getNavigationPages();
+        for (let i = 0; i < responseArrayForNavPages.length; i++) {
+          const menu = document.getElementById("menu-list-id-" + i);
+          if (menu) {
+            if (responseArrayForNavPages[i].navigation.isI18nLabel === true) {
+              menu.setAttribute("label", translateModule.translateInstant(responseArrayForNavPages[i].navigation.label));
+            } else {
+              menu.setAttribute("label", responseArrayForNavPages[i].navigation.label);
+            }
+          }
+        }
+        if (receiveStateLanguage !== sendEventLanguage && sendEventLanguage?.trim()) {
+          if (lng !== languageToSet) { // Required since this will address multiple send requests.
+            languageToSet = lng;
+            CrComLib.publishEvent('s', sendEventLanguage, lng);
+          }
+        }
+        resolve();
+      });
+    });
   }
 
   /**
@@ -164,32 +187,10 @@ const translateModule = (() => {
     CrComLib.registerTranslationInterface(crComLibTranslator, "-+", "+-");
     crComLibTranslator.init({
       fallbackLng: "en",
-      language: currentLng,
+      language: currentLanguage,
       debug: true,
       resources: langData,
     });
-  }
-
-  /**
-   * This is public method, it invokes on language change
-   * @param {string} lng is language code string like en, fr etc...
-   */
-  function changeLang(lng) {
-    clearTimeout(languageTimer);
-    languageTimer = setTimeout(() => {
-      if (lng !== defaultLng) {
-        defaultLng = lng;
-        // invoke language
-        getLanguage(lng);
-      }
-    }, 500);
-  }
-
-  /**
-   * 
-   */
-  function getTranslator() {
-    return crComLibTranslator;
   }
 
   /**
@@ -202,11 +203,6 @@ const translateModule = (() => {
    */
   return {
     initializeDefaultLanguage,
-    getLanguage,
-    changeLang,
-    currentLng,
-    defaultLng,
-    getTranslator,
     translateInstant
   };
 })();
