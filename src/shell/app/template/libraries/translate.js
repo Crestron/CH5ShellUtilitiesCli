@@ -46,7 +46,7 @@ const translateModule = (() => {
             setLanguage(lng);
             resolve();
           })
-        });              
+        });
       } else {
         setLanguage(lng);
         resolve();
@@ -70,7 +70,7 @@ const translateModule = (() => {
             if (receiveStateLanguage !== sendEventLanguage && sendEventLanguage?.trim()) {
               CrComLib.publishEvent('s', sendEventLanguage, value);
             }
-          })      
+          })
         }
       })
     })
@@ -146,6 +146,15 @@ const translateModule = (() => {
     // update selected language
     crComLibTranslator.changeLanguage(lng);
     setLng = lng;
+    let responseArrayForNavPages = projectConfigModule.getNavigationPages();
+    for (let i = 0; i < responseArrayForNavPages.length; i++) {
+      const menu = document.getElementById("menu-list-id-" + i);
+      if (responseArrayForNavPages[i].navigation.isI18nLabel === true) {
+        menu.setAttribute("label", translateModule.translateInstant(responseArrayForNavPages[i].navigation.label));
+      } else {
+        menu.setAttribute("label", responseArrayForNavPages[i].navigation.label);
+      }
+    }
   }
 
   /**
