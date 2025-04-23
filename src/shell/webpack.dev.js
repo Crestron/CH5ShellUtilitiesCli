@@ -66,7 +66,7 @@ module.exports = merge(common("dev"), {
     new WebpackConcatPlugin({
       name: 'component',
       outputPath: './libraries/',
-      fileName: '[name].[hash:8].js',
+      fileName: '[name].js',
       filesToConcat: componentsList,
       attributes: {
         async: false,

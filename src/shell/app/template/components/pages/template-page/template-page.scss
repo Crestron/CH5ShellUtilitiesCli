@@ -35,7 +35,7 @@
     content: "!";
     position: absolute;
     background: #dc3545;
-    color: white;
+    color: $white;
     border-radius: 50%;
     height: 13px;
     border: 1px solid #711c24;
@@ -49,11 +49,11 @@
   }
 }
 
-#template-index-import-page,
-#template-index-import-page > div {
-  max-height: 100%;
-  height: 100%;
-}
+// #template-index-import-page,
+// #template-index-import-page > div {
+//   max-height: 100%;
+//   height: 100%;
+// }
 
 #wrapper {
   display: flex;
@@ -102,15 +102,15 @@
   // padding-right: max(10px, env(safe-area-inset-right));
 }
 
-#template-content-page-wrapper,
-#template-content-page-content {
-  display: flex;
-  /* use the flex model */
-  max-height: 100%;
-  height: 100%;
-  flex-direction: column;
-  /* learn more: http://philipwalton.github.io/solved-by-flexbox/demos/sticky-footer/ */
-}
+// #template-content-page-wrapper,
+// #template-content-page-content {
+//   display: flex;
+//   /* use the flex model */
+//   max-height: 100%;
+//   height: 100%;
+//   flex-direction: column;
+//   /* learn more: http://philipwalton.github.io/solved-by-flexbox/demos/sticky-footer/ */
+// }
 
 #content-index-body {
   flex: 1;
@@ -254,7 +254,7 @@ div#pageStatusIdentifier {
 }
 
 // Content page
-.horizontal-menu {
+/* .horizontal-menu {
   @include size(100%);
 
   @include media-breakpoint-maxheight(460px) {
@@ -295,7 +295,7 @@ div#pageStatusIdentifier {
       }
     }
   }
-}
+} */
 
 .horizontal-footer-menu {
   line-height: 1.2;
