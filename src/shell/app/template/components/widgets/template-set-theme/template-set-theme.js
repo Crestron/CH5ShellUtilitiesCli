@@ -14,7 +14,7 @@ const templateSetThemeModule = (() => {
 
   function onInit() {
     projectConfigModule.projectConfigData().then(projectConfigResponse => {
-      translateModule.initializeDefaultLanguage().then(() => {
+      //translateModule.initializeDefaultLanguage().then(() => {
 
         const receiveStateTheme = projectConfigResponse.customSignals.receiveStateTheme || 'template-theme';
         const sendEventTheme = projectConfigResponse.customSignals.sendEventTheme || 'template-theme';
@@ -59,7 +59,7 @@ const templateSetThemeModule = (() => {
             }
           }
         });
-      });
+      //});
 
     });
   }
@@ -76,7 +76,7 @@ const templateSetThemeModule = (() => {
     const body = document.body;
     for (let i = 0; i < projectThemesList.length; i++) {
       body.classList.remove(projectThemesList[i].name);
-      body.classList.remove(projectThemesList[i].extends);
+      // body.classList.remove(projectThemesList[i].extends);
     }
     let selectedThemeName = theme.trim();
     const currentTheme = projectThemesList.find(themeVal => themeVal.name === selectedThemeName);
@@ -103,7 +103,17 @@ const templateSetThemeModule = (() => {
 
     const templateContentBackground = document.getElementById("template-content-background");
     if (templateContentBackground) {
-      if (selectedTheme.backgroundProperties !== "undefined") {
+      let element = window.getComputedStyle(document.body);
+      let styleValue = element.getPropertyValue('--theme-colors--theme-background-color');
+      // console.log('----',styleValue);
+      if(styleValue){
+        templateContentBackground.setAttribute('backgroundColor', styleValue);
+      }else if(selectedThemeName === 'light-theme'){
+        templateContentBackground.setAttribute('backgroundColor', '#f8f8f8');
+      }else{
+        templateContentBackground.setAttribute('backgroundColor', '#1a1a1a');
+      }
+      /* if (selectedTheme.backgroundProperties !== "undefined") {
         for (let prop in selectedTheme.backgroundProperties) {
 
           if (prop === "url") {
@@ -120,7 +130,7 @@ const templateSetThemeModule = (() => {
             templateContentBackground.setAttribute(prop, selectedTheme.backgroundProperties[prop]);
           }
         }
-      }
+      } */
     }
     const themeIndex = projectThemesList.findIndex(ele => ele.name === theme);
     CrComLib.publishEvent('n', 'selectedTheme', themeIndex);

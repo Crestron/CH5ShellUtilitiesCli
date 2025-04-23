@@ -116,26 +116,12 @@ const translateModule = (() => {
   function loadJSON(path, lng) {
     return new Promise((resolve, reject) => {
       const url = path + lng + ".json";
-      promisifyLoadJSON(url)
+      serviceModule.promisifyLoadJSON(url)
         .then((response) => {
           resolve(JSON.parse(response));
         }).catch(() => {
           reject("No File Found");
         });
-    });
-  }
-
-  function promisifyLoadJSON(url) {
-    return new Promise(function (resolve, reject) {
-      let xhr = new XMLHttpRequest();
-      xhr.overrideMimeType("application/json");
-      xhr.open("GET", url, true);
-      xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4) {
-          resolve(xhr.responseText);
-        }
-      };
-      xhr.send(null);
     });
   }
 

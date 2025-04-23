@@ -156,13 +156,21 @@ function pathReWrite(data) {
   return tempArray;
 }
 
+function getEntry() {
+  const output = {};
+  output.main = path.resolve(basePath, `${srcTemplateRoot}/assets/scss/main.scss`);
+  output.templatecomponents = pathReWrite(glob.sync(`${srcTemplateRoot}/components/**/*.scss`));
+  output.projectcomponents = pathReWrite(glob.sync(`${srcProjectRoot}/components/**/*.scss`));
+  const content = glob.sync(`${srcProjectRoot}/assets/scss/custom-themes/*.css`);
+  if (content.length > 0) {
+    output.customThemes = pathReWrite(content);
+  }
+  return output;
+}
+
 module.exports = (env) => {
   return {
-    entry: {
-      main: path.resolve(basePath, `${srcTemplateRoot}/assets/scss/main.scss`),
-      templatecomponents: pathReWrite(glob.sync(`${srcTemplateRoot}/components/**/*.scss`)),
-      projectcomponents: pathReWrite(glob.sync(`${srcProjectRoot}/components/**/*.scss`)),
-    },
+    entry: getEntry(),
     output: {
       filename: "[name].[contenthash].js",
       path: path.resolve(basePath, appConfigDistPath[env]),
