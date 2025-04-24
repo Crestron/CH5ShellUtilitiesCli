@@ -254,6 +254,11 @@
                 "title": "Theme Name",
                 "type": "string"
               },
+              "extends": {
+                "description": "Base theme.",
+                "title": "Base Theme Name",
+                "type": "string"
+              },
               "brandLogo": {
                 "$id": "#/properties/themes/items/anyOf/0/properties/brandLogo",
                 "type": "object",
@@ -288,6 +293,120 @@
                     "type": "string",
                     "title": "receiveStateUrl",
                     "description": "The value of this signal, when defined, will set the url attribute."
+                  }
+                },
+                "additionalProperties": false
+              },
+              "backgroundProperties": {
+                "default": {},
+                "description": "This object contains ch5-background properties.",
+                "examples": [
+                  {
+                    "url": [],
+                    "backgroundColor": [],
+                    "repeat": "",
+                    "scale": "",
+                    "refreshRate": 0,
+                    "imgBackgroundColor": "",
+                    "transitionEffect": "",
+                    "transitionDuration": "",
+                    "receiveStateUrl": "",
+                    "receiveStateBackgroundColor": "",
+                    "receiveStateRefreshRate": ""
+                  }
+                ],
+                "title": "ch5-background Properties",
+                "properties": {
+                  "url": {
+                    "type": "array",
+                    "uniqueItems": true,
+                    "description": "One or more image URLs will be used as the background. Supported image types include JPEG, PNG, SVG, and BMP. Animated GIFs are not supported. Multiple URLs can be provided when separated by | (vertical bar) to have images cycle over time.",
+                    "title": "ch5-background URL",
+                    "additionalItems": false,
+                    "items": {
+                      "$id": "#/properties/themes/items/anyOf/0/properties/.backgroundProperties/properties/url/items",
+                      "anyOf": [
+                        {}
+                      ]
+                    }
+                  },
+                  "backgroundColor": {
+                    "type": "array",
+                    "uniqueItems": true,
+                    "description": "Use when one or more background colors will be used via the CSS background-color property syntax, including color names, #hex codes, rgb(), rgba(), hsl() and hsla(). Multiple colors can be provided separated by a | (vertical bar) to have colors cycle based on the time defined. A black color will be used for invalid input. This attribute is superseded by the url attribute.",
+                    "title": "Background Color",
+                    "additionalItems": false,
+                    "items": {
+                      "$id": "#/properties/themes/items/anyOf/0/properties/.backgroundProperties/properties/backgroundColor/items"
+                    }
+                  },
+                  "repeat": {
+                    "default": "no-repeat",
+                    "type": "string",
+                    "description": "The repeat property sets how a background image will be repeated. In the absence of the repeat attribute, 'no-repeat' will be applied by default. Valid values: 'no-repeat', 'repeat-x', 'repeat-y', and 'repeat'. The value 'repeat-x' repeats image horizontally, 'repeat-y' repeats the image vertically, and 'repeat' repeats both vertically and horizontally. The last image will be clipped if it does not fit.",
+                    "enum": [
+                      "no-repeat",
+                      "repeat",
+                      "repeat-x",
+                      "repeat-y"
+                    ],
+                    "title": "Repeat Property"
+                  },
+                  "scale": {
+                    "default": "stretch",
+                    "type": "string",
+                    "title": "Scale Property",
+                    "description": "The default value is 'stretch'. Valid values: 'stretch', 'fill', 'fit'. Defines how an image will fill the component when the component and the image do not have the same aspect ratio. 'stretch' will transform the image to have the same aspect ratio as the component, 'fill' will size the image to leave no extra space but will crop off either the top and bottom or left and right to fill the component completely, and 'fit' will preserve the image aspect ratio by centering the image and leaving either a letter box on the top and bottom or a pillar box on the left and right.",
+                    "enum": [
+                      "stretch",
+                      "fill",
+                      "fit"
+                    ]
+                  },
+                  "refreshRate": {
+                    "default": 600,
+                    "type": "integer",
+                    "description": "The default value is 600. The minimum value is 10 and maximum value is 604800. When more than one image is provided in the url attribute, this attribute provides the duration in seconds that each image will be displayed. Values outside of the min and max will be capped at the closest valid value.",
+                    "title": "Refresh Rate Property",
+                    "maximum": 604800,
+                    "minimum": 10,
+                    "messages": {
+                      "minimum": "Min Value must 10"
+                    }
+                  },
+                  "imgBackgroundColor": {
+                    "default": "black",
+                    "type": "string",
+                    "description": "The default value is 'black'. This is related to the scale attribute having a value of 'fit'. This attribute defines the color of the pillar box or letter box borders when the image aspect ratio is not the same as the component aspect ratio.",
+                    "title": "imgBackgroundColor Property"
+                  },
+                  "transitionEffect": {
+                    "default": "ease",
+                    "type": "string",
+                    "description": "The default value is 'ease'. When more than one image or color is provided in the url or backgroundcolor attributes, this attribute provide the type of transition using the CSS transition-timing-syntax property syntax. See the related attribute transition-duration.",
+                    "title": "transitionEffect Property"
+                  },
+                  "transitionDuration": {
+                    "default": "1s",
+                    "type": "string",
+                    "description": "The default value is '1s'. When more than one image or color is provided in url or backgroundcolor attribute, this attribute provides the duration of the transition using CSS transition-duration syntax.",
+                    "title": "transitionDuration property",
+                    "pattern": "^[0-9]+s$"
+                  },
+                  "receiveStateUrl": {
+                    "type": "string",
+                    "title": "receiveStateUrl property",
+                    "description": "The value of this signal, when defined, will set the url attribute. This attribute takes precedence over backgroundcolor, url, and receiveStateBackgroundColor attributes."
+                  },
+                  "receiveStateBackgroundColor": {
+                    "type": "string",
+                    "description": "The value of this signal, when defined, will set the backgroundColor attribute. This attribute is superseded by the receiveStateUrl attribute.",
+                    "title": "receiveStateBackgroundColor property"
+                  },
+                  "receiveStateRefreshRate": {
+                    "type": "string",
+                    "description": "The value of this signal, when defined, will set the refreshRate attribute.",
+                    "title": "receiveStateRefreshRate property"
                   }
                 },
                 "additionalProperties": false

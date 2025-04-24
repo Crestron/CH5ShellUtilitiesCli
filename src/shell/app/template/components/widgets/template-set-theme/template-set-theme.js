@@ -103,7 +103,7 @@ const templateSetThemeModule = (() => {
 
     const templateContentBackground = document.getElementById("template-content-background");
     if (templateContentBackground) {
-      let element = window.getComputedStyle(document.body);
+     /*  let element = window.getComputedStyle(document.body);
       let styleValue = element.getPropertyValue('--theme-colors--theme-background-color');
       // console.log('----',styleValue);
       if(styleValue){
@@ -112,8 +112,8 @@ const templateSetThemeModule = (() => {
         templateContentBackground.setAttribute('backgroundColor', '#f8f8f8');
       }else{
         templateContentBackground.setAttribute('backgroundColor', '#1a1a1a');
-      }
-      /* if (selectedTheme.backgroundProperties !== "undefined") {
+      } */
+      if (selectedTheme.backgroundProperties !== "undefined") {
         for (let prop in selectedTheme.backgroundProperties) {
 
           if (prop === "url") {
@@ -130,7 +130,7 @@ const templateSetThemeModule = (() => {
             templateContentBackground.setAttribute(prop, selectedTheme.backgroundProperties[prop]);
           }
         }
-      } */
+      }
     }
     const themeIndex = projectThemesList.findIndex(ele => ele.name === theme);
     CrComLib.publishEvent('n', 'selectedTheme', themeIndex);
