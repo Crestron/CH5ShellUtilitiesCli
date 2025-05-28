@@ -360,6 +360,12 @@ export class Ch5GeneratePageCli extends Ch5BaseClassForCli implements ICh5Cli {
         };
       }
     }
+    pageObject.animation = {
+      "transitionIn": "",
+      "transitionOut": "",
+      "transitionDuration": "1s",
+      "transitionDelay": "0s"
+    }
     return pageObject;
   }
 

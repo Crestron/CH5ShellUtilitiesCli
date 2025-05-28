@@ -13,6 +13,13 @@
   -webkit-animation-fill-mode: both;
   animation-fill-mode: both;
 }
+//custome class
+.animate__delay {
+  animation-delay: var(--animate-delay);
+}
+.hidePage {
+  visibility: hidden;
+}
 .animate__animated.animate__infinite {
   -webkit-animation-iteration-count: infinite;
   animation-iteration-count: infinite;
