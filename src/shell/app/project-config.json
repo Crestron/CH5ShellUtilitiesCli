@@ -15,11 +15,6 @@
         "url": "./app/template/assets/img/ch5-logo-light.svg",
         "alt": "Crestron Logo",
         "receiveStateUrl": ""
-      },
-      "backgroundProperties": {
-        "backgroundColor": [
-          "#f8f8f8"
-        ]
       }
     },
     {
@@ -29,11 +24,6 @@
         "url": "./app/template/assets/img/ch5-logo-dark.svg",
         "alt": "Crestron Logo",
         "receiveStateUrl": ""
-      },
-      "backgroundProperties": {
-        "backgroundColor": [
-          "#1a1a1a"
-        ]
       }
     }
   ],
