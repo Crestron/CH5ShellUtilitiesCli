@@ -77,6 +77,20 @@ const serviceModule = (() => {
     });
   }
 
+  function promisifyLoadJSON(url) {
+    return new Promise(function (resolve, reject) {
+      let xhr = new XMLHttpRequest();
+      xhr.overrideMimeType("application/json");
+      xhr.open("GET", url, true);
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+          resolve(xhr.responseText);
+        }
+      };
+      xhr.send(null);
+    });
+  }
+
   /**
    * Adding Emulator Scenario only when not running in a Crestron Touch screen
    * @param {string} url 
@@ -93,9 +107,10 @@ const serviceModule = (() => {
    * @param {string} url 
    */
   function addEmulatorScenario(url) {
-    newJsonLoad(url).then(
+    promisifyLoadJSON(url).then(
       (scenario) => {
         if (scenario !== null) {
+          scenario = JSON.parse(scenario);
           ch5Emulator.loadScenario(scenario);
           ch5Emulator.run();
         }
@@ -136,6 +151,7 @@ const serviceModule = (() => {
   return {
     initialize,
     loadJSON,
+    promisifyLoadJSON,
     initEmulator,
     addEmulatorScenario,
     addEmulatorScenarioNoControlSystem

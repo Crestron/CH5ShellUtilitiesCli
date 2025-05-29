@@ -80,7 +80,7 @@ input[type="month"] {
   .noUi-handle {
     &:after {
       content: "";
-      background-color: transparent;
+      background-color: $body-bg;
       background-image: url("#{$image-path}trans-bg.png");
       @include size(300%);
       position: absolute;
@@ -107,7 +107,7 @@ $customLists: ch5-custom-list, list-scroller, source-list, video-list, swiper-th
 @each $list in $customLists {
   .#{$list} {
     .list-item {
-      background-color: transparent;
+      background-color: $body-bg;
       color: inherit;
       border: 0;
       padding: 0;

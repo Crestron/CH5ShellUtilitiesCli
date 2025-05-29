@@ -107,7 +107,7 @@
 
     &::after {
       content: "";
-      background-color: transparent;
+      // background-color: transparent;
       position: absolute;
       left: 0;
       top: 0;
@@ -139,7 +139,7 @@
     }
 
     &.active .toggle-icon {
-      border-top-color: transparent !important;
+      border-top-color: $body-bg !important;
 
       &::before {
         transform: rotate(45deg);
