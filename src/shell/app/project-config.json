@@ -10,7 +10,6 @@
   "themes": [
     {
       "name": "light-theme",
-      "extends": "light-theme",
       "brandLogo": {
         "url": "./app/template/assets/img/ch5-logo-light.svg",
         "alt": "Crestron Logo",
@@ -19,7 +18,6 @@
     },
     {
       "name": "dark-theme",
-      "extends": "dark-theme",
       "brandLogo": {
         "url": "./app/template/assets/img/ch5-logo-dark.svg",
         "alt": "Crestron Logo",
