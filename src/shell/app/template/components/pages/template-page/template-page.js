@@ -98,19 +98,23 @@ const templatePageModule = (() => {
 	}
 
 	function addAnimationClass(pageIndex, type) {
+
 		const pageData = projectConfigModule.getNavigationPages()[pageIndex];
 		const page = triggerview.childrenOfCurrentNode[pageIndex].childrenOfCurrentNode[0].childrenOfCurrentNode[0];
-		document.documentElement.style.setProperty('--animate-duration', pageData?.animation?.transitionDuration ? pageData?.animation?.transitionDuration : '1s');
-		document.documentElement.style.setProperty('--animate-delay', pageData?.animation?.transitionDelay ? pageData?.animation?.transitionDelay : '0s');
+		
+		page.style.setProperty('--animate-duration', pageData?.animation?.transitionDuration ? pageData?.animation?.transitionDuration : '1s');
+		page.style.setProperty('--animate-delay', pageData?.animation?.transitionDelay ? pageData?.animation?.transitionDelay : '0s');
 		if (type === 'OUT') {
-			page.classList.remove("animate__animated", "animate__delay", "hidePage", pageData?.animation?.transitionIn);
+			CrComLib.removeTransition(page, pageData?.animation?.transitionIn);
+			page.classList.remove("hidePage");
 			if (pageData?.animation?.transitionOut) {
-				page.classList.add("animate__animated", "animate__delay", pageData.animation.transitionOut);
+				CrComLib.setTransition(page, pageData.animation.transitionOut);
 			}
 		} else {
-			page.classList.remove("animate__animated", "animation-delay", "hidePage", pageData?.animation?.transitionOut);
+			CrComLib.removeTransition(page, pageData?.animation?.transitionOut);
+			page.classList.remove("hidePage");
 			if (pageData?.animation?.transitionIn) {
-				page.classList.add("animate__animated", "animate__delay", pageData.animation.transitionIn);
+				CrComLib.setTransition(page, pageData.animation.transitionIn);
 			}
 		}
 	}
