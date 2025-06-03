@@ -218,16 +218,10 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForProject implements ICh5C
     if (isZoomLightThemeAvailable.length === 0) {
       const zoomLightTheme = {
         "name": "zoom-light-theme",
-        "extends": "zoom-light-theme",
         "brandLogo": {
           "url": "./app/template/assets/img/ch5-logo-light.svg",
           "alt": "Crestron Logo",
           "receiveStateUrl": ""
-        },
-        "backgroundProperties": {
-          "backgroundColor": [
-            "#ffffff"
-          ]
         }
       };
       getProjectThemes.push(zoomLightTheme);
@@ -237,16 +231,10 @@ export class Ch5CreateProjectCli extends Ch5BaseClassForProject implements ICh5C
     if (isZoomDarkThemeAvailable.length === 0) {
       const zoomDarkTheme = {
         "name": "zoom-dark-theme",
-        "extends": "zoom-dark-theme",
         "brandLogo": {
           "url": "./app/template/assets/img/ch5-logo-dark.svg",
           "alt": "Crestron Logo",
           "receiveStateUrl": ""
-        },
-        "backgroundProperties": {
-          "backgroundColor": [
-            "#242424"
-          ]
         }
       };
       getProjectThemes.push(zoomDarkTheme);
