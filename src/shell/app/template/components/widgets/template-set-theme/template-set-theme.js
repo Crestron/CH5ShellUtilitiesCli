@@ -76,20 +76,12 @@ const templateSetThemeModule = (() => {
     const body = document.body;
     for (let i = 0; i < projectThemesList.length; i++) {
       body.classList.remove(projectThemesList[i].name);
-      // body.classList.remove(projectThemesList[i].extends);
     }
     let selectedThemeName = theme.trim();
-    const currentTheme = projectThemesList.find(themeVal => themeVal.name === selectedThemeName);
-    if (currentTheme.name === currentTheme.extends) {
-      if (!body.classList.contains(selectedThemeName)) {
-        body.classList.add(selectedThemeName);
-      }
-    } else {
-      if (!body.classList.contains(selectedThemeName)) {
-        body.classList.add(selectedThemeName);
-        body.classList.add(currentTheme.extends);
-      }
+    if (!body.classList.contains(selectedThemeName)) {
+      body.classList.add(selectedThemeName);
     }
+
     let selectedTheme = projectThemesList.find((tempObj) => tempObj.name.trim().toLowerCase() === selectedThemeName.toLowerCase());
     if (document.getElementById("brandLogo")) {
       if (selectedTheme.brandLogo !== "undefined") {

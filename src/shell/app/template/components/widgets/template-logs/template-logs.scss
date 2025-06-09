@@ -427,8 +427,7 @@
   @include logs-button-widget-mixin(#808080);
 }
 
-.dark-theme,
-.project-dark-theme {
+.dark-theme {
   .logs-button-widget {
     @include logs-button-widget-mixin(#fff);
   }

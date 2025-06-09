@@ -206,8 +206,7 @@
   }
 }
 
-.dark-theme,
-.project-dark-theme {
+.dark-theme {
   #template-version-info-page {
     .ch5-modal-dialog.project-info-dialog {
       border: 1px solid $color-darkgrey;
@@ -362,92 +361,6 @@
       --ch5-button--default-icon-color: #808080;
       --ch5-button--default-pressed-icon-color: #808080;
       --ch5-button--default-selected-icon-color: #808080;
-    }
-  }
-}
-
-.project-dark-theme {
-  .info-widget,
-  .theme-widget {
-    ch5-button {
-      --ch5-button--small-width: 36px;
-      --ch5-button--small-height: 36px;
-
-      --ch5-button--small-icon-size: 32px;
-      --ch5-button--small-pressed-icon-size: 32px;
-      --ch5-button--small-selected-icon-size: 32px;
-      --ch5-button--default-border-width: 0;
-      --ch5-button--default-pressed-border-width: 0;
-      --ch5-button--default-selected-border-width: 0;
-
-      --ch5-button--default-background-color: transparent;
-      --ch5-button--default-pressed-background-color: transparent;
-      --ch5-button--default-selected-background-color: transparent;
-      --ch5-button--default-label-font-color: #fff;
-      --ch5-button--default-pressed-label-font-color: #fff;
-      --ch5-button--default-selected-label-font-color: #fff;
-      --ch5-button--default-checkbox-color: #fff;
-      --ch5-button--default-pressed-checkbox-color: #fff;
-      --ch5-button--default-selected-checkbox-color: #fff;
-      --ch5-button--default-icon-color: #fff;
-      --ch5-button--default-pressed-icon-color: #fff;
-      --ch5-button--default-selected-icon-color: #fff;
-
-      .ch5-button--default,
-      .ch5-button--default.ch5-button--selected,
-      .ch5-button--default.ch5-button--pressed {
-        background-color: inherit;
-        border-color: inherit;
-        box-shadow: none;
-        color: inherit;
-      }
-      .ch5-button--label,
-      .cb-icon {
-        color: #808080;
-      }
-    }
-  }
-}
-
-.project-light-theme {
-  .info-widget,
-  .theme-widget {
-    ch5-button {
-      --ch5-button--small-width: 36px;
-      --ch5-button--small-height: 36px;
-
-      --ch5-button--small-icon-size: 32px;
-      --ch5-button--small-pressed-icon-size: 32px;
-      --ch5-button--small-selected-icon-size: 32px;
-      --ch5-button--default-border-width: 0;
-      --ch5-button--default-pressed-border-width: 0;
-      --ch5-button--default-selected-border-width: 0;
-
-      --ch5-button--default-background-color: transparent;
-      --ch5-button--default-pressed-background-color: transparent;
-      --ch5-button--default-selected-background-color: transparent;
-      --ch5-button--default-label-font-color: #808080;
-      --ch5-button--default-pressed-label-font-color: #808080;
-      --ch5-button--default-selected-label-font-color: #808080;
-      --ch5-button--default-checkbox-color: #808080;
-      --ch5-button--default-pressed-checkbox-color: #808080;
-      --ch5-button--default-selected-checkbox-color: #808080;
-      --ch5-button--default-icon-color: #808080;
-      --ch5-button--default-pressed-icon-color: #808080;
-      --ch5-button--default-selected-icon-color: #808080;
-
-      .ch5-button--default,
-      .ch5-button--default.ch5-button--selected,
-      .ch5-button--default.ch5-button--pressed {
-        background-color: inherit;
-        border-color: inherit;
-        box-shadow: none;
-        color: inherit;
-      }
-      .ch5-button--label,
-      .cb-icon {
-        color: #808080;
-      }
     }
   }
 }

@@ -5,39 +5,12 @@
 // Use of this source code is subject to the terms of the Crestron Software License Agreement
 // under which you licensed this source code.
 
-/* Additions to default light-theme and dark-theme */
-
-.light-theme {
-  .list-item {
-    ch5-button {
-      --ch5-button--text-background-color: #eeeeee;
-      --ch5-button--text-pressed-background-color: #eeeeee;
-      --ch5-button--text-selected-background-color: #eeeeee;
-    }
+.list-item {
+  ch5-button {
+    --ch5-button--text-background-color: var(--theme-colors--button-list-background-color);
+    --ch5-button--text-pressed-background-color: var(--theme-colors--button-list-background-color);
+    --ch5-button--text-selected-background-color: var(--theme-colors--button-list-background-color);
   }
-
-  .navbar-default {
-    --theme-colors--swiper-thumb-nav-bar-background-color: #efefef;
-  }
-
-  --theme-others--scrollbar-track-color: #fff;
-
-}
-
-.dark-theme {
-  .list-item {
-    ch5-button {
-      --ch5-button--text-background-color: rgb(123.5, 123.5, 123.5);
-      --ch5-button--text-pressed-background-color: rgb(123.5, 123.5, 123.5);
-      --ch5-button--text-selected-background-color: rgb(123.5, 123.5, 123.5);
-    }
-  }
-
-  .navbar-default {
-    --theme-colors--swiper-thumb-nav-bar-background-color: #000000;
-  }
-
-  --theme-others--scrollbar-track-color: #404040;
 }
 
 .footer-page {
@@ -47,17 +20,13 @@
 
 // navbars
 .navbar-dark {
-  // background-color: #afafaf;
-
   &.navbar-default {
-
     &,
     .navbar-nav {
-      background-color: var(--theme-colors--swiper-thumb-nav-bar-background-color);
+      background-color: var(--theme-colors--header-background-color);
     }
 
     .btn-link {
-      // .navbar-nav .nav-link {
       color: var(--theme-colors--theme-body-font-color);
     }
 
@@ -74,7 +43,6 @@
     }
 
     // VERTICAL MENU END
-
     .active,
     .navbar-nav .active a {
       color: #ff8800;
@@ -84,7 +52,7 @@
 
 // bottom navigation
 .swiper-thumb {
-  background-color: var(--theme-colors--swiper-thumb-nav-bar-background-color);
+  background-color: var(--theme-colors--footer-swiper-thumb-background-color);
 
   .list-item {
     ch5-button {
@@ -139,118 +107,3 @@
 ::-webkit-scrollbar-track {
   background-color: var(--theme-others--scrollbar-track-color);
 }
-
-// heading
-// .heading-color {
-//   color: darken(#212529, 10%);
-// }
-// }
-
-
-// .dark-theme {
-//   .footer-page {
-//     background-color: darken(#343a40, 5%);
-//     color: #fff;
-//   }
-
-//   // navbars
-//   .navbar-dark {
-//     background-color: darken(#343a40, 5%);
-
-//     &.navbar-default {
-//       &,
-//       .navbar-nav {
-//         background-color: $black;
-//       }
-
-//       .btn-link,
-//       .navbar-nav .nav-link {
-//         color: $white;
-//       }
-
-//       // VERTICAL MENU START
-//       .toggler {
-//         .toggle-icon {
-//           border-color: $white;
-
-//           &::before,
-//           &::after {
-//             background-color: $white;
-//           }
-//         }
-//       }
-//       // VERTICAL MENU END
-
-//       .active,
-//       .navbar-nav .active a {
-//         color: darken(#29abe2, 10%);
-//       }
-//     }
-//   }
-
-//   // bottom navigation
-//   .swiper-thumb {
-//     background-color: #000;
-
-//     .list-item {
-//       ch5-button {
-//         --ch5-button--text-background-color: rgb(123.5, 123.5, 123.5);
-//         --ch5-button--text-selected-background-color:  rgb(123.5, 123.5, 123.5);
-//         --ch5-button--text-pressed-background-color:  rgb(123.5, 123.5, 123.5);
-//         --ch5-button--text-border-width: 0;
-//         --ch5-button--text-selected-border-width: 0;
-//         --ch5-button--text-pressed-border-width: 0;
-//       }
-//     }
-//   }
-
-// .thumb-action svg {
-//   fill: darken(#29abe2, 10%);
-// }
-
-//   .horizontal-menu,
-//   .horizontal-footer-menu {
-//     .swiper-thumb {
-//       .list-item {
-//         ch5-button {
-//           --ch5-button--text-label-font-color: #{$white};
-//           --ch5-button--text-pressed-label-font-color: #{$white};
-//           --ch5-button--text-selected-label-font-color: #{$white};
-//           --ch5-button--text-icon-color: #{$white};
-//           --ch5-button--text-pressed-icon-color: #{$white};
-//           --ch5-button--text-selected-icon-color: #{$white};
-//           --ch5-button--text-border-width: 0;
-//           --ch5-button--text-selected-border-width: 0;
-//           --ch5-button--text-pressed-border-width: 0;
-//         }
-//       }
-//     }
-//   }
-
-//   .vertical-menu {
-//     .swiper-thumb {
-//       .list-item {
-//         ch5-button {
-//           --ch5-button--text-label-font-color: #{$white};
-//           --ch5-button--text-pressed-label-font-color: #{$white};
-//           --ch5-button--text-selected-label-font-color: #{$white};
-//           --ch5-button--text-icon-color: #{$white};
-//           --ch5-button--text-pressed-icon-color: #{$white};
-//           --ch5-button--text-selected-icon-color: #{$white};
-//           --ch5-button--text-border-width: 0;
-//           --ch5-button--text-selected-border-width: 0;
-//           --ch5-button--text-pressed-border-width: 0;
-//         }
-//       }
-//     }
-//   }
-
-//   ::-webkit-scrollbar-track {
-//     background-color: #404040;
-//   }
-
-//   // heading
-//   .heading-color {
-//     color: darken(#fff, 10%);
-//   }
-// }
