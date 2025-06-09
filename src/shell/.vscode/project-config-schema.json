@@ -618,6 +618,12 @@
                       "iconClass": "",
                       "iconUrl": "./app/project/assets/img/navigation/ok.svg",
                       "iconPosition": "bottom"
+                    },
+                    "animation": {
+                      "transitionIn": "",
+                      "transitionOut": "",
+                      "transitionDuration": "",
+                      "transitionDelay": ""
                     }
                   }
                 ],
@@ -764,6 +770,49 @@
                           "top",
                           "bottom"
                         ]
+                      }
+                    },
+                    "additionalProperties": false
+                  },
+                  "animation": {
+                    "$id": "#/properties/content/properties/pages/items/anyOf/0/properties/animation",
+                    "type": "object",
+                    "title": "Animation Object",
+                    "description": "Animation for the page",
+                    "default": {},
+                    "examples": [
+                      {
+                        "transitionIn": "",
+                        "transitionOut": "",
+                        "transitionDuration": "1s",
+                        "transitionDelay": "0s"
+                      }
+                    ],
+                    "required": [],
+                    "properties": {
+                      "transitionIn": {
+                        "$id": "#/properties/content/properties/pages/items/anyOf/0/properties/animation/properties/transitionIn",
+                        "type": "string",
+                        "title": "Transition in",
+                        "description": "The animation for the page entry into the viewport."
+                      },
+                      "transitionOut": {
+                        "$id": "#/properties/content/properties/pages/items/anyOf/0/properties/animation/properties/transitionOut",
+                        "type": "string",
+                        "title": "Transition out",
+                        "description": "The animation for the page exit from the viewport."
+                      },
+                      "transitionDuration": {
+                        "$id": "#/properties/content/properties/pages/items/anyOf/0/properties/animation/properties/transitionDuration",
+                        "type": "string",
+                        "title": "Transition duration",
+                        "description": "The animation duration."
+                      },
+                      "transitionDelay": {
+                        "$id": "#/properties/content/properties/pages/items/anyOf/0/properties/animation/properties/transitionDelay",
+                        "type": "string",
+                        "title": "Transition delay",
+                        "description": "The animation delay."
                       }
                     },
                     "additionalProperties": false

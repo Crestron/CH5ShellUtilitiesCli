@@ -134,6 +134,12 @@ A file named 'project-config.json' is located in the './app/' directory. This fi
           "iconClass": "fas fa-file-alt",
           "iconUrl": "",
           "iconPosition": "bottom"
+        },
+        "animation": {
+          "transitionIn": "",
+          "transitionOut": "",
+          "transitionDuration": "1s",
+          "transitionDelay": "0s"
         }
     }
 ```

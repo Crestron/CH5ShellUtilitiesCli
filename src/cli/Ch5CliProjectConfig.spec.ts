@@ -139,6 +139,12 @@ const mockedAppJson = {
           "iconClass": "",
           "iconUrl": "./app/project/assets/img/navigation/page.svg",
           "iconPosition": "bottom"
+        },
+        "animation": {
+          "transitionIn": "",
+          "transitionOut": "",
+          "transitionDuration": "1s",
+          "transitionDelay": "0s"
         }
       },
       {
@@ -153,6 +159,12 @@ const mockedAppJson = {
           "iconClass": "",
           "iconUrl": "./app/project/assets/img/navigation/page.svg",
           "iconPosition": "bottom"
+        },
+        "animation": {
+          "transitionIn": "",
+          "transitionOut": "",
+          "transitionDuration": "1s",
+          "transitionDelay": "0s"
         }
       },
       {
@@ -167,6 +179,12 @@ const mockedAppJson = {
           "iconClass": "",
           "iconUrl": "./app/project/assets/img/navigation/page.svg",
           "iconPosition": "bottom"
+        },
+        "animation": {
+          "transitionIn": "",
+          "transitionOut": "",
+          "transitionDuration": "1s",
+          "transitionDelay": "0s"
         }
       },
       {
@@ -181,6 +199,12 @@ const mockedAppJson = {
           "iconClass": "",
           "iconUrl": "./app/project/assets/img/navigation/page.svg",
           "iconPosition": "bottom"
+        },
+        "animation": {
+          "transitionIn": "",
+          "transitionOut": "",
+          "transitionDuration": "1s",
+          "transitionDelay": "0s"
         }
       },
       {
@@ -195,6 +219,12 @@ const mockedAppJson = {
           "iconClass": "",
           "iconUrl": "./app/project/assets/img/navigation/page.svg",
           "iconPosition": "bottom"
+        },
+        "animation": {
+          "transitionIn": "",
+          "transitionOut": "",
+          "transitionDuration": "1s",
+          "transitionDelay": "0s"
         }
       },
       {
@@ -209,6 +239,12 @@ const mockedAppJson = {
           "iconClass": "",
           "iconUrl": "./app/project/assets/img/navigation/page.svg",
           "iconPosition": "bottom"
+        },
+        "animation": {
+          "transitionIn": "",
+          "transitionOut": "",
+          "transitionDuration": "1s",
+          "transitionDelay": "0s"
         }
       }
     ],
