@@ -112,13 +112,14 @@ const templatePageModule = (() => {
 		page.style.setProperty('--animate-delay', pageData?.animation?.transitionDelay ? pageData?.animation?.transitionDelay : '0s');
 		if (type === 'OUT') {
 			CrComLib.removeTransition(page, pageData?.animation?.transitionIn);
-			page.classList.remove("ch5-hide-vis");
+			page.classList.remove("ch5-hide-vis","page-height-vh");
 			if (pageData?.animation?.transitionOut) {
 				CrComLib.setTransition(page, pageData.animation.transitionOut);
+				page.classList.add('page-height-vh');
 			}
 		} else {
 			CrComLib.removeTransition(page, pageData?.animation?.transitionOut);
-			page.classList.remove("ch5-hide-vis");
+			page.classList.remove("ch5-hide-vis","page-height-vh");
 			if (pageData?.animation?.transitionIn) {
 				CrComLib.setTransition(page, pageData.animation.transitionIn);
 			}
