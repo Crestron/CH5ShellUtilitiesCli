@@ -32,7 +32,8 @@
   height: 100vh !important;
 }
 
-.ch5-hide-vis-position {
+// To see transitionOut of page animation 
+.ch5-show-vis-position {
   visibility: visible !important;
   position: fixed;
   left: 0;

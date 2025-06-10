@@ -54,7 +54,11 @@ const templatePageModule = (() => {
 				}
 				// Add animation to the page when exiting the viewport.
 				setTimeout(() => {
-					if (triggerview.allowPageAnimation() && projectConfigModule.getNavigationPages()[prevIndex]?.cachePage && triggerview.childrenOfCurrentNode[prevIndex]?.childrenOfCurrentNode[0] && triggerview.childrenOfCurrentNode[prevIndex]?.childrenOfCurrentNode[0].childrenOfCurrentNode[0]) {  //&& prevIndex !== -1) {
+					if (triggerview.allowPageAnimation() &&
+						projectConfigModule.getNavigationPages()[prevIndex]?.cachePage &&
+						(projectConfigModule.getNavigationPages()[prevIndex]?.animation?.transitionIn || projectConfigModule.getNavigationPages()[prevIndex]?.animation?.transitionOut) &&
+						triggerview.childrenOfCurrentNode[prevIndex]?.childrenOfCurrentNode[0] &&
+						triggerview.childrenOfCurrentNode[prevIndex]?.childrenOfCurrentNode[0].childrenOfCurrentNode[0]) {  //&& prevIndex !== -1) {
 						addAnimationClass(prevIndex, 'OUT');
 					}
 				});
@@ -83,7 +87,11 @@ const templatePageModule = (() => {
 				}
 				// Add animation to the page when entering the viewport.
 				setTimeout(() => {
-					if (triggerview.allowPageAnimation() && projectConfigModule.getNavigationPages()[activeIndex]?.cachePage && triggerview.childrenOfCurrentNode[activeIndex]?.childrenOfCurrentNode[0] && triggerview.childrenOfCurrentNode[activeIndex]?.childrenOfCurrentNode[0].childrenOfCurrentNode[0]) {
+					if (triggerview.allowPageAnimation() &&
+						projectConfigModule.getNavigationPages()[activeIndex]?.cachePage &&
+						(projectConfigModule.getNavigationPages()[activeIndex]?.animation?.transitionIn || projectConfigModule.getNavigationPages()[activeIndex]?.animation?.transitionOut) &&
+						triggerview.childrenOfCurrentNode[activeIndex]?.childrenOfCurrentNode[0] &&
+						triggerview.childrenOfCurrentNode[activeIndex]?.childrenOfCurrentNode[0].childrenOfCurrentNode[0]) {
 						addAnimationClass(activeIndex, 'IN');
 					}
 				});
@@ -106,20 +114,23 @@ const templatePageModule = (() => {
 	function addAnimationClass(pageIndex, type) {
 
 		const pageData = projectConfigModule.getNavigationPages()[pageIndex];
+		const ch5triggerViewChild = triggerview.childrenOfCurrentNode[pageIndex];
 		const page = triggerview.childrenOfCurrentNode[pageIndex].childrenOfCurrentNode[0].childrenOfCurrentNode[0];
 
 		page.style.setProperty('--animate-duration', pageData?.animation?.transitionDuration ? pageData?.animation?.transitionDuration : '1s');
 		page.style.setProperty('--animate-delay', pageData?.animation?.transitionDelay ? pageData?.animation?.transitionDelay : '0s');
 		if (type === 'OUT') {
 			CrComLib.removeTransition(page, pageData?.animation?.transitionIn);
-			page.classList.remove("ch5-hide-vis","page-height-vh");
+			page.classList.remove("ch5-hide-vis", "page-height-vh");
 			if (pageData?.animation?.transitionOut) {
 				CrComLib.setTransition(page, pageData.animation.transitionOut);
+				ch5triggerViewChild.classList.add('ch5-show-vis-position');
 				page.classList.add('page-height-vh');
 			}
 		} else {
 			CrComLib.removeTransition(page, pageData?.animation?.transitionOut);
-			page.classList.remove("ch5-hide-vis","page-height-vh");
+			page.classList.remove("ch5-hide-vis", "page-height-vh");
+			ch5triggerViewChild.classList.remove('ch5-show-vis-position');
 			if (pageData?.animation?.transitionIn) {
 				CrComLib.setTransition(page, pageData.animation.transitionIn);
 			}
