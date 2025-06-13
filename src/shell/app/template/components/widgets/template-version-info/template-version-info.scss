@@ -65,26 +65,7 @@
         &.selected {
           font-weight: bold;
           opacity: 1;
-          background-color: rgba(169, 169, 169, 0.5);
         }
-      }
-    }
-
-    table {
-      width: 100%;
-
-      th,
-      td {
-        border: 1px solid darkgray;
-        padding: 5px;
-      }
-
-      thead tr:first-child {
-        background-color: lightgrey;
-      }
-
-      tr:nth-child(even) {
-        background-color: rgba(200, 200, 200, 0.4);
       }
     }
 
@@ -142,7 +123,6 @@
     .ch5-modal-dialog-close-icon-btn {
       padding: 0;
       margin: 0;
-      color: black;
       @include size(auto);
       background-color: transparent;
 
@@ -162,7 +142,6 @@
     }
 
     h4 {
-      color: $black;
       font-size: rem-calc(24px);
     }
 
@@ -206,72 +185,70 @@
   }
 }
 
-.dark-theme {
-  #template-version-info-page {
-    .ch5-modal-dialog.project-info-dialog {
-      border: 1px solid $color-darkgrey;
-      color: $color-white;
-      background-color: $color-darkestgrey;
+#template-version-info-page {
+  .ch5-modal-dialog.project-info-dialog {
+    border: 1px solid $color-darkgrey;
+    color: var(--theme-colors--theme-body-font-color);
+    background-color:  var(--theme-shell--remote-logger-modal-background-color);;
 
-      h4 {
-        color: $color-white;
-      }
+    h4 {
+      color: var(--theme-colors--theme-body-font-color);
+    }
 
-      p {
-        color: $color-offwhite;
-      }
+    p {
+      color: var(--theme-colors--theme-body-font-color);
+    }
 
-      .ch5-modal-dialog-close-icon-btn {
-        color: $color-white;
-      }
+    .ch5-modal-dialog-close-icon-btn {
+      color: var(--theme-colors--theme-body-font-color);
+    }
 
-      #version-tab-content,
-      #webxpanel-tab-content,
-      #diagnostics-tab-content {
-        color: white;
-      }
+    #version-tab-content,
+    #webxpanel-tab-content,
+    #diagnostics-tab-content {
+      color: var(--theme-colors--theme-body-font-color);
+    }
 
-      #tab-wrapper {
-        button {
-          background-color: rgba(169, 169, 169, 0.8);
-          border: 1px solid darkgray;
+    #tab-wrapper {
+      button {
+        background-color: var(--theme-shell--tab-wrapper-button-background-color);
+        border: 1px solid darkgray;
 
-          &:first-child {
-            border-right: none;
-            border-top-left-radius: 3px;
-          }
-
-          &:last-child {
-            border-left: none;
-            border-top-right-radius: 3px;
-          }
-
-          &.selected {
-            background-color: rgba(211, 211, 211, 0.8);
-          }
-        }
-      }
-
-      table {
-        width: 100%;
-
-        th,
-        td {
-          border: 1px solid lightgray;
-          padding: 5px;
+        &:first-child {
+          border-right: none;
+          border-top-left-radius: 3px;
         }
 
-        tr:nth-child(even) {
-          background-color: rgba(200, 200, 200, 0.6);
+        &:last-child {
+          border-left: none;
+          border-top-right-radius: 3px;
         }
 
-        tr:nth-child(odd) {
-          background-color: rgba(200, 200, 200, 0.8);
+        &.selected {
+          background-color: var(--theme-shell--tab-wrapper-button-selected-background-color);
         }
+      }
+    }
 
-        thead tr:first-child {
-          background-color: rgba(80, 80, 80, 0.8);
-        }
+    table {
+      width: 100%;
+
+      th,
+      td {
+        border: 1px solid lightgray;
+        padding: 5px;
+      }
+
+      tr:nth-child(even) {
+        background-color: var(--theme-shell--table-row-even-background-color);
+      }
+
+      tr:nth-child(odd) {
+        background-color: var(--theme-shell--table-row-odd-background-color);
+      }
+
+      thead tr:first-child {
+        background-color: var(--theme-shell--table-header-background-color);
       }
     }
   }
@@ -293,74 +270,14 @@
     --ch5-button--default-background-color: transparent;
     --ch5-button--default-pressed-background-color: transparent;
     --ch5-button--default-selected-background-color: transparent;
-    --ch5-button--default-label-font-color: #808080;
-    --ch5-button--default-pressed-label-font-color: #808080;
-    --ch5-button--default-selected-label-font-color: #808080;
-    --ch5-button--default-checkbox-color: #808080;
-    --ch5-button--default-pressed-checkbox-color: #808080;
-    --ch5-button--default-selected-checkbox-color: #808080;
-    --ch5-button--default-icon-color: #808080;
-    --ch5-button--default-pressed-icon-color: #808080;
-    --ch5-button--default-selected-icon-color: #808080;
-  }
-}
-
-.dark-theme {
-  .info-widget,
-  .theme-widget {
-    ch5-button {
-      --ch5-button--small-width: 36px;
-      --ch5-button--small-height: 36px;
-
-      --ch5-button--small-icon-size: 32px;
-      --ch5-button--small-pressed-icon-size: 32px;
-      --ch5-button--small-selected-icon-size: 32px;
-      --ch5-button--default-border-width: 0;
-      --ch5-button--default-pressed-border-width: 0;
-      --ch5-button--default-selected-border-width: 0;
-
-      --ch5-button--default-background-color: transparent;
-      --ch5-button--default-pressed-background-color: transparent;
-      --ch5-button--default-selected-background-color: transparent;
-      --ch5-button--default-label-font-color: #fff;
-      --ch5-button--default-pressed-label-font-color: #fff;
-      --ch5-button--default-selected-label-font-color: #fff;
-      --ch5-button--default-checkbox-color: #fff;
-      --ch5-button--default-pressed-checkbox-color: #fff;
-      --ch5-button--default-selected-checkbox-color: #fff;
-      --ch5-button--default-icon-color: #fff;
-      --ch5-button--default-pressed-icon-color: #fff;
-      --ch5-button--default-selected-icon-color: #fff;
-    }
-  }
-}
-
-.light-theme {
-  .info-widget,
-  .theme-widget {
-    ch5-button {
-      --ch5-button--small-width: 36px;
-      --ch5-button--small-height: 36px;
-
-      --ch5-button--small-icon-size: 32px;
-      --ch5-button--small-pressed-icon-size: 32px;
-      --ch5-button--small-selected-icon-size: 32px;
-      --ch5-button--default-border-width: 0;
-      --ch5-button--default-pressed-border-width: 0;
-      --ch5-button--default-selected-border-width: 0;
-
-      --ch5-button--default-background-color: transparent;
-      --ch5-button--default-pressed-background-color: transparent;
-      --ch5-button--default-selected-background-color: transparent;
-      --ch5-button--default-label-font-color: #808080;
-      --ch5-button--default-pressed-label-font-color: #808080;
-      --ch5-button--default-selected-label-font-color: #808080;
-      --ch5-button--default-checkbox-color: #808080;
-      --ch5-button--default-pressed-checkbox-color: #808080;
-      --ch5-button--default-selected-checkbox-color: #808080;
-      --ch5-button--default-icon-color: #808080;
-      --ch5-button--default-pressed-icon-color: #808080;
-      --ch5-button--default-selected-icon-color: #808080;
-    }
+    --ch5-button--default-label-font-color: var(--theme-shell--widget-icon-color);
+    --ch5-button--default-pressed-label-font-color: var(--theme-shell--widget-icon-color);
+    --ch5-button--default-selected-label-font-color: var(--theme-shell--widget-icon-color);
+    --ch5-button--default-checkbox-color: var(--theme-shell--widget-icon-color);
+    --ch5-button--default-pressed-checkbox-color: var(--theme-shell--widget-icon-color);
+    --ch5-button--default-selected-checkbox-color: var(--theme-shell--widget-icon-color);
+    --ch5-button--default-icon-color: var(--theme-shell--widget-icon-color);
+    --ch5-button--default-pressed-icon-color: var(--theme-shell--widget-icon-color);
+    --ch5-button--default-selected-icon-color: var(--theme-shell--widget-icon-color);
   }
 }

@@ -45,10 +45,10 @@
   }
 }
 
-.dark-theme {
-  #template-authtoken-alert-page {
-    .ch5-description {
-      color: $white;
-    }
+
+#template-authtoken-alert-page {
+  .ch5-description {
+    color: var(--theme-colors--theme-body-font-color);
   }
 }
+  
