@@ -21,6 +21,7 @@ const templatePageModule = (() => {
 	function navigateTriggerViewByPageName(pageName) {
 		// If the previous and selected page are same then exit
 		if (pageName !== selectedPage.pageName) {
+			const pageList = projectConfigModule.getNavigationPages();
 			const pageObject = projectConfigModule.getNavigationPages().find(page => page.pageName === pageName);
 			const oldPage = JSON.parse(JSON.stringify(selectedPage));
 			// Loop and set url and receiveStateUrl based on proper preload and cachePage values
@@ -45,23 +46,26 @@ const templatePageModule = (() => {
 				const prevIndex = projectConfigModule.getNavigationPages().findIndex(data => data.pageName === oldPage.pageName);
 				// On first load, hide all pages except for the default page.
 				if (prevIndex < 0) {
-					setTimeout(() => {
-						hideInactivePages(activeIndex);
-					});
+					hideInactivePages(activeIndex);
 				} else {
 					const page = triggerview.childrenOfCurrentNode[activeIndex].childrenOfCurrentNode[0].childrenOfCurrentNode[0];
 					page.classList.remove('ch5-hide-vis');
 				}
 				// Add animation to the page when exiting the viewport.
-				setTimeout(() => {
-					if (triggerview.allowPageAnimation() &&
-						projectConfigModule.getNavigationPages()[prevIndex]?.cachePage &&
-						(projectConfigModule.getNavigationPages()[prevIndex]?.animation?.transitionIn || projectConfigModule.getNavigationPages()[prevIndex]?.animation?.transitionOut) &&
-						triggerview.childrenOfCurrentNode[prevIndex]?.childrenOfCurrentNode[0] &&
-						triggerview.childrenOfCurrentNode[prevIndex]?.childrenOfCurrentNode[0].childrenOfCurrentNode[0]) {  //&& prevIndex !== -1) {
-						addAnimationClass(prevIndex, 'OUT');
+				const subscriptionHtmlSnippetPrevIndex = CrComLib.subscribeState('o', 'ch5-import-htmlsnippet:' + pageList[prevIndex]?.pageName + '-import-page', (value) => {
+					if (value['loaded']) {
+						if (triggerview.allowPageAnimation() &&
+							projectConfigModule.getNavigationPages()[prevIndex]?.cachePage &&
+							(projectConfigModule.getNavigationPages()[prevIndex]?.animation?.transitionIn || projectConfigModule.getNavigationPages()[prevIndex]?.animation?.transitionOut) &&
+							triggerview.childrenOfCurrentNode[prevIndex]?.childrenOfCurrentNode[0] &&
+							triggerview.childrenOfCurrentNode[prevIndex]?.childrenOfCurrentNode[0].childrenOfCurrentNode[0]) {  //&& prevIndex !== -1) {
+							addAnimationClass(prevIndex, 'OUT');
+						}
 					}
 				});
+				setTimeout(() => {
+					CrComLib.unsubscribeState('o', 'ch5-import-htmlsnippet:' + pageList[prevIndex]?.pageName + '-import-page', subscriptionHtmlSnippetPrevIndex);
+				}, 100);
 				try {
 					// menuMoveInViewPort();
 
@@ -86,15 +90,21 @@ const templatePageModule = (() => {
 					console.error(e);
 				}
 				// Add animation to the page when entering the viewport.
-				setTimeout(() => {
-					if (triggerview.allowPageAnimation() &&
-						projectConfigModule.getNavigationPages()[activeIndex]?.cachePage &&
-						(projectConfigModule.getNavigationPages()[activeIndex]?.animation?.transitionIn || projectConfigModule.getNavigationPages()[activeIndex]?.animation?.transitionOut) &&
-						triggerview.childrenOfCurrentNode[activeIndex]?.childrenOfCurrentNode[0] &&
-						triggerview.childrenOfCurrentNode[activeIndex]?.childrenOfCurrentNode[0].childrenOfCurrentNode[0]) {
-						addAnimationClass(activeIndex, 'IN');
+				const subscriptionHtmlSnippet = CrComLib.subscribeState('o', 'ch5-import-htmlsnippet:' + pageList[activeIndex]?.pageName + '-import-page', (value) => {
+					if (value['loaded']) {
+						if (triggerview.allowPageAnimation() &&
+							projectConfigModule.getNavigationPages()[activeIndex]?.cachePage &&
+							(projectConfigModule.getNavigationPages()[activeIndex]?.animation?.transitionIn || projectConfigModule.getNavigationPages()[activeIndex]?.animation?.transitionOut) &&
+							triggerview.childrenOfCurrentNode[activeIndex]?.childrenOfCurrentNode[0] &&
+							triggerview.childrenOfCurrentNode[activeIndex]?.childrenOfCurrentNode[0].childrenOfCurrentNode[0]) {
+							addAnimationClass(activeIndex, 'IN');
+						}
 					}
 				});
+
+				setTimeout(() => {
+					CrComLib.unsubscribeState('o', 'ch5-import-htmlsnippet:' + pageList[activeIndex]?.pageName + '-import-page', subscriptionHtmlSnippet);
+				}, 100);
 			}
 			navigationModule.goToPage(pageName);
 		}
@@ -102,11 +112,26 @@ const templatePageModule = (() => {
 
 
 	function hideInactivePages(activeIndex) {
+		const subscriptions = [];
 		const pageList = projectConfigModule.getNavigationPages();
 		for (let i = 0; i < pageList.length; i++) {
 			if (activeIndex !== i) {
-				const page = triggerview.childrenOfCurrentNode[i].childrenOfCurrentNode[0].childrenOfCurrentNode[0];
-				page.classList.add('ch5-hide-vis');
+				const subscriptionHtmlSnippet = CrComLib.subscribeState('o', 'ch5-import-htmlsnippet:' + pageList[i].pageName + '-import-page', (value) => {
+					console.log(pageList[i].pageName + ' --> ' + value['loaded']);
+					if (value['loaded']) {
+						const page = triggerview.childrenOfCurrentNode[i].childrenOfCurrentNode[0].childrenOfCurrentNode[0];
+						page.classList.add('ch5-hide-vis');
+					}
+				});
+				subscriptions.push(subscriptionHtmlSnippet);
+			}
+		}
+
+		for (let i = 0; i < pageList.length; i++) {
+			if (activeIndex !== i) {
+				setTimeout(() => {
+					CrComLib.unsubscribeState('o', 'ch5-import-htmlsnippet:' + pageList[i].pageName + '-import-page', subscriptions[i]);
+				}, 100);
 			}
 		}
 	}
@@ -117,22 +142,24 @@ const templatePageModule = (() => {
 		const ch5triggerViewChild = triggerview.childrenOfCurrentNode[pageIndex];
 		const page = triggerview.childrenOfCurrentNode[pageIndex].childrenOfCurrentNode[0].childrenOfCurrentNode[0];
 
-		page.style.setProperty('--animate-duration', pageData?.animation?.transitionDuration ? pageData?.animation?.transitionDuration : '1s');
-		page.style.setProperty('--animate-delay', pageData?.animation?.transitionDelay ? pageData?.animation?.transitionDelay : '0s');
+		if (pageData?.animation?.transitionIn in CrComLib.transitionIneffects || pageData?.animation?.transitionOut in CrComLib.transitionOuteffects) {
+			page.style.setProperty('--animate-duration', pageData?.animation?.transitionDuration ? pageData?.animation?.transitionDuration : '1s');
+			page.style.setProperty('--animate-delay', pageData?.animation?.transitionDelay ? pageData?.animation?.transitionDelay : '0s');
+		}
 		if (type === 'OUT') {
-			CrComLib.removeTransition(page, pageData?.animation?.transitionIn);
+			CrComLib.removeTransition(page, pageData?.animation?.transitionIn, 'IN');
 			page.classList.remove("ch5-hide-vis", "page-height-vh");
-			if (pageData?.animation?.transitionOut) {
-				CrComLib.setTransition(page, pageData.animation.transitionOut);
+			if (pageData?.animation?.transitionOut && (pageData?.animation?.transitionOut in CrComLib.transitionOuteffects)) {
+				CrComLib.setTransition(page, pageData.animation.transitionOut, 'OUT');
 				ch5triggerViewChild.classList.add('ch5-show-vis-position');
 				page.classList.add('page-height-vh');
 			}
 		} else {
-			CrComLib.removeTransition(page, pageData?.animation?.transitionOut);
+			CrComLib.removeTransition(page, pageData?.animation?.transitionOut, 'OUT');
 			page.classList.remove("ch5-hide-vis", "page-height-vh");
 			ch5triggerViewChild.classList.remove('ch5-show-vis-position');
-			if (pageData?.animation?.transitionIn) {
-				CrComLib.setTransition(page, pageData.animation.transitionIn);
+			if (pageData?.animation?.transitionIn && (pageData?.animation?.transitionIn in CrComLib.transitionIneffects)) {
+				CrComLib.setTransition(page, pageData.animation.transitionIn, 'IN');
 			}
 		}
 	}
