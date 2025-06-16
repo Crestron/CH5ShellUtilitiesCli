@@ -424,10 +424,6 @@
 }
 
 .logs-button-widget {
-  @include logs-button-widget-mixin(#808080);
-}
-
-.logs-button-widget {
   @include logs-button-widget-mixin(var(--theme-shell--widget-icon-color));
 }
 

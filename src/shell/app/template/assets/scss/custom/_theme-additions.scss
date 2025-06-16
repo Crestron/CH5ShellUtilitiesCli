@@ -7,9 +7,9 @@
 
 .list-item {
   ch5-button {
-    --ch5-button--text-background-color: var(--theme-shell--button-list-background-color);
-    --ch5-button--text-pressed-background-color: var(--theme-shell--button-list-background-color);
-    --ch5-button--text-selected-background-color: var(--theme-shell--button-list-background-color);
+    --ch5-button--text-background-color: var(--theme-shell--menu-button-list-background-color);
+    --ch5-button--text-pressed-background-color: var(--theme-shell--menu-button-list-background-color);
+    --ch5-button--text-selected-background-color: var(--theme-shell--menu-button-list-background-color);
   }
 }
 

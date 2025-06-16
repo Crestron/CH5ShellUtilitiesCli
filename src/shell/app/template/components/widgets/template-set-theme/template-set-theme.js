@@ -96,12 +96,10 @@ const templateSetThemeModule = (() => {
     const templateContentBackground = document.getElementById("template-content-background");
     if (templateContentBackground) {
       setTimeout(() => {
-        let element = window.getComputedStyle(document.body);
-        let styleValue = element.getPropertyValue("--theme-colors--theme-background-color");
+        const element = window.getComputedStyle(document.body);
+        const styleValue = element.getPropertyValue("--theme-colors--theme-background-color");
         if (styleValue && styleValue.trim() !== "") {
-          if (styleValue) {
-            templateContentBackground.setAttribute("backgroundColor", styleValue);
-          } 
+          templateContentBackground.setAttribute("backgroundColor", styleValue);
         }
       }, 100);
     }
