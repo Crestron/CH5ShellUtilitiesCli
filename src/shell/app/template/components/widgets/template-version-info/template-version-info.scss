@@ -212,7 +212,7 @@
     #tab-wrapper {
       button {
         background-color: var(--theme-shell--version-info-modal-tab-button-background-color);
-        border: 1px solid darkgray;
+        border: 1px solid var(--theme-shell--version-info-modal-tab-buttons-border-color);
 
         &:first-child {
           border-right: none;
@@ -235,7 +235,7 @@
 
       th,
       td {
-        border: 1px solid lightgray;
+        border: 1px solid var(--theme-shell--version-info-modal-table-data-rows-border-color);
         padding: 5px;
       }
 
