@@ -95,34 +95,15 @@ const templateSetThemeModule = (() => {
 
     const templateContentBackground = document.getElementById("template-content-background");
     if (templateContentBackground) {
-      let element = window.getComputedStyle(document.body);
-      let styleValue = element.getPropertyValue('--theme-colors--theme-background-color');
-      // console.log('----',styleValue);
-      if(styleValue){
-        templateContentBackground.setAttribute('backgroundColor', styleValue);
-      }else if(selectedThemeName === 'light-theme'){
-        templateContentBackground.setAttribute('backgroundColor', '#f8f8f8');
-      }else{
-        templateContentBackground.setAttribute('backgroundColor', '#1a1a1a');
-      }
-      // if (selectedTheme.backgroundProperties !== "undefined") {
-      //   for (let prop in selectedTheme.backgroundProperties) {
-
-      //     if (prop === "url") {
-      //       if (typeof selectedTheme.backgroundProperties.url === "object") {
-      //         selectedTheme.backgroundProperties.url = selectedTheme.backgroundProperties.url.join(" | ");
-      //       }
-      //     } else if (prop === "backgroundColor") {
-      //       if (typeof selectedTheme.backgroundProperties.backgroundColor === "object") {
-      //         selectedTheme.backgroundProperties.backgroundColor = selectedTheme.backgroundProperties.backgroundColor.join(' | ');
-      //       }
-      //     }
-
-      //     if (selectedTheme.backgroundProperties[prop] !== "") {
-      //       templateContentBackground.setAttribute(prop, selectedTheme.backgroundProperties[prop]);
-      //     }
-      //   }
-      // }
+      setTimeout(() => {
+        let element = window.getComputedStyle(document.body);
+        let styleValue = element.getPropertyValue("--theme-colors--theme-background-color");
+        if (styleValue && styleValue.trim() !== "") {
+          if (styleValue) {
+            templateContentBackground.setAttribute("backgroundColor", styleValue);
+          } 
+        }
+      }, 100);
     }
     const themeIndex = projectThemesList.findIndex(ele => ele.name === theme);
     CrComLib.publishEvent('n', 'selectedTheme', themeIndex);
