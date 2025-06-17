@@ -115,7 +115,7 @@ const templatePageModule = (() => {
 		const subscriptions = [];
 		const pageList = projectConfigModule.getNavigationPages();
 		for (let i = 0; i < pageList.length; i++) {
-			if (activeIndex !== i) {
+			if (activeIndex !== i && pageList[i].preloadPage === true) { // The hide class is only needed for pages with preloading true.
 				const subscriptionHtmlSnippet = CrComLib.subscribeState('o', 'ch5-import-htmlsnippet:' + pageList[i].pageName + '-import-page', (value) => {
 					console.log(pageList[i].pageName + ' --> ' + value['loaded']);
 					if (value['loaded']) {
