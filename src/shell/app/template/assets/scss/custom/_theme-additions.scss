@@ -45,14 +45,14 @@
     // VERTICAL MENU END
     .active,
     .navbar-nav .active a {
-      color: #ff8800;
+      color: var(--theme-shell--footer-collapsible-icon);
     }
   }
 }
 
 // bottom navigation
 .swiper-thumb {
-  background-color: var(--theme-shell--footer-swiper-thumb-background-color);
+  background-color: var(--theme-shell--footer-background-color);
 
   .list-item {
     ch5-button {
