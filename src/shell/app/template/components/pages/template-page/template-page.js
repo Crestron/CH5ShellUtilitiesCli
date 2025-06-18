@@ -109,6 +109,15 @@ const templatePageModule = (() => {
 			navigationModule.goToPage(pageName);
 		}
 	}
+	// for scrollbar issue CH5C-28535
+	function resizeWindow(event) {
+		window.dispatchEvent(new Event('resize'));
+		removeEventListener(event.target);
+	}
+
+	function removeEventListener(ele) {
+		ele.removeEventListener(animationend, resizeWindow);
+	}
 
 
 	function hideInactivePages(activeIndex) {
@@ -117,13 +126,16 @@ const templatePageModule = (() => {
 		for (let i = 0; i < pageList.length; i++) {
 			if (activeIndex !== i && pageList[i].preloadPage === true) { // The hide class is only needed for pages with preloading true.
 				const subscriptionHtmlSnippet = CrComLib.subscribeState('o', 'ch5-import-htmlsnippet:' + pageList[i].pageName + '-import-page', (value) => {
-					console.log(pageList[i].pageName + ' --> ' + value['loaded']);
+					// console.log(pageList[i].pageName + ' --> ' + value['loaded']);
 					if (value['loaded']) {
 						const page = triggerview.childrenOfCurrentNode[i].childrenOfCurrentNode[0].childrenOfCurrentNode[0];
 						page.classList.add('ch5-hide-vis');
 					}
 				});
 				subscriptions.push(subscriptionHtmlSnippet);
+			} else if (pageList[activeIndex]?.animation?.transitionIn) { // for scrollbar issue CH5C-28535
+				const page = triggerview.childrenOfCurrentNode[activeIndex]?.childrenOfCurrentNode[0]?.childrenOfCurrentNode[0];
+				page.addEventListener('animationend', resizeWindow);
 			}
 		}
 
