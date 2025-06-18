@@ -95,13 +95,16 @@ const templateSetThemeModule = (() => {
 
     const templateContentBackground = document.getElementById("template-content-background");
     if (templateContentBackground) {
-      setTimeout(() => {
-        const element = window.getComputedStyle(document.body);
-        const styleValue = element.getPropertyValue("--theme-colors--theme-background-color");
-        if (styleValue && styleValue.trim() !== "") {
-          templateContentBackground.setAttribute("backgroundColor", styleValue);
+      // CH5C-28506: added the below subscription to fix background color issue
+      CrComLib.subscribeState('o', 'appLoad', (value) => {
+        if (value['loaded']) {
+          const element = window.getComputedStyle(document.body);
+          const styleValue = element.getPropertyValue("--theme-colors--theme-background-color");
+          if (styleValue && styleValue.trim() !== "") {
+            templateContentBackground.setAttribute("backgroundColor", styleValue);
+          }
         }
-      }, 100);
+      }); 
     }
     const themeIndex = projectThemesList.findIndex(ele => ele.name === theme);
     CrComLib.publishEvent('n', 'selectedTheme', themeIndex);
