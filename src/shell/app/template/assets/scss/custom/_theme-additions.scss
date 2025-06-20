@@ -7,9 +7,9 @@
 
 .list-item {
   ch5-button {
-    --ch5-button--text-background-color: var(--theme-shell--menu-button-list-background-color);
-    --ch5-button--text-pressed-background-color: var(--theme-shell--menu-button-list-background-color);
-    --ch5-button--text-selected-background-color: var(--theme-shell--menu-button-list-background-color);
+    --ch5-button--text-background-color: var(--theme-shell--navigation-button-list-background-color);
+    --ch5-button--text-pressed-background-color: var(--theme-shell--navigation-button-list-background-color);
+    --ch5-button--text-selected-background-color: var(--theme-shell--navigation-button-list-background-color);
   }
 }
 
@@ -45,14 +45,14 @@
     // VERTICAL MENU END
     .active,
     .navbar-nav .active a {
-      color: var(--theme-shell--footer-collapsible-icon);
+      color: var(--theme-shell--navigation-button-list-collapsible-icon);
     }
   }
 }
 
 // bottom navigation
 .swiper-thumb {
-  background-color: var(--theme-shell--footer-background-color);
+  background-color: var(--theme-shell--navigation-button-background-color);
 
   .list-item {
     ch5-button {
@@ -64,7 +64,7 @@
 }
 
 .thumb-action svg {
-  fill: var(--theme-shell--footer-collapsible-icon);
+  fill: var(--theme-shell--navigation-button-list-collapsible-icon);
 }
 
 .horizontal-menu,
@@ -102,8 +102,4 @@
       }
     }
   }
-}
-
-::-webkit-scrollbar-track {
-  background-color: var(--theme-shell--scrollbar-color);
 }
