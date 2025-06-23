@@ -61,11 +61,12 @@ const templatePageModule = (() => {
 							triggerview.childrenOfCurrentNode[prevIndex]?.childrenOfCurrentNode[0].childrenOfCurrentNode[0]) {  //&& prevIndex !== -1) {
 							addAnimationClass(prevIndex, 'OUT');
 						}
+						setTimeout(() => {
+							CrComLib.unsubscribeState('o', 'ch5-import-htmlsnippet:' + pageList[prevIndex]?.pageName + '-import-page', subscriptionHtmlSnippetPrevIndex);
+						});
 					}
 				});
-				setTimeout(() => {
-					CrComLib.unsubscribeState('o', 'ch5-import-htmlsnippet:' + pageList[prevIndex]?.pageName + '-import-page', subscriptionHtmlSnippetPrevIndex);
-				}, 100);
+
 				try {
 					// menuMoveInViewPort();
 
@@ -99,12 +100,11 @@ const templatePageModule = (() => {
 							triggerview.childrenOfCurrentNode[activeIndex]?.childrenOfCurrentNode[0].childrenOfCurrentNode[0]) {
 							addAnimationClass(activeIndex, 'IN');
 						}
+						setTimeout(() => {
+							CrComLib.unsubscribeState('o', 'ch5-import-htmlsnippet:' + pageList[activeIndex]?.pageName + '-import-page', subscriptionHtmlSnippet);
+						});
 					}
 				});
-
-				setTimeout(() => {
-					CrComLib.unsubscribeState('o', 'ch5-import-htmlsnippet:' + pageList[activeIndex]?.pageName + '-import-page', subscriptionHtmlSnippet);
-				}, 100);
 			}
 			navigationModule.goToPage(pageName);
 		}
@@ -130,20 +130,15 @@ const templatePageModule = (() => {
 					if (value['loaded']) {
 						const page = triggerview.childrenOfCurrentNode[i].childrenOfCurrentNode[0].childrenOfCurrentNode[0];
 						page.classList.add('ch5-hide-vis');
+						setTimeout(() => {
+							CrComLib.unsubscribeState('o', 'ch5-import-htmlsnippet:' + pageList[i].pageName + '-import-page', subscriptions[i]);
+						});
 					}
 				});
 				subscriptions.push(subscriptionHtmlSnippet);
 			} else if (pageList[activeIndex]?.animation?.transitionIn) { // for scrollbar issue CH5C-28535
 				const page = triggerview.childrenOfCurrentNode[activeIndex]?.childrenOfCurrentNode[0]?.childrenOfCurrentNode[0];
 				page.addEventListener('animationend', resizeWindow);
-			}
-		}
-
-		for (let i = 0; i < pageList.length; i++) {
-			if (activeIndex !== i) {
-				setTimeout(() => {
-					CrComLib.unsubscribeState('o', 'ch5-import-htmlsnippet:' + pageList[i].pageName + '-import-page', subscriptions[i]);
-				}, 100);
 			}
 		}
 	}
