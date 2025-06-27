@@ -116,7 +116,7 @@ const templatePageModule = (() => {
 	}
 
 	function removeEventListener(ele) {
-		ele.removeEventListener(animationend, resizeWindow);
+		ele.removeEventListener('animationend', resizeWindow);
 	}
 
 
