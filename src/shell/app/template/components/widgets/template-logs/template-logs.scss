@@ -424,14 +424,7 @@
 }
 
 .logs-button-widget {
-  @include logs-button-widget-mixin(#808080);
-}
-
-.dark-theme,
-.project-dark-theme {
-  .logs-button-widget {
-    @include logs-button-widget-mixin(#fff);
-  }
+  @include logs-button-widget-mixin(var(--theme-shell--widget-icon-color));
 }
 
 pre.logcontent {

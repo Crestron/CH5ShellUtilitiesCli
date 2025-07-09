@@ -55,10 +55,6 @@
         width: 100%;
         overflow: auto;
 
-        .logger-modal-content {
-          background-color: #fefefe;
-        }
-
         .dockerstatus {
           font-size: 12px;
           width: 100%;
@@ -192,33 +188,30 @@
   }
 }
 
-.dark-theme,
-.project-dark-theme {
-  #template-remote-logger-settings-page {
-    div.ch5-modal-dialog {
-      border: 1px solid $color-darkgrey;
-      color: $color-white;
-      background-color: $color-darkestgrey;
-      .logger-modal-wrapper {
-        .logger-modal,
-        .logger-modal-content {
-          color: $color-white;
-          background-color: $color-darkestgrey;
-        }
-
-        h5.logger-modal-title {
-          color: $color-white;
-        }
-
-        .note-text {
-          color: $color-white;
-          background-color: transparent;
-        }
+#template-remote-logger-settings-page {
+  div.ch5-modal-dialog {
+    border: 1px solid var(--theme-shell--remote-logger-modal-border);
+    color: var(--theme-colors--theme-body-font-color);
+    background-color: var(--theme-shell--remote-logger-modal-background-color);
+    .logger-modal-wrapper {
+      .logger-modal,
+      .logger-modal-content {
+        color: var(--theme-colors--theme-body-font-color);
+        background-color: var(--theme-shell--remote-logger-modal-background-color);
       }
-      .ch5-modal-dialog-close-icon-btn {
-        color: $color-white;
+
+      h5.logger-modal-title {
+        color: var(--theme-colors--theme-body-font-color);
+      }
+
+      .note-text {
+        color: var(--theme-colors--theme-body-font-color);
         background-color: transparent;
       }
+    }
+    .ch5-modal-dialog-close-icon-btn {
+      color: var(--theme-colors--theme-body-font-color);
+      background-color: transparent;
     }
   }
 }

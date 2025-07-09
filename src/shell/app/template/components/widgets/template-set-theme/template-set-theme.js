@@ -76,20 +76,12 @@ const templateSetThemeModule = (() => {
     const body = document.body;
     for (let i = 0; i < projectThemesList.length; i++) {
       body.classList.remove(projectThemesList[i].name);
-      // body.classList.remove(projectThemesList[i].extends);
     }
     let selectedThemeName = theme.trim();
-    const currentTheme = projectThemesList.find(themeVal => themeVal.name === selectedThemeName);
-    if (currentTheme.name === currentTheme.extends) {
-      if (!body.classList.contains(selectedThemeName)) {
-        body.classList.add(selectedThemeName);
-      }
-    } else {
-      if (!body.classList.contains(selectedThemeName)) {
-        body.classList.add(selectedThemeName);
-        body.classList.add(currentTheme.extends);
-      }
+    if (!body.classList.contains(selectedThemeName)) {
+      body.classList.add(selectedThemeName);
     }
+
     let selectedTheme = projectThemesList.find((tempObj) => tempObj.name.trim().toLowerCase() === selectedThemeName.toLowerCase());
     if (document.getElementById("brandLogo")) {
       if (selectedTheme.brandLogo !== "undefined") {
@@ -103,34 +95,16 @@ const templateSetThemeModule = (() => {
 
     const templateContentBackground = document.getElementById("template-content-background");
     if (templateContentBackground) {
-     /*  let element = window.getComputedStyle(document.body);
-      let styleValue = element.getPropertyValue('--theme-colors--theme-background-color');
-      // console.log('----',styleValue);
-      if(styleValue){
-        templateContentBackground.setAttribute('backgroundColor', styleValue);
-      }else if(selectedThemeName === 'light-theme'){
-        templateContentBackground.setAttribute('backgroundColor', '#f8f8f8');
-      }else{
-        templateContentBackground.setAttribute('backgroundColor', '#1a1a1a');
-      } */
-      if (selectedTheme.backgroundProperties !== "undefined") {
-        for (let prop in selectedTheme.backgroundProperties) {
-
-          if (prop === "url") {
-            if (typeof selectedTheme.backgroundProperties.url === "object") {
-              selectedTheme.backgroundProperties.url = selectedTheme.backgroundProperties.url.join(" | ");
-            }
-          } else if (prop === "backgroundColor") {
-            if (typeof selectedTheme.backgroundProperties.backgroundColor === "object") {
-              selectedTheme.backgroundProperties.backgroundColor = selectedTheme.backgroundProperties.backgroundColor.join(' | ');
-            }
-          }
-
-          if (selectedTheme.backgroundProperties[prop] !== "") {
-            templateContentBackground.setAttribute(prop, selectedTheme.backgroundProperties[prop]);
+      // CH5C-28506: added the below subscription to fix background color issue
+      CrComLib.subscribeState('o', 'appLoad', (value) => {
+        if (value['loaded']) {
+          const element = window.getComputedStyle(document.body);
+          const styleValue = element.getPropertyValue("--theme-colors--theme-background-color");
+          if (styleValue && styleValue.trim() !== "") {
+            templateContentBackground.setAttribute("backgroundColor", styleValue);
           }
         }
-      }
+      }); 
     }
     const themeIndex = projectThemesList.findIndex(ele => ele.name === theme);
     CrComLib.publishEvent('n', 'selectedTheme', themeIndex);

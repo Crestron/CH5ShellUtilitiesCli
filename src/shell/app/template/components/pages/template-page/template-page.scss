@@ -28,6 +28,17 @@
   display: none !important;
 }
 
+.page-height-vh {
+  height: 100vh !important;
+}
+
+// To see transitionOut of page animation 
+.ch5-show-vis-position {
+  visibility: visible !important;
+  position: fixed;
+  left: 0;
+}
+
 #infobtn.warn {
   position: relative;
 
