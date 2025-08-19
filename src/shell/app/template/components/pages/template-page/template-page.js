@@ -136,9 +136,16 @@ const templatePageModule = (() => {
 					}
 				});
 				subscriptions.push(subscriptionHtmlSnippet);
-			} else if (pageList[activeIndex]?.animation?.transitionIn) { // for scrollbar issue CH5C-28535
-				const page = triggerview.childrenOfCurrentNode[activeIndex]?.childrenOfCurrentNode[0]?.childrenOfCurrentNode[0];
-				page.addEventListener('animationend', resizeWindow);
+			} else if (pageList[activeIndex]?.animation?.transitionIn && pageList[activeIndex].cachePage) { // for scrollbar issue CH5C-28535
+				const subscriptionHtmlSnippet1 = CrComLib.subscribeState('o', 'ch5-import-htmlsnippet:' + pageList[i].pageName + '-import-page', (value) => {
+					if (value['loaded']) {
+						const page = triggerview.childrenOfCurrentNode[activeIndex]?.childrenOfCurrentNode[0]?.childrenOfCurrentNode[0];
+						page?.addEventListener('animationend', resizeWindow);
+						setTimeout(() => {
+							CrComLib.unsubscribeState('o', 'ch5-import-htmlsnippet:' + pageList[i].pageName + '-import-page', subscriptionHtmlSnippet1);
+						});
+					}
+				});
 			}
 		}
 	}
