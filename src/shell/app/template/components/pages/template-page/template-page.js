@@ -45,12 +45,12 @@ const templatePageModule = (() => {
 				const activeIndex = projectConfigModule.getNavigationPages().findIndex(data => data.pageName === pageName);
 				const prevIndex = projectConfigModule.getNavigationPages().findIndex(data => data.pageName === oldPage.pageName);
 				// On first load, hide all pages except for the default page.
-				if (prevIndex < 0) {
+				/* if (prevIndex < 0) {
 					hideInactivePages(activeIndex);
 				} else {
 					const page = triggerview.childrenOfCurrentNode[activeIndex].childrenOfCurrentNode[0].childrenOfCurrentNode[0];
 					page.classList.remove('ch5-hide-vis');
-				}
+				} */
 				// Add animation to the page when exiting the viewport.
 				const subscriptionHtmlSnippetPrevIndex = CrComLib.subscribeState('o', 'ch5-import-htmlsnippet:' + pageList[prevIndex]?.pageName + '-import-page', (value) => {
 					if (value['loaded']) {
@@ -129,7 +129,7 @@ const templatePageModule = (() => {
 					// console.log(pageList[i].pageName + ' --> ' + value['loaded']);
 					if (value['loaded']) {
 						const page = triggerview.childrenOfCurrentNode[i].childrenOfCurrentNode[0].childrenOfCurrentNode[0];
-						page.classList.add('ch5-hide-vis');
+						//page.classList.add('ch5-hide-vis');
 						setTimeout(() => {
 							CrComLib.unsubscribeState('o', 'ch5-import-htmlsnippet:' + pageList[i].pageName + '-import-page', subscriptions[i]);
 						});
