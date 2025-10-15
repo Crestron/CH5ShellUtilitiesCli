@@ -12,8 +12,8 @@ const console = (function (defaultConsole) {
 
 	// #region "Variables"
 	let configurationData = {
-		"allowLogging": false,
-		"showIcon": false,
+		"allowLogging": true,
+		"showIcon": true,
 		"urls": {
 			"ipAddress": "127.0.0.1",
 			"uriProtocol": "http://",
