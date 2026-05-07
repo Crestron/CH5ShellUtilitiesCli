@@ -1,0 +1,7 @@
+node_modules
+build
+dist
+*.tgz
+*.ch5z
+.vscode/settings.json
+.nyc_output
